@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<!--
+============================================================================
+  Aruna's Classes — Hotel / 酒店  (Engine v2)
+  © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes.
+  All Rights Reserved.
+============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="copyright" content="© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.">
+<meta name="author" content="RRAruna Enterprises — Aruna's Classes">
+<title>Aruna's Classes · Lesson App</title>
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7.3/dist/hanzi-writer.min.js"></script>
+<style>
+  :root{
+    --red:#c8102e; --gold:#f2b705; --ink:#1f2430; --paper:#fff8f0;
+    --card:#ffffff; --line:#eadfce; --good:#1a7f4b; --bad:#c8102e;
+    --muted:#6b7280; --accent:#0d6e6e;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+    background:linear-gradient(180deg,#fff8f0,#fef1e6);color:var(--ink);min-height:100vh}
+  header{background:linear-gradient(120deg,var(--red),#9c0d24);color:#fff;padding:14px 18px;
+    display:flex;align-items:center;gap:14px;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+  header .logo{font-size:30px;line-height:1}
+  header h1{font-size:18px;margin:0}
+  header .sub{font-size:12px;opacity:.9;margin-top:2px}
+  .hsk{margin-left:auto;background:var(--gold);color:#3a2a00;font-weight:700;
+    padding:6px 12px;border-radius:20px;font-size:13px;white-space:nowrap}
+  nav{display:flex;gap:6px;flex-wrap:wrap;padding:10px 14px;background:#fff;
+    border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+  nav button{border:1px solid var(--line);background:#fff;padding:8px 14px;border-radius:22px;
+    cursor:pointer;font-size:14px;font-weight:600;color:var(--ink);transition:.15s}
+  nav button:hover{background:#fff2df}
+  nav button.active{background:var(--red);color:#fff;border-color:var(--red)}
+  main{max-width:960px;margin:0 auto;padding:18px 14px 90px}
+  .panel{display:none;animation:fade .25s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  h2.section{font-size:20px;margin:6px 0 4px}
+  p.lead{color:var(--muted);margin:0 0 16px;font-size:14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;
+    box-shadow:0 4px 14px rgba(150,110,40,.08)}
+  .vpic{font-size:46px;text-align:center}
+  .vword{font-size:34px;font-weight:800;text-align:center;margin:4px 0 2px}
+  .vpin{text-align:center;color:var(--accent);font-weight:600}
+  .vmean{text-align:center;color:var(--muted);margin-bottom:8px}
+  .ety{font-size:12.5px;background:#fbf5e9;border-left:3px solid var(--gold);
+    padding:8px 10px;border-radius:0 8px 8px 0;color:#5a4a2a;margin-top:6px}
+  .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+  button.act{border:0;border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:13px}
+  .b-sound{background:var(--accent);color:#fff}
+  .b-stroke{background:var(--gold);color:#3a2a00}
+  .b-primary{background:var(--red);color:#fff}
+  .b-ghost{background:#fff;border:1px solid var(--line)!important;color:var(--ink)}
+  button.act:hover{filter:brightness(1.05)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .writer-wrap{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .writer-stage{background:#fff;border:2px dashed var(--line);border-radius:16px;padding:10px}
+  .char-picker{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .char-picker button{width:52px;height:52px;font-size:26px;border-radius:12px;
+    border:1px solid var(--line);background:#fff;cursor:pointer;font-weight:700;position:relative}
+  .char-picker button.active{background:var(--red);color:#fff;border-color:var(--red)}
+  .char-picker button .mini{position:absolute;bottom:-2px;right:-2px;font-size:11px}
+  .reps{display:flex;gap:8px;margin:10px 0}
+  .rep-dot{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--muted)}
+  .rep-dot.done{background:var(--good);border-color:var(--good);color:#fff}
+  .score-badge{font-size:15px;font-weight:800;padding:6px 12px;border-radius:20px;
+    background:#eef7f0;color:var(--good);display:inline-block}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+  .q .prompt{font-size:20px;font-weight:700;margin-bottom:12px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts button{padding:12px;border-radius:12px;border:1px solid var(--line);background:#fff;
+    font-size:19px;cursor:pointer;font-weight:600;transition:.12s}
+  .opts button:hover{background:#fff2df}
+  .opts button.correct{background:#e6f6ec;border-color:var(--good);color:var(--good)}
+  .opts button.wrong{background:#fde8ea;border-color:var(--bad);color:var(--bad)}
+  .scorebar{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);
+    padding:8px 14px;font-weight:700;text-align:center;color:var(--ink)}
+  .big-char{font-size:70px;text-align:center;font-weight:800;line-height:1}
+  .rec-out{margin-top:8px;font-size:14px;min-height:20px}
+  footer{text-align:center;font-size:12px;color:var(--muted);padding:16px;border-top:1px solid var(--line);background:#fff}
+  .wm{position:fixed;bottom:6px;right:8px;font-size:10px;color:#b9a88a;pointer-events:none;z-index:1}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:18px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center}
+  .stat .num{font-size:30px;font-weight:800;color:var(--red)}
+  .stat .lab{font-size:13px;color:var(--muted);margin-top:4px}
+  table.pg{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+  table.pg th,table.pg td{padding:8px 10px;text-align:center;border-bottom:1px solid var(--line);font-size:14px}
+  table.pg th{background:#fbf5e9;font-size:13px}
+  table.pg td.ch{font-size:22px;font-weight:800}
+  .reset{margin-top:14px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🀄</div>
+  <div>
+    <h1 id="hHead">Aruna's Classes</h1>
+    <div class="sub">RRAruna Enterprises · ChineseFrench — Listening · Reading · Speaking · Writing</div>
+  </div>
+  <div class="hsk" id="hskTag">HSK</div>
+</header>
+
+<nav id="nav">
+  <button data-tab="home" class="active">🏠 Home</button>
+  <button data-tab="vocab">📚 Vocabulary</button>
+  <button data-tab="writing">✍️ Writing</button>
+  <button data-tab="listening">🎧 Listening</button>
+  <button data-tab="reading">📖 Reading</button>
+  <button data-tab="speaking">🗣️ Speaking</button>
+  <button data-tab="progress">📊 Progress</button>
+</nav>
+
+<main>
+  <section class="panel active" id="home">
+    <h2 class="section" id="homeTitle">Welcome back 👋</h2>
+    <p class="lead" id="homeLead"></p>
+    <div class="grid" id="homeCards"></div>
+  </section>
+
+  <section class="panel" id="vocab">
+    <h2 class="section">Vocabulary · 生词</h2>
+    <p class="lead">Tap 🔊 to hear the word, ⭐ to watch the stroke order. Each card shows a picture and the character's etymology (字源).</p>
+    <div class="grid" id="vocabGrid"></div>
+  </section>
+
+  <section class="panel" id="writing">
+    <h2 class="section">Writing Practice · 写字</h2>
+    <p class="lead">Pick a character, watch the animated stroke order, then write it <b>3 times</b>. Each attempt is scored and your best is saved.</p>
+    <div class="char-picker" id="charPicker"></div>
+    <div class="writer-wrap">
+      <div>
+        <div class="writer-stage"><div id="writerTarget"></div></div>
+        <div class="reps" id="reps"></div>
+        <div id="writeScore"></div>
+      </div>
+      <div style="flex:1;min-width:220px">
+        <div class="card">
+          <div class="big-char" id="wBig"></div>
+          <div class="vpin" id="wPin"></div>
+          <div class="vmean" id="wMean"></div>
+          <div class="ety" id="wEty"></div>
+          <div class="row">
+            <button class="act b-stroke" id="btnAnimate">⭐ Watch strokes</button>
+            <button class="act b-sound" id="btnWSound">🔊 Sound</button>
+            <button class="act b-primary" id="btnQuiz">✍️ Write it</button>
+          </div>
+          <div class="hint">Tip: follow the faint outline. Fewer mistakes = higher score.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="listening">
+    <h2 class="section">Listening · 听力</h2>
+    <p class="lead">Press ▶ to hear a word in Mandarin, then choose the correct characters. No pinyin — train your ear.</p>
+    <div id="listenArea"></div>
+    <div class="scorebar" id="listenScore">Score: 0 / 0</div>
+  </section>
+
+  <section class="panel" id="reading">
+    <h2 class="section">Reading · 阅读</h2>
+    <p class="lead">Read each item in Chinese (no pinyin) and choose the best answer in Mandarin.</p>
+    <div id="readArea"></div>
+    <div class="scorebar" id="readScore">Score: 0 / 0</div>
+  </section>
+
+  <section class="panel" id="speaking">
+    <h2 class="section">Speaking · 口语</h2>
+    <p class="lead">Look at the picture, listen to the model, then say the word. If your browser supports it, press 🎤 to check your pronunciation.</p>
+    <div class="grid" id="speakGrid"></div>
+  </section>
+
+  <section class="panel" id="progress">
+    <h2 class="section">My Progress · 我的进步</h2>
+    <p class="lead">Your scores are saved on this device so you can see improvement over time.</p>
+    <div class="stats" id="statCards"></div>
+    <h3 style="margin:6px 0">Writing scores by character</h3>
+    <div id="pgTableWrap"></div>
+    <button class="act b-ghost reset" id="btnReset">🗑️ Reset my progress</button>
+  </section>
+</main>
+
+<footer>
+  © 2026 <b>RRAruna Enterprises</b> · ChineseFrench · Aruna's Classes — Foreign Languages.
+  All Rights Reserved. · Made in India 🇮🇳
+</footer>
+<div class="wm">© RRAruna Enterprises · Aruna's Classes</div>
+
+<script>
+"use strict";
+/* ============================================================================
+   © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes.
+   All Rights Reserved. Protected content & method.
+   ============================================================================ */
+const COPYRIGHT = "© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.";
+
+/*LESSON_START*/
+const LESSON = {
+  id: "hotel",
+  title: "Hotel / 酒店",
+  hsk: "New HSK 3",
+  intro: "Checking into and out of a hotel: booking a room, the front desk, keys, breakfast and solving small problems.",
+  vocab: [
+    {w:"酒店", p:"jiǔdiàn", m:"hotel", pic:"🏨",
+      ety:"酒 'wine/alcohol' (氵 water + 酉 wine-jar) + 店 'shop' (广 shelter + 占). Literally a 'wine shop' — now a hotel."},
+    {w:"房间", p:"fángjiān", m:"room", pic:"🚪",
+      ety:"房 'room' (户 door + 方) + 间 'space' (门 gate + 日 sun through it) — a room-space."},
+    {w:"前台", p:"qiántái", m:"front desk / reception", pic:"🛎️",
+      ety:"前 'front' + 台 'platform / counter' — the counter at the front."},
+    {w:"登记", p:"dēngjì", m:"to check in / register", pic:"✍️",
+      ety:"登 'to record / step up' + 记 'to note' (讠 speech + 己 self) — to write your name down."},
+    {w:"钥匙", p:"yàoshi", m:"key", pic:"🔑",
+      ety:"钥 (钅 metal radical) + 匙 'spoon-shaped piece' — the metal piece that opens a lock."},
+    {w:"护照", p:"hùzhào", m:"passport", pic:"🛂",
+      ety:"护 'to protect' (扌 hand + 户 door) + 照 'certificate' — needed to check in."},
+    {w:"空调", p:"kōngtiáo", m:"air conditioning", pic:"❄️",
+      ety:"空 'air/empty' (穴 cave + 工) + 调 'to adjust' (讠 speech + 周) — an 'air adjuster'."},
+    {w:"早餐", p:"zǎocān", m:"breakfast", pic:"🍳",
+      ety:"早 'early / morning' (日 sun + 十) + 餐 'meal' — the morning meal."},
+    {w:"电梯", p:"diàntī", m:"elevator / lift", pic:"🛗",
+      ety:"电 'electric' (a lightning pictograph) + 梯 'ladder/stairs' (木 wood + 弟) — an electric stairway."},
+    {w:"行李", p:"xínglǐ", m:"luggage", pic:"🧳",
+      ety:"行 'to travel' (a crossroads) + 李 'bags' — the bags you travel with."},
+    {w:"发票", p:"fāpiào", m:"receipt / invoice", pic:"🧾",
+      ety:"发 'to issue' + 票 'slip/ticket' — an issued paper slip."},
+    {w:"退房", p:"tuìfáng", m:"to check out", pic:"🧳",
+      ety:"退 'to return / retreat' (辶 movement + 艮) + 房 'room' — to give the room back."},
+    {w:"干净", p:"gānjìng", m:"clean", pic:"🧼",
+      ety:"干 'dry' + 净 'clean' (氵 water + 争) — dry and clean."},
+    {w:"安静", p:"ānjìng", m:"quiet", pic:"🤫",
+      ety:"安 'peaceful' (宀 roof + 女 woman at home) + 静 'still' (青 + 争) — calm and still."},
+    {w:"帮忙", p:"bāngmáng", m:"to help", pic:"🤝",
+      ety:"帮 'to help' (邦 + 巾) + 忙 'busy' (忄 heart + 亡) — to help with a busy task."}
+  ],
+  reading: [
+    {q:"你刚到酒店，第一件事应该做什么？",
+     o:["马上睡觉","去前台登记入住","打开电视","离开酒店"], a:1},
+    {q:"“退房”是什么意思？",
+     o:["预订一个新房间","离开酒店，把房间还回去","打扫房间","换一个房间"], a:1},
+    {q:"房间里太热了，你可以打开什么？",
+     o:["空调","行李","发票","护照"], a:0},
+    {q:"你想早上在酒店吃东西，应该问有没有什么？",
+     o:["早餐","钥匙","电梯","发票"], a:0},
+    {q:"要进自己的房间，你需要什么？",
+     o:["钥匙","早餐","空调","前台"], a:0},
+    {q:"下面哪个词表示“很安静，不吵”？",
+     o:["干净","安静","帮忙","登记"], a:1}
+  ]
+};
+/*LESSON_END*/
+
+/* ============================================================================
+   ENGINE — do not edit below.
+   ============================================================================ */
+const $ = s => document.querySelector(s);
+const el = (t,c,txt)=>{const e=document.createElement(t); if(c)e.className=c; if(txt!=null)e.textContent=txt; return e;};
+function uniqueChars(){
+  const set=[]; LESSON.vocab.forEach(v=>[...v.w].forEach(ch=>{ if(/[一-鿿]/.test(ch)&&!set.includes(ch))set.push(ch);}));
+  return set;
+}
+function charInfo(ch){
+  const v=LESSON.vocab.find(x=>x.w===ch) || LESSON.vocab.find(x=>x.w.includes(ch));
+  return {p: v?v.p:"", m: v?v.m:"", ety: v?v.ety:""};
+}
+const Progress = {
+  key(){ return "arunas_"+LESSON.id+"_v2"; },
+  load(){ try{ return JSON.parse(localStorage.getItem(this.key())) || {}; }catch(e){ return {}; } },
+  save(d){ try{ localStorage.setItem(this.key(), JSON.stringify(d)); }catch(e){} },
+  data(){ const d=this.load(); d.writing=d.writing||{}; d.best=d.best||{}; return d; },
+  setWriting(ch,score){ const d=this.data(); if(!(ch in d.writing)||score>d.writing[ch]) d.writing[ch]=score; this.touch(d); this.save(d); render(); },
+  setBest(kind,pct){ const d=this.data(); if(!(kind in d.best)||pct>d.best[kind]) d.best[kind]=pct; this.touch(d); this.save(d); render(); },
+  touch(d){
+    const today=new Date().toISOString().slice(0,10);
+    if(d.lastDay!==today){
+      const y=new Date(Date.now()-864e5).toISOString().slice(0,10);
+      d.streak = (d.lastDay===y)? (d.streak||0)+1 : 1;
+      d.lastDay=today;
+    } else if(!d.streak){ d.streak=1; d.lastDay=today; }
+  },
+  reset(){ localStorage.removeItem(this.key()); render(); }
+};
+let zhVoice=null;
+function pickVoice(){ const vs=speechSynthesis.getVoices(); zhVoice=vs.find(v=>/zh[-_]?CN/i.test(v.lang))||vs.find(v=>/zh/i.test(v.lang))||null; }
+if('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged=pickVoice; }
+function say(text, rate=0.85){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text); u.lang='zh-CN'; u.rate=rate; if(zhVoice)u.voice=zhVoice;
+  speechSynthesis.speak(u);
+}
+$("#nav").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b)return;
+  document.querySelectorAll("#nav button").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  $("#"+b.dataset.tab).classList.add("active");
+});
+document.title="Aruna's Classes · "+LESSON.title;
+$("#hHead").textContent="Aruna's Classes · "+LESSON.title;
+$("#hskTag").textContent=LESSON.hsk;
+$("#homeLead").textContent=LESSON.intro;
+(function buildHome(){
+  const cards=[
+    {t:"📚 Vocabulary",d:LESSON.vocab.length+" words with pictures, sound & etymology",tab:"vocab"},
+    {t:"✍️ Writing",d:"Animated stroke order + write each character 3× with a score",tab:"writing"},
+    {t:"🎧 Listening",d:"Hear the word, choose the characters — no pinyin",tab:"listening"},
+    {t:"📖 Reading",d:"Read in Chinese, answer in Mandarin",tab:"reading"},
+    {t:"🗣️ Speaking",d:"Listen & repeat, with pronunciation check",tab:"speaking"},
+    {t:"📊 Progress",d:"See your saved scores and daily streak",tab:"progress"}
+  ];
+  const g=$("#homeCards");
+  cards.forEach(c=>{
+    const card=el("div","card"); card.style.cursor="pointer";
+    card.innerHTML=`<div style="font-size:22px;font-weight:800">${c.t}</div>
+      <div style="color:var(--muted);margin-top:6px;font-size:14px">${c.d}</div>`;
+    card.onclick=()=>document.querySelector('#nav button[data-tab="'+c.tab+'"]').click();
+    g.appendChild(card);
+  });
+})();
+(function buildVocab(){
+  const g=$("#vocabGrid");
+  LESSON.vocab.forEach(v=>{
+    const c=el("div","card");
+    c.innerHTML=`
+      <div class="vpic">${v.pic}</div>
+      <div class="vword">${v.w}</div>
+      <div class="vpin">${v.p}</div>
+      <div class="vmean">${v.m}</div>
+      <div class="row">
+        <button class="act b-sound">🔊 Sound</button>
+        <button class="act b-stroke">⭐ Strokes</button>
+      </div>
+      <div class="ety">字源 · ${v.ety}</div>`;
+    c.querySelector(".b-sound").onclick=()=>say(v.w);
+    c.querySelector(".b-stroke").onclick=()=>goStrokes(v.w[0]);
+    g.appendChild(c);
+  });
+})();
+function goStrokes(ch){ document.querySelector('#nav button[data-tab="writing"]').click(); selectChar(ch); setTimeout(animate,250); }
+const chars=uniqueChars();
+let currentChar=chars[0], writer=null, repCount=0, repScores=[], quizzing=false;
+(function buildPicker(){
+  const p=$("#charPicker");
+  chars.forEach(ch=>{
+    const b=el("button",null,ch); b.dataset.ch=ch;
+    b.onclick=()=>selectChar(ch);
+    p.appendChild(b);
+  });
+  refreshPickerStars();
+})();
+function refreshPickerStars(){
+  const w=Progress.data().writing;
+  document.querySelectorAll("#charPicker button").forEach(b=>{
+    const s=w[b.dataset.ch];
+    let m=b.querySelector(".mini"); if(!m){ m=el("span","mini"); b.appendChild(m); }
+    m.textContent = s==null?"" : (s>=90?"⭐":s>=70?"✓":"·");
+  });
+}
+function renderReps(){
+  const r=$("#reps"); r.innerHTML="";
+  for(let i=0;i<3;i++){ r.appendChild(el("div","rep-dot"+(i<repCount?" done":""), i<repCount?"✓":(i+1))); }
+}
+function selectChar(ch){
+  if(!ch) return;
+  currentChar=ch; repCount=0; repScores=[]; quizzing=false;
+  document.querySelectorAll("#charPicker button").forEach(b=>b.classList.toggle("active",b.dataset.ch===ch));
+  const info=charInfo(ch);
+  $("#wBig").textContent=ch; $("#wPin").textContent=info.p; $("#wMean").textContent=info.m;
+  $("#wEty").textContent="字源 · "+info.ety;
+  $("#writeScore").innerHTML=""; renderReps(); makeWriter();
+}
+function makeWriter(){
+  $("#writerTarget").innerHTML="";
+  if(typeof HanziWriter==="undefined"){
+    $("#writerTarget").innerHTML='<div style="width:220px;padding:30px;text-align:center;color:#c8102e">Stroke library needs internet to load. Reconnect and reload.</div>';
+    return;
+  }
+  writer=HanziWriter.create("writerTarget",currentChar,{
+    width:220,height:220,padding:8,
+    strokeColor:"#c8102e",radicalColor:"#0d6e6e",outlineColor:"#e7d9c2",drawingColor:"#1f2430",
+    showCharacter:false,showOutline:true,strokeAnimationSpeed:1,delayBetweenStrokes:180
+  });
+}
+function animate(){ if(writer){ writer.showOutline(); writer.animateCharacter(); say(currentChar); } }
+$("#btnAnimate").onclick=animate;
+$("#btnWSound").onclick=()=>say(currentChar);
+$("#btnQuiz").onclick=startQuiz;
+function startQuiz(){
+  if(!writer||quizzing) return; quizzing=true; let mistakes=0;
+  writer.quiz({
+    showHintAfterMisses:2,
+    onMistake:()=>{mistakes++;},
+    onComplete:()=>{
+      quizzing=false;
+      const score=Math.max(0,100-mistakes*15);
+      repScores.push(score); repCount++; say(currentChar); renderReps();
+      if(repCount<3){
+        $("#writeScore").innerHTML=`<span class="score-badge">Attempt ${repCount}: ${score}/100</span> — write it again (${3-repCount} left)`;
+        setTimeout(makeWriter,600);
+      }else{
+        const avg=Math.round(repScores.reduce((a,b)=>a+b,0)/repScores.length);
+        const stars=avg>=90?"⭐⭐⭐":avg>=70?"⭐⭐":"⭐";
+        $("#writeScore").innerHTML=`<span class="score-badge">Final: ${avg}/100 ${stars}</span> · 3 reps complete! Saved to Progress.`;
+        Progress.setWriting(currentChar,avg); refreshPickerStars();
+      }
+    }
+  });
+}
+(function buildListening(){
+  const area=$("#listenArea");
+  const items=LESSON.vocab.filter(v=>[...v.w].length<=3).slice(0,8);
+  if(items.length<2){ area.innerHTML='<p class="lead">Add at least 2 short words to enable listening practice.</p>'; return; }
+  let score=0, answered=0;
+  items.forEach(item=>{
+    const q=el("div","q");
+    const pool=LESSON.vocab.filter(v=>v.w!==item.w).map(v=>v.w);
+    const opts=shuffle([item.w, ...shuffle(pool).slice(0,3)]);
+    q.innerHTML=`<div class="prompt">🔊 What did you hear?
+      <button class="act b-sound" style="margin-left:8px">▶ Play</button>
+      <button class="act b-ghost" style="margin-left:4px">🐢 Slow</button></div>`;
+    const opdiv=el("div","opts");
+    opts.forEach(o=>{
+      const b=el("button",null,o);
+      b.onclick=()=>{
+        if(q.dataset.done)return; q.dataset.done="1"; answered++;
+        if(o===item.w){ b.classList.add("correct"); score++; }
+        else{ b.classList.add("wrong"); [...opdiv.children].forEach(x=>{if(x.textContent===item.w)x.classList.add("correct");}); }
+        say(item.w);
+        $("#listenScore").textContent=`Score: ${score} / ${answered}`;
+        if(answered===items.length) Progress.setBest("listening", Math.round(score/answered*100));
+      };
+      opdiv.appendChild(b);
+    });
+    q.appendChild(opdiv);
+    q.querySelector(".b-sound").onclick=()=>say(item.w);
+    q.querySelector(".b-ghost").onclick=()=>say(item.w,0.5);
+    area.appendChild(q);
+  });
+})();
+(function buildReading(){
+  const area=$("#readArea"); let score=0, answered=0; const total=LESSON.reading.length;
+  LESSON.reading.forEach(item=>{
+    const q=el("div","q"); q.innerHTML=`<div class="prompt">${item.q}</div>`;
+    const opdiv=el("div","opts");
+    item.o.forEach((o,i)=>{
+      const b=el("button",null,o);
+      b.onclick=()=>{
+        if(q.dataset.done)return; q.dataset.done="1"; answered++;
+        if(i===item.a){ b.classList.add("correct"); score++; }
+        else{ b.classList.add("wrong"); [...opdiv.children][item.a].classList.add("correct"); }
+        $("#readScore").textContent=`Score: ${score} / ${answered}`;
+        if(answered===total) Progress.setBest("reading", Math.round(score/answered*100));
+      };
+      opdiv.appendChild(b);
+    });
+    q.appendChild(opdiv); area.appendChild(q);
+  });
+})();
+(function buildSpeaking(){
+  const g=$("#speakGrid");
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  LESSON.vocab.filter(v=>[...v.w].length<=4).forEach(v=>{
+    const c=el("div","card");
+    c.innerHTML=`
+      <div class="vpic">${v.pic}</div>
+      <div class="vword">${v.w}</div>
+      <div class="vmean">${v.m}</div>
+      <div class="row">
+        <button class="act b-sound">🔊 Model</button>
+        <button class="act b-primary">🎤 Say it</button>
+      </div>
+      <div class="rec-out"></div>`;
+    c.querySelector(".b-sound").onclick=()=>say(v.w);
+    const out=c.querySelector(".rec-out"), mic=c.querySelector(".b-primary");
+    if(!SR){ mic.disabled=true; out.textContent="🎙️ Mic check not supported here — listen & repeat aloud."; }
+    else{
+      mic.onclick=()=>{
+        const rec=new SR(); rec.lang="zh-CN"; rec.interimResults=false; rec.maxAlternatives=3;
+        out.textContent="🎧 Listening… say the word."; rec.start();
+        rec.onresult=ev=>{
+          const heard=[...ev.results[0]].map(r=>r.transcript.replace(/[\s，。！？,.]/g,""));
+          const ok=heard.some(h=>h===v.w || h.includes(v.w));
+          out.innerHTML= ok
+            ? `<span style="color:var(--good);font-weight:700">✅ 很好! I heard “${heard[0]}”.</span>`
+            : `<span style="color:var(--bad);font-weight:700">🔁 I heard “${heard[0]}”. Try again — target: ${v.w}.</span>`;
+        };
+        rec.onerror=()=>{ out.textContent="⚠️ Couldn't access mic. Check permissions."; };
+      };
+    }
+    g.appendChild(c);
+  });
+})();
+function render(){
+  const d=Progress.data();
+  const wv=Object.values(d.writing);
+  const wAvg = wv.length? Math.round(wv.reduce((a,b)=>a+b,0)/wv.length) : 0;
+  const cards=[
+    {n:(d.streak||0)+"🔥", l:"Day streak"},
+    {n:Object.keys(d.writing).length+"/"+chars.length, l:"Characters written"},
+    {n:wAvg+"", l:"Avg writing score"},
+    {n:(d.best&&d.best.listening!=null?d.best.listening+"%":"—"), l:"Best listening"},
+    {n:(d.best&&d.best.reading!=null?d.best.reading+"%":"—"), l:"Best reading"}
+  ];
+  const sc=$("#statCards"); sc.innerHTML="";
+  cards.forEach(c=>{ const e=el("div","stat"); e.innerHTML=`<div class="num">${c.n}</div><div class="lab">${c.l}</div>`; sc.appendChild(e); });
+  let rows=chars.map(ch=>{
+    const s=d.writing[ch];
+    const star = s==null?"—" : (s>=90?"⭐⭐⭐":s>=70?"⭐⭐":"⭐");
+    return `<tr><td class="ch">${ch}</td><td>${s==null?"—":s+"/100"}</td><td>${star}</td></tr>`;
+  }).join("");
+  $("#pgTableWrap").innerHTML=`<table class="pg"><tr><th>Character</th><th>Best score</th><th>Rating</th></tr>${rows}</table>`;
+}
+$("#btnReset").onclick=()=>{ if(confirm("Reset all saved scores for this lesson?")){ Progress.reset(); refreshPickerStars(); } };
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+selectChar(currentChar);
+render();
+console.log(COPYRIGHT);
+</script>
+</body>
+</html>

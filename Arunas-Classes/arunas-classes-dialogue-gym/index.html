@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<!--
+============================================================================
+  Aruna's Classes — Dialogue Gym (Airport)  ·  Conversational fluency drills
+  © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes.
+  All Rights Reserved. Content, method and design are the intellectual
+  property of RRAruna Enterprises (India). Unauthorised copying prohibited.
+============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="copyright" content="© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.">
+<meta name="author" content="RRAruna Enterprises — Aruna's Classes">
+<title>Aruna's Classes · Dialogue Gym (Airport)</title>
+<style>
+  :root{--red:#c8102e;--gold:#f2b705;--ink:#1f2430;--card:#fff;--line:#eadfce;
+    --good:#1a7f4b;--bad:#c8102e;--muted:#6b7280;--accent:#0d6e6e;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--ink);
+    background:linear-gradient(180deg,#fff8f0,#fef1e6);min-height:100vh}
+  header{background:linear-gradient(120deg,var(--red),#9c0d24);color:#fff;padding:14px 18px;
+    display:flex;align-items:center;gap:14px;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+  header .logo{font-size:30px}
+  header h1{font-size:18px;margin:0}
+  header .sub{font-size:12px;opacity:.9;margin-top:2px}
+  .who{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+  .who input{border:0;border-radius:16px;padding:5px 10px;font-size:13px;width:150px}
+  .who .lbl{font-size:11px;opacity:.85}
+  nav{display:flex;gap:6px;flex-wrap:wrap;padding:10px 14px;background:#fff;border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:5}
+  nav button{border:1px solid var(--line);background:#fff;padding:8px 14px;border-radius:22px;cursor:pointer;
+    font-size:14px;font-weight:600;color:var(--ink)}
+  nav button.active{background:var(--red);color:#fff;border-color:var(--red)}
+  main{max-width:900px;margin:0 auto;padding:18px 14px 90px}
+  .panel{display:none}.panel.active{display:block}
+  h2.section{font-size:20px;margin:6px 0 4px}
+  p.lead{color:var(--muted);margin:0 0 16px;font-size:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;
+    box-shadow:0 4px 14px rgba(150,110,40,.08)}
+  select,.sel{border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px;background:#fff}
+  button.act{border:0;border-radius:10px;padding:9px 13px;font-weight:700;cursor:pointer;font-size:13px;margin:3px}
+  .b-sound{background:var(--accent);color:#fff}.b-primary{background:var(--red);color:#fff}
+  .b-gold{background:var(--gold);color:#3a2a00}.b-ghost{background:#fff;border:1px solid var(--line)!important;color:var(--ink)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .han{font-size:24px;font-weight:800;line-height:1.5}
+  .pin{color:var(--accent);font-weight:600;font-size:15px}
+  .eng{color:var(--muted);font-size:14px}
+  .bubble{padding:12px 14px;border-radius:14px;margin:8px 0;max-width:88%}
+  .bubble.them{background:#fbf1e2;border:1px solid var(--line)}
+  .bubble.you{background:#eef7f0;border:1px solid #bfe3cd;margin-left:auto}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:4px}
+  .tag.them{background:#e7d9c2;color:#5a4a2a}.tag.you{background:#bfe3cd;color:#14532d}
+  .fb{font-weight:700;margin-top:6px}
+  .rowflex{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .pill{background:#fff;border:1px solid var(--line);border-radius:20px;padding:5px 12px;font-size:13px;font-weight:600}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .tonebox{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .tcard{flex:1;min-width:150px;text-align:center;border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff}
+  .tcard .han{font-size:40px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center}
+  .stat .num{font-size:26px;font-weight:800;color:var(--red)}.stat .lab{font-size:12px;color:var(--muted)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:14px}
+  footer{text-align:center;font-size:12px;color:var(--muted);padding:16px;border-top:1px solid var(--line);background:#fff}
+  .wm{position:fixed;bottom:6px;right:8px;font-size:10px;color:#b9a88a;pointer-events:none}
+  .hide{display:none}
+  audio{vertical-align:middle;height:32px}
+  .prog{height:8px;background:#eee;border-radius:6px;overflow:hidden;margin:6px 0}
+  .prog>i{display:block;height:100%;background:var(--good)}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🥋</div>
+  <div>
+    <h1>Aruna's Classes · Dialogue Gym</h1>
+    <div class="sub">Airport 机场 · Shadow · Roleplay · Tone Pairs · Sentence SRS</div>
+  </div>
+  <div class="who">
+    <span class="lbl">Student name (saves your progress)</span>
+    <input id="studentName" placeholder="type your name…">
+  </div>
+</header>
+
+<nav id="nav">
+  <button data-tab="home" class="active">🏠 Home</button>
+  <button data-tab="shadow">🎙️ Shadow</button>
+  <button data-tab="roleplay">🎭 Roleplay</button>
+  <button data-tab="tones">🎵 Tone Pairs</button>
+  <button data-tab="srs">🔁 Sentence SRS</button>
+  <button data-tab="progress">📊 Progress</button>
+</nav>
+
+<main>
+  <section class="panel active" id="home">
+    <h2 class="section">Train the mouth, not just the eyes 👂🗣️</h2>
+    <p class="lead">Four evidence-based drills that build fluency and correct pronunciation. Pick a mode; your reps are saved on this device under your name.</p>
+    <div class="grid" id="homeCards"></div>
+    <div class="card" style="margin-top:14px">
+      <b>How each mode helps</b>
+      <p class="eng" style="margin:8px 0 0">🎙️ <b>Shadow</b> — hear the model, record yourself, compare back-to-back. The fastest fix for tones.<br>
+      🎭 <b>Roleplay</b> — the app plays the other person; you say your line from memory. Speech recognition checks you before you advance.<br>
+      🎵 <b>Tone Pairs</b> — a 2-minute ear-and-mouth drill on minimal pairs (买/卖) with pitch curves.<br>
+      🔁 <b>Sentence SRS</b> — spaced repetition on whole sentences you must <i>produce</i>, not just read.</p>
+    </div>
+  </section>
+
+  <!-- SHADOW -->
+  <section class="panel" id="shadow">
+    <h2 class="section">Shadow · 跟读</h2>
+    <p class="lead">1) ▶ Model  2) 🎙️ Record yourself  3) 🔁 Compare. Aim to match the melody (tones), not just the sounds.</p>
+    <div class="rowflex" style="margin-bottom:10px">
+      <label>Dialogue: <select id="shadowDlg" class="sel"></select></label>
+    </div>
+    <div id="shadowList"></div>
+  </section>
+
+  <!-- ROLEPLAY -->
+  <section class="panel" id="roleplay">
+    <h2 class="section">Roleplay · 角色扮演</h2>
+    <p class="lead">You play <b id="rpRole">the passenger</b>. The app speaks the other lines. When it's your turn, say the line — recognition must understand you to continue.</p>
+    <div class="rowflex" style="margin-bottom:10px">
+      <label>Scenario: <select id="rpDlg" class="sel"></select></label>
+      <button class="act b-gold" id="rpRestart">↺ Restart</button>
+      <span class="pill" id="rpMode">Cue: English + picture</span>
+    </div>
+    <div id="rpChat" class="card"></div>
+    <div id="rpControls"></div>
+  </section>
+
+  <!-- TONES -->
+  <section class="panel" id="tones">
+    <h2 class="section">Tone Pairs · 声调</h2>
+    <p class="lead">Mandarin errors are mostly tone errors. Listen, tell the pair apart, then say each one. Watch the pitch curve.</p>
+    <div class="card">
+      <div class="rowflex"><b>Tone shapes:</b>
+        <span id="toneLegend"></span></div>
+    </div>
+    <div id="toneList"></div>
+  </section>
+
+  <!-- SRS -->
+  <section class="panel" id="srs">
+    <h2 class="section">Sentence SRS · 句子复习</h2>
+    <p class="lead">Read the English, <b>say the whole Chinese sentence out loud</b>, then reveal and grade yourself. Cards you find hard come back sooner.</p>
+    <div id="srsDue" class="card"></div>
+    <div id="srsCard"></div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section class="panel" id="progress">
+    <h2 class="section">Progress · 进步</h2>
+    <p class="lead">Saved on this device for the name above.</p>
+    <div class="stats" id="statCards"></div>
+    <div id="srsTable"></div>
+    <button class="act b-ghost" id="btnReset" style="margin-top:12px">🗑️ Reset my progress</button>
+  </section>
+</main>
+
+<footer>© 2026 <b>RRAruna Enterprises</b> · ChineseFrench · Aruna's Classes — Foreign Languages. All Rights Reserved. · Made in India 🇮🇳</footer>
+<div class="wm">© RRAruna Enterprises · Aruna's Classes</div>
+
+<script>
+"use strict";
+/* © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved. */
+const COPYRIGHT="© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.";
+
+/* =========================== CONTENT =========================== */
+const DIALOGUES=[
+ {id:"passport",scenario:"1 · Something lost",title:"Lost passport 护照丢了",you:"A",
+  roles:{A:"Passenger (you)",B:"Staff"},
+  turns:[
+   {s:"A",h:"你好，我的护照丢了，怎么办？",p:"Nǐ hǎo, wǒ de hùzhào diū le, zěnme bàn?",e:"Hello, I've lost my passport. What should I do?"},
+   {s:"B",h:"别着急，您最后一次用护照是在哪儿？",p:"Bié zháojí, nín zuìhòu yí cì yòng hùzhào shì zài nǎr?",e:"Don't worry. Where did you last use your passport?"},
+   {s:"A",h:"在咖啡店，我喝咖啡的时候还看见它了。",p:"Zài kāfēi diàn, wǒ hē kāfēi de shíhou hái kànjiàn tā le.",e:"At the coffee shop. I still saw it while drinking coffee."},
+   {s:"B",h:"好的，请您在这儿等一下，我打电话问问咖啡店。",p:"Hǎo de, qǐng nín zài zhèr děng yíxià, wǒ dǎ diànhuà wènwen kāfēi diàn.",e:"Okay, wait here. I'll call the coffee shop."},
+   {s:"A",h:"太谢谢您了！",p:"Tài xièxie nín le!",e:"Thank you so much!"},
+   {s:"B",h:"找到了！咖啡店的服务员看见了您的护照，请您去拿吧。",p:"Zhǎodào le! Kāfēi diàn de fúwùyuán kànjiàn le nín de hùzhào, qǐng nín qù ná ba.",e:"Found it! The waiter saw your passport. Please go and get it."}
+  ]},
+ {id:"ticket",scenario:"1 · Something lost",title:"Lost ticket 机票丢了",you:"A",
+  roles:{A:"Passenger (you)",B:"Counter staff"},
+  turns:[
+   {s:"A",h:"你好，我的机票丢了，还能上飞机吗？",p:"Nǐ hǎo, wǒ de jīpiào diū le, hái néng shàng fēijī ma?",e:"Hi, I lost my ticket. Can I still board?"},
+   {s:"B",h:"没关系，请给我看一下您的护照。",p:"Méi guānxi, qǐng gěi wǒ kàn yíxià nín de hùzhào.",e:"No problem. Please show me your passport."},
+   {s:"A",h:"给您，这是我的护照。我坐十点去北京的飞机。",p:"Gěi nín, zhè shì wǒ de hùzhào. Wǒ zuò shí diǎn qù Běijīng de fēijī.",e:"Here. I'm on the 10 o'clock flight to Beijing."},
+   {s:"B",h:"好的，我看看……找到了，我再给您打一张新机票。",p:"Hǎo de, wǒ kànkan…… zhǎodào le, wǒ zài gěi nín dǎ yì zhāng xīn jīpiào.",e:"Let me check… found it. I'll print a new ticket."},
+   {s:"A",h:"太好了，谢谢！飞机几点起飞？",p:"Tài hǎo le, xièxie! Fēijī jǐ diǎn qǐfēi?",e:"Great, thanks! When does it take off?"},
+   {s:"B",h:"十点，请您快一点儿，现在已经九点了。",p:"Shí diǎn, qǐng nín kuài yìdiǎnr, xiànzài yǐjīng jiǔ diǎn le.",e:"Ten o'clock. Please hurry — it's already nine."}
+  ]},
+ {id:"luggage",scenario:"1 · Something lost",title:"Lost luggage 行李丢了",you:"A",
+  roles:{A:"Passenger (you)",B:"Staff"},
+  turns:[
+   {s:"A",h:"你好，我等了半个小时，还没看见我的行李。",p:"Nǐ hǎo, wǒ děng le bàn gè xiǎoshí, hái méi kànjiàn wǒ de xínglǐ.",e:"Hi, I've waited half an hour and still don't see my luggage."},
+   {s:"B",h:"您的行李箱是什么颜色的？多大？",p:"Nín de xínglǐxiāng shì shénme yánsè de? Duō dà?",e:"What colour is your suitcase? How big?"},
+   {s:"A",h:"是一个红色的大行李箱，上面有我的名字。",p:"Shì yí gè hóngsè de dà xínglǐxiāng, shàngmiàn yǒu wǒ de míngzi.",e:"A big red suitcase with my name on it."},
+   {s:"B",h:"好的，请把您的电话号码留下，我们找到了就给您打电话。",p:"Hǎo de, qǐng bǎ nín de diànhuà hàomǎ liúxià, wǒmen zhǎodào le jiù gěi nín dǎ diànhuà.",e:"Please leave your phone number; we'll call when we find it."},
+   {s:"A",h:"我的电话是138-0013-8000。大概要等几天？",p:"Wǒ de diànhuà shì yāo-sān-bā líng-líng-yāo-sān bā-líng-líng-líng. Dàgài yào děng jǐ tiān?",e:"My number is 138-0013-8000. About how many days?"},
+   {s:"B",h:"一般一两天。对不起，让您等了。",p:"Yìbān yì liǎng tiān. Duìbuqǐ, ràng nín děng le.",e:"Usually one or two days. Sorry for the wait."}
+  ]},
+ {id:"photo",scenario:"2 · Picking someone up",title:"Ask for a photo 要照片",you:"A",
+  roles:{A:"You",B:"Colleague",C:"Guest (Mr. Li)"},
+  turns:[
+   {s:"A",h:"王经理让我去机场接一位客人，可是我没见过他。你有他的照片吗？",p:"Wáng jīnglǐ ràng wǒ qù jīchǎng jiē yí wèi kèrén, kěshì wǒ méi jiànguò tā. Nǐ yǒu tā de zhàopiàn ma?",e:"Manager Wang asked me to pick up a guest, but I've never met him. Do you have his photo?"},
+   {s:"B",h:"有，我发给你。他个子很高，身高一米八五，头发短短的。",p:"Yǒu, wǒ fā gěi nǐ. Tā gèzi hěn gāo, shēngāo yì mǐ bā wǔ, tóufa duǎnduǎn de.",e:"Yes, I'll send it. He's tall — 1.85 m — with short hair."},
+   {s:"A",h:"好的，这样就容易找了。谢谢你！",p:"Hǎo de, zhèyàng jiù róngyì zhǎo le. Xièxie nǐ!",e:"Great, that makes him easy to find. Thanks!"},
+   {s:"A",h:"请问，您是李先生吗？我看过您的照片。",p:"Qǐngwèn, nín shì Lǐ xiānsheng ma? Wǒ kànguò nín de zhàopiàn.",e:"Excuse me, are you Mr. Li? I've seen your photo."},
+   {s:"C",h:"是的，我是李明。你是来接我的吗？",p:"Shì de, wǒ shì Lǐ Míng. Nǐ shì lái jiē wǒ de ma?",e:"Yes, I'm Li Ming. Are you here to pick me up?"},
+   {s:"A",h:"对，欢迎您！我帮您拿行李箱吧，车在外面。",p:"Duì, huānyíng nín! Wǒ bāng nín ná xínglǐxiāng ba, chē zài wàimiàn.",e:"Yes, welcome! Let me take your suitcase — the car is outside."}
+  ]},
+ {id:"sign",scenario:"2 · Picking someone up",title:"Name sign 名字牌",you:"A",
+  roles:{A:"You (Xiao Liu)",B:"Guest (Mr. Zhang)"},
+  turns:[
+   {s:"B",h:"你好！那个牌子上是我的名字，我叫张文。",p:"Nǐ hǎo! Nàge páizi shàng shì wǒ de míngzi, wǒ jiào Zhāng Wén.",e:"Hello! That's my name on the sign — I'm Zhang Wen."},
+   {s:"A",h:"张先生您好！欢迎欢迎！我是公司的小刘，经理让我来接您。",p:"Zhāng xiānsheng nín hǎo! Huānyíng huānyíng! Wǒ shì gōngsī de Xiǎo Liú, jīnglǐ ràng wǒ lái jiē nín.",e:"Hello Mr. Zhang! Welcome! I'm Xiao Liu from the company; the manager sent me."},
+   {s:"B",h:"谢谢你来接我。我没见过你，看见我的名字我就知道了。",p:"Xièxie nǐ lái jiē wǒ. Wǒ méi jiànguò nǐ, kànjiàn wǒ de míngzi wǒ jiù zhīdào le.",e:"Thanks for coming. I've never met you, but I knew when I saw my name."},
+   {s:"A",h:"对，这样最容易。您的行李都拿了吗？",p:"Duì, zhèyàng zuì róngyì. Nín de xínglǐ dōu ná le ma?",e:"Right, this way is easiest. Do you have all your luggage?"},
+   {s:"B",h:"都拿了，就这一个行李箱。",p:"Dōu ná le, jiù zhè yí gè xínglǐxiāng.",e:"Yes, just this one suitcase."},
+   {s:"A",h:"好，我们走吧，车就在前面。您坐飞机累不累？",p:"Hǎo, wǒmen zǒu ba, chē jiù zài qiánmiàn. Nín zuò fēijī lèi bu lèi?",e:"Great, let's go — the car is ahead. Tired from the flight?"}
+  ]},
+ {id:"call",scenario:"2 · Picking someone up",title:"Phone call 打电话",you:"A",
+  roles:{A:"You",B:"Guest (Mr. Chen)"},
+  turns:[
+   {s:"A",h:"喂，您好，是陈先生吗？我是来接您的，我已经到机场了。",p:"Wéi, nín hǎo, shì Chén xiānsheng ma? Wǒ shì lái jiē nín de, wǒ yǐjīng dào jīchǎng le.",e:"Hello, is this Mr. Chen? I'm here to pick you up — already at the airport."},
+   {s:"B",h:"你好你好！我刚下飞机，正在拿行李。",p:"Nǐ hǎo nǐ hǎo! Wǒ gāng xià fēijī, zhèngzài ná xínglǐ.",e:"Hello! I just got off the plane, getting my luggage."},
+   {s:"A",h:"我们没见过，您今天穿什么颜色的衣服？",p:"Wǒmen méi jiànguò, nín jīntiān chuān shénme yánsè de yīfu?",e:"We've never met. What colour are you wearing today?"},
+   {s:"B",h:"我穿蓝色的衣服，带一个黑色的行李箱。你呢？",p:"Wǒ chuān lánsè de yīfu, dài yí gè hēisè de xínglǐxiāng. Nǐ ne?",e:"I'm in blue with a black suitcase. And you?"},
+   {s:"A",h:"我穿白色的衣服，个子不高，头发长长的。我在三号门等您。",p:"Wǒ chuān báisè de yīfu, gèzi bù gāo, tóufa chángcháng de. Wǒ zài sān hào mén děng nín.",e:"I'm in white, not tall, with long hair. I'll wait at Gate 3."},
+   {s:"B",h:"你好！你是穿白衣服的那位吧？",p:"Nǐ hǎo! Nǐ shì chuān bái yīfu de nà wèi ba?",e:"Hi! You must be the one in white?"}
+  ]}
+];
+
+const TONEPAIRS=[
+ {a:{w:"妈",p:"mā",t:1,m:"mother"},b:{w:"马",p:"mǎ",t:3,m:"horse"}},
+ {a:{w:"买",p:"mǎi",t:3,m:"to buy"},b:{w:"卖",p:"mài",t:4,m:"to sell"}},
+ {a:{w:"问",p:"wèn",t:4,m:"to ask"},b:{w:"吻",p:"wěn",t:3,m:"to kiss"}},
+ {a:{w:"汤",p:"tāng",t:1,m:"soup"},b:{w:"糖",p:"táng",t:2,m:"sugar"}},
+ {a:{w:"书",p:"shū",t:1,m:"book"},b:{w:"树",p:"shù",t:4,m:"tree"}},
+ {a:{w:"水",p:"shuǐ",t:3,m:"water"},b:{w:"睡",p:"shuì",t:4,m:"to sleep"}},
+ {a:{w:"高",p:"gāo",t:1,m:"tall"},b:{w:"告",p:"gào",t:4,m:"to tell"}}
+];
+
+/* SRS seed = key production sentences */
+const SRS_SEED=[
+ {h:"我的护照丢了，怎么办？",p:"Wǒ de hùzhào diū le, zěnme bàn?",e:"I've lost my passport. What should I do?"},
+ {h:"机票丢了，还能上飞机吗？",p:"Jīpiào diū le, hái néng shàng fēijī ma?",e:"I lost my ticket — can I still board?"},
+ {h:"请给我看一下您的护照。",p:"Qǐng gěi wǒ kàn yíxià nín de hùzhào.",e:"Please show me your passport."},
+ {h:"我等了半个小时，还没看见我的行李。",p:"Wǒ děng le bàn gè xiǎoshí, hái méi kànjiàn wǒ de xínglǐ.",e:"I've waited half an hour and still don't see my luggage."},
+ {h:"是一个红色的大行李箱。",p:"Shì yí gè hóngsè de dà xínglǐxiāng.",e:"It's a big red suitcase."},
+ {h:"我没见过他，你有他的照片吗？",p:"Wǒ méi jiànguò tā, nǐ yǒu tā de zhàopiàn ma?",e:"I've never met him — do you have his photo?"},
+ {h:"他身高一米八五，头发短短的。",p:"Tā shēngāo yì mǐ bā wǔ, tóufa duǎnduǎn de.",e:"He's 1.85 m tall with short hair."},
+ {h:"我帮您拿行李箱，车在外面。",p:"Wǒ bāng nín ná xínglǐxiāng, chē zài wàimiàn.",e:"Let me take your suitcase — the car is outside."}
+];
+
+/* =========================== ENGINE =========================== */
+const $=s=>document.querySelector(s);
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
+const norm=s=>(s||"").replace(/[\s，。！？、,.!?…]/g,"");
+
+/* progress store keyed by student name */
+function pkey(){const n=($("#studentName").value||"guest").trim().toLowerCase();return "arunas_gym_"+n;}
+function pdata(){try{const d=JSON.parse(localStorage.getItem(pkey()))||{};d.shadow=d.shadow||0;d.rp=d.rp||{};d.tone=d.tone||{hits:0,tries:0};d.srs=d.srs||{};return d;}catch(e){return {shadow:0,rp:{},tone:{hits:0,tries:0},srs:{}};}}
+function psave(d){try{localStorage.setItem(pkey(),JSON.stringify(d));}catch(e){}}
+
+/* TTS */
+let zhVoice=null;
+function pickVoice(){const vs=speechSynthesis.getVoices();zhVoice=vs.find(v=>/zh[-_]?CN/i.test(v.lang))||vs.find(v=>/zh/i.test(v.lang))||null;}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function say(t,rate=0.85){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='zh-CN';u.rate=rate;if(zhVoice)u.voice=zhVoice;speechSynthesis.speak(u);}
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+/* tabs */
+$("#nav").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  document.querySelectorAll("#nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));$("#"+b.dataset.tab).classList.add("active");
+  if(b.dataset.tab==="progress")renderProgress();
+});
+
+/* name persistence */
+$("#studentName").value=localStorage.getItem("arunas_gym_lastname")||"";
+$("#studentName").addEventListener("change",()=>{localStorage.setItem("arunas_gym_lastname",$("#studentName").value);renderProgress();});
+
+/* home cards */
+(function(){const cards=[["🎙️ Shadow","shadow"],["🎭 Roleplay","roleplay"],["🎵 Tone Pairs","tones"],["🔁 Sentence SRS","srs"]];
+ const g=$("#homeCards");cards.forEach(([t,tab])=>{const c=el("div","card");c.style.cursor="pointer";
+   c.innerHTML='<div style="font-size:20px;font-weight:800">'+t+'</div>';
+   c.onclick=()=>document.querySelector('#nav button[data-tab="'+tab+'"]').click();g.appendChild(c);});})();
+
+/* ---------- SHADOW ---------- */
+function fillDlgSelect(sel){DIALOGUES.forEach((d,i)=>{const o=el("option",null,d.scenario+"  ·  "+d.title);o.value=i;sel.appendChild(o);});}
+fillDlgSelect($("#shadowDlg"));fillDlgSelect($("#rpDlg"));
+$("#shadowDlg").onchange=buildShadow;
+function buildShadow(){
+  const d=DIALOGUES[+$("#shadowDlg").value];const box=$("#shadowList");box.innerHTML="";
+  d.turns.forEach((t,i)=>{
+    const c=el("div","card");
+    c.innerHTML='<div class="tag '+(t.s===d.you?'you':'them')+'">'+(t.s===d.you?'You':d.roles[t.s])+'</div>'+
+      '<div class="han">'+t.h+'</div><div class="pin">'+t.p+'</div><div class="eng">'+t.e+'</div>';
+    const row=el("div","rowflex");row.style.marginTop="8px";
+    const bModel=el("button","act b-sound","▶ Model");bModel.onclick=()=>say(t.h);
+    const bSlow=el("button","act b-ghost","🐢 Slow");bSlow.onclick=()=>say(t.h,0.5);
+    const bRec=el("button","act b-primary","🎙️ Record");
+    const audioWrap=el("span");audioWrap.style.marginLeft="8px";
+    const bComp=el("button","act b-gold","🔁 Compare");bComp.disabled=true;
+    let mediaRec=null,chunks=[],url=null,recording=false;
+    bRec.onclick=async()=>{
+      if(!navigator.mediaDevices){alert("Recording not supported in this browser.");return;}
+      if(!recording){
+        try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+          mediaRec=new MediaRecorder(stream);chunks=[];
+          mediaRec.ondataavailable=e=>chunks.push(e.data);
+          mediaRec.onstop=()=>{const blob=new Blob(chunks,{type:'audio/webm'});url=URL.createObjectURL(blob);
+            audioWrap.innerHTML="";const a=el("audio");a.controls=true;a.src=url;audioWrap.appendChild(a);
+            bComp.disabled=false;stream.getTracks().forEach(t=>t.stop());
+            const d2=pdata();d2.shadow++;psave(d2);};
+          mediaRec.start();recording=true;bRec.textContent="⏹ Stop";
+        }catch(err){alert("Microphone blocked. Allow mic access to record.");}
+      }else{mediaRec.stop();recording=false;bRec.textContent="🎙️ Record";}
+    };
+    bComp.onclick=()=>{say(t.h);setTimeout(()=>{if(url){const a=audioWrap.querySelector('audio');if(a){a.currentTime=0;a.play();}}},1600);};
+    row.append(bModel,bSlow,bRec,bComp,audioWrap);c.appendChild(row);box.appendChild(c);
+  });
+}
+buildShadow();
+
+/* ---------- ROLEPLAY ---------- */
+let rp={idx:0,d:null};
+$("#rpDlg").onchange=startRP;$("#rpRestart").onclick=startRP;
+function startRP(){rp.d=DIALOGUES[+$("#rpDlg").value];rp.idx=0;$("#rpRole").textContent=rp.d.roles[rp.d.you];
+  $("#rpChat").innerHTML="";$("#rpControls").innerHTML="";advanceRP();}
+function addBubble(t,mine,reveal){
+  const b=el("div","bubble "+(mine?"you":"them"));
+  b.innerHTML='<div class="tag '+(mine?'you':'them')+'">'+(mine?'You':rp.d.roles[t.s])+'</div>'+
+    '<div class="han">'+t.h+'</div>'+(reveal?'<div class="pin">'+t.p+'</div>':'')+'<div class="eng">'+t.e+'</div>';
+  $("#rpChat").appendChild(b);b.scrollIntoView({behavior:"smooth",block:"end"});
+}
+function advanceRP(){
+  const ctl=$("#rpControls");ctl.innerHTML="";
+  if(rp.idx>=rp.d.turns.length){
+    const done=el("div","card");done.innerHTML='<b class="fb" style="color:var(--good)">✅ Scene complete! 干得好!</b> ';
+    const again=el("button","act b-gold","↺ Do it again");again.onclick=startRP;done.appendChild(again);ctl.appendChild(done);
+    const d=pdata();d.rp[rp.d.id]=(d.rp[rp.d.id]||0)+1;psave(d);return;
+  }
+  const t=rp.d.turns[rp.idx];
+  if(t.s!==rp.d.you){ // app speaks
+    addBubble(t,false,true);say(t.h);rp.idx++;setTimeout(advanceRP,Math.min(4200,1200+t.h.length*260));
+    return;
+  }
+  // student's turn
+  const card=el("div","card");
+  card.innerHTML='<div class="eng" style="font-size:15px">🗣️ Your line — say it in Chinese:</div>'+
+    '<div class="han" style="color:var(--red)">“'+t.e+'”</div>';
+  const row=el("div","rowflex");row.style.marginTop="8px";
+  const bSpeak=el("button","act b-primary",SR?"🎤 Speak my line":"🎤 (not supported)");
+  const bHint=el("button","act b-ghost","👁 Reveal");
+  const bModel=el("button","act b-sound","▶ Hear model");
+  const bSkip=el("button","act b-ghost","→ Skip");
+  const fb=el("div","fb");
+  bModel.onclick=()=>say(t.h);
+  bHint.onclick=()=>{fb.innerHTML='<span class="pin">'+t.h+'  ·  '+t.p+'</span>';};
+  bSkip.onclick=()=>{addBubble(t,true,true);rp.idx++;advanceRP();};
+  if(!SR){bSpeak.disabled=true;fb.innerHTML='<span class="eng">Speech check needs Chrome/Edge. Use Reveal + say it aloud, then Skip.</span>';}
+  else bSpeak.onclick=()=>{
+    const rec=new SR();rec.lang="zh-CN";rec.interimResults=false;rec.maxAlternatives=5;
+    fb.textContent="🎧 Listening…";rec.start();
+    rec.onresult=ev=>{
+      const heard=[...ev.results[0]].map(r=>norm(r.transcript));
+      const target=norm(t.h);
+      const ok=heard.some(h=>h===target||h.includes(target)||target.includes(h)&&h.length>=Math.max(3,target.length-3));
+      const best=heard[0]||"";
+      if(ok){fb.innerHTML='<span style="color:var(--good)">✅ 很好! Understood: “'+best+'”</span>';
+        setTimeout(()=>{addBubble(t,true,true);rp.idx++;advanceRP();},700);}
+      else{fb.innerHTML='<span style="color:var(--bad)">🔁 Heard “'+best+'”. Try again, or Reveal / Skip.</span>';}
+    };
+    rec.onerror=()=>{fb.innerHTML='<span class="eng">Mic error — check permissions, or use Reveal + Skip.</span>';};
+  };
+  row.append(bSpeak,bModel,bHint,bSkip);card.append(row,fb);ctl.appendChild(card);
+}
+startRP();
+
+/* ---------- TONES ---------- */
+function contour(t){ // svg pitch curve 0..1 (top=high)
+  const map={1:[[0,.2],[1,.2]],2:[[0,.7],[1,.15]],3:[[0,.4],[.5,.85],[1,.3]],4:[[0,.1],[1,.85]]};
+  const pts=map[t]||map[1];const W=70,H=34,pad=4;
+  const d=pts.map(([x,y])=>((pad+x*(W-2*pad)).toFixed(1))+","+((pad+y*(H-2*pad)).toFixed(1))).join(" ");
+  return '<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'"><polyline points="'+d+'" fill="none" stroke="#c8102e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+$("#toneLegend").innerHTML=[1,2,3,4].map(t=>'<span class="pill" style="margin:3px">'+t+' '+contour(t)+'</span>').join("");
+function buildTones(){
+  const box=$("#toneList");box.innerHTML="";
+  TONEPAIRS.forEach((pr,i)=>{
+    const c=el("div","card");
+    const head=el("div","tonebox");
+    [pr.a,pr.b].forEach(x=>{const tc=el("div","tcard");
+      tc.innerHTML='<div class="han">'+x.w+'</div><div class="pin">'+x.p+'</div>'+contour(x.t)+'<div class="eng">'+x.m+'</div>';
+      const b=el("button","act b-sound","▶");b.onclick=()=>say(x.w);tc.appendChild(b);
+      const r=el("button","act b-ghost","🎤 say");r.onclick=()=>{say(x.w);};tc.appendChild(r);
+      head.appendChild(tc);});
+    c.appendChild(head);
+    // discrimination quiz
+    const quiz=el("div");quiz.style.marginTop="8px";
+    const q=el("div","rowflex");
+    const play=el("button","act b-primary","🎧 Play one — which is it?");
+    let target=null;
+    play.onclick=()=>{target=Math.random()<.5?pr.a:pr.b;say(target.w);qfb.textContent="Choose the word you heard:";};
+    const qfb=el("div","fb");
+    const choices=el("div","rowflex");
+    [pr.a,pr.b].forEach(x=>{const ch=el("button","act b-gold",x.w+" ("+x.p+")");
+      ch.onclick=()=>{if(!target){qfb.textContent="Press ▶ Play one first.";return;}
+        const d=pdata();d.tone.tries++;
+        if(x===target){d.tone.hits++;qfb.innerHTML='<span style="color:var(--good)">✅ Correct — '+target.w+' '+target.p+'</span>';}
+        else qfb.innerHTML='<span style="color:var(--bad)">❌ It was '+target.w+' '+target.p+'</span>';
+        psave(d);target=null;};
+      choices.appendChild(ch);});
+    q.appendChild(play);quiz.append(q,choices,qfb);c.appendChild(quiz);
+    box.appendChild(c);
+  });
+}
+buildTones();
+
+/* ---------- SRS (Leitner) ---------- */
+const BOX_DAYS=[0,1,3,7,16];
+function todayNum(){return Math.floor(Date.now()/864e5);}
+function srsState(){const d=pdata();SRS_SEED.forEach((s,i)=>{if(!d.srs[i])d.srs[i]={box:0,due:todayNum()};});psave(d);return d;}
+function dueList(){const d=srsState();return SRS_SEED.map((s,i)=>({s,i,st:d.srs[i]})).filter(o=>o.st.due<=todayNum());}
+function buildSRS(){
+  const due=dueList();
+  $("#srsDue").innerHTML='<b>'+due.length+'</b> card'+(due.length===1?'':'s')+' due today. '+
+    (due.length?'Say each sentence out loud, then grade yourself.':'🎉 All caught up — come back tomorrow.');
+  const host=$("#srsCard");host.innerHTML="";
+  if(!due.length)return;
+  const {s,i}=due[0];
+  const c=el("div","card");
+  c.innerHTML='<div class="eng" style="font-size:15px">Say this in Chinese:</div><div class="han" style="color:var(--red)">“'+s.e+'”</div>';
+  const rev=el("div");rev.className="hide";
+  rev.innerHTML='<div class="han">'+s.h+'</div><div class="pin">'+s.p+'</div>';
+  const row=el("div","rowflex");row.style.marginTop="8px";
+  const bModel=el("button","act b-sound","▶ Model");bModel.onclick=()=>say(s.h);
+  const bShow=el("button","act b-gold","👁 Reveal answer");
+  bShow.onclick=()=>{rev.className="";grade.className="rowflex";};
+  const grade=el("div","hide");grade.style.marginTop="8px";
+  const mk=(txt,ok)=>{const b=el("button","act "+(ok?"b-primary":"b-ghost"),txt);
+    b.onclick=()=>{const d=pdata();const st=d.srs[i];
+      if(ok){st.box=Math.min(BOX_DAYS.length-1,st.box+1);}else{st.box=0;}
+      st.due=todayNum()+BOX_DAYS[st.box];psave(d);buildSRS();};return b;};
+  grade.append(mk("😕 Hard (again)",false),mk("🙂 Good",true),mk("😎 Easy",true));
+  row.append(bModel,bShow);c.append(row,rev,grade);host.appendChild(c);
+}
+buildSRS();
+
+/* ---------- PROGRESS ---------- */
+function renderProgress(){
+  const d=pdata();const sr=srsState();
+  const learned=Object.values(sr.srs).filter(x=>x.box>=3).length;
+  const rpDone=Object.values(d.rp).reduce((a,b)=>a+b,0);
+  const toneAcc=d.tone.tries?Math.round(d.tone.hits/d.tone.tries*100):0;
+  const cards=[["🎙️ "+d.shadow,"Shadow recordings"],["🎭 "+rpDone,"Roleplays finished"],
+    ["🎵 "+toneAcc+"%","Tone accuracy"],["🔁 "+learned+"/"+SRS_SEED.length,"Sentences learned"]];
+  $("#statCards").innerHTML="";cards.forEach(([n,l])=>{const e=el("div","stat");e.innerHTML='<div class="num">'+n+'</div><div class="lab">'+l+'</div>';$("#statCards").appendChild(e);});
+  let rows=SRS_SEED.map((s,i)=>{const st=sr.srs[i]||{box:0};const due=st.due-todayNum();
+    return '<tr><td style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)">'+s.h+'</td>'+
+      '<td style="padding:6px 8px;border-bottom:1px solid var(--line)">Box '+st.box+'/4</td>'+
+      '<td style="padding:6px 8px;border-bottom:1px solid var(--line)">'+(due<=0?'due now':'in '+due+'d')+'</td></tr>';}).join("");
+  $("#srsTable").innerHTML='<table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden">'+
+    '<tr><th style="text-align:left;padding:6px 8px;background:#fbf5e9">Sentence</th><th style="padding:6px 8px;background:#fbf5e9">Level</th><th style="padding:6px 8px;background:#fbf5e9">Next review</th></tr>'+rows+'</table>';
+}
+$("#btnReset").onclick=()=>{if(confirm("Reset progress for this name?")){localStorage.removeItem(pkey());buildSRS();renderProgress();}};
+
+console.log(COPYRIGHT);
+</script>
+</body>
+</html>
