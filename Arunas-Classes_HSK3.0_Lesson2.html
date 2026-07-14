@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<!--
+  Aruna's Classes — New HSK 3.0, Lesson 2 (你们想吃什么就点什么)
+  © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.
+  Standalone, offline-capable (GitHub Pages friendly). No backend, no API key.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="RRAruna Enterprises · ChineseFrench · Aruna's Classes">
+<meta name="copyright" content="© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.">
+<title>Aruna's Classes — HSK 3.0 Lesson 2 · 你们想吃什么就点什么</title>
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7.1/dist/hanzi-writer.min.js"></script>
+<style>
+:root{
+  --red:#a2231d;
+  --red-dark:#7a1a15;
+  --gold:#c99a2e;
+  --gold-light:#f3e3b3;
+  --cream:#fbf6ea;
+  --ink:#2b1a12;
+  --green:#2e7d32;
+  --gray:#8a7f6e;
+  --radius:14px;
+  --shadow:0 4px 14px rgba(122,26,21,.15);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:"Segoe UI",Helvetica,Arial,sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  min-height:100vh;
+}
+.app-header{
+  background:linear-gradient(135deg,var(--red) 0%,var(--red-dark) 100%);
+  color:var(--gold-light);
+  padding:18px 16px 14px;
+  text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative;
+}
+.app-header h1{
+  margin:0 0 4px;
+  font-size:1.5rem;
+  letter-spacing:.5px;
+}
+.app-header .sub{
+  font-size:.85rem;
+  color:var(--gold);
+  font-weight:600;
+}
+.app-header .lesson-title{
+  margin-top:8px;
+  font-size:1.05rem;
+  color:#fff;
+}
+.student-bar{
+  max-width:720px;
+  margin:12px auto 0;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.student-bar input{
+  padding:8px 12px;
+  border-radius:20px;
+  border:none;
+  font-size:.9rem;
+  width:220px;
+}
+.student-bar .streak{
+  background:var(--gold);
+  color:var(--red-dark);
+  font-weight:700;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:.85rem;
+}
+nav.tabs{
+  display:flex;
+  overflow-x:auto;
+  gap:6px;
+  padding:10px 10px 0;
+  max-width:1000px;
+  margin:0 auto;
+  -webkit-overflow-scrolling:touch;
+}
+nav.tabs button{
+  flex:0 0 auto;
+  background:#fff;
+  border:2px solid var(--gold);
+  color:var(--red-dark);
+  padding:9px 14px;
+  border-radius:20px 20px 0 0;
+  font-weight:700;
+  font-size:.82rem;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:.15s;
+}
+nav.tabs button.active{
+  background:var(--red);
+  color:#fff;
+  border-color:var(--red);
+}
+main{
+  max-width:1000px;
+  margin:0 auto;
+  padding:18px 14px 60px;
+}
+.panel{display:none;animation:fadein .25s ease;}
+.panel.active{display:block;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+.card{
+  background:#fff;
+  border:1px solid var(--gold-light);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:16px;
+  margin-bottom:16px;
+}
+.card h2{
+  margin-top:0;
+  color:var(--red-dark);
+  border-bottom:2px solid var(--gold-light);
+  padding-bottom:8px;
+  font-size:1.15rem;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:12px;
+}
+.vocab-card{
+  background:var(--cream);
+  border:1px solid var(--gold-light);
+  border-radius:12px;
+  padding:12px;
+  text-align:center;
+}
+.vocab-card .emoji{font-size:2rem;}
+.vocab-card .hanzi{font-size:1.8rem;font-weight:700;color:var(--red-dark);margin:4px 0 0;}
+.vocab-card .pinyin{color:var(--gray);font-style:italic;}
+.vocab-card .meaning{font-size:.85rem;margin:4px 0 8px;}
+.vocab-card .etym{font-size:.72rem;color:var(--gray);text-align:left;background:#fff;padding:6px 8px;border-radius:8px;margin-top:6px;display:none;}
+.btn{
+  background:var(--red);
+  color:#fff;
+  border:none;
+  padding:7px 12px;
+  border-radius:16px;
+  font-size:.78rem;
+  cursor:pointer;
+  margin:2px;
+  font-weight:600;
+}
+.btn:hover{background:var(--red-dark);}
+.btn.gold{background:var(--gold);color:var(--red-dark);}
+.btn.gold:hover{background:#b3872a;}
+.btn.outline{background:#fff;color:var(--red);border:2px solid var(--red);}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+
+.dialogue-line{
+  margin-bottom:10px;
+  padding:10px 12px;
+  border-left:4px solid var(--gold);
+  background:var(--cream);
+  border-radius:0 8px 8px 0;
+}
+.dialogue-line .spk{font-weight:700;color:var(--red-dark);}
+.dialogue-line .hanzi{font-size:1.15rem;margin:4px 0 2px;}
+.dialogue-line .pinyin{color:var(--gray);font-style:italic;font-size:.9rem;}
+.dialogue-line .meaning{font-size:.85rem;color:#444;margin-top:2px;}
+.pinyin.hidden-py{display:none;}
+
+.mc-q{margin-bottom:14px;padding:10px;border:1px solid var(--gold-light);border-radius:10px;}
+.mc-opt{
+  display:block;
+  width:100%;
+  text-align:left;
+  background:#fff;
+  border:1px solid var(--gold-light);
+  border-radius:8px;
+  padding:8px 10px;
+  margin:6px 0;
+  cursor:pointer;
+  font-size:.92rem;
+}
+.mc-opt.correct{background:#e3f5e1;border-color:var(--green);}
+.mc-opt.wrong{background:#fbe3e1;border-color:var(--red);}
+.mc-opt:disabled{cursor:default;}
+
+.score-badge{
+  display:inline-block;
+  background:var(--gold);
+  color:var(--red-dark);
+  font-weight:700;
+  padding:4px 10px;
+  border-radius:14px;
+  font-size:.85rem;
+}
+.tag{
+  display:inline-block;background:var(--gold-light);color:var(--red-dark);
+  font-size:.72rem;padding:2px 8px;border-radius:10px;margin-left:6px;font-weight:600;
+}
+.writer-target{border:2px dashed var(--gold);border-radius:10px;background:#fff;margin:0 auto;}
+.write-grid{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;}
+.write-item{text-align:center;background:var(--cream);border-radius:12px;padding:10px;width:170px;}
+.cloze-bank{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.cloze-bank span{
+  background:var(--gold-light);border:1px solid var(--gold);border-radius:16px;
+  padding:5px 12px;font-weight:600;cursor:pointer;font-size:.9rem;
+}
+.cloze-bank span.used{opacity:.35;pointer-events:none;}
+.cloze-sentence{margin-bottom:10px;font-size:1rem;line-height:1.9;}
+.blank-slot{
+  display:inline-block;min-width:46px;border-bottom:2px solid var(--red);
+  text-align:center;font-weight:700;color:var(--red-dark);cursor:pointer;
+  padding:0 4px;
+}
+.footer-copy{
+  text-align:center;color:var(--gray);font-size:.72rem;padding:20px 10px 40px;
+}
+.watermark{
+  position:fixed;bottom:6px;right:10px;font-size:.62rem;color:rgba(122,26,21,.35);
+  pointer-events:none;z-index:5;
+}
+.note{font-size:.8rem;color:var(--gray);background:var(--gold-light);padding:8px 10px;border-radius:8px;margin-bottom:10px;}
+.progress-table{width:100%;border-collapse:collapse;}
+.progress-table td,.progress-table th{padding:8px;border-bottom:1px solid var(--gold-light);text-align:left;font-size:.9rem;}
+.freeform{width:100%;padding:8px;border:1px solid var(--gold-light);border-radius:8px;font-size:.9rem;margin-top:4px;}
+.reveal-box{display:none;background:#eef7ee;border:1px solid var(--green);padding:8px 10px;border-radius:8px;margin-top:6px;font-size:.85rem;}
+.grammar-card h3{color:var(--red-dark);margin-top:0;}
+select.rp-select{padding:6px;border-radius:8px;border:1px solid var(--gold-light);}
+.hide-block{display:none;}
+.cloze-extra{background:var(--cream);border:1px dashed var(--gold);border-radius:8px;padding:6px 10px;margin:2px 0 12px;}
+.cloze-extra .pinyin{color:var(--gray);font-style:italic;font-size:.85rem;}
+.cloze-extra .meaning{font-size:.85rem;color:#444;margin-top:2px;}
+.mistake-card{border-left:4px solid var(--red);}
+.mistake-card .yours{color:var(--red);font-weight:600;}
+.mistake-card .right{color:var(--green);font-weight:700;}
+.empty-note{color:var(--gray);font-style:italic;padding:10px;}
+.audio-controls{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  background:var(--cream);border:1px solid var(--gold-light);border-radius:10px;
+  padding:8px 12px;margin-top:8px;
+}
+.audio-controls input[type=range]{
+  flex:1 1 160px;min-width:120px;accent-color:var(--red);
+  height:6px;cursor:pointer;
+}
+.audio-controls .time-label{
+  font-size:.78rem;color:var(--gray);font-variant-numeric:tabular-nums;min-width:78px;text-align:right;
+}
+.audio-note{font-size:.7rem;color:var(--gray);margin-top:2px;}
+@media (max-width:600px){
+  .app-header h1{font-size:1.2rem;}
+  .write-item{width:140px;}
+}
+</style>
+</head>
+<body>
+
+<div class="watermark">© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes</div>
+
+<header class="app-header">
+  <h1>爱睿娜的课堂 · Aruna's Classes</h1>
+  <div class="sub">新HSK 3.0 标准教程 — New HSK Course 3.0</div>
+  <div class="lesson-title">第二课 · Lesson 2 · 你们想吃什么就点什么</div>
+  <div class="student-bar">
+    <input id="studentName" type="text" placeholder="Enter your name to save progress...">
+    <span class="streak" id="streakBadge">🔥 0 day streak</span>
+  </div>
+</header>
+
+<nav class="tabs" id="tabNav"></nav>
+
+<main id="mainArea"></main>
+
+<div class="footer-copy">
+  © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.<br>
+  Audio &amp; microphone features work best in Chrome or Edge on desktop/Android.
+</div>
+
+<script>
+/* ============================================================
+   © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes.
+   All Rights Reserved.
+   ============================================================ */
+const COPYRIGHT = "© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.";
+
+/* ============================================================
+   LESSON CONTENT OBJECT — edit this to reuse the engine
+   for future lessons.
+   ============================================================ */
+const LESSON = {
+  code: "hsk3-l2",
+  title: "第二课 你们想吃什么就点什么",
+  vocab: [
+    {id:1, ch:"菜单", py:"càidān", en:"menu", emoji:"📋",
+     etym:"菜 (dish) + 单 (list) — literally 'a list of dishes'."},
+    {id:2, ch:"又", py:"yòu", en:"again; also (used in 又……又…… \"both...and...\")", emoji:"🔁",
+     etym:"An ancient pictograph of a right hand; over time it came to mean 'again/also', and paired up it means 'both...and...'."},
+    {id:3, ch:"饿", py:"è", en:"hungry", emoji:"🍽️",
+     etym:"饣(food radical) + 我 (phonetic) — relates to the body's need for food."},
+    {id:4, ch:"渴", py:"kě", en:"thirsty", emoji:"💧",
+     etym:"氵(water radical) + 曷 (phonetic) — relates to the body's need for water."},
+    {id:5, ch:"客气", py:"kèqi", en:"polite; courteous", emoji:"🙏",
+     etym:"客 (guest) + 气 (manner/air) — literally 'guest-like manner', i.e. being courteous."},
+    {id:6, ch:"饮料", py:"yǐnliào", en:"drinks; beverages", emoji:"🥤",
+     etym:"饮 (to drink) + 料 (material/ingredient) — 'drinkable material'."},
+    {id:7, ch:"好久", py:"hǎojiǔ", en:"for a long time", emoji:"⏳",
+     etym:"好 (quite) + 久 (long time) — 'quite a long time'."},
+    {id:8, ch:"服务", py:"fúwù", en:"to serve; service", emoji:"🛎️",
+     etym:"服 (to attend to) + 务 (task/duty) — 'the duty of attending to others'."},
+    {id:9, ch:"员", py:"yuán", en:"suffix indicating a person (in a role)", emoji:"👤",
+     etym:"Originally referred to members counted 'by headcount'; extended to mean a person holding a role."},
+    {id:10, ch:"双", py:"shuāng", en:"pair", emoji:"👞",
+     etym:"Two 又 (hand) radicals together — 'a pair of hands', extended to 'a pair' of anything."},
+    {id:11, ch:"筷子", py:"kuàizi", en:"chopsticks", emoji:"🥢",
+     etym:"竹 (bamboo radical) + 快 (fast, a lucky homophone) — boatmen renamed sticks to sound like 'fast' for good luck."},
+    {id:12, ch:"勺子", py:"sháozi", en:"spoon", emoji:"🥄",
+     etym:"勺 is a pictograph of a ladle scooping something, with the 子 suffix naming the object."},
+    {id:13, ch:"碗", py:"wǎn", en:"bowl", emoji:"🥣",
+     etym:"石 (stone radical) + 宛 (phonetic) — early bowls were carved from stone or clay."},
+    {id:14, ch:"马上", py:"mǎshàng", en:"immediately; right away", emoji:"🐎",
+     etym:"马 (horse) + 上 (on) — 'on horseback', ready to leave at once; extended to 'right away'."},
+    {id:15, ch:"热情", py:"rèqíng", en:"warm; enthusiastic", emoji:"🔥",
+     etym:"热 (hot) + 情 (feeling) — 'warm feeling', i.e. enthusiasm."},
+    {id:16, ch:"尝", py:"cháng", en:"to taste; try", emoji:"👅",
+     etym:"尚 (phonetic) + 旨 (delicious/flavor) — relates to sampling a flavor."},
+    {id:17, ch:"记", py:"jì", en:"to remember", emoji:"🧠",
+     etym:"讠(speech radical) + 己 (self) — originally 'to note down for oneself', extended to 'remember'."},
+    {id:18, ch:"用", py:"yòng", en:"to use; (polite) to eat/drink", emoji:"🛠️",
+     etym:"A pictograph resembling a container — something useful can be 'used'."},
+    {id:19, ch:"鸡", py:"jī", en:"chicken", emoji:"🐔",
+     etym:"鸟 (bird radical) + 奚 (phonetic) — a domesticated bird."},
+    {id:20, ch:"张", py:"zhāng", en:"measure word for flat objects (paper, photos, tables)", emoji:"📄",
+     etym:"弓 (bow radical) + 长 (phonetic) — originally 'to stretch a bow', extended to flat, stretched things."},
+    {id:21, ch:"不用", py:"búyòng", en:"need not; don't need to", emoji:"🚫",
+     etym:"不 (not) + 用 (need/use) — 'no need to'."},
+    {id:22, ch:"选", py:"xuǎn", en:"to choose; select", emoji:"✅",
+     etym:"辶(walk radical) + phonetic — relates to picking something out and moving it forward."},
+    {id:23, ch:"外卖", py:"wàimài", en:"takeout; food delivery", emoji:"🥡",
+     etym:"外 (outside) + 卖 (to sell) — 'sold [to eat] outside [the restaurant]'."},
+    {id:24, ch:"方便", py:"fāngbiàn", en:"convenient", emoji:"👍",
+     etym:"方 (method) + 便 (convenient) — 'a convenient method'."},
+    {id:25, ch:"蛋糕", py:"dàngāo", en:"cake", emoji:"🍰",
+     etym:"蛋 (egg) + 糕 (baked treat) — 'an egg-based baked treat'."},
+    {id:26, ch:"只", py:"zhǐ", en:"only", emoji:"1️⃣",
+     etym:"口 (mouth) + 八 (divide) — originally related to a single utterance, later borrowed to mean 'only/merely'."},
+    {id:27, ch:"方便面", py:"fāngbiànmiàn", en:"instant noodles", emoji:"🍜",
+     etym:"方便 (convenient) + 面 (noodles) — 'convenient noodles'."},
+    {id:28, ch:"简单", py:"jiǎndān", en:"simple", emoji:"🔹",
+     etym:"简 (brief) + 单 (single) — 'brief and single-layered', i.e. simple."}
+  ],
+
+  dialogues: [
+    { key:"text2", title:"课文2 · Text 2", scene:"在饭馆，王一雪、刘明、白家月和李文一起吃饭。",
+      sceneEn:"At the restaurant, Wang Yixue, Liu Ming, Bai Jiayue, and Li Wen were having a meal together.",
+      lines:[
+        {spk:"王一雪", ch:"服务员，再给我们拿一双筷子、一个勺子和一个碗。", py:"Fúwùyuán, zài gěi wǒmen ná yì shuāng kuàizi, yí ge sháozi hé yí ge wǎn.", en:"Waiter, please bring us another pair of chopsticks, one spoon and one bowl."},
+        {spk:"服务员", ch:"好的，请等一下，我马上去拿。", py:"Hǎo de, qǐng děng yíxià, wǒ mǎshàng qù ná.", en:"Certainly. Please wait a moment. I'll get them right away."},
+        {spk:"王一雪", ch:"这家饭馆的服务很热情，菜也都做得很好吃。你们尝尝，看喜不喜欢这些菜。", py:"Zhè jiā fànguǎn de fúwù hěn rèqíng, cài yě dōu zuò de hěn hǎochī. Nǐmen chángchang, kàn xǐ bu xǐhuan zhèxiē cài.", en:"The service at this restaurant is very warm, and the dishes are all delicious. Taste them, and see whether you like these dishes."},
+        {spk:"白家月", ch:"哪个菜都好吃。您点的这些菜真不错。", py:"Nǎge cài dōu hǎochī. Nín diǎn de zhèxiē cài zhēn búcuò.", en:"Every dish is delicious. The dishes you ordered are really good."},
+        {spk:"王一雪", ch:"这里的饭菜又便宜又好吃，我们经常来，服务员都记住我们爱吃的菜了。", py:"Zhèlǐ de fàncài yòu piányi yòu hǎochī, wǒmen jīngcháng lái, fúwùyuán dōu jìzhù wǒmen ài chī de cài le.", en:"The food here is both inexpensive and delicious. We come here often, so the waiters already remember the dishes we like."},
+        {spk:"服务员", ch:"王姐，您经常来吃饭，今天送您一些水果，请慢用。", py:"Wáng jiě, nín jīngcháng lái chīfàn, jīntiān sòng nín yìxiē shuǐguǒ, qǐng màn yòng.", en:"Sister Wang, you eat here often. Today we'd like to give you some fruit. Please enjoy your meal."}
+      ],
+      listening:[
+        {q:"王一雪让服务员拿什么？", opts:["筷子和碗","勺子和筷子","勺子、筷子和碗"], answer:2},
+        {q:"这家饭馆的服务怎么样？", opts:["很慢","很热情","不太好"], answer:1}
+      ],
+      reading:[
+        {q:"王一雪觉得这家饭馆怎么样？"},
+        {q:"白家月觉得这家饭馆的菜怎么样？"},
+        {q:"服务员为什么送了一些水果？"}
+      ]
+    },
+    { key:"text3", title:"课文3 · Text 3", scene:"在饭馆，王一雪、刘明、白家月和李文继续边吃边聊。",
+      sceneEn:"At the restaurant, Wang Yixue, Liu Ming, Bai Jiayue, and Li Wen continued chatting while eating.",
+      lines:[
+        {spk:"白家月", ch:"这个鸡肉饭太好吃了，我要再来吃一次。", py:"Zhège jīròufàn tài hǎochī le, wǒ yào zài lái chī yí cì.", en:"This chicken rice is so delicious. I want to come again to eat it."},
+        {spk:"李文", ch:"你可以拿走这张菜单，看看下次还吃点儿什么。", py:"Nǐ kěyǐ názǒu zhè zhāng càidān, kànkan xià cì hái chī diǎnr shénme.", en:"You can take this menu with you and see what you'd like to eat next time."},
+        {spk:"王一雪", ch:"不用拿菜单，在手机上就能看到，也可以选好了让他们给你送。", py:"Búyòng ná càidān, zài shǒujī shàng jiù néng kàn dào, yě kěyǐ xuǎn hǎo le ràng tāmen gěi nǐ sòng.", en:"There's no need to take the menu. You can see it on your phone, and you can also choose your dishes and have them delivered."},
+        {spk:"白家月", ch:"他们家还能送外卖？", py:"Tāmen jiā hái néng sòng wàimài?", en:"They also provide food delivery?"},
+        {spk:"王一雪", ch:"对，现在很多饭馆都能送外卖，想吃什么就点什么。", py:"Duì, xiànzài hěn duō fànguǎn dōu néng sòng wàimài, xiǎng chī shénme jiù diǎn shénme.", en:"Yes. Nowadays many restaurants provide delivery. You can order whatever you want to eat."},
+        {spk:"白家月", ch:"那真是太方便了！", py:"Nà zhēn shì tài fāngbiàn le!", en:"That's really so convenient!"}
+      ],
+      listening:[
+        {q:"在这家饭馆，白家月喜欢吃什么？", opts:["包子","鸡肉饭","面条儿"], answer:1},
+        {q:"王一雪为什么说“不用拿菜单”？", opts:["她有菜单。","她不想再来。","手机上可以看菜单。"], answer:2}
+      ],
+      reading:[
+        {q:"白家月为什么要再来吃一次？"},
+        {q:"这家饭馆可以怎么点菜？"},
+        {q:"听说很多饭馆都能送外卖，白家月觉得怎么样？"}
+      ]
+    },
+    { key:"text4", title:"课文4 · Text 4", scene:"在李文家，李文在写日记。",
+      sceneEn:"At Li Wen's home, Li Wen was writing in his diary.", isNarrative:true,
+      lines:[
+        {spk:"李文(日记)", ch:"这些年在国外，我很少自己做饭。", py:"Zhèxiē nián zài guówài, wǒ hěn shǎo zìjǐ zuòfàn.", en:"During these years abroad, I seldom cooked for myself."},
+        {spk:"李文(日记)", ch:"早饭我吃一个面包，有时候吃一块蛋糕，再喝一杯咖啡。午饭和晚饭也都在外面吃。", py:"Zǎofàn wǒ chī yí ge miànbāo, yǒu shíhou chī yí kuài dàngāo, zài hē yì bēi kāfēi. Wǔfàn hé wǎnfàn yě dōu zài wàimiàn chī.", en:"For breakfast, I eat a piece of bread, sometimes a piece of cake, and drink a cup of coffee. I also eat lunch and dinner outside."},
+        {spk:"李文(日记)", ch:"快要考试的时候，又忙又累，没时间出去吃饭，家里又什么吃的都没有，我可能好几天只吃方便面。", py:"Kuài yào kǎoshì de shíhou, yòu máng yòu lèi, méi shíjiān chūqù chīfàn, jiālǐ yòu shénme chī de dōu méiyǒu, wǒ kěnéng hǎo jǐ tiān zhǐ chī fāngbiànmiàn.", en:"When the exams were approaching, I was both busy and tired. I had no time to go out to eat, and there was nothing to eat at home. I sometimes ate only instant noodles for several days."},
+        {spk:"李文(日记)", ch:"现在回到中国了，每天能吃到妈妈做的饭，我真是太高兴了！", py:"Xiànzài huídào Zhōngguó le, měitiān néng chī dào māma zuò de fàn, wǒ zhēn shì tài gāoxìng le!", en:"Now that I've returned to China, I can eat my mother's cooking every day. I'm really very happy!"},
+        {spk:"李文(日记)", ch:"有时候妈妈只做几个简单的菜，我也非常爱吃，因为什么都没有妈妈做的饭好吃。", py:"Yǒu shíhou māma zhǐ zuò jǐ ge jiǎndān de cài, wǒ yě fēicháng ài chī, yīnwèi shénme dōu méiyǒu māma zuò de fàn hǎochī.", en:"Sometimes my mother only cooks a few simple dishes, but I still enjoy them very much, because nothing is as delicious as my mother's cooking."}
+      ],
+      listening:[
+        {q:"快要考试的时候，李文怎么吃饭？", opts:["吃方便面","出去吃饭","回妈妈家吃"], answer:0},
+        {q:"回到中国了，李文为什么很高兴？", opts:["妈妈每天做很多菜。","可以经常去外面吃饭。","每天能吃到妈妈做的饭。"], answer:2}
+      ],
+      reading:[
+        {q:"李文在国外经常做饭吗？"},
+        {q:"李文为什么好几天只吃方便面？"},
+        {q:"回到中国后什么事让他非常高兴？"}
+      ]
+    }
+  ],
+
+  grammar: [
+    { key:"youyou", title:"并列复句 \"又……又……\"", titleEn:"Coordinate Complex Sentence: \"both...and...\"",
+      explain:"又 + Adjective + 又 + Adjective is used with adjectives to say a person or thing has two qualities at the same time — like English 'both...and...'.",
+      examples:[
+        {ch:"我现在还真是又饿又渴。", py:"Wǒ xiànzài hái zhēn shì yòu è yòu kě.", en:"Right now I'm really both hungry and thirsty."},
+        {ch:"那个女孩子又高又漂亮。", py:"Nàge nǚháizi yòu gāo yòu piàoliang.", en:"That girl is both tall and beautiful."},
+        {ch:"这个饭馆的菜又便宜又好吃。", py:"Zhège fànguǎn de cài yòu piányi yòu hǎochī.", en:"The food in this restaurant is both cheap and delicious."}
+      ],
+      practice:[
+        {q:"他的新家很大，也很干净。 → Choose the correct 又……又…… rewrite.", opts:["他的新家又大又干净。","他的新家又干净又大又不错。","他的新家很干净又大。"], answer:0},
+        {q:"他写汉字写得很快，也很漂亮。 → Choose the correct rewrite.", opts:["他写汉字很快又漂亮。","他写汉字又快又漂亮。","他写汉字又漂亮很快。"], answer:1},
+        {q:"这个超市里的东西很多，也很便宜。 → Choose the correct rewrite.", opts:["这个超市里的东西又多又便宜。","这个超市里的东西很多又便宜。","这个超市里的东西又便宜很多。"], answer:0}
+      ]
+    },
+    { key:"nonq2", title:"疑问代词的非疑问用法（2）", titleEn:"Non-Interrogative Use of Interrogative Pronouns (2)",
+      explain:"疑问代词 + 都/也 (什么都, 谁都, 哪儿都, 哪个都, 怎么都) means 'anything/anyone/anywhere/whichever/however' — the question word no longer asks a question.",
+      examples:[
+        {ch:"你们想吃什么就点什么。", py:"Nǐmen xiǎng chī shénme jiù diǎn shénme.", en:"Order whatever you want to eat."},
+        {ch:"哪个菜都很好吃。", py:"Nǎ ge cài dōu hěn hǎochī.", en:"Every dish is delicious."},
+        {ch:"谁都可以参加。", py:"Shéi dōu kěyǐ cānjiā.", en:"Anyone can participate."}
+      ],
+      practice:[
+        {q:"A：你们今天想吃什么？ B：____ 都可以。", opts:["什么","谁","哪儿"], answer:0},
+        {q:"A：谁会说汉语？ B：我们班 ____ 会说一点儿。", opts:["谁","什么","哪个"], answer:0},
+        {q:"A：今天我们怎么去学校？ B：____ 都行。", opts:["怎么","什么","哪儿"], answer:0}
+      ]
+    },
+    { key:"nonq3", title:"疑问代词的非疑问用法（3）", titleEn:"Non-Interrogative Use of Interrogative Pronouns (3)",
+      explain:"Two identical interrogative pronouns can echo each other across a sentence (Question Word + 就 + same Question Word) to mean 'whichever/whatever/wherever ... that same one'. If the subjects of the two clauses differ, the second subject goes right before 就.",
+      examples:[
+        {ch:"你们想吃什么就点什么。", py:"Nǐmen xiǎng chī shénme jiù diǎn shénme.", en:"Order whatever you want to eat."},
+        {ch:"你觉得哪个好看就买哪个。", py:"Nǐ juéde nǎ ge hǎokàn jiù mǎi nǎ ge.", en:"Buy whichever one you think looks good."},
+        {ch:"你想去哪儿，我们就去哪儿。", py:"Nǐ xiǎng qù nǎr, wǒmen jiù qù nǎr.", en:"We'll go wherever you want to go."}
+      ],
+      practice:[
+        {q:"A：这是菜单，我们点什么？ B：____", opts:["你想吃什么就点什么。","你想去哪儿就去哪儿。","你觉得哪个好看就买哪个。"], answer:0},
+        {q:"A：我们怎么去电影院？ B：____", opts:["你想怎么去就怎么去。","你想吃什么就点什么。","你想去哪儿就去哪儿。"], answer:0},
+        {q:"A：我什么时候去找你？ B：____", opts:["你什么时候方便，我就什么时候去找你。","你想去哪儿就去哪儿。","你觉得哪个好看就买哪个。"], answer:0}
+      ]
+    }
+  ],
+
+  clozeBank1: {
+    bank: [
+      {label:"尝", val:"尝"}, {label:"只", val:"只"}, {label:"菜单", val:"菜单"},
+      {label:"记", val:"记"}, {label:"用", val:"用"}
+    ],
+    items:[
+      {pre:"我觉得", blank:"用", post:"筷子吃饭更方便。", en:"I think eating with chopsticks is more convenient.",
+       py:"Wǒ juéde yòng kuàizi chīfàn gèng fāngbiàn."},
+      {pre:"你", blank:"记", post:"住那个饭馆的名字了吗？", en:"Have you remembered the name of that restaurant?",
+       py:"Nǐ jì zhù nà ge fànguǎn de míngzi le ma?"},
+      {pre:"她现在很饿，早上", blank:"只", post:"吃了一块蛋糕。", en:"She is very hungry now. She only ate a piece of cake this morning.",
+       py:"Tā xiànzài hěn è, zǎoshang zhǐ chī le yí kuài dàngāo."},
+      {pre:"", blank:"菜单", post:"上有好几个新菜，你看看我们吃哪个？", en:"There are several new dishes on the menu. Let's see which one we should eat.",
+       py:"Càidān shàng yǒu hǎo jǐ ge xīn cài, nǐ kànkan wǒmen chī nǎ ge?"},
+      {pre:"我妈妈会做中国菜，下次你们来我家", blank:"尝", post:"一下她做的菜。", en:"My mother can cook Chinese food. Next time you come over, please taste her cooking.",
+       py:"Wǒ māma huì zuò Zhōngguó cài, xià cì nǐmen lái wǒ jiā cháng yíxià tā zuò de cài."}
+    ]
+  },
+  clozeBank2: {
+    bank: [
+      {label:"饿", val:"饿"}, {label:"不用", val:"不用"}, {label:"简单", val:"简单"},
+      {label:"好久", val:"好久"}, {label:"马上", val:"马上"}
+    ],
+    items:[
+      {pre:"我还不会用筷子，你们有勺子吗？ 有，你等一下，我", blank:"马上", post:"给你拿。", en:"Wait a moment, I'll get one for you right away.",
+       py:"Wǒ hái bú huì yòng kuàizi, nǐmen yǒu sháozi ma? Yǒu, nǐ děng yíxià, wǒ mǎshàng gěi nǐ ná."},
+      {pre:"在手机上就可以点菜，", blank:"不用", post:"要菜单。", en:"You can order on your phone. There's no need to ask for a menu.",
+       py:"Zài shǒujī shàng jiù kěyǐ diǎn cài, búyòng yào càidān."},
+      {pre:"我太", blank:"饿", post:"了，不想做饭了，我们叫个外卖，怎么样？", en:"I'm too hungry to cook. Let's order takeout, how about it?",
+       py:"Wǒ tài è le, bù xiǎng zuòfàn le, wǒmen jiào ge wàimài, zěnmeyàng?"},
+      {pre:"我", blank:"好久", post:"没吃饺子了，去楼下的饺子馆吧。", en:"I haven't eaten dumplings for a long time. Let's go to the dumpling restaurant downstairs.",
+       py:"Wǒ hǎojiǔ méi chī jiǎozi le, qù lóuxià de jiǎoziguǎn ba."},
+      {pre:"不做饭，我就吃碗方便面。方便面是最", blank:"简单", post:"的晚饭。", en:"Instant noodles are the simplest dinner.",
+       py:"Bù zuòfàn, wǒ jiù chī wǎn fāngbiànmiàn. Fāngbiànmiàn shì zuì jiǎndān de wǎnfàn."}
+    ]
+  },
+
+  completeSentences: [
+    { title:"改写句子 (用 又……又……重写)", items:[
+        {ch:"他的新家很大，也很干净。", en:"Rewrite using 又……又……", sample:"他的新家又大又干净。"},
+        {ch:"他写汉字写得很快，也很漂亮。", en:"Rewrite using 又……又……", sample:"他写汉字又快又漂亮。"},
+        {ch:"这个超市里的东西很多，也很便宜。", en:"Rewrite using 又……又……", sample:"这个超市里的东西又多又便宜。"}
+    ]},
+    { title:"完成句子 (疑问代词 + 都)", items:[
+        {ch:"A：你们今天想吃什么？ B：__________都可以。", en:"Anything is fine.", sample:"什么"},
+        {ch:"A：你喜欢哪件衣服？ B：__________都很好看。", en:"They all look nice.", sample:"哪件"},
+        {ch:"A：周末你想去哪儿？ B：__________都可以。", en:"Anywhere is fine.", sample:"哪儿"},
+        {ch:"A：谁会说汉语？ B：我们班__________会说一点儿。", en:"Everyone in our class can speak a little.", sample:"谁"},
+        {ch:"A：今天我们怎么去学校？ B：__________都行。", en:"Any way is fine.", sample:"怎么"}
+    ]},
+    { title:"完成对话 (疑问代词……就……)", items:[
+        {ch:"A：这是菜单，我们点什么？ B：____________________________________。", en:"Order whatever you want.", sample:"你想吃什么就点什么。"},
+        {ch:"A：我们怎么去电影院？ B：____________________________________。", en:"However you want to go.", sample:"你想怎么去就怎么去。"},
+        {ch:"A：我什么时候去找你？ B：____________________________________。", en:"Whenever suits you.", sample:"你什么时候方便，我就什么时候去找你。"}
+    ]}
+  ],
+
+  pictureDescription: [
+    { title:"第一组图片 · Picture 1", items:[
+        {ch:"这是菜单，你看看，________ 就点什么。", en:"Here's the menu, take a look. Order whatever you want.", sample:"你想吃什么"},
+        {ch:"谢谢，您点吧，我________都可以。", en:"Thanks, you order — anything is fine with me.", sample:"吃什么"},
+        {ch:"我发现有不少新菜，你想不想________？", en:"I found quite a few new dishes. Would you like to try them?", sample:"尝尝"}
+    ]},
+    { title:"第二组图片 · Picture 2", items:[
+        {ch:"今天我有点儿累，不想做饭，点个________吧。", en:"I'm a little tired today. Let's order some takeout.", sample:"外卖"},
+        {ch:"好，我来点。________。", en:"Okay, I'll place the order.", sample:"你想吃什么，我们就点什么"},
+        {ch:"应该很快，我看看。________就能到。", en:"Should be soon, let me check — it'll arrive soon.", sample:"半个小时左右"}
+    ]},
+    { title:"第三组图片 · Picture 3", items:[
+        {ch:"你想喝什么________？", en:"What drink would you like?", sample:"饮料"},
+        {ch:"我________没喝茶了，来一杯吧。", en:"I haven't had tea in a long time. I'll have a cup.", sample:"好久"},
+        {ch:"________上有这么多菜，我不知道点什么，还是你来吧。", en:"There are so many dishes on the menu. You decide.", sample:"菜单"},
+        {ch:"那就点第一个，小王说那个菜________。", en:"Let's order the first one, Xiao Wang said that dish is delicious.", sample:"很好吃"}
+    ]}
+  ],
+
+  writingChars: ["又","饿","渴","双","碗","记","鸡","张","选","只"]
+};
+
+/* ============================================================
+   STORAGE / PROGRESS HELPERS
+   ============================================================ */
+function studentKey(){
+  const n = document.getElementById('studentName').value.trim();
+  return n ? ("aruna_hsk3_l2_" + n.toLowerCase().replace(/\s+/g,'_')) : "aruna_hsk3_l2_guest";
+}
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(studentKey());
+    const p = raw ? JSON.parse(raw) : defaultProgress();
+    if(!p.mistakes) p.mistakes = { listening:{}, grammar:{}, cloze:{} };
+    if(!p.mistakes.listening) p.mistakes.listening = {};
+    if(!p.mistakes.grammar) p.mistakes.grammar = {};
+    if(!p.mistakes.cloze) p.mistakes.cloze = {};
+    return p;
+  }catch(e){ return defaultProgress(); }
+}
+function defaultProgress(){
+  return {
+    writing:{}, listening:{}, reading:{}, exercises:{}, lastVisit:null, streak:0,
+    mistakes:{ listening:{}, grammar:{}, cloze:{} }
+  };
+}
+function saveProgress(p){
+  try{ localStorage.setItem(studentKey(), JSON.stringify(p)); }catch(e){}
+}
+function touchStreak(){
+  const p = loadProgress();
+  const today = new Date().toDateString();
+  if(p.lastVisit !== today){
+    const yesterday = new Date(Date.now()-86400000).toDateString();
+    p.streak = (p.lastVisit === yesterday) ? (p.streak||0)+1 : 1;
+    p.lastVisit = today;
+    saveProgress(p);
+  }
+  document.getElementById('streakBadge').textContent = "🔥 " + (p.streak||0) + " day streak";
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+  const saved = localStorage.getItem('aruna_hsk3_l2_current_name');
+  if(saved) document.getElementById('studentName').value = saved;
+  touchStreak();
+  document.getElementById('studentName').addEventListener('change', ()=>{
+    localStorage.setItem('aruna_hsk3_l2_current_name', document.getElementById('studentName').value.trim());
+    touchStreak();
+    renderProgressIfActive();
+  });
+});
+function renderProgressIfActive(){
+  if(document.getElementById('panel-progress') && document.getElementById('panel-progress').classList.contains('active')){
+    renderProgress();
+  }
+}
+
+/* ============================================================
+   SPEECH: TTS + Recognition
+   ============================================================ */
+function speak(text){
+  if(!('speechSynthesis' in window)){ alert('Speech synthesis not supported in this browser.'); return; }
+  window.speechSynthesis.cancel();
+  if(TTS.playingKey){
+    const stoppedKey = TTS.playingKey;
+    TTS.playingKey = null; TTS.isPaused = false; TTS.repeatCount = 0;
+    updatePlayButtons();
+    updateSeekUI(stoppedKey, 0);
+  }
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = 0.85;
+  const voices = window.speechSynthesis.getVoices();
+  const zh = voices.find(v=>v.lang && v.lang.toLowerCase().startsWith('zh'));
+  if(zh) u.voice = zh;
+  window.speechSynthesis.speak(u);
+}
+if('speechSynthesis' in window){
+  window.speechSynthesis.onvoiceschanged = ()=>{ /* voices load async */ };
+}
+
+function startRecognition(expectedText, onResult){
+  const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!Rec){ alert('Speech recognition not supported in this browser. Try Chrome or Edge.'); return; }
+  const rec = new Rec();
+  rec.lang = 'zh-CN';
+  rec.interimResults = false;
+  rec.maxAlternatives = 3;
+  rec.onresult = (e)=>{
+    const said = e.results[0][0].transcript;
+    onResult(said);
+  };
+  rec.onerror = (e)=>{ onResult(null, e.error); };
+  rec.start();
+}
+function normalizeZh(s){
+  return (s||'').replace(/[，。？！,.?!\s]/g,'');
+}
+
+/* ============================================================
+   SOUND EFFECTS (synthesized, no audio files needed)
+   ============================================================ */
+let audioCtx;
+function getAudioCtx(){
+  if(!audioCtx){
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if(!AC) return null;
+    audioCtx = new AC();
+  }
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+function playTone(freq, duration, type, gainVal){
+  const ctx = getAudioCtx();
+  if(!ctx) return;
+  try{
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.value = freq;
+    gain.gain.value = gainVal || 0.06;
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+    osc.stop(ctx.currentTime + duration + 0.03);
+  }catch(e){ /* ignore */ }
+}
+function playStrokeTick(){ playTone(950, 0.06, 'sine', 0.05); }
+function playMistakeThud(){ playTone(160, 0.14, 'sine', 0.045); }
+function playCompletionBell(score){
+  // A mild, pleasant two-note chime. Brighter for higher scores, softer/lower for lower scores.
+  const base = 480 + (Math.max(0,Math.min(100,score))/100)*260; // ~480Hz .. 740Hz
+  playTone(base, 0.32, 'triangle', 0.065);
+  setTimeout(()=> playTone(base*1.5, 0.28, 'triangle', 0.045), 110);
+}
+
+/* ============================================================
+   TAB / ROUTER SETUP
+   ============================================================ */
+const TABS = [
+  {id:'vocab', label:'📚 词汇 Vocabulary'},
+  {id:'writing', label:'✍️ 写字 Writing'},
+  {id:'listening', label:'🎧 听力 Listening'},
+  {id:'reading', label:'📖 阅读 Reading'},
+  {id:'grammar', label:'💡 语法 Grammar'},
+  {id:'exercises', label:'📝 练习 Exercises'},
+  {id:'roleplay', label:'🎭 角色扮演 Roleplay'},
+  {id:'mistakes', label:'❌ 错题 Review Mistakes'},
+  {id:'progress', label:'📊 进度 Progress'}
+];
+
+function initNav(){
+  const nav = document.getElementById('tabNav');
+  TABS.forEach((t,i)=>{
+    const b = document.createElement('button');
+    b.textContent = t.label;
+    b.dataset.tab = t.id;
+    if(i===0) b.classList.add('active');
+    b.onclick = ()=> switchTab(t.id);
+    nav.appendChild(b);
+  });
+  const main = document.getElementById('mainArea');
+  TABS.forEach((t,i)=>{
+    const div = document.createElement('div');
+    div.className = 'panel' + (i===0?' active':'');
+    div.id = 'panel-' + t.id;
+    main.appendChild(div);
+  });
+  renderVocab();
+  renderWriting();
+  renderListening();
+  renderReading();
+  renderGrammar();
+  renderExercises();
+  renderRoleplay();
+  renderMistakes();
+  renderProgress();
+}
+function switchTab(id){
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+id));
+  if(id==='progress') renderProgress();
+  if(id==='mistakes') renderMistakes();
+}
+
+/* ============================================================
+   1. VOCABULARY TAB
+   ============================================================ */
+function renderVocab(){
+  const el = document.getElementById('panel-vocab');
+  el.innerHTML = `<div class="card"><h2>生词 New Words (1–27)</h2>
+    <p class="note">Tap 🔊 to hear pronunciation, ⭐ to jump to the stroke-order animation in the Writing tab.</p>
+    <div class="grid" id="vocabGrid"></div></div>`;
+  const grid = document.getElementById('vocabGrid');
+  LESSON.vocab.forEach(v=>{
+    const c = document.createElement('div');
+    c.className = 'vocab-card';
+    c.innerHTML = `
+      <div class="emoji">${v.emoji}</div>
+      <div class="hanzi">${v.ch}</div>
+      <div class="pinyin">${v.py}</div>
+      <div class="meaning">${v.en}</div>
+      <button class="btn" onclick="speak('${v.ch}')">🔊 Audio</button>
+      <button class="btn gold" onclick="jumpToWriting('${v.ch}')">⭐ Stroke Order</button>
+      <button class="btn outline" onclick="toggleEtym(this)">字源 Etymology</button>
+      <div class="etym">${v.etym}</div>
+    `;
+    grid.appendChild(c);
+  });
+}
+function toggleEtym(btn){
+  const box = btn.nextElementSibling;
+  box.style.display = (box.style.display==='block') ? 'none' : 'block';
+}
+function jumpToWriting(ch){
+  switchTab('writing');
+  setTimeout(()=>{
+    const target = document.getElementById('writeslot-'+charCode(ch));
+    if(target) target.scrollIntoView({behavior:'smooth', block:'center'});
+  }, 150);
+}
+function charCode(ch){ return ch.split('').map(c=>c.codePointAt(0)).join('_'); }
+
+/* ============================================================
+   2. WRITING TAB (Hanzi Writer)
+   ============================================================ */
+function renderWriting(){
+  const el = document.getElementById('panel-writing');
+  el.innerHTML = `<div class="card"><h2>写字 Writing Practice</h2>
+    <p class="note">Watch the animated stroke order, then trace the character 3 times. Your best score is saved to Progress.</p>
+    <div class="write-grid" id="writeGrid"></div></div>`;
+  const grid = document.getElementById('writeGrid');
+  LESSON.writingChars.forEach(ch=>{
+    const vocabMatch = LESSON.vocab.find(v=>v.ch.includes(ch));
+    const meaning = vocabMatch ? vocabMatch.en : '';
+    const id = 'writeslot-' + charCode(ch);
+    const box = document.createElement('div');
+    box.className = 'write-item';
+    box.id = id;
+    box.innerHTML = `
+      <div style="font-weight:700;color:var(--red-dark);">${ch}</div>
+      <div style="font-size:.75rem;color:var(--gray);margin-bottom:6px;">${meaning}</div>
+      <div class="writer-target" id="target-${id}" style="width:140px;height:140px;"></div>
+      <div style="margin-top:6px;">
+        <button class="btn" onclick="animateChar('${id}','${ch}')">▶ Animate</button>
+        <button class="btn gold" onclick="quizChar('${id}','${ch}')">✍️ Practice 3×</button>
+      </div>
+      <div style="font-size:.75rem;margin-top:4px;" id="score-${id}"></div>
+    `;
+    grid.appendChild(box);
+  });
+}
+const writerCache = {};
+function getWriter(id, ch){
+  const key = id;
+  if(writerCache[key]) return writerCache[key];
+  const container = document.getElementById('target-'+id);
+  container.innerHTML = '';
+  const w = HanziWriter.create('target-'+id, ch, {
+    width:140, height:140, padding:8,
+    strokeAnimationSpeed:1, delayBetweenStrokes:250,
+    showOutline:true
+  });
+  writerCache[key] = w;
+  return w;
+}
+function animateChar(id, ch){
+  try{
+    const w = getWriter(id, ch);
+    w.animateCharacter();
+  }catch(e){ console.error(e); }
+}
+function quizChar(id, ch){
+  try{
+    const w = getWriter(id, ch);
+    let attempts = 0;
+    let scores = [];
+    function runOnce(){
+      w.quiz({
+        showHintAfterMisses:2,
+        onCorrectStroke:()=>{ playStrokeTick(); },
+        onMistake:()=>{ playMistakeThud(); },
+        onComplete: (summary)=>{
+          attempts++;
+          const totalMistakes = summary.totalMistakes || 0;
+          const score = Math.max(0, 100 - totalMistakes*10);
+          scores.push(score);
+          const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+          recordWritingScore(ch, avg);
+          playCompletionBell(score);
+          document.getElementById('score-'+id).innerHTML =
+            `<span class="score-badge">Attempt ${attempts}/3 — Score: ${score}/100 (best avg saved: ${avg})</span>`;
+          if(attempts < 3){
+            setTimeout(runOnce, 700);
+          }
+        }
+      });
+    }
+    runOnce();
+  }catch(e){ console.error(e); }
+}
+function recordWritingScore(ch, score){
+  const p = loadProgress();
+  const prev = p.writing[ch] || 0;
+  p.writing[ch] = Math.max(prev, score);
+  saveProgress(p);
+}
+
+/* ============================================================
+   3. LISTENING TAB
+   ============================================================ */
+function renderListening(){
+  const el = document.getElementById('panel-listening');
+  let html = `<div class="card"><h2>听力 Listening</h2>
+    <p class="note">Click "Listen twice" to hear the dialogue played twice, then answer the multiple-choice questions in Mandarin.</p></div>`;
+  LESSON.dialogues.forEach(d=>{
+    const fullText = d.lines.map(l=>l.ch).join('，');
+    const estSec = estimateDuration(fullText);
+    html += `<div class="card">
+      <h2>${d.title}</h2>
+      <p style="color:var(--gray);font-style:italic;">${d.scene}<br><span style="font-style:normal;">${d.sceneEn}</span></p>
+      <div class="audio-controls">
+        <button class="btn playbtn" data-key="${d.key}" onclick="toggleTTSPlay('${d.key}')">▶ Play (listen twice)</button>
+        <button class="btn outline" onclick="ttsStop()">⏹ Stop</button>
+        <input type="range" min="0" max="100" value="0" step="0.1"
+               id="seek-${d.key}"
+               oninput="onSeekInput('${d.key}', this.value)"
+               onchange="onSeekChange('${d.key}', this.value)">
+        <span class="time-label" id="time-${d.key}">0:00 / ${formatTime(estSec)}</span>
+      </div>
+      <div class="audio-note">Drag the slider to jump anywhere in the dialogue. Pause/Resume support varies slightly by browser.</div>
+      <button class="btn outline" style="margin-top:8px;" onclick="toggleTranscript('${d.key}')">📜 Show/Hide Transcript</button>
+      <div id="transcript-${d.key}" class="hide-block" style="margin-top:10px;"></div>
+      <div id="lqs-${d.key}" style="margin-top:10px;"></div>
+      <div id="lscore-${d.key}"></div>
+    </div>`;
+  });
+  el.innerHTML = html;
+  LESSON.dialogues.forEach(d=>{ renderListeningQuestions(d); renderListeningTranscript(d); });
+}
+function renderListeningTranscript(d){
+  const box = document.getElementById('transcript-'+d.key);
+  let h = '<div class="note">📜 Transcript (hidden by default — use this to check what you heard).</div>';
+  d.lines.forEach(l=>{
+    h += `<div class="dialogue-line">
+      <span class="spk">${l.spk}：</span>
+      <div class="hanzi">${l.ch}</div>
+      <div class="pinyin">${l.py}</div>
+      <div class="meaning">${l.en}</div>
+    </div>`;
+  });
+  box.innerHTML = h;
+}
+function toggleTranscript(key){
+  document.getElementById('transcript-'+key).classList.toggle('hide-block');
+}
+/* ============================================================
+   SEEKABLE / PAUSABLE DIALOGUE PLAYER
+   (Web Speech API has no true audio timeline, so we approximate
+   one: progress is driven by real word-boundary events, and the
+   displayed time is estimated from character count.)
+   ============================================================ */
+const TTS = {
+  playingKey:null, fullText:'', baseOffset:0,
+  repeatTarget:1, repeatCount:0, totalEstSeconds:0,
+  isPaused:false, seeking:false
+};
+function estimateDuration(text){
+  return Math.max(1, text.length * 0.26); // ~0.26s per character at rate 0.85
+}
+function formatTime(sec){
+  sec = Math.max(0, Math.round(sec));
+  const m = Math.floor(sec/60), s = sec%60;
+  return m + ':' + String(s).padStart(2,'0');
+}
+function toggleTTSPlay(key){
+  if(TTS.playingKey === key && !TTS.isPaused){
+    try{ window.speechSynthesis.pause(); }catch(e){}
+    TTS.isPaused = true;
+    updatePlayButtons();
+    return;
+  }
+  if(TTS.playingKey === key && TTS.isPaused){
+    try{ window.speechSynthesis.resume(); }catch(e){}
+    TTS.isPaused = false;
+    updatePlayButtons();
+    return;
+  }
+  const d = LESSON.dialogues.find(x=>x.key===key);
+  ttsStop();
+  TTS.playingKey = key;
+  TTS.fullText = d.lines.map(l=>l.ch).join('，');
+  TTS.repeatTarget = 2;
+  TTS.repeatCount = 0;
+  TTS.totalEstSeconds = estimateDuration(TTS.fullText);
+  playFromOffset(0);
+  updatePlayButtons();
+}
+function playFromOffset(charIndex){
+  window.speechSynthesis.cancel();
+  TTS.baseOffset = charIndex;
+  TTS.isPaused = false;
+  const segment = TTS.fullText.slice(charIndex);
+  if(!segment){ ttsAdvanceRepeatOrStop(); return; }
+  const u = new SpeechSynthesisUtterance(segment);
+  u.lang = 'zh-CN';
+  u.rate = 0.85;
+  const voices = window.speechSynthesis.getVoices();
+  const zh = voices.find(v=>v.lang && v.lang.toLowerCase().startsWith('zh'));
+  if(zh) u.voice = zh;
+  const thisKey = TTS.playingKey;
+  u.onboundary = (e)=>{
+    if(TTS.seeking || TTS.playingKey !== thisKey) return;
+    updateSeekUI(thisKey, TTS.baseOffset + (e.charIndex||0));
+  };
+  u.onend = ()=>{
+    if(TTS.playingKey !== thisKey) return; // stopped/switched externally
+    updateSeekUI(thisKey, TTS.fullText.length);
+    ttsAdvanceRepeatOrStop();
+  };
+  window.speechSynthesis.speak(u);
+}
+function ttsAdvanceRepeatOrStop(){
+  TTS.repeatCount++;
+  if(TTS.repeatCount < TTS.repeatTarget){
+    playFromOffset(0);
+  } else {
+    const key = TTS.playingKey;
+    ttsStop();
+    if(key) updateSeekUI(key, 0);
+  }
+}
+function ttsStop(){
+  try{ window.speechSynthesis.cancel(); }catch(e){}
+  TTS.playingKey = null;
+  TTS.isPaused = false;
+  TTS.repeatCount = 0;
+  updatePlayButtons();
+}
+function updatePlayButtons(){
+  document.querySelectorAll('.playbtn').forEach(b=>{
+    const k = b.dataset.key;
+    if(TTS.playingKey === k){
+      b.textContent = TTS.isPaused ? '▶ Resume' : '⏸ Pause';
+    } else {
+      b.textContent = '▶ Play (listen twice)';
+    }
+  });
+}
+function updateSeekUI(key, globalCharIndex){
+  const bar = document.getElementById('seek-'+key);
+  const timeLabel = document.getElementById('time-'+key);
+  if(!bar) return;
+  const pct = TTS.fullText.length ? Math.min(100, (globalCharIndex/TTS.fullText.length)*100) : 0;
+  bar.value = pct;
+  const elapsed = (pct/100) * TTS.totalEstSeconds;
+  if(timeLabel) timeLabel.textContent = formatTime(elapsed) + ' / ' + formatTime(TTS.totalEstSeconds);
+}
+function onSeekInput(key, val){
+  TTS.seeking = true;
+  const timeLabel = document.getElementById('time-'+key);
+  const total = (TTS.playingKey === key) ? TTS.totalEstSeconds : estimateDuration(
+    (LESSON.dialogues.find(x=>x.key===key).lines.map(l=>l.ch).join('，'))
+  );
+  if(timeLabel) timeLabel.textContent = formatTime((val/100)*total) + ' / ' + formatTime(total);
+}
+function onSeekChange(key, val){
+  TTS.seeking = false;
+  const d = LESSON.dialogues.find(x=>x.key===key);
+  if(TTS.playingKey !== key){
+    window.speechSynthesis.cancel();
+    TTS.playingKey = key;
+    TTS.fullText = d.lines.map(l=>l.ch).join('，');
+    TTS.repeatTarget = 2;
+    TTS.repeatCount = 0;
+    TTS.totalEstSeconds = estimateDuration(TTS.fullText);
+  }
+  const idx = Math.round((val/100) * TTS.fullText.length);
+  playFromOffset(idx);
+  updatePlayButtons();
+}
+function renderListeningQuestions(d){
+  const box = document.getElementById('lqs-'+d.key);
+  let html = '';
+  d.listening.forEach((q,i)=>{
+    html += `<div class="mc-q"><div><strong>(${i+1}) ${q.q}</strong></div>`;
+    q.opts.forEach((opt,j)=>{
+      html += `<button class="mc-opt" onclick="answerListening('${d.key}',${i},${j},this)">${String.fromCharCode(65+j)}. ${opt}</button>`;
+    });
+    html += `</div>`;
+  });
+  box.innerHTML = html;
+}
+function answerListening(key, qi, choice, btn){
+  const d = LESSON.dialogues.find(x=>x.key===key);
+  const q = d.listening[qi];
+  const group = btn.parentElement;
+  group.querySelectorAll('.mc-opt').forEach(b=>b.disabled = true);
+  if(choice === q.answer){
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    group.querySelectorAll('.mc-opt')[q.answer].classList.add('correct');
+  }
+  const p = loadProgress();
+  if(!p.listening[key]) p.listening[key] = {};
+  p.listening[key][qi] = (choice === q.answer) ? 1 : 0;
+  const mkey = key+'-'+qi;
+  if(choice === q.answer){
+    delete p.mistakes.listening[mkey];
+  } else {
+    p.mistakes.listening[mkey] = {
+      dialogue:d.title, question:q.q,
+      yours:q.opts[choice], correct:q.opts[q.answer]
+    };
+  }
+  saveProgress(p);
+  updateListeningScoreDisplay(key);
+}
+function updateListeningScoreDisplay(key){
+  const p = loadProgress();
+  const rec = p.listening[key] || {};
+  const vals = Object.values(rec);
+  const correct = vals.reduce((a,b)=>a+b,0);
+  document.getElementById('lscore-'+key).innerHTML =
+    vals.length ? `<span class="score-badge">Score: ${correct}/${vals.length}</span>` : '';
+}
+
+/* ============================================================
+   4. READING TAB
+   ============================================================ */
+function renderReading(){
+  const el = document.getElementById('panel-reading');
+  let html = `<div class="card"><h2>阅读 Reading</h2>
+    <p class="note">Pinyin is hidden by default — this trains real character recognition. Toggle it on if you need help.</p></div>`;
+  LESSON.dialogues.forEach(d=>{
+    html += `<div class="card">
+      <h2>${d.title} <button class="btn gold" onclick="togglePinyin('${d.key}')">拼音 Show/Hide Pinyin</button></h2>
+      <div id="rlines-${d.key}"></div>
+      <h3 style="color:var(--red-dark);">读后回答问题 Comprehension</h3>
+      <div id="rqs-${d.key}"></div>
+    </div>`;
+  });
+  el.innerHTML = html;
+  LESSON.dialogues.forEach(d=>{
+    const linesBox = document.getElementById('rlines-'+d.key);
+    let lhtml = '';
+    d.lines.forEach(l=>{
+      lhtml += `<div class="dialogue-line">
+        <span class="spk">${l.spk}：</span>
+        <div class="hanzi">${l.ch} <button class="btn" style="padding:3px 8px;font-size:.7rem;" onclick="speak('${l.ch}')">🔊</button></div>
+        <div class="pinyin hidden-py" data-key="${d.key}">${l.py}</div>
+        <div class="meaning">${l.en}</div>
+      </div>`;
+    });
+    linesBox.innerHTML = lhtml;
+
+    const qBox = document.getElementById('rqs-'+d.key);
+    let qhtml = '';
+    d.reading.forEach((q,i)=>{
+      qhtml += `<div class="mc-q">
+        <div><strong>(${i+1}) ${q.q}</strong></div>
+        <input type="text" class="freeform" id="rans-${d.key}-${i}" placeholder="Type your answer in Chinese...">
+        <button class="btn" onclick="markReadingDone('${d.key}',${i})">✓ Mark as answered</button>
+      </div>`;
+    });
+    qBox.innerHTML = qhtml;
+  });
+}
+function togglePinyin(key){
+  document.querySelectorAll(`.pinyin[data-key="${key}"]`).forEach(p=>{
+    p.classList.toggle('hidden-py');
+  });
+}
+function markReadingDone(key, i){
+  const val = document.getElementById(`rans-${key}-${i}`).value.trim();
+  const p = loadProgress();
+  if(!p.reading[key]) p.reading[key] = {};
+  p.reading[key][i] = val.length > 0 ? 1 : 0;
+  saveProgress(p);
+  alert(val.length ? 'Saved — nice work!' : 'Write something first, then mark it.');
+}
+
+/* ============================================================
+   5. GRAMMAR SPOTLIGHT TAB
+   ============================================================ */
+function renderGrammar(){
+  const el = document.getElementById('panel-grammar');
+  let html = `<div class="card"><h2>小语讲堂 Grammar Spotlight</h2>
+  <p class="note">Three grammar points from this lesson, each with textbook examples and quick practice.</p></div>`;
+  LESSON.grammar.forEach(g=>{
+    html += `<div class="card grammar-card">
+      <h3>${g.title}</h3>
+      <p style="color:var(--gray);font-weight:600;">${g.titleEn}</p>
+      <p>${g.explain}</p>
+      <div>${g.examples.map(ex=>`
+        <div class="dialogue-line">
+          <div class="hanzi">${ex.ch} <button class="btn" style="padding:3px 8px;font-size:.7rem;" onclick="speak('${ex.ch}')">🔊</button></div>
+          <div class="pinyin">${ex.py}</div>
+          <div class="meaning">${ex.en}</div>
+        </div>`).join('')}
+      </div>
+      <h3 style="margin-top:14px;">✏️ Quick Practice</h3>
+      <div id="gpractice-${g.key}"></div>
+    </div>`;
+  });
+  el.innerHTML = html;
+  LESSON.grammar.forEach(g=>{
+    const box = document.getElementById('gpractice-'+g.key);
+    let phtml = '';
+    g.practice.forEach((q,i)=>{
+      phtml += `<div class="mc-q"><div>${q.q}</div>`;
+      q.opts.forEach((opt,j)=>{
+        phtml += `<button class="mc-opt" onclick="answerGrammar('${g.key}',${i},${j},this)">${String.fromCharCode(65+j)}. ${opt}</button>`;
+      });
+      phtml += `</div>`;
+    });
+    box.innerHTML = phtml;
+  });
+}
+function answerGrammar(key, qi, choice, btn){
+  const g = LESSON.grammar.find(x=>x.key===key);
+  const q = g.practice[qi];
+  const group = btn.parentElement;
+  group.querySelectorAll('.mc-opt').forEach(b=>b.disabled=true);
+  const p = loadProgress();
+  const mkey = key+'-'+qi;
+  if(choice === q.answer){
+    btn.classList.add('correct');
+    delete p.mistakes.grammar[mkey];
+  }
+  else{
+    btn.classList.add('wrong');
+    group.querySelectorAll('.mc-opt')[q.answer].classList.add('correct');
+    p.mistakes.grammar[mkey] = {
+      topic:g.title, question:q.q,
+      yours:q.opts[choice], correct:q.opts[q.answer]
+    };
+  }
+  saveProgress(p);
+}
+
+/* ============================================================
+   6. EXERCISES TAB
+   ============================================================ */
+function renderExercises(){
+  const el = document.getElementById('panel-exercises');
+  let html = `<div class="card"><h2>练习 Exercises</h2>
+    <p class="note">Tap a word from the bank to fill each blank. Correct answers turn green automatically.</p></div>`;
+
+  html += `<div class="card"><h2>选词填空 · Word Bank 1
+      <button class="btn gold" style="float:right;" onclick="toggleClozeExtra(1)">拼音/英文 Pinyin &amp; Meaning</button></h2>
+    <div class="cloze-bank" id="bank1"></div>
+    <div id="cloze1"></div>
+    <div id="clozescore1"></div></div>`;
+
+  html += `<div class="card"><h2>选词填空 · Word Bank 2
+      <button class="btn gold" style="float:right;" onclick="toggleClozeExtra(2)">拼音/英文 Pinyin &amp; Meaning</button></h2>
+    <div class="cloze-bank" id="bank2"></div>
+    <div id="cloze2"></div>
+    <div id="clozescore2"></div></div>`;
+
+  LESSON.completeSentences.forEach((set,si)=>{
+    html += `<div class="card"><h2>${set.title}</h2><div id="complete-${si}"></div></div>`;
+  });
+
+  html += `<div class="card"><h2>用本课新学的词语描述图片 · Picture Description</h2></div>`;
+  LESSON.pictureDescription.forEach((set,si)=>{
+    html += `<div class="card"><h3>${set.title}</h3><div id="pic-${si}"></div></div>`;
+  });
+
+  el.innerHTML = html;
+  renderClozeSet(1, LESSON.clozeBank1);
+  renderClozeSet(2, LESSON.clozeBank2);
+
+  LESSON.completeSentences.forEach((set,si)=>{
+    const box = document.getElementById('complete-'+si);
+    let h = '';
+    set.items.forEach((item,ii)=>{
+      h += `<div class="mc-q">
+        <div class="cloze-sentence">${item.ch}</div>
+        <div style="font-size:.8rem;color:var(--gray);">${item.en}</div>
+        <input type="text" class="freeform" id="cs-${si}-${ii}" placeholder="Type your answer...">
+        <button class="btn" onclick="revealSample('cs-reveal-${si}-${ii}', this)">Show sample answer</button>
+        <div class="reveal-box" id="cs-reveal-${si}-${ii}">Sample: ${item.sample}</div>
+        <button class="btn gold" onclick="markExerciseDone('complete-${si}-${ii}')">✓ Mark as practiced</button>
+      </div>`;
+    });
+    box.innerHTML = h;
+  });
+
+  LESSON.pictureDescription.forEach((set,si)=>{
+    const box = document.getElementById('pic-'+si);
+    let h = '';
+    set.items.forEach((item,ii)=>{
+      h += `<div class="mc-q">
+        <div class="cloze-sentence">${item.ch}</div>
+        <div style="font-size:.8rem;color:var(--gray);">${item.en}</div>
+        <input type="text" class="freeform" id="pd-${si}-${ii}" placeholder="Type your answer...">
+        <button class="btn" onclick="revealSample('pd-reveal-${si}-${ii}', this)">Show sample answer</button>
+        <div class="reveal-box" id="pd-reveal-${si}-${ii}">Sample: ${item.sample}</div>
+        <button class="btn gold" onclick="markExerciseDone('pic-${si}-${ii}')">✓ Mark as practiced</button>
+      </div>`;
+    });
+    box.innerHTML = h;
+  });
+}
+function revealSample(id, btn){
+  const box = document.getElementById(id);
+  box.style.display = (box.style.display==='block') ? 'none' : 'block';
+}
+function markExerciseDone(tag){
+  const p = loadProgress();
+  if(!p.exercises.freeform) p.exercises.freeform = {};
+  p.exercises.freeform[tag] = 1;
+  saveProgress(p);
+}
+function renderClozeSet(num, data){
+  const bankBox = document.getElementById('bank'+num);
+  bankBox.innerHTML = data.bank.map((b,i)=>`<span id="bank${num}-${i}" onclick="selectBankWord(${num},${i})">${b.label}</span>`).join('');
+  const itemsBox = document.getElementById('cloze'+num);
+  let h = '';
+  data.items.forEach((item,ii)=>{
+    h += `<div class="cloze-sentence">${item.pre}
+      <span class="blank-slot" id="blank${num}-${ii}" data-answer="${item.blank}">____</span>
+      ${item.post}
+    </div>
+    <div class="cloze-extra hide-block" data-bank="${num}">
+      <div class="pinyin">${item.py || ''}</div>
+      <div class="meaning">${item.en}</div>
+    </div>`;
+  });
+  itemsBox.innerHTML = h;
+  window['clozeState'+num] = {selected:null};
+}
+function toggleClozeExtra(num){
+  document.querySelectorAll(`.cloze-extra[data-bank="${num}"]`).forEach(el=>{
+    el.classList.toggle('hide-block');
+  });
+}
+function selectBankWord(num, idx){
+  window['clozeState'+num].selected = idx;
+  document.querySelectorAll(`#bank${num} span`).forEach((s,i)=>{
+    s.style.outline = (i===idx) ? '2px solid var(--red)' : 'none';
+  });
+}
+// Delegate: clicking a blank slot fills it with the currently-selected bank word
+document.addEventListener('click', function(e){
+  if(e.target.classList && e.target.classList.contains('blank-slot')){
+    const idParts = e.target.id.split('-'); // blankN-ii
+    const num = idParts[0].replace('blank','');
+    const ii = idParts[1];
+    const state = window['clozeState'+num];
+    if(!state || state.selected === null || state.selected === undefined) return;
+    const data = num==='1' ? LESSON.clozeBank1 : LESSON.clozeBank2;
+    const chosen = data.bank[state.selected];
+    e.target.textContent = chosen.val;
+    const correctAns = e.target.dataset.answer;
+    if(chosen.val === correctAns){
+      e.target.style.color = 'var(--green)';
+      e.target.style.borderColor = 'var(--green)';
+    } else {
+      e.target.style.color = 'var(--red)';
+      e.target.style.borderColor = 'var(--red)';
+    }
+    document.getElementById(`bank${num}-${state.selected}`).classList.add('used');
+    updateClozeScore(num);
+  }
+});
+function updateClozeScore(num){
+  const data = num==='1' ? LESSON.clozeBank1 : LESSON.clozeBank2;
+  const slots = document.querySelectorAll(`#cloze${num} .blank-slot`);
+  let correct = 0, filled = 0;
+  const p = loadProgress();
+  slots.forEach((s,ii)=>{
+    const mkey = 'bank'+num+'-'+ii;
+    if(s.textContent !== '____'){
+      filled++;
+      if(s.textContent === s.dataset.answer){
+        correct++;
+        delete p.mistakes.cloze[mkey];
+      } else {
+        p.mistakes.cloze[mkey] = {
+          sentence: data.items[ii].pre + '____' + data.items[ii].post,
+          yours: s.textContent,
+          correct: s.dataset.answer
+        };
+      }
+    }
+  });
+  document.getElementById('clozescore'+num).innerHTML =
+    filled ? `<span class="score-badge">Score: ${correct}/${slots.length}</span>` : '';
+  if(!p.exercises.cloze) p.exercises.cloze = {};
+  p.exercises.cloze['bank'+num] = correct;
+  saveProgress(p);
+}
+
+/* ============================================================
+   7. ROLEPLAY TAB
+   ============================================================ */
+function renderRoleplay(){
+  const el = document.getElementById('panel-roleplay');
+  let html = `<div class="card"><h2>角色扮演 Roleplay</h2>
+    <p class="note">Pick a dialogue and a character. The app will speak the other character's lines; when it's your turn, click "Your turn — speak" and say your line aloud. You can also reveal or skip a line.</p>
+    <select class="rp-select" id="rpDialogueSelect" onchange="setupRoleplay()">
+      ${LESSON.dialogues.map(d=>`<option value="${d.key}">${d.title}</option>`).join('')}
+    </select>
+    <select class="rp-select" id="rpCharSelect" onchange="setupRoleplay()"></select>
+    <div id="rpArea" style="margin-top:14px;"></div>
+  </div>`;
+  el.innerHTML = html;
+  setupRoleplay();
+}
+let rpIndex = 0;
+function setupRoleplay(){
+  const key = document.getElementById('rpDialogueSelect').value;
+  const d = LESSON.dialogues.find(x=>x.key===key);
+  const speakers = [...new Set(d.lines.map(l=>l.spk))];
+  const charSel = document.getElementById('rpCharSelect');
+  const prevVal = charSel.value;
+  charSel.innerHTML = speakers.map(s=>`<option value="${s}">${s}</option>`).join('');
+  if(speakers.includes(prevVal)) charSel.value = prevVal;
+  rpIndex = 0;
+  renderRoleplayLine();
+}
+function renderRoleplayLine(){
+  const key = document.getElementById('rpDialogueSelect').value;
+  const d = LESSON.dialogues.find(x=>x.key===key);
+  const myChar = document.getElementById('rpCharSelect').value;
+  const area = document.getElementById('rpArea');
+  if(rpIndex >= d.lines.length){
+    area.innerHTML = `<p><strong>🎉 Done!</strong> You finished this dialogue.</p>
+      <button class="btn" onclick="rpIndex=0; renderRoleplayLine();">↺ Restart</button>`;
+    return;
+  }
+  const line = d.lines[rpIndex];
+  const isMine = line.spk === myChar;
+  area.innerHTML = `
+    <div class="dialogue-line">
+      <span class="spk">${line.spk}${isMine ? ' (YOU)' : ''}：</span>
+      <div class="hanzi" id="rpline-hanzi">${isMine ? '🙈 (hidden — say it aloud)' : line.ch}</div>
+      <div class="pinyin" id="rpline-pinyin" style="display:none;">${line.py}</div>
+      <div class="meaning">${line.en}</div>
+    </div>
+    <div style="margin-top:8px;">
+      ${isMine
+        ? `<button class="btn" onclick="rpRecord('${line.ch.replace(/'/g,"\\'")}')">🎤 Your turn — speak</button>
+           <button class="btn outline" onclick="rpReveal()">👁 Reveal</button>`
+        : `<button class="btn" onclick="speak('${line.ch.replace(/'/g,"\\'")}')">🔊 Play line</button>`}
+      <button class="btn gold" onclick="rpNext()">⏭ Next</button>
+    </div>
+    <div id="rpFeedback" style="margin-top:8px;"></div>
+  `;
+}
+function rpReveal(){
+  document.getElementById('rpline-hanzi').textContent = LESSON.dialogues
+    .find(x=>x.key===document.getElementById('rpDialogueSelect').value).lines[rpIndex].ch;
+  document.getElementById('rpline-pinyin').style.display = 'block';
+}
+function rpRecord(expected){
+  const fb = document.getElementById('rpFeedback');
+  fb.innerHTML = '🎙️ Listening...';
+  startRecognition(expected, (said, err)=>{
+    if(err){ fb.innerHTML = `<span style="color:var(--red);">Could not hear you (${err}). Try again or reveal the line.</span>`; return; }
+    const match = normalizeZh(said) === normalizeZh(expected);
+    fb.innerHTML = match
+      ? `<span style="color:var(--green);font-weight:700;">✓ Great! Heard: ${said}</span>`
+      : `<span style="color:var(--red);">Heard: "${said}" — expected: "${expected}". Try again!</span>`;
+  });
+}
+function rpNext(){ rpIndex++; renderRoleplayLine(); }
+
+/* ============================================================
+   7b. REVIEW MISTAKES TAB
+   ============================================================ */
+function renderMistakes(){
+  const el = document.getElementById('panel-mistakes');
+  const p = loadProgress();
+  const L = Object.values(p.mistakes.listening || {});
+  const G = Object.values(p.mistakes.grammar || {});
+  const C = Object.values(p.mistakes.cloze || {});
+  let html = `<div class="card"><h2>❌ 复习错题 Review Mistakes</h2>
+    <p class="note">Every question you got wrong across Listening, Grammar practice, and the word-bank cloze exercises shows up here — so you can quickly review just what you missed. Once you answer correctly, it disappears from this list.</p>
+    <button class="btn outline" onclick="renderMistakes()">🔄 Refresh</button>
+  </div>`;
+
+  html += `<div class="card"><h3 style="color:var(--red-dark);">🎧 Listening</h3>`;
+  html += L.length ? L.map(m=>`
+    <div class="mc-q mistake-card">
+      <div style="font-size:.78rem;color:var(--gray);">${m.dialogue}</div>
+      <div><strong>${m.question}</strong></div>
+      <div>Your answer: <span class="yours">${m.yours}</span></div>
+      <div>Correct answer: <span class="right">${m.correct}</span></div>
+    </div>`).join('') : `<div class="empty-note">No listening mistakes recorded. 🎉</div>`;
+  html += `</div>`;
+
+  html += `<div class="card"><h3 style="color:var(--red-dark);">💡 Grammar Practice</h3>`;
+  html += G.length ? G.map(m=>`
+    <div class="mc-q mistake-card">
+      <div style="font-size:.78rem;color:var(--gray);">${m.topic}</div>
+      <div><strong>${m.question}</strong></div>
+      <div>Your answer: <span class="yours">${m.yours}</span></div>
+      <div>Correct answer: <span class="right">${m.correct}</span></div>
+    </div>`).join('') : `<div class="empty-note">No grammar mistakes recorded. 🎉</div>`;
+  html += `</div>`;
+
+  html += `<div class="card"><h3 style="color:var(--red-dark);">📝 选词填空 Cloze Exercises</h3>`;
+  html += C.length ? C.map(m=>`
+    <div class="mc-q mistake-card">
+      <div class="cloze-sentence">${m.sentence}</div>
+      <div>Your answer: <span class="yours">${m.yours}</span></div>
+      <div>Correct answer: <span class="right">${m.correct}</span></div>
+    </div>`).join('') : `<div class="empty-note">No cloze mistakes recorded. 🎉</div>`;
+  html += `</div>`;
+
+  el.innerHTML = html;
+}
+
+/* ============================================================
+   8. PROGRESS TAB
+   ============================================================ */
+function renderProgress(){
+  const el = document.getElementById('panel-progress');
+  const p = loadProgress();
+  const writingEntries = Object.entries(p.writing || {});
+  const writingAvg = writingEntries.length
+    ? Math.round(writingEntries.reduce((a,[,v])=>a+v,0) / writingEntries.length) : 0;
+
+  let listeningCorrect=0, listeningTotal=0;
+  Object.values(p.listening || {}).forEach(rec=>{
+    Object.values(rec).forEach(v=>{ listeningTotal++; listeningCorrect += v; });
+  });
+
+  let readingDone=0, readingTotal=0;
+  Object.values(p.reading || {}).forEach(rec=>{
+    Object.values(rec).forEach(v=>{ readingTotal++; readingDone += v; });
+  });
+
+  const clozeScores = p.exercises && p.exercises.cloze ? p.exercises.cloze : {};
+  const clozeSum = Object.values(clozeScores).reduce((a,b)=>a+b,0);
+  const freeformDone = p.exercises && p.exercises.freeform ? Object.keys(p.exercises.freeform).length : 0;
+
+  el.innerHTML = `
+    <div class="card"><h2>📊 Progress ${document.getElementById('studentName').value ? '— ' + document.getElementById('studentName').value : '(guest)'}</h2>
+      <table class="progress-table">
+        <tr><th>Area</th><th>Result</th></tr>
+        <tr><td>✍️ Writing (avg trace score)</td><td>${writingEntries.length ? writingAvg + '/100 (' + writingEntries.length + ' chars practiced)' : '— not started —'}</td></tr>
+        <tr><td>🎧 Listening</td><td>${listeningTotal ? listeningCorrect + '/' + listeningTotal + ' correct' : '— not started —'}</td></tr>
+        <tr><td>📖 Reading comprehension</td><td>${readingTotal ? readingDone + '/' + readingTotal + ' answered' : '— not started —'}</td></tr>
+        <tr><td>📝 Exercises (cloze score)</td><td>${Object.keys(clozeScores).length ? clozeSum + ' correct across word banks' : '— not started —'}</td></tr>
+        <tr><td>📝 Free-form items practiced</td><td>${freeformDone}</td></tr>
+        <tr><td>🔥 Day streak</td><td>${p.streak || 0}</td></tr>
+      </table>
+      <p class="note" style="margin-top:12px;">Progress is saved per student name in this browser's local storage. Use the same name and device to keep your streak going!</p>
+      <button class="btn outline" onclick="resetProgress()">🗑 Reset my progress</button>
+    </div>
+  `;
+}
+function resetProgress(){
+  if(confirm('This will clear all saved progress for this student name. Continue?')){
+    localStorage.removeItem(studentKey());
+    renderProgress();
+  }
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+initNav();
+console.log(COPYRIGHT);
+</script>
+</body>
+</html>
