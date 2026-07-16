@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<!--
+  Aruna's Classes — New HSK 3.0, Lesson 1 · 三字短语双向练习
+  Two-Way Recall Drill — 38 three-character phrases from 我们去机场接你们
+  © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.
+  Standalone, offline-capable (GitHub Pages friendly). No backend, no API key.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="RRAruna Enterprises · ChineseFrench · Aruna's Classes">
+<meta name="copyright" content="© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.">
+<title>Aruna's Classes — HSK 3.0 L1 · 三字短语双向练习</title>
+<style>
+:root{
+  --red:#a2231d;
+  --red-dark:#7a1a15;
+  --gold:#c99a2e;
+  --gold-light:#f3e3b3;
+  --cream:#fbf6ea;
+  --ink:#2b1a12;
+  --green:#2e7d32;
+  --green-bg:#e3f5e1;
+  --gray:#8a7f6e;
+  --radius:14px;
+  --shadow:0 4px 14px rgba(122,26,21,.15);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:"Segoe UI",Helvetica,Arial,sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  min-height:100vh;
+}
+.app-header{
+  background:linear-gradient(135deg,var(--red) 0%,var(--red-dark) 100%);
+  color:var(--gold-light);
+  padding:18px 16px 14px;
+  text-align:center;
+  border-bottom:4px solid var(--gold);
+}
+.app-header h1{margin:0 0 4px;font-size:1.4rem;letter-spacing:.5px;}
+.app-header .sub{font-size:.82rem;color:var(--gold);font-weight:600;}
+.app-header .lesson-title{margin-top:8px;font-size:1rem;color:#fff;}
+.student-bar{
+  max-width:720px;margin:12px auto 0;display:flex;gap:8px;
+  align-items:center;justify-content:center;flex-wrap:wrap;
+}
+.student-bar input{
+  padding:8px 12px;border-radius:20px;border:none;font-size:.9rem;width:220px;
+}
+.streak{
+  background:var(--gold);color:var(--red-dark);font-weight:700;
+  padding:6px 12px;border-radius:20px;font-size:.85rem;
+}
+nav.tabs{
+  display:flex;overflow-x:auto;gap:6px;padding:10px 10px 0;
+  max-width:1000px;margin:0 auto;-webkit-overflow-scrolling:touch;
+}
+nav.tabs button{
+  flex:0 0 auto;background:#fff;border:2px solid var(--gold);color:var(--red-dark);
+  padding:9px 14px;border-radius:20px 20px 0 0;font-weight:700;font-size:.82rem;
+  cursor:pointer;white-space:nowrap;transition:.15s;
+}
+nav.tabs button.active{background:var(--red);color:#fff;border-color:var(--red);}
+nav.tabs button.locked{opacity:.55;}
+main{max-width:1000px;margin:0 auto;padding:18px 14px 60px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fadein .25s ease;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important;}
+}
+.card{
+  background:#fff;border:1px solid var(--gold-light);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:16px;margin-bottom:16px;
+}
+.card h2{
+  margin-top:0;color:var(--red-dark);border-bottom:2px solid var(--gold-light);
+  padding-bottom:8px;font-size:1.1rem;
+}
+.note{
+  font-size:.8rem;color:var(--gray);background:var(--gold-light);
+  padding:8px 10px;border-radius:8px;margin-bottom:10px;
+}
+.btn{
+  background:var(--red);color:#fff;border:none;padding:9px 16px;border-radius:16px;
+  font-size:.85rem;cursor:pointer;margin:3px;font-weight:600;
+}
+.btn:hover{background:var(--red-dark);}
+.btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.btn.gold{background:var(--gold);color:var(--red-dark);}
+.btn.outline{background:#fff;color:var(--red);border:2px solid var(--red);}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+.btn.big{font-size:1rem;padding:12px 26px;}
+
+/* ---- Signature element: the pinyin lock ---- */
+.prompt-stage{
+  text-align:center;background:var(--cream);border:2px dashed var(--gold);
+  border-radius:12px;padding:26px 14px 18px;margin-bottom:14px;
+}
+.prompt-hanzi{
+  font-size:4rem;font-weight:700;color:var(--red-dark);
+  letter-spacing:.18em;line-height:1.25;margin:0;
+}
+.prompt-en{font-size:1.6rem;font-weight:700;color:var(--red-dark);margin:0;}
+.pinyin-lock{
+  margin-top:12px;font-size:.85rem;color:var(--gray);font-style:italic;
+  letter-spacing:.05em;
+}
+.pinyin-lock.revealed{color:var(--green);font-weight:700;font-style:normal;}
+.src-tag{
+  display:inline-block;background:var(--gold-light);color:var(--red-dark);
+  font-size:.68rem;padding:2px 8px;border-radius:10px;font-weight:700;margin-top:8px;
+}
+.progress-wrap{
+  height:8px;background:var(--gold-light);border-radius:6px;overflow:hidden;margin-bottom:12px;
+}
+.progress-bar{height:100%;background:var(--red);width:0;transition:width .25s;}
+.qcount{font-size:.78rem;color:var(--gray);margin-bottom:6px;}
+.mc-opt{
+  display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--gold-light);
+  border-radius:8px;padding:11px 12px;margin:7px 0;cursor:pointer;font-size:.95rem;
+  font-family:inherit;color:var(--ink);
+}
+.mc-opt:hover:not(:disabled){border-color:var(--gold);}
+.mc-opt:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.mc-opt.correct{background:var(--green-bg);border-color:var(--green);font-weight:700;}
+.mc-opt.wrong{background:#fbe3e1;border-color:var(--red);}
+.mc-opt:disabled{cursor:default;}
+
+/* ---- Mode 2 input ---- */
+.input-toggle{display:flex;gap:6px;justify-content:center;margin-bottom:12px;}
+.input-toggle button{
+  background:#fff;border:2px solid var(--gold);color:var(--red-dark);
+  padding:7px 14px;border-radius:16px;font-weight:700;font-size:.8rem;cursor:pointer;
+}
+.input-toggle button.on{background:var(--red);color:#fff;border-color:var(--red);}
+.type-field{
+  width:100%;padding:14px;border:2px solid var(--gold);border-radius:10px;
+  font-size:2rem;text-align:center;letter-spacing:.15em;font-family:inherit;
+  color:var(--red-dark);background:#fff;
+}
+.type-field:focus{outline:3px solid var(--gold);outline-offset:1px;}
+.tile-answer{
+  min-height:64px;border:2px solid var(--gold);border-radius:10px;background:#fff;
+  display:flex;align-items:center;justify-content:center;gap:8px;padding:8px;margin-bottom:10px;
+}
+.tile-slot{
+  width:52px;height:52px;border-bottom:3px solid var(--gold-light);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.9rem;font-weight:700;color:var(--red-dark);
+}
+.tile-slot.filled{border-bottom-color:var(--red);}
+.tile-bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.tile{
+  width:54px;height:54px;font-size:1.7rem;font-weight:700;
+  background:var(--cream);border:2px solid var(--gold);border-radius:10px;
+  color:var(--red-dark);cursor:pointer;font-family:inherit;
+}
+.tile:hover:not(:disabled){background:var(--gold-light);}
+.tile:focus-visible{outline:3px solid var(--red);outline-offset:2px;}
+.tile.used{opacity:.28;pointer-events:none;}
+.feedback{
+  margin-top:12px;padding:10px 12px;border-radius:8px;font-size:.92rem;display:none;
+}
+.feedback.ok{background:var(--green-bg);border:1px solid var(--green);display:block;}
+.feedback.no{background:#fbe3e1;border:1px solid var(--red);display:block;}
+.feedback .big-ans{font-size:1.7rem;font-weight:700;color:var(--red-dark);letter-spacing:.12em;}
+
+.lock-screen{text-align:center;padding:30px 14px;}
+.lock-screen .lock-icon{font-size:3rem;}
+.gauge{
+  font-size:2.6rem;font-weight:700;color:var(--red-dark);margin:6px 0;
+}
+.result-box{text-align:center;padding:20px 10px;}
+table.tbl{width:100%;border-collapse:collapse;}
+table.tbl td,table.tbl th{
+  padding:8px;border-bottom:1px solid var(--gold-light);text-align:left;font-size:.88rem;
+}
+.mistake-card{
+  border-left:4px solid var(--red);background:#fff;border-radius:0 8px 8px 0;
+  padding:10px 12px;margin-bottom:8px;border-top:1px solid var(--gold-light);
+  border-right:1px solid var(--gold-light);border-bottom:1px solid var(--gold-light);
+}
+.mistake-card .mh{font-size:1.5rem;font-weight:700;color:var(--red-dark);letter-spacing:.1em;}
+.yours{color:var(--red);font-weight:600;}
+.right{color:var(--green);font-weight:700;}
+.empty-note{color:var(--gray);font-style:italic;padding:10px;}
+.footer-copy{text-align:center;color:var(--gray);font-size:.72rem;padding:20px 10px 40px;}
+.watermark{
+  position:fixed;bottom:6px;right:10px;font-size:.62rem;color:rgba(122,26,21,.35);
+  pointer-events:none;z-index:5;
+}
+@media (max-width:600px){
+  .app-header h1{font-size:1.15rem;}
+  .prompt-hanzi{font-size:3rem;}
+  .prompt-en{font-size:1.25rem;}
+  .tile,.tile-slot{width:46px;height:46px;font-size:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="watermark">© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes</div>
+
+<header class="app-header">
+  <h1>爱睿娜的课堂 · Aruna's Classes</h1>
+  <div class="sub">新HSK 3.0 标准教程 · 第一课 我们去机场接你们</div>
+  <div class="lesson-title">三字短语双向练习 · Two-Way Recall Drill · 38 Phrases</div>
+  <div class="student-bar">
+    <input id="studentName" type="text" placeholder="Enter your name to save progress..." aria-label="Student name">
+    <span class="streak" id="streakBadge">🔥 0 day streak</span>
+  </div>
+</header>
+
+<nav class="tabs" id="tabNav"></nav>
+<main id="mainArea"></main>
+
+<div class="footer-copy">
+  © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.<br>
+  Mode 2 accepts a Chinese keyboard (IME) or the on-screen tile bank — no IME required.
+</div>
+
+<script>
+/* ============================================================
+   © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes.
+   All Rights Reserved.
+   ============================================================ */
+const COPYRIGHT = "© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.";
+const UNLOCK_THRESHOLD = 0.80;
+
+/* ============================================================
+   DATA — 38 three-character phrases from 课文1–4
+   `alt` = other phrases accepted as correct (identical English).
+   ============================================================ */
+const PHRASES = [
+  {id:1,  ch:"在一起", py:"zài yìqǐ",       en:"(to be) together",            text:1},
+  {id:2,  ch:"好朋友", py:"hǎo péngyou",    en:"good friend",                 text:1},
+  {id:3,  ch:"有点儿", py:"yǒudiǎnr",       en:"a little; somewhat",          text:1},
+  {id:4,  ch:"看上去", py:"kàn shàngqù",    en:"looks; seems",                text:1, alt:["看起来"]},
+  {id:5,  ch:"长得像", py:"zhǎng de xiàng", en:"to look alike",               text:1},
+  {id:6,  ch:"一米八", py:"yì mǐ bā",       en:"1.8 metres",                  text:1},
+  {id:7,  ch:"看起来", py:"kàn qǐlái",      en:"looks; seems",                text:1, alt:["看上去"]},
+  {id:8,  ch:"去机场", py:"qù jīchǎng",     en:"to go to the airport",        text:1},
+  {id:9,  ch:"接他们", py:"jiē tāmen",      en:"to pick them up",             text:1},
+  {id:10, ch:"到北京", py:"dào Běijīng",    en:"to arrive in Beijing",        text:1},
+
+  {id:11, ch:"行李箱", py:"xínglǐxiāng",    en:"suitcase",                    text:2},
+  {id:12, ch:"没出来", py:"méi chūlái",     en:"hasn't come out",             text:2},
+  {id:13, ch:"什么样", py:"shénme yàng",    en:"what kind; what … like",      text:2},
+  {id:14, ch:"黑色的", py:"hēisè de",       en:"black (one)",                 text:2},
+  {id:15, ch:"在哪儿", py:"zài nǎr",        en:"somewhere",                   text:2},
+  {id:16, ch:"看到过", py:"kàndào guò",     en:"to have seen (before)",       text:2},
+  {id:17, ch:"拿错了", py:"ná cuò le",      en:"took (it) by mistake",        text:2},
+  {id:18, ch:"找谁问", py:"zhǎo shéi wèn",  en:"to find someone to ask",      text:2},
+  {id:19, ch:"有不少", py:"yǒu bù shǎo",    en:"there are quite a few",       text:2},
+  {id:20, ch:"别着急", py:"bié zháojí",     en:"don't worry",                 text:2},
+  {id:21, ch:"服务台", py:"fúwùtái",        en:"service desk",                text:2},
+  {id:22, ch:"问问吧", py:"wènwen ba",      en:"let's ask",                   text:2},
+
+  {id:23, ch:"看见了", py:"kànjiàn le",     en:"saw",                         text:3},
+  {id:24, ch:"快出来", py:"kuài chūlái",    en:"to be coming out soon",       text:3},
+  {id:25, ch:"高个子", py:"gāo gèzi",       en:"tall build; a tall person",   text:3},
+  {id:26, ch:"那个人", py:"nàge rén",       en:"that person",                 text:3},
+  {id:27, ch:"黑衣服", py:"hēi yīfu",       en:"black clothes",               text:3},
+  {id:28, ch:"短头发", py:"duǎn tóufa",     en:"short hair",                  text:3},
+  {id:29, ch:"年轻人", py:"niánqīngrén",    en:"young person",                text:3},
+
+  {id:30, ch:"写日记", py:"xiě rìjì",       en:"to write a diary",            text:4},
+  {id:31, ch:"不见了", py:"bújiàn le",      en:"is missing; has disappeared", text:4},
+  {id:32, ch:"带她去", py:"dài tā qù",      en:"to take her to",              text:4},
+  {id:33, ch:"帮助她", py:"bāngzhù tā",     en:"to help her",                 text:4},
+  {id:34, ch:"找到了", py:"zhǎodào le",     en:"found (it)",                  text:4},
+  {id:35, ch:"八点多", py:"bā diǎn duō",    en:"after eight o'clock",         text:4},
+  {id:36, ch:"一出来", py:"yì chūlái",      en:"as soon as (we) came out",    text:4},
+  {id:37, ch:"很好吃", py:"hěn hǎochī",     en:"very delicious",              text:4},
+  {id:38, ch:"中国菜", py:"Zhōngguó cài",   en:"Chinese food",                text:4}
+];
+const TOTAL = PHRASES.length;
+const ALL_CHARS = [...new Set(PHRASES.flatMap(p => p.ch.split('')))];
+
+/* ============================================================
+   STORAGE — wrapped so a blocked localStorage never breaks the app
+   ============================================================ */
+function studentKey(){
+  const el = document.getElementById('studentName');
+  const n = el ? el.value.trim() : '';
+  return n ? ("aruna_hsk3_l1_drill_" + n.toLowerCase().replace(/\s+/g,'_')) : "aruna_hsk3_l1_drill_guest";
+}
+function defaultProgress(){
+  return {
+    mode1:{best:0, runs:0, lastScore:null},
+    mode2:{best:0, runs:0, lastScore:null},
+    unlocked:false,
+    inputMode:'type',
+    mistakes:{mode1:{}, mode2:{}},
+    lastVisit:null, streak:0
+  };
+}
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(studentKey());
+    if(!raw) return defaultProgress();
+    const p = JSON.parse(raw);
+    const d = defaultProgress();
+    return Object.assign(d, p, {
+      mode1:Object.assign(d.mode1, p.mode1||{}),
+      mode2:Object.assign(d.mode2, p.mode2||{}),
+      mistakes:Object.assign(d.mistakes, p.mistakes||{})
+    });
+  }catch(e){ return defaultProgress(); }
+}
+function saveProgress(p){
+  try{ localStorage.setItem(studentKey(), JSON.stringify(p)); }catch(e){}
+}
+function touchStreak(){
+  const p = loadProgress();
+  const today = new Date().toDateString();
+  if(p.lastVisit !== today){
+    const yesterday = new Date(Date.now()-86400000).toDateString();
+    p.streak = (p.lastVisit === yesterday) ? (p.streak||0)+1 : 1;
+    p.lastVisit = today;
+    saveProgress(p);
+  }
+  document.getElementById('streakBadge').textContent = "🔥 " + (p.streak||0) + " day streak";
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function shuffle(a){
+  const r = a.slice();
+  for(let i=r.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [r[i],r[j]] = [r[j],r[i]];
+  }
+  return r;
+}
+function normalizeZh(s){
+  return (s||'').replace(/[\s，。？！,.?!、；;：:'"'"]/g,'');
+}
+function acceptedAnswers(p){
+  return [p.ch].concat(p.alt || []);
+}
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+const TABS = [
+  {id:'mode1', label:'🀄 认读 Mode 1 · Chinese → English'},
+  {id:'mode2', label:'✍️ 默写 Mode 2 · English → Chinese'},
+  {id:'mistakes', label:'❌ 错题 Mistakes'},
+  {id:'progress', label:'📊 进度 Progress'}
+];
+function initNav(){
+  const nav = document.getElementById('tabNav');
+  const main = document.getElementById('mainArea');
+  TABS.forEach((t,i)=>{
+    const b = document.createElement('button');
+    b.textContent = t.label;
+    b.dataset.tab = t.id;
+    if(i===0) b.classList.add('active');
+    b.onclick = ()=> switchTab(t.id);
+    nav.appendChild(b);
+
+    const div = document.createElement('div');
+    div.className = 'panel' + (i===0?' active':'');
+    div.id = 'panel-' + t.id;
+    main.appendChild(div);
+  });
+  renderAll();
+}
+function switchTab(id){
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+id));
+  if(id==='mode2') renderMode2();
+  if(id==='mistakes') renderMistakes();
+  if(id==='progress') renderProgress();
+}
+function renderAll(){
+  renderMode1Intro();
+  renderMode2();
+  renderMistakes();
+  renderProgress();
+  refreshLockBadge();
+}
+function refreshLockBadge(){
+  const p = loadProgress();
+  const btn = document.querySelector('nav.tabs button[data-tab="mode2"]');
+  if(!btn) return;
+  btn.classList.toggle('locked', !p.unlocked);
+  btn.textContent = p.unlocked
+    ? '✍️ 默写 Mode 2 · English → Chinese'
+    : '🔒 默写 Mode 2 · English → Chinese';
+}
+
+/* ============================================================
+   MODE 1 — Recognition: Chinese (no pinyin) → English MCQ
+   ============================================================ */
+let M1 = null;
+function renderMode1Intro(){
+  const p = loadProgress();
+  const el = document.getElementById('panel-mode1');
+  const best = p.mode1.best ? Math.round(p.mode1.best*100) + '%' : '—';
+  el.innerHTML = `
+    <div class="card">
+      <h2>认读 · Recognition — Chinese to English</h2>
+      <p class="note">You will see the characters only. No pinyin — that is the whole point.
+      Read the phrase, then choose its meaning. Pinyin unlocks after you answer.</p>
+      <div class="result-box">
+        <div style="font-size:.85rem;color:var(--gray);">Your best score</div>
+        <div class="gauge">${best}</div>
+        <div style="font-size:.85rem;color:var(--gray);margin-bottom:14px;">
+          Score ${Math.round(UNLOCK_THRESHOLD*100)}% or higher to unlock Mode 2 · ${TOTAL} phrases
+        </div>
+        <button class="btn big" onclick="startMode1()">Start the ${TOTAL}-phrase drill</button>
+      </div>
+    </div>`;
+}
+function startMode1(){
+  M1 = { queue: shuffle(PHRASES), i:0, correct:0 };
+  drawMode1();
+}
+function drawMode1(){
+  const el = document.getElementById('panel-mode1');
+  if(M1.i >= M1.queue.length){ return finishMode1(); }
+  const q = M1.queue[M1.i];
+
+  // Distractors: never an option with the same English (protects 看上去 / 看起来)
+  const pool = PHRASES.filter(x => x.en !== q.en);
+  const opts = shuffle(shuffle(pool).slice(0,3).concat([q]));
+
+  el.innerHTML = `
+    <div class="card">
+      <div class="qcount">Phrase ${M1.i+1} of ${M1.queue.length} · Score ${M1.correct}</div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:${(M1.i/M1.queue.length)*100}%"></div></div>
+      <div class="prompt-stage">
+        <p class="prompt-hanzi">${q.ch}</p>
+        <div class="pinyin-lock" id="m1py">🔒 拼音 hidden — read the characters</div>
+        <div class="src-tag">课文${q.text} · Text ${q.text}</div>
+      </div>
+      <div id="m1opts">
+        ${opts.map(o=>`<button class="mc-opt" onclick="answerMode1(${o.id},${q.id},this)">${esc(o.en)}</button>`).join('')}
+      </div>
+      <div class="feedback" id="m1fb"></div>
+      <div id="m1next"></div>
+    </div>`;
+}
+function answerMode1(chosenId, qId, btn){
+  const q = PHRASES.find(x=>x.id===qId);
+  const chosen = PHRASES.find(x=>x.id===chosenId);
+  const ok = chosen.en === q.en;   // gloss match, so 看上去/看起来 both pass
+  const group = document.getElementById('m1opts');
+  group.querySelectorAll('.mc-opt').forEach(b=>b.disabled = true);
+
+  if(ok){
+    btn.classList.add('correct');
+    M1.correct++;
+  }else{
+    btn.classList.add('wrong');
+    group.querySelectorAll('.mc-opt').forEach(b=>{
+      if(b.textContent === q.en) b.classList.add('correct');
+    });
+  }
+
+  const lock = document.getElementById('m1py');
+  lock.classList.add('revealed');
+  lock.textContent = '🔓 ' + q.py;
+
+  const fb = document.getElementById('m1fb');
+  fb.className = 'feedback ' + (ok ? 'ok' : 'no');
+  fb.innerHTML = ok
+    ? `✓ 对了！<strong>${q.ch}</strong> · ${q.py} — ${esc(q.en)}`
+    : `✗ <strong>${q.ch}</strong> · ${q.py} means <strong>${esc(q.en)}</strong>. You chose "${esc(chosen.en)}" — that is <strong>${chosen.ch}</strong>.`;
+
+  const p = loadProgress();
+  const mk = 'q'+q.id;
+  if(ok){ delete p.mistakes.mode1[mk]; }
+  else{ p.mistakes.mode1[mk] = {ch:q.ch, py:q.py, en:q.en, yours:chosen.en, yoursCh:chosen.ch}; }
+  saveProgress(p);
+
+  document.getElementById('m1next').innerHTML =
+    `<button class="btn big" id="m1nextBtn" onclick="M1.i++;drawMode1();">Next →</button>`;
+  document.getElementById('m1nextBtn').focus();
+}
+function finishMode1(){
+  const pct = M1.correct / M1.queue.length;
+  const p = loadProgress();
+  p.mode1.runs++;
+  p.mode1.lastScore = pct;
+  p.mode1.best = Math.max(p.mode1.best || 0, pct);
+  const justUnlocked = !p.unlocked && pct >= UNLOCK_THRESHOLD;
+  if(pct >= UNLOCK_THRESHOLD) p.unlocked = true;
+  saveProgress(p);
+  refreshLockBadge();
+
+  const el = document.getElementById('panel-mode1');
+  el.innerHTML = `
+    <div class="card">
+      <h2>认读 · Round complete</h2>
+      <div class="result-box">
+        <div class="gauge">${M1.correct} / ${M1.queue.length}</div>
+        <div style="font-size:1.2rem;font-weight:700;color:${pct>=UNLOCK_THRESHOLD?'var(--green)':'var(--red)'};">
+          ${Math.round(pct*100)}%
+        </div>
+        <p style="margin-top:14px;">
+          ${justUnlocked
+            ? '🔓 <strong>Mode 2 is now unlocked.</strong> Recognising a phrase and producing it are different skills — go find out which ones you can actually write.'
+            : (pct>=UNLOCK_THRESHOLD
+                ? 'Mode 2 is unlocked. Run this again any time to keep the characters sharp.'
+                : `You need ${Math.round(UNLOCK_THRESHOLD*100)}% to unlock Mode 2. Review your 错题 first, then run it again.`)}
+        </p>
+        <button class="btn big" onclick="startMode1()">↺ Run again</button>
+        ${pct>=UNLOCK_THRESHOLD ? '<button class="btn gold big" onclick="switchTab(\'mode2\')">Go to Mode 2 →</button>' : '<button class="btn outline big" onclick="switchTab(\'mistakes\')">Review 错题 →</button>'}
+      </div>
+    </div>`;
+  renderProgress();
+}
+
+/* ============================================================
+   MODE 2 — Production: English → type / build the Chinese
+   ============================================================ */
+let M2 = null;
+function renderMode2(){
+  const p = loadProgress();
+  const el = document.getElementById('panel-mode2');
+  if(!p.unlocked){
+    el.innerHTML = `
+      <div class="card">
+        <h2>默写 · Production — English to Chinese</h2>
+        <div class="lock-screen">
+          <div class="lock-icon">🔒</div>
+          <p style="max-width:460px;margin:10px auto;">
+            Mode 2 opens once you score <strong>${Math.round(UNLOCK_THRESHOLD*100)}%</strong> or better in Mode 1.
+            You cannot write a phrase you cannot yet read — recognition comes first.
+          </p>
+          <div style="font-size:.85rem;color:var(--gray);margin-bottom:12px;">
+            Your best so far: <strong>${p.mode1.best ? Math.round(p.mode1.best*100)+'%' : '—'}</strong>
+          </div>
+          <button class="btn big" onclick="switchTab('mode1')">Go to Mode 1 →</button>
+        </div>
+      </div>`;
+    return;
+  }
+  const best = p.mode2.best ? Math.round(p.mode2.best*100) + '%' : '—';
+  el.innerHTML = `
+    <div class="card">
+      <h2>默写 · Production — English to Chinese</h2>
+      <p class="note">You see the English. Produce the three characters — type them with a Chinese
+      keyboard, or tap them out on the tile bank if you don't have one installed.</p>
+      <div class="result-box">
+        <div style="font-size:.85rem;color:var(--gray);">Your best score</div>
+        <div class="gauge">${best}</div>
+        <div style="font-size:.85rem;color:var(--gray);margin-bottom:14px;">${TOTAL} phrases</div>
+        <button class="btn big" onclick="startMode2()">Start the ${TOTAL}-phrase drill</button>
+      </div>
+    </div>`;
+}
+function startMode2(){
+  M2 = { queue: shuffle(PHRASES), i:0, correct:0, picks:[] };
+  drawMode2();
+}
+function setInputMode(m){
+  const p = loadProgress();
+  p.inputMode = m;
+  saveProgress(p);
+  M2.picks = [];
+  drawMode2(true);
+}
+function drawMode2(keepIndex){
+  const el = document.getElementById('panel-mode2');
+  if(M2.i >= M2.queue.length){ return finishMode2(); }
+  const q = M2.queue[M2.i];
+  const p = loadProgress();
+  const mode = p.inputMode || 'type';
+
+  if(!M2.tiles || !keepIndex){
+    const correctChars = q.ch.split('');
+    const distractPool = ALL_CHARS.filter(c => !correctChars.includes(c));
+    const distract = shuffle(distractPool).slice(0, 6);
+    M2.tiles = shuffle(correctChars.concat(distract)).map((c,idx)=>({c, idx}));
+    M2.picks = [];
+  }
+
+  const slots = [0,1,2].map(i=>{
+    const ch = mode==='tiles' ? (M2.picks[i] ? M2.picks[i].c : '') : '';
+    return `<div class="tile-slot ${ch?'filled':''}">${ch}</div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="card">
+      <div class="qcount">Phrase ${M2.i+1} of ${M2.queue.length} · Score ${M2.correct}</div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:${(M2.i/M2.queue.length)*100}%"></div></div>
+      <div class="prompt-stage">
+        <p class="prompt-en">${esc(q.en)}</p>
+        <div class="pinyin-lock" id="m2py">🔒 拼音 hidden — recall the characters</div>
+        <div class="src-tag">课文${q.text} · Text ${q.text}</div>
+      </div>
+
+      <div class="input-toggle">
+        <button class="${mode==='type'?'on':''}" onclick="setInputMode('type')">⌨️ Type (IME)</button>
+        <button class="${mode==='tiles'?'on':''}" onclick="setInputMode('tiles')">🀄 Tile bank</button>
+      </div>
+
+      ${mode==='type' ? `
+        <input class="type-field" id="m2input" type="text" autocomplete="off"
+               autocapitalize="off" spellcheck="false"
+               placeholder="写三个汉字…" aria-label="Type the Chinese phrase">
+        <div style="text-align:center;margin-top:10px;">
+          <button class="btn big" onclick="checkMode2()">Check answer</button>
+        </div>
+        <div class="note" style="margin-top:10px;">No Chinese keyboard? Switch to the tile bank above.</div>
+      ` : `
+        <div class="tile-answer">${slots}</div>
+        <div class="tile-bank">
+          ${M2.tiles.map(t=>`<button class="tile ${M2.picks.some(p=>p.idx===t.idx)?'used':''}"
+             onclick="pickTile(${t.idx})">${t.c}</button>`).join('')}
+        </div>
+        <div style="text-align:center;margin-top:12px;">
+          <button class="btn outline" onclick="undoTile()">← Undo</button>
+          <button class="btn big" onclick="checkMode2()" ${M2.picks.length<3?'disabled':''}>Check answer</button>
+        </div>
+      `}
+
+      <div class="feedback" id="m2fb"></div>
+      <div id="m2next" style="text-align:center;"></div>
+    </div>`;
+
+  if(mode==='type'){
+    const inp = document.getElementById('m2input');
+    inp.focus();
+    inp.addEventListener('keydown', e=>{ if(e.key==='Enter') checkMode2(); });
+  }
+}
+function pickTile(idx){
+  if(M2.picks.length >= 3) return;
+  const t = M2.tiles.find(x=>x.idx===idx);
+  if(!t || M2.picks.some(p=>p.idx===idx)) return;
+  M2.picks.push(t);
+  drawMode2(true);
+}
+function undoTile(){
+  M2.picks.pop();
+  drawMode2(true);
+}
+function checkMode2(){
+  const q = M2.queue[M2.i];
+  const p = loadProgress();
+  const mode = p.inputMode || 'type';
+  let given = '';
+  if(mode==='type'){
+    given = normalizeZh(document.getElementById('m2input').value);
+    if(!given){ return; }
+  }else{
+    if(M2.picks.length < 3) return;
+    given = M2.picks.map(t=>t.c).join('');
+  }
+
+  const accepted = acceptedAnswers(q);
+  const ok = accepted.includes(given);
+  if(ok) M2.correct++;
+
+  const lock = document.getElementById('m2py');
+  lock.classList.add('revealed');
+  lock.textContent = '🔓 ' + q.py;
+
+  const altNote = (q.alt && q.alt.length)
+    ? `<br><span style="font-size:.85rem;">Both <strong>${q.ch}</strong> and <strong>${q.alt.join('、')}</strong> are accepted here — they mean the same thing.</span>`
+    : '';
+
+  const fb = document.getElementById('m2fb');
+  fb.className = 'feedback ' + (ok ? 'ok' : 'no');
+  fb.innerHTML = ok
+    ? `✓ 对了！<span class="big-ans">${given}</span> · ${q.py}${altNote}`
+    : `✗ You wrote <span class="yours">${esc(given) || '(nothing)'}</span>. The answer is
+       <span class="big-ans">${q.ch}</span> · ${q.py}${altNote}`;
+
+  const mk = 'q'+q.id;
+  if(ok){ delete p.mistakes.mode2[mk]; }
+  else{ p.mistakes.mode2[mk] = {ch:q.ch, py:q.py, en:q.en, yours:given}; }
+  saveProgress(p);
+
+  // lock the inputs
+  document.querySelectorAll('.tile').forEach(b=>b.disabled = true);
+  const inp = document.getElementById('m2input');
+  if(inp) inp.disabled = true;
+  document.querySelectorAll('#panel-mode2 .btn').forEach(b=>{
+    if(b.textContent.indexOf('Check') > -1 || b.textContent.indexOf('Undo') > -1) b.disabled = true;
+  });
+
+  document.getElementById('m2next').innerHTML =
+    `<button class="btn big" id="m2nextBtn" onclick="M2.i++;M2.tiles=null;drawMode2();">Next →</button>`;
+  document.getElementById('m2nextBtn').focus();
+}
+function finishMode2(){
+  const pct = M2.correct / M2.queue.length;
+  const p = loadProgress();
+  p.mode2.runs++;
+  p.mode2.lastScore = pct;
+  p.mode2.best = Math.max(p.mode2.best || 0, pct);
+  saveProgress(p);
+
+  const gap = p.mode1.best ? Math.round((p.mode1.best - pct)*100) : null;
+  const el = document.getElementById('panel-mode2');
+  el.innerHTML = `
+    <div class="card">
+      <h2>默写 · Round complete</h2>
+      <div class="result-box">
+        <div class="gauge">${M2.correct} / ${M2.queue.length}</div>
+        <div style="font-size:1.2rem;font-weight:700;color:${pct>=0.8?'var(--green)':'var(--red)'};">
+          ${Math.round(pct*100)}%
+        </div>
+        ${gap !== null && gap > 0 ? `
+          <p class="note" style="max-width:460px;margin:14px auto;text-align:left;">
+            You read at <strong>${Math.round(p.mode1.best*100)}%</strong> but write at <strong>${Math.round(pct*100)}%</strong>
+            — a <strong>${gap}-point gap</strong>. That gap is the real measure of this lesson.
+            Close it on the phrases in your 错题 list.
+          </p>` : ''}
+        <button class="btn big" onclick="startMode2()">↺ Run again</button>
+        <button class="btn outline big" onclick="switchTab('mistakes')">Review 错题 →</button>
+      </div>
+    </div>`;
+  renderProgress();
+}
+
+/* ============================================================
+   MISTAKES
+   ============================================================ */
+function renderMistakes(){
+  const p = loadProgress();
+  const M1L = Object.values(p.mistakes.mode1 || {});
+  const M2L = Object.values(p.mistakes.mode2 || {});
+  const el = document.getElementById('panel-mistakes');
+
+  let html = `<div class="card">
+    <h2>❌ 错题 · Review Mistakes</h2>
+    <p class="note">Every phrase you got wrong shows up here. Answer it correctly and it disappears.
+    A phrase that sits in Mode 2 but not Mode 1 is one you can read but cannot write.</p>
+    <button class="btn outline" onclick="renderMistakes()">🔄 Refresh</button>
+  </div>`;
+
+  html += `<div class="card"><h2>🀄 认读 · Recognition</h2>`;
+  html += M1L.length ? M1L.map(m=>`
+    <div class="mistake-card">
+      <div class="mh">${m.ch}</div>
+      <div style="color:var(--gray);font-style:italic;font-size:.85rem;">${m.py}</div>
+      <div>Correct meaning: <span class="right">${esc(m.en)}</span></div>
+      <div>You chose: <span class="yours">${esc(m.yours)}</span> — that is ${m.yoursCh}</div>
+    </div>`).join('') : `<div class="empty-note">Nothing here. 🎉</div>`;
+  html += `</div>`;
+
+  html += `<div class="card"><h2>✍️ 默写 · Production</h2>`;
+  html += M2L.length ? M2L.map(m=>`
+    <div class="mistake-card">
+      <div class="mh">${m.ch}</div>
+      <div style="color:var(--gray);font-style:italic;font-size:.85rem;">${m.py} — ${esc(m.en)}</div>
+      <div>You wrote: <span class="yours">${esc(m.yours) || '(nothing)'}</span></div>
+    </div>`).join('') : `<div class="empty-note">Nothing here. 🎉</div>`;
+  html += `</div>`;
+
+  el.innerHTML = html;
+}
+
+/* ============================================================
+   PROGRESS
+   ============================================================ */
+function renderProgress(){
+  const p = loadProgress();
+  const el = document.getElementById('panel-progress');
+  const nameEl = document.getElementById('studentName');
+  const who = nameEl && nameEl.value.trim() ? '— ' + esc(nameEl.value.trim()) : '(guest)';
+  const m1 = p.mode1.best ? Math.round(p.mode1.best*100)+'%' : '— not started —';
+  const m2 = p.mode2.best ? Math.round(p.mode2.best*100)+'%' : '— not started —';
+  const gap = (p.mode1.best && p.mode2.best) ? Math.round((p.mode1.best - p.mode2.best)*100) : null;
+
+  el.innerHTML = `
+    <div class="card">
+      <h2>📊 Progress ${who}</h2>
+      <table class="tbl">
+        <tr><th>Area</th><th>Result</th></tr>
+        <tr><td>🀄 认读 Recognition (best)</td><td>${m1}</td></tr>
+        <tr><td>✍️ 默写 Production (best)</td><td>${m2}</td></tr>
+        <tr><td>📉 Read–write gap</td><td>${gap===null ? '—' : gap + ' points'}</td></tr>
+        <tr><td>🔓 Mode 2</td><td>${p.unlocked ? 'Unlocked' : 'Locked — need '+Math.round(UNLOCK_THRESHOLD*100)+'% in Mode 1'}</td></tr>
+        <tr><td>🔁 Rounds run</td><td>Mode 1: ${p.mode1.runs} · Mode 2: ${p.mode2.runs}</td></tr>
+        <tr><td>❌ Phrases still wrong</td><td>Recognition: ${Object.keys(p.mistakes.mode1||{}).length} · Production: ${Object.keys(p.mistakes.mode2||{}).length}</td></tr>
+        <tr><td>🔥 Day streak</td><td>${p.streak || 0}</td></tr>
+      </table>
+      <p class="note" style="margin-top:12px;">Progress saves per student name in this browser.
+      Same name, same device, and the streak keeps running.</p>
+      <button class="btn outline" onclick="resetProgress()">🗑 Reset my progress</button>
+    </div>`;
+}
+function resetProgress(){
+  if(confirm('This clears all saved progress for this student name. Continue?')){
+    try{ localStorage.removeItem(studentKey()); }catch(e){}
+    renderAll();
+    switchTab('progress');
+  }
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', ()=>{
+  let saved = null;
+  try{ saved = localStorage.getItem('aruna_hsk3_l1_drill_name'); }catch(e){}
+  if(saved) document.getElementById('studentName').value = saved;
+  touchStreak();
+  document.getElementById('studentName').addEventListener('change', ()=>{
+    try{ localStorage.setItem('aruna_hsk3_l1_drill_name', document.getElementById('studentName').value.trim()); }catch(e){}
+    touchStreak();
+    renderAll();
+  });
+  initNav();
+  console.log(COPYRIGHT);
+});
+</script>
+</body>
+</html>
