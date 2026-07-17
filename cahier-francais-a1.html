@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mon cahier de français — A1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papier:#FCFBF7;
+  --ligne:#C3D9F0;
+  --ligne-forte:#8FB6DE;
+  --marge:#E45C4A;
+  --encre:#2B2A6B;
+  --bic:#1B3AC7;
+  --gommette:#FFD23F;
+  --juste:#2E7D4F;
+  --faux:#C4432B;
+  --ombre:0 3px 0 rgba(43,42,107,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Nunito',system-ui,sans-serif;
+  color:var(--encre);
+  background:#EDE7DA;
+  padding:16px;
+  min-height:100vh;
+}
+.cahier{
+  max-width:760px;margin:0 auto;
+  background:var(--papier);
+  border-radius:6px 18px 18px 6px;
+  box-shadow:0 12px 30px rgba(43,42,107,.18);
+  overflow:hidden;
+  position:relative;
+}
+/* signature : la page Seyès */
+.page{
+  position:relative;
+  padding:22px 20px 26px 58px;
+  background-image:
+    repeating-linear-gradient(to bottom, transparent 0 31px, var(--ligne) 31px 32px),
+    repeating-linear-gradient(to right, transparent 0 31px, rgba(195,217,240,.45) 31px 32px);
+  background-position:0 0;
+}
+.page::before{
+  content:"";position:absolute;top:0;bottom:0;left:44px;width:2px;background:var(--marge);opacity:.8;
+}
+.spirale{
+  position:absolute;top:0;bottom:0;left:0;width:20px;background:#DCD3C0;
+  border-right:1px dashed rgba(43,42,107,.25);
+}
+.spirale span{position:absolute;left:5px;width:10px;height:10px;border-radius:50%;background:var(--papier);box-shadow:inset 0 1px 2px rgba(0,0,0,.3)}
+
+h1{
+  font-family:'Baloo 2',cursive;font-weight:800;font-size:clamp(24px,5vw,34px);
+  margin:0;line-height:1.1;letter-spacing:-.5px;
+}
+.sous{font-family:'Caveat',cursive;font-size:22px;color:var(--bic);margin:2px 0 18px}
+h2{font-family:'Baloo 2',cursive;font-size:24px;margin:0 0 4px}
+p{margin:0 0 10px}
+
+.cartes{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:620px){.cartes{grid-template-columns:1fr 1fr 1fr}}
+.carte{
+  border:2px solid var(--encre);border-radius:14px;background:#fff;
+  padding:16px;text-align:left;cursor:pointer;font:inherit;color:inherit;
+  box-shadow:var(--ombre);transition:transform .12s ease;
+}
+.carte:hover{transform:translateY(-3px)}
+.carte:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--bic);outline-offset:2px}
+.carte .ico{font-size:32px;display:block}
+.carte .titre{font-family:'Baloo 2',cursive;font-size:21px;margin-top:4px}
+.carte .note{font-family:'Caveat',cursive;font-size:20px;color:var(--juste)}
+.carte[data-fini="oui"]{background:#F3FAF4;border-color:var(--juste)}
+
+.barre{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.etape{font-family:'Caveat',cursive;font-size:21px;color:var(--bic)}
+.gommettes{letter-spacing:2px;font-size:18px}
+
+.question{
+  font-family:'Baloo 2',cursive;font-size:clamp(22px,5vw,30px);
+  margin:10px 0 6px;line-height:1.35;
+}
+.consigne{font-family:'Caveat',cursive;font-size:21px;color:var(--bic);margin-bottom:14px}
+
+.choix{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+.choix.mots{grid-template-columns:1fr}
+@media(min-width:620px){.choix.mots{grid-template-columns:1fr 1fr}}
+.opt{
+  border:2px solid var(--encre);border-radius:14px;background:#fff;
+  padding:14px;font:inherit;color:inherit;cursor:pointer;box-shadow:var(--ombre);
+  font-size:20px;font-weight:700;transition:transform .1s ease;
+}
+.opt .emoji{font-size:44px;display:block;line-height:1.2}
+.opt:hover:not(:disabled){transform:translateY(-2px)}
+.opt:disabled{cursor:default;opacity:.55}
+.opt.juste{background:#E7F6EC;border-color:var(--juste);opacity:1}
+.opt.faux{background:#FBEAE6;border-color:var(--faux);opacity:1}
+
+.haut-parleur{
+  font-size:40px;background:var(--gommette);border:2px solid var(--encre);
+  border-radius:50%;width:86px;height:86px;cursor:pointer;box-shadow:var(--ombre);
+  display:block;margin:6px 0 14px;
+}
+.haut-parleur:active{transform:translateY(2px)}
+
+.ligne-ecriture{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 12px;
+}
+input[type=text]{
+  font-family:'Caveat',cursive;font-size:34px;color:var(--bic);
+  border:none;border-bottom:2px solid var(--ligne-forte);background:transparent;
+  padding:2px 6px;flex:1;min-width:200px;
+}
+.accents{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.accents button{
+  font-family:'Caveat',cursive;font-size:22px;width:40px;height:40px;
+  border:2px solid var(--ligne-forte);border-radius:8px;background:#fff;cursor:pointer;color:var(--bic);
+}
+.indice{font-size:56px;text-align:center;margin:6px 0}
+
+.btn{
+  font-family:'Baloo 2',cursive;font-size:20px;
+  background:var(--bic);color:#fff;border:2px solid var(--encre);
+  border-radius:12px;padding:10px 20px;cursor:pointer;box-shadow:var(--ombre);
+}
+.btn.secondaire{background:#fff;color:var(--encre)}
+.retour{background:none;border:none;font-family:'Caveat',cursive;font-size:20px;color:var(--bic);cursor:pointer;padding:0}
+
+.reaction{font-family:'Baloo 2',cursive;font-size:22px;min-height:32px;margin:12px 0 4px}
+.reaction.ok{color:var(--juste)}
+.reaction.non{color:var(--faux)}
+
+.bilan{border:2px dashed var(--ligne-forte);border-radius:14px;padding:16px;background:#fff;margin-bottom:14px}
+.bilan .score{font-family:'Baloo 2',cursive;font-size:40px}
+.total{background:var(--gommette);border:2px solid var(--encre);border-radius:14px;padding:16px;text-align:center;box-shadow:var(--ombre)}
+.total .score{font-family:'Baloo 2',cursive;font-size:46px}
+.avert{font-family:'Caveat',cursive;font-size:19px;color:var(--faux)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main class="cahier">
+  <div class="spirale" aria-hidden="true"></div>
+  <div class="page">
+    <div id="app"></div>
+  </div>
+</main>
+
+<script>
+/* ---------- vocabulaire (liste A1 : « à … ») ---------- */
+const LECTURE = [
+  {mot:"un abricot", bon:"🍑", autres:["🍎","🍌","🍇"]},
+  {mot:"à pied", bon:"🚶", autres:["🚗","🚲","🚌"]},
+  {mot:"à droite", bon:"➡️", autres:["⬅️","⬆️","⬇️"]},
+  {mot:"à gauche", bon:"⬅️", autres:["➡️","⬆️","⬇️"]},
+  {mot:"à table", bon:"🍽️", autres:["🛏️","🚿","📚"]},
+  {mot:"à la campagne", bon:"🌾", autres:["🏙️","🏖️","🏔️"]},
+  {mot:"à l’étranger", bon:"✈️", autres:["🏠","🏫","🏪"]},
+  {mot:"un abri", bon:"⛺", autres:["🪁","⚽","🎈"]},
+  {mot:"à haute voix", bon:"🗣️", autres:["🤫","👂","✍️"]},
+  {mot:"un accident", bon:"💥", autres:["🎂","🌈","🧩"]}
+];
+const ECOUTE = [
+  {mot:"un abricot", autres:["un accident","un abri","un abonnement"]},
+  {mot:"à droite", autres:["à gauche","à pied","à table"]},
+  {mot:"à demain", autres:["à bientôt","à part","à l’aise"]},
+  {mot:"accepter", autres:["accompagner","s’abriter","absolument"]},
+  {mot:"à côté de", autres:["à peu près","à mon avis","d’abord"]},
+  {mot:"il y a", autres:["elle a","on a","à bas"]},
+  {mot:"à la campagne", autres:["à l’étranger","à la maison","à l’école"]},
+  {mot:"à pied", autres:["à plat","à part","à table"]}
+];
+const ECRITURE = [
+  {mot:"un abricot", indice:"🍑"},
+  {mot:"à droite", indice:"➡️"},
+  {mot:"à gauche", indice:"⬅️"},
+  {mot:"à pied", indice:"🚶"},
+  {mot:"à bientôt", indice:"👋"},
+  {mot:"un abri", indice:"⛺"}
+];
+const SECTIONS = {
+  lecture:{titre:"Je lis", ico:"👀", total:LECTURE.length},
+  ecoute:{titre:"J’écoute", ico:"👂", total:ECOUTE.length},
+  ecriture:{titre:"J’écris", ico:"✍️", total:ECRITURE.length}
+};
+
+/* ---------- état ---------- */
+const scores = {lecture:null, ecoute:null, ecriture:null};
+let etat = null;
+const app = document.getElementById("app");
+
+/* ---------- voix ---------- */
+let voixFr = null;
+function chargerVoix(){
+  const v = window.speechSynthesis ? speechSynthesis.getVoices() : [];
+  voixFr = v.find(x=>x.lang && x.lang.toLowerCase().startsWith("fr")) || null;
+}
+if(window.speechSynthesis){ chargerVoix(); speechSynthesis.onvoiceschanged = chargerVoix; }
+function parle(texte){
+  if(!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(texte);
+  u.lang="fr-FR"; u.rate=0.8;
+  if(voixFr) u.voice=voixFr;
+  speechSynthesis.speak(u);
+}
+
+/* ---------- outils ---------- */
+const melange = a => a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]);
+const gommettes = (n,t) => "⭐".repeat(n) + "☆".repeat(t-n);
+const sansAccent = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+const propre = s => s.trim().toLowerCase().replace(/[’']/g,"'").replace(/\s+/g," ");
+
+/* ---------- accueil ---------- */
+function accueil(){
+  etat = null;
+  const fini = Object.values(scores).every(s=>s!==null);
+  const totalPoints = Object.values(scores).reduce((a,b)=>a+(b||0),0);
+  const totalMax = Object.values(SECTIONS).reduce((a,s)=>a+s.total,0);
+  app.innerHTML = `
+    <h1>Mon cahier de français</h1>
+    <p class="sous">Niveau A1 — les mots en « à »</p>
+    <div class="cartes">
+      ${Object.entries(SECTIONS).map(([cle,s])=>`
+        <button class="carte" data-cle="${cle}" data-fini="${scores[cle]!==null?"oui":"non"}">
+          <span class="ico">${s.ico}</span>
+          <span class="titre">${s.titre}</span>
+          <span class="note">${scores[cle]!==null ? scores[cle]+" / "+s.total : s.total+" questions"}</span>
+        </button>`).join("")}
+    </div>
+    ${fini ? `<div class="total" style="margin-top:18px">
+        <div>Score total</div>
+        <div class="score">${totalPoints} / ${totalMax}</div>
+        <div>${gommettes(Math.round(totalPoints/totalMax*5),5)}</div>
+        <button class="btn secondaire" id="rejouer" style="margin-top:10px">Recommencer</button>
+      </div>` : ""}
+    ${window.speechSynthesis ? "" : `<p class="avert">🔈 Cet appareil ne lit pas les mots à voix haute.</p>`}
+  `;
+  app.querySelectorAll(".carte").forEach(b=>b.onclick=()=>demarrer(b.dataset.cle));
+  const r = document.getElementById("rejouer");
+  if(r) r.onclick = ()=>{ Object.keys(scores).forEach(k=>scores[k]=null); accueil(); };
+}
+
+/* ---------- moteur ---------- */
+function demarrer(cle){
+  const source = cle==="lecture" ? LECTURE : cle==="ecoute" ? ECOUTE : ECRITURE;
+  etat = {cle, liste:melange(source.slice()), i:0, points:0};
+  question();
+}
+function enTete(){
+  const s = SECTIONS[etat.cle];
+  return `<div class="barre">
+    <button class="retour" id="sortir">← le sommaire</button>
+    <span class="etape">${s.ico} ${s.titre} — question ${etat.i+1} sur ${s.total}</span>
+    <span class="gommettes">${gommettes(etat.points, s.total)}</span>
+  </div>`;
+}
+function question(){
+  const q = etat.liste[etat.i];
+  if(etat.cle==="lecture") pageLecture(q);
+  else if(etat.cle==="ecoute") pageEcoute(q);
+  else pageEcriture(q);
+  document.getElementById("sortir").onclick = accueil;
+}
+function suite(){
+  etat.i++;
+  if(etat.i < etat.liste.length) question(); else bilan();
+}
+
+/* ---------- 1. lecture ---------- */
+function pageLecture(q){
+  const opts = melange([q.bon, ...q.autres]);
+  app.innerHTML = enTete() + `
+    <p class="consigne">Lis le mot. Choisis la bonne image.</p>
+    <p class="question">${q.mot}</p>
+    <div class="choix">${opts.map(o=>`<button class="opt" data-o="${o}"><span class="emoji">${o}</span></button>`).join("")}</div>
+    <p class="reaction" id="reaction"></p>`;
+  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>repondreMcq(b, b.dataset.o===q.bon, q.mot));
+}
+
+/* ---------- 2. écoute ---------- */
+function pageEcoute(q){
+  const opts = melange([q.mot, ...q.autres]);
+  app.innerHTML = enTete() + `
+    <p class="consigne">Écoute. Choisis le bon mot.</p>
+    <button class="haut-parleur" id="son" aria-label="Écouter le mot">🔊</button>
+    <div class="choix mots">${opts.map(o=>`<button class="opt" data-o="${o}">${o}</button>`).join("")}</div>
+    <p class="reaction" id="reaction"></p>`;
+  document.getElementById("son").onclick = ()=>parle(q.mot);
+  parle(q.mot);
+  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>repondreMcq(b, b.dataset.o===q.mot, q.mot));
+}
+function repondreMcq(bouton, juste, mot){
+  app.querySelectorAll(".opt").forEach(b=>b.disabled=true);
+  const r = document.getElementById("reaction");
+  if(juste){
+    etat.points++;
+    bouton.classList.add("juste");
+    r.textContent="Bravo ! ⭐"; r.className="reaction ok";
+  }else{
+    bouton.classList.add("faux");
+    app.querySelectorAll(".opt").forEach(b=>{
+      if(b.dataset.o===mot || (etat.cle==="lecture" && b.dataset.o===etat.liste[etat.i].bon)) b.classList.add("juste");
+    });
+    r.textContent="La bonne réponse : " + mot; r.className="reaction non";
+  }
+  parle(mot);
+  setTimeout(suite, juste ? 900 : 2200);
+}
+
+/* ---------- 3. écriture ---------- */
+function pageEcriture(q){
+  app.innerHTML = enTete() + `
+    <p class="consigne">Écoute et regarde. Écris le mot sur la ligne.</p>
+    <p class="indice">${q.indice}</p>
+    <button class="haut-parleur" id="son" aria-label="Écouter le mot" style="margin:0 auto 14px">🔊</button>
+    <div class="ligne-ecriture"><input type="text" id="reponse" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Écris le mot"></div>
+    <div class="accents">${["à","é","è","ê","ç","î","ô","û","’"].map(a=>`<button data-a="${a}">${a}</button>`).join("")}</div>
+    <button class="btn" id="valider">Je vérifie</button>
+    <p class="reaction" id="reaction"></p>`;
+  const champ = document.getElementById("reponse");
+  document.getElementById("son").onclick = ()=>parle(q.mot);
+  parle(q.mot);
+  app.querySelectorAll(".accents button").forEach(b=>b.onclick=()=>{ champ.value+=b.dataset.a; champ.focus(); });
+  const verifier = ()=>{
+    const saisie = propre(champ.value);
+    const attendu = propre(q.mot);
+    const r = document.getElementById("reaction");
+    document.getElementById("valider").disabled = true;
+    champ.disabled = true;
+    if(saisie===attendu){
+      etat.points++;
+      r.textContent="Bravo ! ⭐"; r.className="reaction ok";
+    }else if(sansAccent(saisie)===sansAccent(attendu)){
+      r.textContent="Presque ! Attention aux accents : " + q.mot; r.className="reaction non";
+    }else{
+      r.textContent="On écrit : " + q.mot; r.className="reaction non";
+    }
+    parle(q.mot);
+    setTimeout(suite, saisie===attendu ? 900 : 2400);
+  };
+  document.getElementById("valider").onclick = verifier;
+  champ.addEventListener("keydown", e=>{ if(e.key==="Enter") verifier(); });
+  champ.focus();
+}
+
+/* ---------- bilan de section ---------- */
+function bilan(){
+  const s = SECTIONS[etat.cle];
+  scores[etat.cle] = etat.points;
+  const mot = etat.points===s.total ? "Parfait !" : etat.points >= s.total/2 ? "Bien joué !" : "Encore un essai !";
+  app.innerHTML = `
+    <h1>${s.ico} ${s.titre}</h1>
+    <div class="bilan">
+      <p class="sous" style="margin-top:0">${mot}</p>
+      <div class="score">${etat.points} / ${s.total}</div>
+      <div class="gommettes">${gommettes(etat.points, s.total)}</div>
+    </div>
+    <button class="btn" id="encore">Je refais</button>
+    <button class="btn secondaire" id="sommaire">Le sommaire</button>`;
+  const cle = etat.cle;
+  document.getElementById("encore").onclick = ()=>demarrer(cle);
+  document.getElementById("sommaire").onclick = accueil;
+}
+
+accueil();
+</script>
+</body>
+</html>
