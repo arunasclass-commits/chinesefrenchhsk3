@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>French A1 Trainer — Read, Listen, Write</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papier:#FCFBF7; --ligne:#C3D9F0; --ligne-forte:#8FB6DE; --marge:#E45C4A;
+  --encre:#2B2A6B; --bic:#1B3AC7; --gommette:#FFD23F; --juste:#2E7D4F; --faux:#C4432B;
+  --ombre:0 3px 0 rgba(43,42,107,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:'Nunito',system-ui,sans-serif;color:var(--encre);background:#EDE7DA;padding:16px;min-height:100vh}
+.cahier{max-width:780px;margin:0 auto;background:var(--papier);border-radius:6px 18px 18px 6px;box-shadow:0 12px 30px rgba(43,42,107,.18);overflow:hidden;position:relative}
+.page{position:relative;padding:22px 20px 26px 58px;
+  background-image:repeating-linear-gradient(to bottom,transparent 0 31px,var(--ligne) 31px 32px),
+                   repeating-linear-gradient(to right,transparent 0 31px,rgba(195,217,240,.45) 31px 32px)}
+.page::before{content:"";position:absolute;top:0;bottom:0;left:44px;width:2px;background:var(--marge);opacity:.8}
+.spirale{position:absolute;top:0;bottom:0;left:0;width:20px;background:#DCD3C0;border-right:1px dashed rgba(43,42,107,.25)}
+h1{font-family:'Baloo 2',cursive;font-weight:800;font-size:clamp(24px,5vw,34px);margin:0;line-height:1.1;letter-spacing:-.5px}
+.sous{font-family:'Caveat',cursive;font-size:22px;color:var(--bic);margin:2px 0 18px}
+p{margin:0 0 10px}
+.cartes{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:620px){.cartes{grid-template-columns:1fr 1fr 1fr}}
+.carte{border:2px solid var(--encre);border-radius:14px;background:#fff;padding:16px;text-align:left;cursor:pointer;font:inherit;color:inherit;box-shadow:var(--ombre);transition:transform .12s ease}
+.carte:hover{transform:translateY(-3px)}
+.carte:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--bic);outline-offset:2px}
+.carte .ico{font-size:32px;display:block}
+.carte .titre{font-family:'Baloo 2',cursive;font-size:21px;margin-top:4px;display:block}
+.carte .note{font-family:'Caveat',cursive;font-size:20px;color:var(--juste)}
+.carte[data-fini="oui"]{background:#F3FAF4;border-color:var(--juste)}
+.barre{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.etape{font-family:'Caveat',cursive;font-size:21px;color:var(--bic)}
+.pts{font-family:'Baloo 2',cursive;font-size:18px;background:var(--gommette);border:2px solid var(--encre);border-radius:20px;padding:2px 12px}
+.jauge{height:8px;background:#fff;border:2px solid var(--encre);border-radius:6px;overflow:hidden;margin-bottom:14px}
+.jauge div{height:100%;background:var(--bic);width:0}
+.question{font-family:'Baloo 2',cursive;font-size:clamp(24px,5.5vw,34px);margin:10px 0 6px;line-height:1.35}
+.question small{font-family:'Caveat',cursive;font-size:20px;color:var(--bic);display:block;font-weight:600}
+.consigne{font-family:'Caveat',cursive;font-size:21px;color:var(--bic);margin-bottom:12px}
+.choix{display:grid;gap:10px;grid-template-columns:1fr}
+@media(min-width:620px){.choix{grid-template-columns:1fr 1fr}}
+.opt{border:2px solid var(--encre);border-radius:14px;background:#fff;padding:14px;font:inherit;color:inherit;cursor:pointer;box-shadow:var(--ombre);font-size:19px;font-weight:700;text-align:left;transition:transform .1s ease}
+.opt:hover:not(:disabled){transform:translateY(-2px)}
+.opt:disabled{cursor:default;opacity:.5}
+.opt.juste{background:#E7F6EC;border-color:var(--juste);opacity:1}
+.opt.faux{background:#FBEAE6;border-color:var(--faux);opacity:1}
+.haut-parleur{font-size:40px;background:var(--gommette);border:2px solid var(--encre);border-radius:50%;width:86px;height:86px;cursor:pointer;box-shadow:var(--ombre);display:block;margin:6px 0 14px}
+.haut-parleur:active{transform:translateY(2px)}
+.ligne-ecriture{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 12px}
+input[type=text]{font-family:'Caveat',cursive;font-size:34px;color:var(--bic);border:none;border-bottom:2px solid var(--ligne-forte);background:transparent;padding:2px 6px;flex:1;min-width:220px}
+.accents{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.accents button{font-family:'Caveat',cursive;font-size:22px;width:40px;height:40px;border:2px solid var(--ligne-forte);border-radius:8px;background:#fff;cursor:pointer;color:var(--bic)}
+.btn{font-family:'Baloo 2',cursive;font-size:20px;background:var(--bic);color:#fff;border:2px solid var(--encre);border-radius:12px;padding:10px 20px;cursor:pointer;box-shadow:var(--ombre);margin-right:8px}
+.btn.secondaire{background:#fff;color:var(--encre)}
+.retour{background:none;border:none;font-family:'Caveat',cursive;font-size:20px;color:var(--bic);cursor:pointer;padding:0}
+.reaction{font-family:'Baloo 2',cursive;font-size:21px;min-height:30px;margin:12px 0 4px}
+.reaction.ok{color:var(--juste)} .reaction.non{color:var(--faux)}
+.bilan{border:2px dashed var(--ligne-forte);border-radius:14px;padding:16px;background:#fff;margin-bottom:14px}
+.bilan .score{font-family:'Baloo 2',cursive;font-size:40px}
+.total{background:var(--gommette);border:2px solid var(--encre);border-radius:14px;padding:16px;text-align:center;box-shadow:var(--ombre);margin-top:18px}
+.total .score{font-family:'Baloo 2',cursive;font-size:46px}
+.avert{font-family:'Caveat',cursive;font-size:19px;color:var(--faux)}
+.rates{font-size:17px;line-height:1.7}
+.rates b{color:var(--bic)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="cahier">
+  <div class="spirale" aria-hidden="true"></div>
+  <div class="page"><div id="app"></div></div>
+</main>
+<script>
+/* ---------- word list : fr / en / accepted spellings ---------- */
+const MOTS = [
+  {fr:"il y a", en:"there is; there are"},
+  {fr:"à bas", en:"down with"},
+  {fr:"a", note:"(avoir)", en:"has"},
+  {fr:"il/elle a", en:"he/she has", alt:["il a","elle a"]},
+  {fr:"on a", en:"we have; we've got"},
+  {fr:"à 20 kilomètres", en:"20 kilometres away", alt:["à vingt kilomètres"]},
+  {fr:"à bientôt", en:"see you soon"},
+  {fr:"à cinquante francs", en:"costing fifty francs"},
+  {fr:"à côté de", en:"next to"},
+  {fr:"à demain", en:"see you tomorrow"},
+  {fr:"à droite", en:"to the right"},
+  {fr:"à gauche", en:"to the left"},
+  {fr:"à haute voix", en:"out loud"},
+  {fr:"à l'aise", en:"at ease"},
+  {fr:"à l'étranger", en:"abroad"},
+  {fr:"à la campagne", en:"in the country"},
+  {fr:"à mon avis", en:"in my opinion"},
+  {fr:"à part", en:"apart from; except"},
+  {fr:"à peu près", en:"more or less; approximately"},
+  {fr:"à pied", en:"on foot"},
+  {fr:"à plat", en:"flat (tyre)"},
+  {fr:"à quatre kilomètres de", en:"four kilometres from..."},
+  {fr:"à table", en:"at table; dinner is served"},
+  {fr:"un abattoir", en:"slaughter-house", alt:["abattoir"]},
+  {fr:"abdominal", en:"to do with the stomach"},
+  {fr:"un abonnement", en:"season ticket; subscription", alt:["abonnement"]},
+  {fr:"d'abord", en:"first; at first; to begin with"},
+  {fr:"un abri", en:"shelter", alt:["abri"]},
+  {fr:"un abricot", en:"apricot", alt:["abricot"]},
+  {fr:"s'abriter", en:"to shelter", alt:["abriter"]},
+  {fr:"absolument", en:"absolutely"},
+  {fr:"accepter", en:"to accept; to take"},
+  {fr:"un accès", en:"access", alt:["accès"]},
+  {fr:"accessible", en:"accessible"},
+  {fr:"un accident", en:"accident", alt:["accident"]},
+  {fr:"accompagné de", en:"accompanied by"},
+  {fr:"accompagner", en:"to accompany"},
+  {fr:"accompli", en:"completed; carried out"}
+];
+const SECTIONS = {
+  reading:{titre:"Reading", ico:"👀", consigne:"Read the French word. Choose the English meaning."},
+  listening:{titre:"Listening", ico:"👂", consigne:"Listen. Choose the English meaning."},
+  writing:{titre:"Writing", ico:"✍️", consigne:"Read the English. Write the French word."}
+};
+const TOTAL = MOTS.length;
+const scores = {reading:null, listening:null, writing:null};
+let etat = null;
+const app = document.getElementById("app");
+
+/* ---------- voice ---------- */
+let voixFr = null;
+function chargerVoix(){
+  const v = window.speechSynthesis ? speechSynthesis.getVoices() : [];
+  voixFr = v.find(x=>x.lang && x.lang.toLowerCase().startsWith("fr")) || null;
+}
+if(window.speechSynthesis){ chargerVoix(); speechSynthesis.onvoiceschanged = chargerVoix; }
+function parle(t){
+  if(!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(t);
+  u.lang="fr-FR"; u.rate=0.8; if(voixFr) u.voice=voixFr;
+  speechSynthesis.speak(u);
+}
+
+/* ---------- helpers ---------- */
+const melange = a => a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]);
+const etoiles = (n,t) => "⭐".repeat(Math.round(n/t*5)) + "☆".repeat(5-Math.round(n/t*5));
+const sansAccent = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+const propre = s => s.trim().toLowerCase().replace(/[’']/g,"'").replace(/[.…]/g,"").replace(/\s+/g," ");
+function leurres(bon){
+  return melange(MOTS.filter(m=>m.en!==bon.en)).slice(0,3).map(m=>m.en);
+}
+
+/* ---------- menu ---------- */
+function accueil(){
+  etat = null;
+  const fini = Object.values(scores).every(s=>s!==null);
+  const pts = Object.values(scores).reduce((a,b)=>a+(b||0),0);
+  const max = TOTAL*3;
+  app.innerHTML = `
+    <h1>French A1 Trainer</h1>
+    <p class="sous">${TOTAL} words — read, listen, write</p>
+    <div class="cartes">
+      ${Object.entries(SECTIONS).map(([k,s])=>`
+        <button class="carte" data-cle="${k}" data-fini="${scores[k]!==null?"oui":"non"}">
+          <span class="ico">${s.ico}</span>
+          <span class="titre">${s.titre}</span>
+          <span class="note">${scores[k]!==null ? scores[k]+" / "+TOTAL : TOTAL+" questions"}</span>
+        </button>`).join("")}
+    </div>
+    ${fini?`<div class="total">
+        <div>Total score</div><div class="score">${pts} / ${max}</div>
+        <div>${etoiles(pts,max)}</div>
+        <button class="btn secondaire" id="rejouer" style="margin-top:10px">Start again</button>
+      </div>`:""}
+    ${window.speechSynthesis?"":`<p class="avert">🔈 This device cannot read the words aloud.</p>`}`;
+  app.querySelectorAll(".carte").forEach(b=>b.onclick=()=>demarrer(b.dataset.cle));
+  const r=document.getElementById("rejouer");
+  if(r) r.onclick=()=>{Object.keys(scores).forEach(k=>scores[k]=null);accueil();};
+}
+
+/* ---------- engine ---------- */
+function demarrer(cle){
+  etat = {cle, liste:melange(MOTS.slice()), i:0, points:0, rates:[]};
+  question();
+}
+function enTete(){
+  const s=SECTIONS[etat.cle];
+  return `<div class="barre">
+      <button class="retour" id="sortir">← menu</button>
+      <span class="etape">${s.ico} ${s.titre} — ${etat.i+1} / ${TOTAL}</span>
+      <span class="pts">${etat.points} pts</span>
+    </div>
+    <div class="jauge"><div style="width:${etat.i/TOTAL*100}%"></div></div>`;
+}
+function question(){
+  const q=etat.liste[etat.i];
+  if(etat.cle==="writing") pageEcriture(q); else pageMcq(q);
+  document.getElementById("sortir").onclick=accueil;
+}
+function suite(){ etat.i++; etat.i<TOTAL ? question() : bilan(); }
+
+/* ---------- reading + listening (English options) ---------- */
+function pageMcq(q){
+  const opts = melange([q.en, ...leurres(q)]);
+  const s = SECTIONS[etat.cle];
+  const tete = etat.cle==="reading"
+    ? `<p class="question">${q.fr}${q.note?`<small>${q.note}</small>`:""}</p>`
+    : `<button class="haut-parleur" id="son" aria-label="Play the word">🔊</button>`;
+  app.innerHTML = enTete() + `<p class="consigne">${s.consigne}</p>` + tete +
+    `<div class="choix">${opts.map(o=>`<button class="opt" data-o="${o.replace(/"/g,'&quot;')}">${o}</button>`).join("")}</div>
+     <p class="reaction" id="reaction"></p>`;
+  if(etat.cle==="listening"){ document.getElementById("son").onclick=()=>parle(q.fr); parle(q.fr); }
+  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>repondre(b, b.dataset.o===q.en, q));
+}
+function repondre(bouton, juste, q){
+  app.querySelectorAll(".opt").forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.o===q.en) b.classList.add("juste");
+  });
+  const r=document.getElementById("reaction");
+  if(juste){ etat.points++; r.textContent="Correct! ⭐"; r.className="reaction ok"; }
+  else{
+    bouton.classList.add("faux");
+    etat.rates.push(q);
+    r.textContent = q.fr + " = " + q.en; r.className="reaction non";
+  }
+  parle(q.fr);
+  setTimeout(suite, juste?900:2300);
+}
+
+/* ---------- writing (English prompt → French answer) ---------- */
+function pageEcriture(q){
+  app.innerHTML = enTete() + `
+    <p class="consigne">${SECTIONS.writing.consigne}</p>
+    <p class="question">${q.en}</p>
+    <button class="haut-parleur" id="son" aria-label="Play the French word">🔊</button>
+    <div class="ligne-ecriture"><input type="text" id="reponse" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Write the French word"></div>
+    <div class="accents">${["à","é","è","ê","ç","î","ô","û","'"].map(a=>`<button data-a="${a}">${a}</button>`).join("")}</div>
+    <button class="btn" id="valider">Check</button>
+    <p class="reaction" id="reaction"></p>`;
+  const champ=document.getElementById("reponse");
+  document.getElementById("son").onclick=()=>parle(q.fr);
+  app.querySelectorAll(".accents button").forEach(b=>b.onclick=()=>{champ.value+=b.dataset.a;champ.focus();});
+  const verifier=()=>{
+    const saisie=propre(champ.value);
+    const bons=[q.fr, ...(q.alt||[])].map(propre);
+    const r=document.getElementById("reaction");
+    document.getElementById("valider").disabled=true; champ.disabled=true;
+    if(bons.includes(saisie)){ etat.points++; r.textContent="Correct! ⭐"; r.className="reaction ok"; }
+    else if(bons.some(b=>sansAccent(b)===sansAccent(saisie))){
+      etat.rates.push(q); r.textContent="Almost — check the accents: "+q.fr; r.className="reaction non";
+    }else{
+      etat.rates.push(q); r.textContent="We write: "+q.fr; r.className="reaction non";
+    }
+    parle(q.fr);
+    setTimeout(suite, bons.includes(saisie)?900:2500);
+  };
+  document.getElementById("valider").onclick=verifier;
+  champ.addEventListener("keydown",e=>{if(e.key==="Enter")verifier();});
+  champ.focus(); parle(q.fr);
+}
+
+/* ---------- section report ---------- */
+function bilan(){
+  const s=SECTIONS[etat.cle];
+  scores[etat.cle]=etat.points;
+  const mot = etat.points===TOTAL?"Perfect!":etat.points>=TOTAL*0.6?"Well done!":"Try again!";
+  app.innerHTML = `
+    <h1>${s.ico} ${s.titre}</h1>
+    <div class="bilan">
+      <p class="sous" style="margin-top:0">${mot}</p>
+      <div class="score">${etat.points} / ${TOTAL}</div>
+      <div>${etoiles(etat.points,TOTAL)}</div>
+    </div>
+    ${etat.rates.length?`<div class="bilan"><p class="sous" style="margin-top:0">Words to revise</p>
+      <div class="rates">${etat.rates.map(m=>`<b>${m.fr}</b> — ${m.en}`).join("<br>")}</div></div>`:""}
+    <button class="btn" id="encore">Do it again</button>
+    <button class="btn secondaire" id="menu">Menu</button>`;
+  const cle=etat.cle;
+  document.getElementById("encore").onclick=()=>demarrer(cle);
+  document.getElementById("menu").onclick=accueil;
+}
+accueil();
+</script>
+</body>
+</html>
