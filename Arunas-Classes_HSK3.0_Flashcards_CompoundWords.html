@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<!--
+  Aruna's Classes — HSK 3.0 Compound-Word Flashcards & MCQ Practice (351 words, ~12 sets)
+  © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.
+  Standalone, offline-capable (GitHub Pages friendly). No backend, no API key.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="RRAruna Enterprises · ChineseFrench · Aruna's Classes">
+<meta name="copyright" content="© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.">
+<title>Aruna's Classes — HSK 3.0 Compound-Word Flashcards &amp; MCQ Practice (351 words)</title>
+<style>
+:root{
+  --red:#a2231d; --red-dark:#7a1a15; --gold:#c99a2e; --gold-light:#f3e3b3;
+  --cream:#fbf6ea; --ink:#2b1a12; --green:#2e7d32; --gray:#8a7f6e;
+  --radius:14px; --shadow:0 4px 14px rgba(122,26,21,.15);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{font-family:"Segoe UI",Helvetica,Arial,sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
+.app-header{background:linear-gradient(135deg,var(--red) 0%,var(--red-dark) 100%);color:var(--gold-light);
+  padding:18px 16px 14px;text-align:center;border-bottom:4px solid var(--gold);position:relative;}
+.app-header h1{margin:0 0 4px;font-size:1.5rem;letter-spacing:.5px;}
+.app-header .sub{font-size:.85rem;color:var(--gold);font-weight:600;}
+.app-header .lesson-title{margin-top:8px;font-size:1.05rem;color:#fff;}
+.student-bar{max-width:720px;margin:12px auto 0;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;}
+.student-bar input{padding:8px 12px;border-radius:20px;border:none;font-size:.9rem;width:220px;}
+.student-bar .streak{background:var(--gold);color:var(--red-dark);font-weight:700;padding:6px 12px;border-radius:20px;font-size:.85rem;}
+nav.tabs{display:flex;overflow-x:auto;gap:6px;padding:10px 10px 0;max-width:1000px;margin:0 auto;-webkit-overflow-scrolling:touch;}
+nav.tabs button{flex:0 0 auto;background:#fff;border:2px solid var(--gold);color:var(--red-dark);padding:9px 14px;
+  border-radius:20px 20px 0 0;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap;transition:.15s;}
+nav.tabs button.active{background:var(--red);color:#fff;border-color:var(--red);}
+main{max-width:1000px;margin:0 auto;padding:18px 14px 60px;}
+.panel{display:none;animation:fadein .25s ease;}
+.panel.active{display:block;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.card{background:#fff;border:1px solid var(--gold-light);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:16px;}
+.card h2{margin-top:0;color:var(--red-dark);border-bottom:2px solid var(--gold-light);padding-bottom:8px;font-size:1.15rem;}
+.btn{background:var(--red);color:#fff;border:none;padding:9px 16px;border-radius:18px;font-size:.85rem;cursor:pointer;margin:3px;font-weight:600;}
+.btn:hover{background:var(--red-dark);}
+.btn.gold{background:var(--gold);color:var(--red-dark);}
+.btn.gold:hover{background:#b3872a;}
+.btn.outline{background:#fff;color:var(--red);border:2px solid var(--red);}
+.btn.big{padding:14px 22px;font-size:1rem;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.note{font-size:.8rem;color:var(--gray);background:var(--gold-light);padding:8px 10px;border-radius:8px;margin-bottom:10px;}
+.score-badge{display:inline-block;background:var(--gold);color:var(--red-dark);font-weight:700;padding:4px 10px;border-radius:14px;font-size:.85rem;}
+.progress-table{width:100%;border-collapse:collapse;}
+.progress-table td,.progress-table th{padding:8px;border-bottom:1px solid var(--gold-light);text-align:left;font-size:.9rem;}
+
+/* Flashcard flip */
+.fc-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+.fc-pos{font-size:.85rem;color:var(--gray);font-weight:600;}
+.flashcard{width:100%;max-width:360px;height:260px;perspective:1200px;cursor:pointer;}
+.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg);}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;border:2px solid var(--gold);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center;
+  background:linear-gradient(160deg,#fff,var(--cream));box-shadow:var(--shadow);}
+.fc-front .emoji{font-size:3rem;}
+.fc-front .hanzi{font-size:3.4rem;font-weight:700;color:var(--red-dark);margin-top:4px;}
+.fc-back{transform:rotateY(180deg);}
+.fc-back .pinyin{font-size:1.5rem;color:var(--gray);font-style:italic;}
+.fc-back .meaning{font-size:1.1rem;margin-top:10px;font-weight:600;}
+.fc-controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+.fc-status{font-size:.75rem;padding:2px 8px;border-radius:10px;background:var(--gold-light);color:var(--red-dark);font-weight:700;}
+select.selectbox{padding:6px 10px;border-radius:8px;border:1px solid var(--gold-light);font-size:.85rem;}
+
+/* MCQ */
+.mcq-setup{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.mcq-prompt{font-size:1.3rem;text-align:center;margin:14px 0;font-weight:700;color:var(--red-dark);}
+.mcq-prompt .py{font-size:1rem;color:var(--gray);font-style:italic;font-weight:400;display:block;margin-top:4px;}
+.mcq-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:10px;}
+.mcq-opt{background:#fff;border:2px solid var(--gold-light);border-radius:12px;padding:16px 10px;font-size:1.1rem;
+  cursor:pointer;text-align:center;font-weight:600;}
+.mcq-opt.correct{background:#e3f5e1;border-color:var(--green);color:var(--green);}
+.mcq-opt.wrong{background:#fbe3e1;border-color:var(--red);color:var(--red);}
+.mcq-opt:disabled{cursor:default;}
+.mcq-opt .opt-py{font-size:1.1rem;font-weight:700;}
+.mcq-opt .opt-ch{font-size:.85rem;color:var(--gray);margin-top:4px;font-weight:400;}
+.reason-box{background:var(--cream);border:1px dashed var(--gold);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:.85rem;color:#444;text-align:left;}
+.reason-box .label{font-weight:700;color:var(--red-dark);}
+.mcq-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
+.mcq-feedback{text-align:center;font-size:.95rem;margin-top:10px;min-height:24px;font-weight:700;}
+.mcq-feedback.ok{color:var(--green);}
+.mcq-feedback.bad{color:var(--red);}
+.summary-box{text-align:center;padding:20px;}
+.summary-box .big-score{font-size:2.4rem;color:var(--red-dark);font-weight:800;}
+
+.shadow-item{background:var(--cream);border:1px solid var(--gold-light);border-radius:12px;padding:18px;text-align:center;}
+.shadow-item .hanzi{font-size:2.6rem;font-weight:700;color:var(--red-dark);}
+.shadow-item .pinyin{font-size:1.2rem;color:var(--gray);font-style:italic;margin-top:4px;}
+.shadow-item .meaning{font-size:1rem;margin-top:6px;}
+.shadow-done{opacity:.55;}
+.progressbar-outer{width:100%;background:var(--gold-light);border-radius:10px;height:10px;overflow:hidden;margin:8px 0;}
+.progressbar-inner{height:100%;background:var(--red);border-radius:10px;transition:width .3s;}
+.footer-copy{text-align:center;color:var(--gray);font-size:.72rem;padding:20px 10px 40px;}
+.watermark{position:fixed;bottom:6px;right:10px;font-size:.62rem;color:rgba(122,26,21,.35);pointer-events:none;z-index:5;}
+@media (max-width:600px){
+  .app-header h1{font-size:1.2rem;}
+  .flashcard{max-width:300px;height:230px;}
+}
+</style>
+</head>
+<body>
+
+<div class="watermark">© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes</div>
+
+<header class="app-header">
+  <h1>爱睿娜的课堂 · Aruna's Classes</h1>
+  <div class="sub">新HSK 3.0 · Two-Character Compound-Word Vocabulary</div>
+  <div class="lesson-title">🗂️ Compound Words · Flashcards &amp; MCQ Practice (351 Two-Character Words, with Reasons)</div>
+  <div class="student-bar">
+    <input id="studentName" type="text" placeholder="Enter your name to save progress...">
+    <select class="selectbox" id="setSelect" onchange="changeSet(this.value)"></select>
+    <span class="streak" id="streakBadge">🔥 0 day streak</span>
+  </div>
+</header>
+
+<nav class="tabs" id="tabNav"></nav>
+<main id="mainArea"></main>
+
+<div class="footer-copy">
+  © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.<br>
+  Audio &amp; microphone features work best in Chrome or Edge on desktop/Android.
+</div>
+
+<script>
+const COPYRIGHT = "© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.";
+
+/* ============================================================
+   VOCABULARY DATA — 351 two-character compound words, chunked into
+   study sets of 30, each with a character-by-character "why" note.
+   ============================================================ */
+const DECK = {
+  VOCAB: [
+    {id:1, ch:"阿姨", py:"āyí", en:"aunt; auntie", emoji:"👩",
+     why:"阿 (kinship prefix) + 姨 (aunt (mother's sister)) — combining these gives the sense of 'aunt; auntie'."},
+    {id:2, ch:"爱人", py:"àirén", en:"spouse", emoji:"💑",
+     why:"爱 (to love) + 人 (person) — combining these gives the sense of 'spouse'."},
+    {id:3, ch:"安静", py:"ānjìng", en:"quiet", emoji:"🤫",
+     why:"安 (peace/calm) + 静 (quiet) — combining these gives the sense of 'quiet'."},
+    {id:4, ch:"安全", py:"ānquán", en:"safe; safety", emoji:"🛡️",
+     why:"安 (peace/calm) + 全 (whole/complete) — combining these gives the sense of 'safe; safety'."},
+    {id:5, ch:"班级", py:"bānjí", en:"class (school class)", emoji:"🏫",
+     why:"班 (class/team) + 级 (level/grade) — combining these gives the sense of 'class (school class)'."},
+    {id:6, ch:"搬家", py:"bānjiā", en:"to move house", emoji:"🚚",
+     why:"搬 (to move (objects)) + 家 (home/family) — combining these gives the sense of 'to move house'."},
+    {id:7, ch:"办法", py:"bànfǎ", en:"method; way", emoji:"🧩",
+     why:"办 (to handle) + 法 (method/law) — combining these gives the sense of 'method; way'."},
+    {id:8, ch:"半天", py:"bàntiān", en:"half a day; quite a while", emoji:"⏳",
+     why:"半 (half) + 天 (sky/day) — combining these gives the sense of 'half a day; quite a while'."},
+    {id:9, ch:"帮助", py:"bāngzhù", en:"to help; help", emoji:"🤝",
+     why:"帮 (to help) + 助 (to help) — combining these gives the sense of 'to help; help'."},
+    {id:10, ch:"报纸", py:"bàozhǐ", en:"newspaper", emoji:"📰",
+     why:"报 (to report/newspaper) + 纸 (paper) — combining these gives the sense of 'newspaper'."},
+    {id:11, ch:"北方", py:"běifāng", en:"the north; northern region", emoji:"🧭",
+     why:"北 (north) + 方 (direction/method) — combining these gives the sense of 'the north; northern region'."},
+    {id:12, ch:"笔记", py:"bǐjì", en:"notes; notebook", emoji:"📝",
+     why:"笔 (pen/writing) + 记 (to remember) — combining these gives the sense of 'notes; notebook'."},
+    {id:13, ch:"比较", py:"bǐjiào", en:"comparatively; to compare", emoji:"⚖️",
+     why:"比 (to compare) + 较 (to compare) — combining these gives the sense of 'comparatively; to compare'."},
+    {id:14, ch:"比如", py:"bǐrú", en:"for example", emoji:"💬",
+     why:"比 (to compare) + 如 (like/as if) — combining these gives the sense of 'for example'."},
+    {id:15, ch:"比赛", py:"bǐsài", en:"competition; match", emoji:"🏆",
+     why:"比 (to compare) + 赛 (competition) — combining these gives the sense of 'competition; match'."},
+    {id:16, ch:"必须", py:"bìxū", en:"must", emoji:"❗",
+     why:"必 (must) + 须 (must) — combining these gives the sense of 'must'."},
+    {id:17, ch:"变成", py:"biànchéng", en:"to become", emoji:"🔄",
+     why:"变 (to change) + 成 (to become) — combining these gives the sense of 'to become'."},
+    {id:18, ch:"变化", py:"biànhuà", en:"change; variation", emoji:"🔀",
+     why:"变 (to change) + 化 (to transform) — combining these gives the sense of 'change; variation'."},
+    {id:19, ch:"表演", py:"biǎoyǎn", en:"performance; to perform", emoji:"🎭",
+     why:"表 (to express/surface) + 演 (to perform) — combining these gives the sense of 'performance; to perform'."},
+    {id:20, ch:"别的", py:"biéde", en:"other", emoji:"🔁",
+     why:"别 (don't/other) + 的 (possessive/descriptive particle) — combining these gives the sense of 'other'."},
+    {id:21, ch:"别人", py:"biérén", en:"other people", emoji:"👥",
+     why:"别 (don't/other) + 人 (person) — combining these gives the sense of 'other people'."},
+    {id:22, ch:"宾馆", py:"bīnguǎn", en:"hotel", emoji:"🏨",
+     why:"宾 (guest) + 馆 (building/hall) — combining these gives the sense of 'hotel'."},
+    {id:23, ch:"冰箱", py:"bīngxiāng", en:"refrigerator", emoji:"🧊",
+     why:"冰 (ice) + 箱 (box) — combining these gives the sense of 'refrigerator'."},
+    {id:24, ch:"病人", py:"bìngrén", en:"patient", emoji:"🤒",
+     why:"病 (illness) + 人 (person) — combining these gives the sense of 'patient'."},
+    {id:25, ch:"不但", py:"búdàn", en:"not only", emoji:"➕",
+     why:"不 (not) + 但 (but) — combining these gives the sense of 'not only'."},
+    {id:26, ch:"不见", py:"bújiàn", en:"not see; goodbye", emoji:"🚫",
+     why:"不 (not) + 见 (to see) — combining these gives the sense of 'not see; goodbye'."},
+    {id:27, ch:"不用", py:"búyòng", en:"need not", emoji:"🚫",
+     why:"不 (not) + 用 (to use) — combining these gives the sense of 'need not'."},
+    {id:28, ch:"不同", py:"bùtóng", en:"different", emoji:"↔️",
+     why:"不 (not) + 同 (same/together) — combining these gives the sense of 'different'."},
+    {id:29, ch:"不久", py:"bùjiǔ", en:"soon", emoji:"⏳",
+     why:"不 (not) + 久 (long (time)) — combining these gives the sense of 'soon'."},
+    {id:30, ch:"不行", py:"bùxíng", en:"not okay; won't do", emoji:"🙅",
+     why:"不 (not) + 行 (to walk/okay) — combining these gives the sense of 'not okay; won't do'."},
+    {id:31, ch:"菜单", py:"càidān", en:"menu", emoji:"📋",
+     why:"菜 (vegetable/dish) + 单 (single/list) — combining these gives the sense of 'menu'."},
+    {id:32, ch:"参加", py:"cānjiā", en:"to participate", emoji:"🙋",
+     why:"参 (to participate) + 加 (to add) — combining these gives the sense of 'to participate'."},
+    {id:33, ch:"草地", py:"cǎodì", en:"lawn; grassland", emoji:"🌾",
+     why:"草 (grass) + 地 (land/ground) — combining these gives the sense of 'lawn; grassland'."},
+    {id:34, ch:"常见", py:"chángjiàn", en:"common", emoji:"👀",
+     why:"常 (often) + 见 (to see) — combining these gives the sense of 'common'."},
+    {id:35, ch:"常用", py:"chángyòng", en:"commonly used", emoji:"🔁",
+     why:"常 (often) + 用 (to use) — combining these gives the sense of 'commonly used'."},
+    {id:36, ch:"常常", py:"chángcháng", en:"frequently", emoji:"🔁",
+     why:"常 (often) + 常 (often) — combining these gives the sense of 'frequently'."},
+    {id:37, ch:"衬衫", py:"chènshān", en:"shirt", emoji:"👔",
+     why:"衬 (to line/shirt) + 衫 (shirt) — combining these gives the sense of 'shirt'."},
+    {id:38, ch:"成绩", py:"chéngjì", en:"grade; achievement", emoji:"🏅",
+     why:"成 (to become) + 绩 (achievement) — combining these gives the sense of 'grade; achievement'."},
+    {id:39, ch:"城市", py:"chéngshì", en:"city", emoji:"🏙️",
+     why:"城 (city (wall)) + 市 (city/market) — combining these gives the sense of 'city'."},
+    {id:40, ch:"迟到", py:"chídào", en:"to be late", emoji:"⏰",
+     why:"迟 (late) + 到 (to arrive) — combining these gives the sense of 'to be late'."},
+    {id:41, ch:"出发", py:"chūfā", en:"to set out", emoji:"🚀",
+     why:"出 (to go out) + 发 (to send/issue) — combining these gives the sense of 'to set out'."},
+    {id:42, ch:"出生", py:"chūshēng", en:"to be born", emoji:"👶",
+     why:"出 (to go out) + 生 (to be born/life) — combining these gives the sense of 'to be born'."},
+    {id:43, ch:"出院", py:"chūyuàn", en:"to leave hospital", emoji:"🏥",
+     why:"出 (to go out) + 院 (courtyard/institution) — combining these gives the sense of 'to leave hospital'."},
+    {id:44, ch:"初中", py:"chūzhōng", en:"junior high school", emoji:"🏫",
+     why:"初 (beginning) + 中 (middle) — combining these gives the sense of 'junior high school'."},
+    {id:45, ch:"除了", py:"chúle", en:"besides; except", emoji:"➖",
+     why:"除 (to remove/except) + 了 (completed-action particle) — combining these gives the sense of 'besides; except'."},
+    {id:46, ch:"春天", py:"chūntiān", en:"spring", emoji:"🌸",
+     why:"春 (spring) + 天 (sky/day) — combining these gives the sense of 'spring'."},
+    {id:47, ch:"词典", py:"cídiǎn", en:"dictionary", emoji:"📖",
+     why:"词 (word) + 典 (standard/dictionary) — combining these gives the sense of 'dictionary'."},
+    {id:48, ch:"聪明", py:"cōngmíng", en:"clever", emoji:"🧠",
+     why:"聪 (clever/sharp-hearing) + 明 (bright/clear) — combining these gives the sense of 'clever'."},
+    {id:49, ch:"打扫", py:"dǎsǎo", en:"to clean", emoji:"🧹",
+     why:"打 (to hit/to do) + 扫 (to sweep) — combining these gives the sense of 'to clean'."},
+    {id:50, ch:"打算", py:"dǎsuàn", en:"to plan", emoji:"🗓️",
+     why:"打 (to hit/to do) + 算 (to calculate) — combining these gives the sense of 'to plan'."},
+    {id:51, ch:"大概", py:"dàgài", en:"probably", emoji:"🤔",
+     why:"大 (big) + 概 (approximately) — combining these gives the sense of 'probably'."},
+    {id:52, ch:"大人", py:"dàrén", en:"adult", emoji:"🧑",
+     why:"大 (big) + 人 (person) — combining these gives the sense of 'adult'."},
+    {id:53, ch:"大小", py:"dàxiǎo", en:"size", emoji:"📏",
+     why:"大 (big) + 小 (small) — combining these gives the sense of 'size'."},
+    {id:54, ch:"大衣", py:"dàyī", en:"coat", emoji:"🧥",
+     why:"大 (big) + 衣 (clothing) — combining these gives the sense of 'coat'."},
+    {id:55, ch:"担心", py:"dānxīn", en:"to worry", emoji:"😟",
+     why:"担 (to carry (on shoulder)) + 心 (heart) — combining these gives the sense of 'to worry'."},
+    {id:56, ch:"蛋糕", py:"dàngāo", en:"cake", emoji:"🍰",
+     why:"蛋 (egg) + 糕 (cake) — combining these gives the sense of 'cake'."},
+    {id:57, ch:"当然", py:"dāngrán", en:"certainly", emoji:"✅",
+     why:"当 (to serve as/when) + 然 (like this/so) — combining these gives the sense of 'certainly'."},
+    {id:58, ch:"到处", py:"dàochù", en:"everywhere", emoji:"🌍",
+     why:"到 (to arrive) + 处 (place/to handle) — combining these gives the sense of 'everywhere'."},
+    {id:59, ch:"得到", py:"dédào", en:"to obtain", emoji:"🎁",
+     why:"得 (to get/obtain) + 到 (to arrive) — combining these gives the sense of 'to obtain'."},
+    {id:60, ch:"得分", py:"défēn", en:"to score", emoji:"🎯",
+     why:"得 (to get/obtain) + 分 (to divide/minute) — combining these gives the sense of 'to score'."},
+    {id:61, ch:"的话", py:"dehuà", en:"if", emoji:"💭",
+     why:"的 (possessive/descriptive particle) + 话 (speech/words) — combining these gives the sense of 'if'."},
+    {id:62, ch:"地点", py:"dìdiǎn", en:"place; location", emoji:"📍",
+     why:"地 (land/ground) + 点 (dot/o'clock) — combining these gives the sense of 'place; location'."},
+    {id:63, ch:"地方", py:"dìfang", en:"place", emoji:"📍",
+     why:"地 (land/ground) + 方 (direction/method) — combining these gives the sense of 'place'."},
+    {id:64, ch:"地图", py:"dìtú", en:"map", emoji:"🗺️",
+     why:"地 (land/ground) + 图 (picture/map) — combining these gives the sense of 'map'."},
+    {id:65, ch:"电梯", py:"diàntī", en:"elevator", emoji:"🛗",
+     why:"电 (electricity) + 梯 (ladder/stairs) — combining these gives the sense of 'elevator'."},
+    {id:66, ch:"东北", py:"dōngběi", en:"northeast", emoji:"🧭",
+     why:"东 (east) + 北 (north) — combining these gives the sense of 'northeast'."},
+    {id:67, ch:"东方", py:"dōngfāng", en:"east", emoji:"🌅",
+     why:"东 (east) + 方 (direction/method) — combining these gives the sense of 'east'."},
+    {id:68, ch:"东南", py:"dōngnán", en:"southeast", emoji:"🧭",
+     why:"东 (east) + 南 (south) — combining these gives the sense of 'southeast'."},
+    {id:69, ch:"冬天", py:"dōngtiān", en:"winter", emoji:"❄️",
+     why:"冬 (winter) + 天 (sky/day) — combining these gives the sense of 'winter'."},
+    {id:70, ch:"懂得", py:"dǒngde", en:"to understand", emoji:"💡",
+     why:"懂 (to understand) + 得 (to get/obtain) — combining these gives the sense of 'to understand'."},
+    {id:71, ch:"动物", py:"dòngwù", en:"animal", emoji:"🐾",
+     why:"动 (to move) + 物 (thing/object) — combining these gives the sense of 'animal'."},
+    {id:72, ch:"短裤", py:"duǎnkù", en:"shorts", emoji:"🩳",
+     why:"短 (short) + 裤 (pants) — combining these gives the sense of 'shorts'."},
+    {id:73, ch:"锻炼", py:"duànliàn", en:"to exercise", emoji:"🏋️",
+     why:"锻 (to forge/temper) + 炼 (to refine/train) — combining these gives the sense of 'to exercise'."},
+    {id:74, ch:"对话", py:"duìhuà", en:"dialogue", emoji:"💬",
+     why:"对 (correct/toward) + 话 (speech/words) — combining these gives the sense of 'dialogue'."},
+    {id:75, ch:"而且", py:"érqiě", en:"moreover", emoji:"➕",
+     why:"而 (and/but) + 且 (moreover) — combining these gives the sense of 'moreover'."},
+    {id:76, ch:"耳朵", py:"ěrduo", en:"ear", emoji:"👂",
+     why:"耳 (ear) + 朵 (measure word for flowers) — combining these gives the sense of 'ear'."},
+    {id:77, ch:"耳机", py:"ěrjī", en:"earphones", emoji:"🎧",
+     why:"耳 (ear) + 机 (machine/opportunity) — combining these gives the sense of 'earphones'."},
+    {id:78, ch:"发烧", py:"fāshāo", en:"to have a fever", emoji:"🤒",
+     why:"发 (to send/issue) + 烧 (to burn/fever) — combining these gives the sense of 'to have a fever'."},
+    {id:79, ch:"发生", py:"fāshēng", en:"to happen", emoji:"❗",
+     why:"发 (to send/issue) + 生 (to be born/life) — combining these gives the sense of 'to happen'."},
+    {id:80, ch:"发现", py:"fāxiàn", en:"to discover", emoji:"🔍",
+     why:"发 (to send/issue) + 现 (now/to appear) — combining these gives the sense of 'to discover'."},
+    {id:81, ch:"发展", py:"fāzhǎn", en:"development", emoji:"📈",
+     why:"发 (to send/issue) + 展 (to unfold/exhibit) — combining these gives the sense of 'development'."},
+    {id:82, ch:"方便", py:"fāngbiàn", en:"convenient", emoji:"👍",
+     why:"方 (direction/method) + 便 (convenient) — combining these gives the sense of 'convenient'."},
+    {id:83, ch:"方法", py:"fāngfǎ", en:"method", emoji:"🧩",
+     why:"方 (direction/method) + 法 (method/law) — combining these gives the sense of 'method'."},
+    {id:84, ch:"方向", py:"fāngxiàng", en:"direction", emoji:"🧭",
+     why:"方 (direction/method) + 向 (toward) — combining these gives the sense of 'direction'."},
+    {id:85, ch:"房子", py:"fángzi", en:"house", emoji:"🏠",
+     why:"房 (room/house) + 子 (child/suffix) — combining these gives the sense of 'house'."},
+    {id:86, ch:"放假", py:"fàngjià", en:"holiday; vacation", emoji:"🏖️",
+     why:"放 (to release/put) + 假 (fake/vacation) — combining these gives the sense of 'holiday; vacation'."},
+    {id:87, ch:"放心", py:"fàngxīn", en:"don't worry", emoji:"😌",
+     why:"放 (to release/put) + 心 (heart) — combining these gives the sense of 'don't worry'."},
+    {id:88, ch:"放学", py:"fàngxué", en:"school finishes", emoji:"🔔",
+     why:"放 (to release/put) + 学 (to study) — combining these gives the sense of 'school finishes'."},
+    {id:89, ch:"分开", py:"fēnkāi", en:"to separate", emoji:"↔️",
+     why:"分 (to divide/minute) + 开 (to open) — combining these gives the sense of 'to separate'."},
+    {id:90, ch:"夫妻", py:"fūqī", en:"husband and wife", emoji:"💑",
+     why:"夫 (husband/man) + 妻 (wife) — combining these gives the sense of 'husband and wife'."},
+    {id:91, ch:"服务", py:"fúwù", en:"service", emoji:"🛎️",
+     why:"服 (clothing/to serve) + 务 (affair/task) — combining these gives the sense of 'service'."},
+    {id:92, ch:"附近", py:"fùjìn", en:"nearby", emoji:"📍",
+     why:"附 (to attach/nearby) + 近 (near) — combining these gives the sense of 'nearby'."},
+    {id:93, ch:"复习", py:"fùxí", en:"to review", emoji:"📖",
+     why:"复 (to repeat/return) + 习 (to practice/habit) — combining these gives the sense of 'to review'."},
+    {id:94, ch:"干净", py:"gānjìng", en:"clean", emoji:"🧼",
+     why:"干 (to do/dry) + 净 (clean) — combining these gives the sense of 'clean'."},
+    {id:95, ch:"感到", py:"gǎndào", en:"to feel", emoji:"💭",
+     why:"感 (to feel) + 到 (to arrive) — combining these gives the sense of 'to feel'."},
+    {id:96, ch:"感冒", py:"gǎnmào", en:"to catch a cold", emoji:"🤧",
+     why:"感 (to feel) + 冒 (to risk/emit) — combining these gives the sense of 'to catch a cold'."},
+    {id:97, ch:"刚才", py:"gāngcái", en:"just now", emoji:"🕐",
+     why:"刚 (just (now)) + 才 (only then/talent) — combining these gives the sense of 'just now'."},
+    {id:98, ch:"刚刚", py:"gānggāng", en:"just now", emoji:"🕐",
+     why:"刚 (just (now)) + 刚 (just (now)) — combining these gives the sense of 'just now'."},
+    {id:99, ch:"高铁", py:"gāotiě", en:"high-speed railway", emoji:"🚄",
+     why:"高 (tall/high) + 铁 (iron) — combining these gives the sense of 'high-speed railway'."},
+    {id:100, ch:"根据", py:"gēnjù", en:"according to", emoji:"📊",
+     why:"根 (root) + 据 (according to) — combining these gives the sense of 'according to'."},
+    {id:101, ch:"公斤", py:"gōngjīn", en:"kilogram", emoji:"⚖️",
+     why:"公 (public) + 斤 (unit of weight) — combining these gives the sense of 'kilogram'."},
+    {id:102, ch:"公园", py:"gōngyuán", en:"park", emoji:"🌳",
+     why:"公 (public) + 园 (garden) — combining these gives the sense of 'park'."},
+    {id:103, ch:"故事", py:"gùshi", en:"story", emoji:"📖",
+     why:"故 (reason/former) + 事 (matter/affair) — combining these gives the sense of 'story'."},
+    {id:104, ch:"关机", py:"guānjī", en:"to turn off", emoji:"📴",
+     why:"关 (to close/related to) + 机 (machine/opportunity) — combining these gives the sense of 'to turn off'."},
+    {id:105, ch:"关系", py:"guānxì", en:"relationship", emoji:"🔗",
+     why:"关 (to close/related to) + 系 (system/department) — combining these gives the sense of 'relationship'."},
+    {id:106, ch:"关心", py:"guānxīn", en:"to care about", emoji:"❤️",
+     why:"关 (to close/related to) + 心 (heart) — combining these gives the sense of 'to care about'."},
+    {id:107, ch:"关于", py:"guānyú", en:"about", emoji:"📎",
+     why:"关 (to close/related to) + 于 (in 'about') — combining these gives the sense of 'about'."},
+    {id:108, ch:"关注", py:"guānzhù", en:"to pay attention to", emoji:"👁️",
+     why:"关 (to close/related to) + 注 (to pour/note) — combining these gives the sense of 'to pay attention to'."},
+    {id:109, ch:"国家", py:"guójiā", en:"country", emoji:"🌍",
+     why:"国 (country) + 家 (home/family) — combining these gives the sense of 'country'."},
+    {id:110, ch:"过节", py:"guòjié", en:"celebrate a festival", emoji:"🎉",
+     why:"过 (to pass/to cross) + 节 (festival/joint) — combining these gives the sense of 'celebrate a festival'."},
+    {id:111, ch:"过去", py:"guòqù", en:"the past", emoji:"⏮️",
+     why:"过 (to pass/to cross) + 去 (to go) — combining these gives the sense of 'the past'."},
+    {id:112, ch:"害怕", py:"hàipà", en:"to be afraid", emoji:"😨",
+     why:"害 (harm) + 怕 (to fear) — combining these gives the sense of 'to be afraid'."},
+    {id:113, ch:"好多", py:"hǎoduō", en:"many; a lot", emoji:"🔢",
+     why:"好 (good) + 多 (many) — combining these gives the sense of 'many; a lot'."},
+    {id:114, ch:"好久", py:"hǎojiǔ", en:"a long time", emoji:"⏳",
+     why:"好 (good) + 久 (long (time)) — combining these gives the sense of 'a long time'."},
+    {id:115, ch:"好像", py:"hǎoxiàng", en:"seem; appear", emoji:"💭",
+     why:"好 (good) + 像 (to resemble) — combining these gives the sense of 'seem; appear'."},
+    {id:116, ch:"号码", py:"hàomǎ", en:"number", emoji:"🔢",
+     why:"号 (number/mark) + 码 (number/code) — combining these gives the sense of 'number'."},
+    {id:117, ch:"合适", py:"héshì", en:"suitable", emoji:"✅",
+     why:"合 (to combine/suit) + 适 (suitable) — combining these gives the sense of 'suitable'."},
+    {id:118, ch:"黑板", py:"hēibǎn", en:"blackboard", emoji:"⬛",
+     why:"黑 (black) + 板 (board/plank) — combining these gives the sense of 'blackboard'."},
+    {id:119, ch:"后来", py:"hòulái", en:"afterwards", emoji:"⏭️",
+     why:"后 (after/back) + 来 (to come) — combining these gives the sense of 'afterwards'."},
+    {id:120, ch:"后年", py:"hòunián", en:"the year after next", emoji:"📅",
+     why:"后 (after/back) + 年 (year) — combining these gives the sense of 'the year after next'."},
+    {id:121, ch:"后天", py:"hòutiān", en:"the day after tomorrow", emoji:"📅",
+     why:"后 (after/back) + 天 (sky/day) — combining these gives the sense of 'the day after tomorrow'."},
+    {id:122, ch:"护照", py:"hùzhào", en:"passport", emoji:"🛂",
+     why:"护 (to protect) + 照 (to shine/photograph) — combining these gives the sense of 'passport'."},
+    {id:123, ch:"花园", py:"huāyuán", en:"garden", emoji:"🌷",
+     why:"花 (flower) + 园 (garden) — combining these gives the sense of 'garden'."},
+    {id:124, ch:"画家", py:"huàjiā", en:"painter", emoji:"🎨",
+     why:"画 (to draw/painting) + 家 (home/family) — combining these gives the sense of 'painter'."},
+    {id:125, ch:"欢迎", py:"huānyíng", en:"welcome", emoji:"👋",
+     why:"欢 (happy) + 迎 (to welcome) — combining these gives the sense of 'welcome'."},
+    {id:126, ch:"环境", py:"huánjìng", en:"environment", emoji:"🌳",
+     why:"环 (ring/environment) + 境 (boundary/environment) — combining these gives the sense of 'environment'."},
+    {id:127, ch:"黄色", py:"huángsè", en:"yellow", emoji:"🟡",
+     why:"黄 (yellow) + 色 (color) — combining these gives the sense of 'yellow'."},
+    {id:128, ch:"回答", py:"huídá", en:"to answer", emoji:"💬",
+     why:"回 (to return) + 答 (to answer) — combining these gives the sense of 'to answer'."},
+    {id:129, ch:"会议", py:"huìyì", en:"meeting", emoji:"🗣️",
+     why:"会 (can/to meet) + 议 (to discuss) — combining these gives the sense of 'meeting'."},
+    {id:130, ch:"或者", py:"huòzhě", en:"or", emoji:"🔀",
+     why:"或 (or) + 者 (one who (suffix)) — combining these gives the sense of 'or'."},
+    {id:131, ch:"几乎", py:"jīhū", en:"almost", emoji:"🔸",
+     why:"几 (how many/a few) + 乎 (particle, 'almost') — combining these gives the sense of 'almost'."},
+    {id:132, ch:"机会", py:"jīhuì", en:"opportunity", emoji:"🌟",
+     why:"机 (machine/opportunity) + 会 (can/to meet) — combining these gives the sense of 'opportunity'."},
+    {id:133, ch:"季节", py:"jìjié", en:"season", emoji:"🍂",
+     why:"季 (season) + 节 (festival/joint) — combining these gives the sense of 'season'."},
+    {id:134, ch:"假期", py:"jiàqī", en:"vacation", emoji:"🏖️",
+     why:"假 (fake/vacation) + 期 (period (of time)) — combining these gives the sense of 'vacation'."},
+    {id:135, ch:"坚持", py:"jiānchí", en:"to persist", emoji:"💪",
+     why:"坚 (firm) + 持 (to hold/maintain) — combining these gives the sense of 'to persist'."},
+    {id:136, ch:"检查", py:"jiǎnchá", en:"to examine", emoji:"🔎",
+     why:"检 (to inspect) + 查 (to check) — combining these gives the sense of 'to examine'."},
+    {id:137, ch:"简单", py:"jiǎndān", en:"simple", emoji:"🔹",
+     why:"简 (simple) + 单 (single/list) — combining these gives the sense of 'simple'."},
+    {id:138, ch:"检票", py:"jiǎnpiào", en:"ticket inspection", emoji:"🎫",
+     why:"检 (to inspect) + 票 (ticket) — combining these gives the sense of 'ticket inspection'."},
+    {id:139, ch:"健康", py:"jiànkāng", en:"healthy", emoji:"💪",
+     why:"健 (healthy) + 康 (health) — combining these gives the sense of 'healthy'."},
+    {id:140, ch:"见面", py:"jiànmiàn", en:"to meet", emoji:"🤝",
+     why:"见 (to see) + 面 (face/side) — combining these gives the sense of 'to meet'."},
+    {id:141, ch:"结婚", py:"jiéhūn", en:"to marry", emoji:"💍",
+     why:"结 (to tie/knot) + 婚 (marriage) — combining these gives the sense of 'to marry'."},
+    {id:142, ch:"节目", py:"jiémù", en:"program", emoji:"📺",
+     why:"节 (festival/joint) + 目 (eye/item) — combining these gives the sense of 'program'."},
+    {id:143, ch:"节日", py:"jiérì", en:"festival", emoji:"🎉",
+     why:"节 (festival/joint) + 日 (sun/day) — combining these gives the sense of 'festival'."},
+    {id:144, ch:"结束", py:"jiéshù", en:"to finish", emoji:"🏁",
+     why:"结 (to tie/knot) + 束 (to bind/bunch) — combining these gives the sense of 'to finish'."},
+    {id:145, ch:"解决", py:"jiějué", en:"to solve", emoji:"🧩",
+     why:"解 (to untie/solve) + 决 (to decide) — combining these gives the sense of 'to solve'."},
+    {id:146, ch:"姐妹", py:"jiěmèi", en:"sisters", emoji:"👭",
+     why:"姐 (older sister) + 妹 (younger sister) — combining these gives the sense of 'sisters'."},
+    {id:147, ch:"经过", py:"jīngguò", en:"to pass through", emoji:"➡️",
+     why:"经 (to pass through/scripture) + 过 (to pass/to cross) — combining these gives the sense of 'to pass through'."},
+    {id:148, ch:"经理", py:"jīnglǐ", en:"manager", emoji:"👔",
+     why:"经 (to pass through/scripture) + 理 (reason/logic) — combining these gives the sense of 'manager'."},
+    {id:149, ch:"句子", py:"jùzi", en:"sentence", emoji:"📝",
+     why:"句 (sentence) + 子 (child/suffix) — combining these gives the sense of 'sentence'."},
+    {id:150, ch:"决定", py:"juédìng", en:"to decide", emoji:"✅",
+     why:"决 (to decide) + 定 (to decide/fixed) — combining these gives the sense of 'to decide'."},
+    {id:151, ch:"开花", py:"kāihuā", en:"to bloom", emoji:"🌸",
+     why:"开 (to open) + 花 (flower) — combining these gives the sense of 'to bloom'."},
+    {id:152, ch:"开会", py:"kāihuì", en:"to have a meeting", emoji:"🗣️",
+     why:"开 (to open) + 会 (can/to meet) — combining these gives the sense of 'to have a meeting'."},
+    {id:153, ch:"开机", py:"kāijī", en:"to turn on", emoji:"📲",
+     why:"开 (to open) + 机 (machine/opportunity) — combining these gives the sense of 'to turn on'."},
+    {id:154, ch:"开心", py:"kāixīn", en:"happy", emoji:"😊",
+     why:"开 (to open) + 心 (heart) — combining these gives the sense of 'happy'."},
+    {id:155, ch:"看来", py:"kànlái", en:"it seems", emoji:"🤔",
+     why:"看 (to look/see) + 来 (to come) — combining these gives the sense of 'it seems'."},
+    {id:156, ch:"可爱", py:"kě'ài", en:"lovely", emoji:"🥰",
+     why:"可 (can/may) + 爱 (to love) — combining these gives the sense of 'lovely'."},
+    {id:157, ch:"可是", py:"kěshì", en:"but", emoji:"↔️",
+     why:"可 (can/may) + 是 (to be) — combining these gives the sense of 'but'."},
+    {id:158, ch:"课本", py:"kèběn", en:"textbook", emoji:"📘",
+     why:"课 (lesson/class) + 本 (root/this) — combining these gives the sense of 'textbook'."},
+    {id:159, ch:"客人", py:"kèrén", en:"guest", emoji:"🙋",
+     why:"客 (guest) + 人 (person) — combining these gives the sense of 'guest'."},
+    {id:160, ch:"课文", py:"kèwén", en:"text; lesson", emoji:"📖",
+     why:"课 (lesson/class) + 文 (script/culture) — combining these gives the sense of 'text; lesson'."},
+    {id:161, ch:"空调", py:"kōngtiáo", en:"air conditioner", emoji:"❄️",
+     why:"空 (empty/sky) + 调 (to adjust/tune) — combining these gives the sense of 'air conditioner'."},
+    {id:162, ch:"筷子", py:"kuàizi", en:"chopsticks", emoji:"🥢",
+     why:"筷 (chopsticks) + 子 (child/suffix) — combining these gives the sense of 'chopsticks'."},
+    {id:163, ch:"来自", py:"láizì", en:"to come from", emoji:"📍",
+     why:"来 (to come) + 自 (self) — combining these gives the sense of 'to come from'."},
+    {id:164, ch:"老人", py:"lǎorén", en:"elderly person", emoji:"👴",
+     why:"老 (old) + 人 (person) — combining these gives the sense of 'elderly person'."},
+    {id:165, ch:"离开", py:"líkāi", en:"to leave", emoji:"🚪",
+     why:"离 (to leave/from) + 开 (to open) — combining these gives the sense of 'to leave'."},
+    {id:166, ch:"礼物", py:"lǐwù", en:"gift", emoji:"🎁",
+     why:"礼 (gift/courtesy) + 物 (thing/object) — combining these gives the sense of 'gift'."},
+    {id:167, ch:"历史", py:"lìshǐ", en:"history", emoji:"📜",
+     why:"历 (to experience/history) + 史 (history) — combining these gives the sense of 'history'."},
+    {id:168, ch:"练习", py:"liànxí", en:"to practice; exercise", emoji:"✏️",
+     why:"练 (to practice) + 习 (to practice/habit) — combining these gives the sense of 'to practice; exercise'."},
+    {id:169, ch:"凉快", py:"liángkuai", en:"cool (weather)", emoji:"😌",
+     why:"凉 (cool) + 快 (fast/happy) — combining these gives the sense of 'cool (weather)'."},
+    {id:170, ch:"了解", py:"liǎojiě", en:"to understand", emoji:"💡",
+     why:"了 (completed-action particle) + 解 (to untie/solve) — combining these gives the sense of 'to understand'."},
+    {id:171, ch:"邻居", py:"línjū", en:"neighbor", emoji:"🏘️",
+     why:"邻 (neighbor) + 居 (to reside) — combining these gives the sense of 'neighbor'."},
+    {id:172, ch:"留学", py:"liúxué", en:"to study abroad", emoji:"🎓",
+     why:"留 (to stay/leave behind) + 学 (to study) — combining these gives the sense of 'to study abroad'."},
+    {id:173, ch:"楼梯", py:"lóutī", en:"stairs", emoji:"🪜",
+     why:"楼 (building/floor) + 梯 (ladder/stairs) — combining these gives the sense of 'stairs'."},
+    {id:174, ch:"路边", py:"lùbiān", en:"roadside", emoji:"🛣️",
+     why:"路 (road) + 边 (side/border) — combining these gives the sense of 'roadside'."},
+    {id:175, ch:"路口", py:"lùkǒu", en:"intersection", emoji:"🚦",
+     why:"路 (road) + 口 (mouth) — combining these gives the sense of 'intersection'."},
+    {id:176, ch:"马路", py:"mǎlù", en:"road; street", emoji:"🛣️",
+     why:"马 (horse) + 路 (road) — combining these gives the sense of 'road; street'."},
+    {id:177, ch:"马上", py:"mǎshàng", en:"immediately", emoji:"🐎",
+     why:"马 (horse) + 上 (up/on) — combining these gives the sense of 'immediately'."},
+    {id:178, ch:"满意", py:"mǎnyì", en:"satisfied", emoji:"😊",
+     why:"满 (full/satisfied) + 意 (meaning/intention) — combining these gives the sense of 'satisfied'."},
+    {id:179, ch:"面前", py:"miànqián", en:"in front of", emoji:"👀",
+     why:"面 (face/side) + 前 (front/before) — combining these gives the sense of 'in front of'."},
+    {id:180, ch:"明白", py:"míngbai", en:"to understand; clear", emoji:"💡",
+     why:"明 (bright/clear) + 白 (white) — combining these gives the sense of 'to understand; clear'."},
+    {id:181, ch:"名单", py:"míngdān", en:"name list", emoji:"📋",
+     why:"名 (name) + 单 (single/list) — combining these gives the sense of 'name list'."},
+    {id:182, ch:"名人", py:"míngrén", en:"famous person", emoji:"🌟",
+     why:"名 (name) + 人 (person) — combining these gives the sense of 'famous person'."},
+    {id:183, ch:"南方", py:"nánfāng", en:"south; southern region", emoji:"🧭",
+     why:"南 (south) + 方 (direction/method) — combining these gives the sense of 'south; southern region'."},
+    {id:184, ch:"难过", py:"nánguò", en:"sad", emoji:"😢",
+     why:"难 (difficult) + 过 (to pass/to cross) — combining these gives the sense of 'sad'."},
+    {id:185, ch:"难看", py:"nánkàn", en:"ugly", emoji:"🙁",
+     why:"难 (difficult) + 看 (to look/see) — combining these gives the sense of 'ugly'."},
+    {id:186, ch:"男人", py:"nánrén", en:"man", emoji:"👨",
+     why:"男 (male) + 人 (person) — combining these gives the sense of 'man'."},
+    {id:187, ch:"男生", py:"nánshēng", en:"male student", emoji:"👦",
+     why:"男 (male) + 生 (to be born/life) — combining these gives the sense of 'male student'."},
+    {id:188, ch:"难题", py:"nántí", en:"difficult problem", emoji:"🧩",
+     why:"难 (difficult) + 题 (topic/question) — combining these gives the sense of 'difficult problem'."},
+    {id:189, ch:"难听", py:"nántīng", en:"unpleasant to hear", emoji:"🙉",
+     why:"难 (difficult) + 听 (to listen) — combining these gives the sense of 'unpleasant to hear'."},
+    {id:190, ch:"年级", py:"niánjí", en:"grade (school)", emoji:"🏫",
+     why:"年 (year) + 级 (level/grade) — combining these gives the sense of 'grade (school)'."},
+    {id:191, ch:"年轻", py:"niánqīng", en:"young", emoji:"🧑",
+     why:"年 (year) + 轻 (light (weight)) — combining these gives the sense of 'young'."},
+    {id:192, ch:"努力", py:"nǔlì", en:"to work hard", emoji:"💪",
+     why:"努 (to exert effort) + 力 (strength) — combining these gives the sense of 'to work hard'."},
+    {id:193, ch:"女人", py:"nǚrén", en:"woman", emoji:"👩",
+     why:"女 (woman) + 人 (person) — combining these gives the sense of 'woman'."},
+    {id:194, ch:"女生", py:"nǚshēng", en:"female student", emoji:"👧",
+     why:"女 (woman) + 生 (to be born/life) — combining these gives the sense of 'female student'."},
+    {id:195, ch:"拍照", py:"pāizhào", en:"to take photos", emoji:"📸",
+     why:"拍 (to pat/to shoot (photo)) + 照 (to shine/photograph) — combining these gives the sense of 'to take photos'."},
+    {id:196, ch:"盘子", py:"pánzi", en:"plate", emoji:"🍽️",
+     why:"盘 (plate/tray) + 子 (child/suffix) — combining these gives the sense of 'plate'."},
+    {id:197, ch:"啤酒", py:"píjiǔ", en:"beer", emoji:"🍺",
+     why:"啤 (phonetic, beer) + 酒 (alcohol) — combining these gives the sense of 'beer'."},
+    {id:198, ch:"平时", py:"píngshí", en:"usually", emoji:"🕐",
+     why:"平 (flat/level) + 时 (time) — combining these gives the sense of 'usually'."},
+    {id:199, ch:"瓶子", py:"píngzi", en:"bottle", emoji:"🍾",
+     why:"瓶 (bottle) + 子 (child/suffix) — combining these gives the sense of 'bottle'."},
+    {id:200, ch:"奇怪", py:"qíguài", en:"strange", emoji:"🤔",
+     why:"奇 (strange) + 怪 (strange/to blame) — combining these gives the sense of 'strange'."},
+    {id:201, ch:"其实", py:"qíshí", en:"actually", emoji:"💭",
+     why:"其 (its/that) + 实 (real/solid) — combining these gives the sense of 'actually'."},
+    {id:202, ch:"其他", py:"qítā", en:"other", emoji:"➕",
+     why:"其 (its/that) + 他 (he/him) — combining these gives the sense of 'other'."},
+    {id:203, ch:"起飞", py:"qǐfēi", en:"to take off", emoji:"🛫",
+     why:"起 (to rise/start) + 飞 (to fly) — combining these gives the sense of 'to take off'."},
+    {id:204, ch:"汽车", py:"qìchē", en:"car", emoji:"🚗",
+     why:"汽 (steam/vapor) + 车 (vehicle) — combining these gives the sense of 'car'."},
+    {id:205, ch:"铅笔", py:"qiānbǐ", en:"pencil", emoji:"✏️",
+     why:"铅 (lead (metal)) + 笔 (pen/writing) — combining these gives the sense of 'pencil'."},
+    {id:206, ch:"前年", py:"qiánnián", en:"the year before last", emoji:"📅",
+     why:"前 (front/before) + 年 (year) — combining these gives the sense of 'the year before last'."},
+    {id:207, ch:"前天", py:"qiántiān", en:"the day before yesterday", emoji:"📅",
+     why:"前 (front/before) + 天 (sky/day) — combining these gives the sense of 'the day before yesterday'."},
+    {id:208, ch:"清楚", py:"qīngchu", en:"clear", emoji:"🔍",
+     why:"清 (clear) + 楚 (clear) — combining these gives the sense of 'clear'."},
+    {id:209, ch:"请假", py:"qǐngjià", en:"to ask for leave", emoji:"📄",
+     why:"请 (please/to invite) + 假 (fake/vacation) — combining these gives the sense of 'to ask for leave'."},
+    {id:210, ch:"请客", py:"qǐngkè", en:"to treat (someone)", emoji:"🍽️",
+     why:"请 (please/to invite) + 客 (guest) — combining these gives the sense of 'to treat (someone)'."},
+    {id:211, ch:"秋天", py:"qiūtiān", en:"autumn", emoji:"🍁",
+     why:"秋 (autumn) + 天 (sky/day) — combining these gives the sense of 'autumn'."},
+    {id:212, ch:"球场", py:"qiúchǎng", en:"sports field", emoji:"⚽",
+     why:"球 (ball) + 场 (field/site) — combining these gives the sense of 'sports field'."},
+    {id:213, ch:"裙子", py:"qúnzi", en:"skirt", emoji:"👗",
+     why:"裙 (skirt) + 子 (child/suffix) — combining these gives the sense of 'skirt'."},
+    {id:214, ch:"然后", py:"ránhòu", en:"then", emoji:"➡️",
+     why:"然 (like this/so) + 后 (after/back) — combining these gives the sense of 'then'."},
+    {id:215, ch:"热情", py:"rèqíng", en:"enthusiastic", emoji:"🔥",
+     why:"热 (hot) + 情 (feeling) — combining these gives the sense of 'enthusiastic'."},
+    {id:216, ch:"认为", py:"rènwéi", en:"to think; believe", emoji:"💭",
+     why:"认 (to recognize) + 为 (for/to act as) — combining these gives the sense of 'to think; believe'."},
+    {id:217, ch:"认真", py:"rènzhēn", en:"serious; conscientious", emoji:"🧐",
+     why:"认 (to recognize) + 真 (real/true) — combining these gives the sense of 'serious; conscientious'."},
+    {id:218, ch:"容易", py:"róngyì", en:"easy", emoji:"✅",
+     why:"容 (to contain/appearance) + 易 (easy) — combining these gives the sense of 'easy'."},
+    {id:219, ch:"如果", py:"rúguǒ", en:"if", emoji:"❓",
+     why:"如 (like/as if) + 果 (fruit/result) — combining these gives the sense of 'if'."},
+    {id:220, ch:"沙发", py:"shāfā", en:"sofa", emoji:"🛋️",
+     why:"沙 (sand) + 发 (to send/issue) — combining these gives the sense of 'sofa'."},
+    {id:221, ch:"上衣", py:"shàngyī", en:"jacket; upper garment", emoji:"👕",
+     why:"上 (up/on) + 衣 (clothing) — combining these gives the sense of 'jacket; upper garment'."},
+    {id:222, ch:"勺子", py:"sháozi", en:"spoon", emoji:"🥄",
+     why:"勺 (spoon) + 子 (child/suffix) — combining these gives the sense of 'spoon'."},
+    {id:223, ch:"身边", py:"shēnbiān", en:"by one's side", emoji:"👥",
+     why:"身 (body) + 边 (side/border) — combining these gives the sense of 'by one's side'."},
+    {id:224, ch:"身高", py:"shēngāo", en:"height", emoji:"📏",
+     why:"身 (body) + 高 (tall/high) — combining these gives the sense of 'height'."},
+    {id:225, ch:"生活", py:"shēnghuó", en:"life", emoji:"🌿",
+     why:"生 (to be born/life) + 活 (to live/alive) — combining these gives the sense of 'life'."},
+    {id:226, ch:"生气", py:"shēngqì", en:"angry", emoji:"😠",
+     why:"生 (to be born/life) + 气 (air/gas/manner) — combining these gives the sense of 'angry'."},
+    {id:227, ch:"声音", py:"shēngyīn", en:"sound; voice", emoji:"🔊",
+     why:"声 (sound) + 音 (sound) — combining these gives the sense of 'sound; voice'."},
+    {id:228, ch:"世界", py:"shìjiè", en:"world", emoji:"🌍",
+     why:"世 (world/generation) + 界 (boundary/world) — combining these gives the sense of 'world'."},
+    {id:229, ch:"收到", py:"shōudào", en:"to receive", emoji:"📥",
+     why:"收 (to receive/collect) + 到 (to arrive) — combining these gives the sense of 'to receive'."},
+    {id:230, ch:"受到", py:"shòudào", en:"to receive", emoji:"📥",
+     why:"受 (to receive/suffer) + 到 (to arrive) — combining these gives the sense of 'to receive'."},
+    {id:231, ch:"叔叔", py:"shūshu", en:"uncle", emoji:"👨",
+     why:"叔 (uncle) + 叔 (uncle) — combining these gives the sense of 'uncle'."},
+    {id:232, ch:"数学", py:"shùxué", en:"mathematics", emoji:"🔢",
+     why:"数 (number) + 学 (to study) — combining these gives the sense of 'mathematics'."},
+    {id:233, ch:"水平", py:"shuǐpíng", en:"level", emoji:"📊",
+     why:"水 (water) + 平 (flat/level) — combining these gives the sense of 'level'."},
+    {id:234, ch:"司机", py:"sījī", en:"driver", emoji:"🚕",
+     why:"司 (to manage) + 机 (machine/opportunity) — combining these gives the sense of 'driver'."},
+    {id:235, ch:"四季", py:"sìjì", en:"four seasons", emoji:"🍂",
+     why:"四 (four) + 季 (season) — combining these gives the sense of 'four seasons'."},
+    {id:236, ch:"太阳", py:"tàiyáng", en:"sun", emoji:"☀️",
+     why:"太 (too/very) + 阳 (sun/yang) — combining these gives the sense of 'sun'."},
+    {id:237, ch:"特别", py:"tèbié", en:"especially", emoji:"⭐",
+     why:"特 (special) + 别 (don't/other) — combining these gives the sense of 'especially'."},
+    {id:238, ch:"提高", py:"tígāo", en:"to improve", emoji:"📈",
+     why:"提 (to raise/lift) + 高 (tall/high) — combining these gives the sense of 'to improve'."},
+    {id:239, ch:"体育", py:"tǐyù", en:"physical education; sports", emoji:"⚽",
+     why:"体 (body) + 育 (to raise/educate) — combining these gives the sense of 'physical education; sports'."},
+    {id:240, ch:"听说", py:"tīngshuō", en:"to hear (that)", emoji:"👂",
+     why:"听 (to listen) + 说 (to speak) — combining these gives the sense of 'to hear (that)'."},
+    {id:241, ch:"同事", py:"tóngshì", en:"colleague", emoji:"👔",
+     why:"同 (same/together) + 事 (matter/affair) — combining these gives the sense of 'colleague'."},
+    {id:242, ch:"同意", py:"tóngyì", en:"to agree", emoji:"👍",
+     why:"同 (same/together) + 意 (meaning/intention) — combining these gives the sense of 'to agree'."},
+    {id:243, ch:"头发", py:"tóufa", en:"hair", emoji:"💇",
+     why:"头 (head) + 发 (to send/issue) — combining these gives the sense of 'hair'."},
+    {id:244, ch:"突然", py:"tūrán", en:"suddenly", emoji:"❗",
+     why:"突 (sudden) + 然 (like this/so) — combining these gives the sense of 'suddenly'."},
+    {id:245, ch:"外地", py:"wàidì", en:"another place", emoji:"🗺️",
+     why:"外 (outside) + 地 (land/ground) — combining these gives the sense of 'another place'."},
+    {id:246, ch:"外卖", py:"wàimài", en:"takeaway", emoji:"🥡",
+     why:"外 (outside) + 卖 (to sell) — combining these gives the sense of 'takeaway'."},
+    {id:247, ch:"外语", py:"wàiyǔ", en:"foreign language", emoji:"🗣️",
+     why:"外 (outside) + 语 (language) — combining these gives the sense of 'foreign language'."},
+    {id:248, ch:"完成", py:"wánchéng", en:"to complete", emoji:"✅",
+     why:"完 (to finish) + 成 (to become) — combining these gives the sense of 'to complete'."},
+    {id:249, ch:"晚点", py:"wǎndiǎn", en:"later", emoji:"⏰",
+     why:"晚 (evening/late) + 点 (dot/o'clock) — combining these gives the sense of 'later'."},
+    {id:250, ch:"晚会", py:"wǎnhuì", en:"evening party", emoji:"🎉",
+     why:"晚 (evening/late) + 会 (can/to meet) — combining these gives the sense of 'evening party'."},
+    {id:251, ch:"网球", py:"wǎngqiú", en:"tennis", emoji:"🎾",
+     why:"网 (net/web) + 球 (ball) — combining these gives the sense of 'tennis'."},
+    {id:252, ch:"网站", py:"wǎngzhàn", en:"website", emoji:"🌐",
+     why:"网 (net/web) + 站 (to stand/station) — combining these gives the sense of 'website'."},
+    {id:253, ch:"忘记", py:"wàngjì", en:"to forget", emoji:"🤷",
+     why:"忘 (to forget) + 记 (to remember) — combining these gives the sense of 'to forget'."},
+    {id:254, ch:"为了", py:"wèile", en:"in order to", emoji:"🎯",
+     why:"为 (for/to act as) + 了 (completed-action particle) — combining these gives the sense of 'in order to'."},
+    {id:255, ch:"文化", py:"wénhuà", en:"culture", emoji:"🏛️",
+     why:"文 (script/culture) + 化 (to transform) — combining these gives the sense of 'culture'."},
+    {id:256, ch:"屋子", py:"wūzi", en:"room; house", emoji:"🏠",
+     why:"屋 (room/house) + 子 (child/suffix) — combining these gives the sense of 'room; house'."},
+    {id:257, ch:"西北", py:"xīběi", en:"northwest", emoji:"🧭",
+     why:"西 (west) + 北 (north) — combining these gives the sense of 'northwest'."},
+    {id:258, ch:"西方", py:"xīfāng", en:"the West", emoji:"🌇",
+     why:"西 (west) + 方 (direction/method) — combining these gives the sense of 'the West'."},
+    {id:259, ch:"西瓜", py:"xīguā", en:"watermelon", emoji:"🍉",
+     why:"西 (west) + 瓜 (melon) — combining these gives the sense of 'watermelon'."},
+    {id:260, ch:"西南", py:"xīnán", en:"southwest", emoji:"🧭",
+     why:"西 (west) + 南 (south) — combining these gives the sense of 'southwest'."},
+    {id:261, ch:"习惯", py:"xíguàn", en:"habit", emoji:"🔁",
+     why:"习 (to practice/habit) + 惯 (habit) — combining these gives the sense of 'habit'."},
+    {id:262, ch:"喜爱", py:"xǐ'ài", en:"to like; love", emoji:"❤️",
+     why:"喜 (to like/happy) + 爱 (to love) — combining these gives the sense of 'to like; love'."},
+    {id:263, ch:"洗澡", py:"xǐzǎo", en:"to take a bath", emoji:"🛁",
+     why:"洗 (to wash) + 澡 (to bathe) — combining these gives the sense of 'to take a bath'."},
+    {id:264, ch:"夏天", py:"xiàtiān", en:"summer", emoji:"☀️",
+     why:"夏 (summer) + 天 (sky/day) — combining these gives the sense of 'summer'."},
+    {id:265, ch:"香蕉", py:"xiāngjiāo", en:"banana", emoji:"🍌",
+     why:"香 (fragrant) + 蕉 (banana (in 香蕉)) — combining these gives the sense of 'banana'."},
+    {id:266, ch:"相信", py:"xiāngxìn", en:"to believe", emoji:"🤝",
+     why:"相 (mutual/appearance) + 信 (letter/to trust) — combining these gives the sense of 'to believe'."},
+    {id:267, ch:"箱子", py:"xiāngzi", en:"box; suitcase", emoji:"🧰",
+     why:"箱 (box) + 子 (child/suffix) — combining these gives the sense of 'box; suitcase'."},
+    {id:268, ch:"相机", py:"xiàngjī", en:"camera", emoji:"📷",
+     why:"相 (mutual/appearance) + 机 (machine/opportunity) — combining these gives the sense of 'camera'."},
+    {id:269, ch:"小区", py:"xiǎoqū", en:"residential community", emoji:"🏘️",
+     why:"小 (small) + 区 (area/district) — combining these gives the sense of 'residential community'."},
+    {id:270, ch:"小心", py:"xiǎoxīn", en:"careful", emoji:"⚠️",
+     why:"小 (small) + 心 (heart) — combining these gives the sense of 'careful'."},
+    {id:271, ch:"校园", py:"xiàoyuán", en:"campus", emoji:"🏫",
+     why:"校 (school) + 园 (garden) — combining these gives the sense of 'campus'."},
+    {id:272, ch:"校长", py:"xiàozhǎng", en:"principal", emoji:"🧑‍💼",
+     why:"校 (school) + 长 (long/to grow) — combining these gives the sense of 'principal'."},
+    {id:273, ch:"心里", py:"xīnlǐ", en:"in one's heart; inside", emoji:"❤️",
+     why:"心 (heart) + 里 (inside) — combining these gives the sense of 'in one's heart; inside'."},
+    {id:274, ch:"新年", py:"xīnnián", en:"New Year", emoji:"🎆",
+     why:"新 (new) + 年 (year) — combining these gives the sense of 'New Year'."},
+    {id:275, ch:"新闻", py:"xīnwén", en:"news", emoji:"📰",
+     why:"新 (new) + 闻 (to smell/hear (news)) — combining these gives the sense of 'news'."},
+    {id:276, ch:"新鲜", py:"xīnxiān", en:"fresh", emoji:"🥬",
+     why:"新 (new) + 鲜 (fresh) — combining these gives the sense of 'fresh'."},
+    {id:277, ch:"行李", py:"xíngli", en:"luggage", emoji:"🧳",
+     why:"行 (to walk/okay) + 李 (plum (surname)) — combining these gives the sense of 'luggage'."},
+    {id:278, ch:"兴趣", py:"xìngqù", en:"interest", emoji:"🎯",
+     why:"兴 (excitement/interest) + 趣 (interest/fun) — combining these gives the sense of 'interest'."},
+    {id:279, ch:"休息", py:"xiūxi", en:"to rest", emoji:"😴",
+     why:"休 (to rest) + 息 (to rest/breath) — combining these gives the sense of 'to rest'."},
+    {id:280, ch:"需要", py:"xūyào", en:"to need", emoji:"❗",
+     why:"需 (to need) + 要 (to want/need) — combining these gives the sense of 'to need'."},
+    {id:281, ch:"选择", py:"xuǎnzé", en:"choice; to choose", emoji:"✅",
+     why:"选 (to choose) + 择 (to choose) — combining these gives the sense of 'choice; to choose'."},
+    {id:282, ch:"学期", py:"xuéqī", en:"semester", emoji:"📆",
+     why:"学 (to study) + 期 (period (of time)) — combining these gives the sense of 'semester'."},
+    {id:283, ch:"牙刷", py:"yáshuā", en:"toothbrush", emoji:"🪥",
+     why:"牙 (tooth) + 刷 (to brush) — combining these gives the sense of 'toothbrush'."},
+    {id:284, ch:"要求", py:"yāoqiú", en:"requirement; to request", emoji:"📋",
+     why:"要 (to want/need) + 求 (to request/seek) — combining these gives the sense of 'requirement; to request'."},
+    {id:285, ch:"一定", py:"yídìng", en:"certainly", emoji:"✅",
+     why:"一 (one) + 定 (to decide/fixed) — combining these gives the sense of 'certainly'."},
+    {id:286, ch:"一共", py:"yígòng", en:"altogether", emoji:"➕",
+     why:"一 (one) + 共 (together/altogether) — combining these gives the sense of 'altogether'."},
+    {id:287, ch:"一样", py:"yíyàng", en:"same", emoji:"🟰",
+     why:"一 (one) + 样 (appearance/kind) — combining these gives the sense of 'same'."},
+    {id:288, ch:"以后", py:"yǐhòu", en:"afterwards", emoji:"⏭️",
+     why:"以 (to use/by means of) + 后 (after/back) — combining these gives the sense of 'afterwards'."},
+    {id:289, ch:"以前", py:"yǐqián", en:"before", emoji:"⏮️",
+     why:"以 (to use/by means of) + 前 (front/before) — combining these gives the sense of 'before'."},
+    {id:290, ch:"以上", py:"yǐshàng", en:"above", emoji:"⬆️",
+     why:"以 (to use/by means of) + 上 (up/on) — combining these gives the sense of 'above'."},
+    {id:291, ch:"以外", py:"yǐwài", en:"besides; outside", emoji:"➕",
+     why:"以 (to use/by means of) + 外 (outside) — combining these gives the sense of 'besides; outside'."},
+    {id:292, ch:"以为", py:"yǐwéi", en:"to think mistakenly", emoji:"🤔",
+     why:"以 (to use/by means of) + 为 (for/to act as) — combining these gives the sense of 'to think mistakenly'."},
+    {id:293, ch:"以下", py:"yǐxià", en:"below", emoji:"⬇️",
+     why:"以 (to use/by means of) + 下 (down/under) — combining these gives the sense of 'below'."},
+    {id:294, ch:"一般", py:"yìbān", en:"ordinary; generally", emoji:"🔸",
+     why:"一 (one) + 般 (kind/manner) — combining these gives the sense of 'ordinary; generally'."},
+    {id:295, ch:"一边", py:"yìbiān", en:"while; one side", emoji:"↔️",
+     why:"一 (one) + 边 (side/border) — combining these gives the sense of 'while; one side'."},
+    {id:296, ch:"一直", py:"yìzhí", en:"continuously", emoji:"➡️",
+     why:"一 (one) + 直 (straight/until) — combining these gives the sense of 'continuously'."},
+    {id:297, ch:"音乐", py:"yīnyuè", en:"music", emoji:"🎵",
+     why:"音 (sound) + 乐 (happy/music) — combining these gives the sense of 'music'."},
+    {id:298, ch:"银行", py:"yínháng", en:"bank", emoji:"🏦",
+     why:"银 (silver) + 行 (to walk/okay) — combining these gives the sense of 'bank'."},
+    {id:299, ch:"饮料", py:"yǐnliào", en:"beverage", emoji:"🥤",
+     why:"饮 (to drink) + 料 (material) — combining these gives the sense of 'beverage'."},
+    {id:300, ch:"应该", py:"yīnggāi", en:"should", emoji:"✅",
+     why:"应 (should/to respond) + 该 (should) — combining these gives the sense of 'should'."},
+    {id:301, ch:"影响", py:"yǐngxiǎng", en:"influence", emoji:"📈",
+     why:"影 (shadow/image) + 响 (sound/to ring) — combining these gives the sense of 'influence'."},
+    {id:302, ch:"邮件", py:"yóujiàn", en:"email; mail", emoji:"📧",
+     why:"邮 (mail/post) + 件 (item (measure word)) — combining these gives the sense of 'email; mail'."},
+    {id:303, ch:"游客", py:"yóukè", en:"tourist", emoji:"🧳",
+     why:"游 (to swim/to travel) + 客 (guest) — combining these gives the sense of 'tourist'."},
+    {id:304, ch:"游戏", py:"yóuxì", en:"game", emoji:"🎮",
+     why:"游 (to swim/to travel) + 戏 (play/drama) — combining these gives the sense of 'game'."},
+    {id:305, ch:"邮箱", py:"yóuxiāng", en:"mailbox; email inbox", emoji:"📬",
+     why:"邮 (mail/post) + 箱 (box) — combining these gives the sense of 'mailbox; email inbox'."},
+    {id:306, ch:"有关", py:"yǒuguān", en:"related to", emoji:"🔗",
+     why:"有 (to have) + 关 (to close/related to) — combining these gives the sense of 'related to'."},
+    {id:307, ch:"有名", py:"yǒumíng", en:"famous", emoji:"🌟",
+     why:"有 (to have) + 名 (name) — combining these gives the sense of 'famous'."},
+    {id:308, ch:"有用", py:"yǒuyòng", en:"useful", emoji:"👍",
+     why:"有 (to have) + 用 (to use) — combining these gives the sense of 'useful'."},
+    {id:309, ch:"语言", py:"yǔyán", en:"language", emoji:"🗣️",
+     why:"语 (language) + 言 (speech/words) — combining these gives the sense of 'language'."},
+    {id:310, ch:"雨衣", py:"yǔyī", en:"raincoat", emoji:"🧥",
+     why:"雨 (rain) + 衣 (clothing) — combining these gives the sense of 'raincoat'."},
+    {id:311, ch:"遇到", py:"yùdào", en:"to meet; encounter", emoji:"🤝",
+     why:"遇 (to meet/encounter) + 到 (to arrive) — combining these gives the sense of 'to meet; encounter'."},
+    {id:312, ch:"遇见", py:"yùjiàn", en:"to meet", emoji:"🤝",
+     why:"遇 (to meet/encounter) + 见 (to see) — combining these gives the sense of 'to meet'."},
+    {id:313, ch:"愿意", py:"yuànyì", en:"willing", emoji:"🙋",
+     why:"愿 (to wish) + 意 (meaning/intention) — combining these gives the sense of 'willing'."},
+    {id:314, ch:"月亮", py:"yuèliang", en:"moon", emoji:"🌙",
+     why:"月 (moon/month) + 亮 (bright) — combining these gives the sense of 'moon'."},
+    {id:315, ch:"咱们", py:"zánmen", en:"we; us", emoji:"👥",
+     why:"咱 (we (inclusive)) + 们 (plural marker) — combining these gives the sense of 'we; us'."},
+    {id:316, ch:"怎样", py:"zěnyàng", en:"how; what kind", emoji:"❓",
+     why:"怎 (how) + 样 (appearance/kind) — combining these gives the sense of 'how; what kind'."},
+    {id:317, ch:"着急", py:"zháojí", en:"anxious", emoji:"😟",
+     why:"着 (progressive particle)/to wear + 急 (urgent) — combining these gives the sense of 'anxious'."},
+    {id:318, ch:"照顾", py:"zhàogù", en:"to take care of", emoji:"🤲",
+     why:"照 (to shine/photograph) + 顾 (to look after/care for) — combining these gives the sense of 'to take care of'."},
+    {id:319, ch:"照片", py:"zhàopiàn", en:"photograph", emoji:"📷",
+     why:"照 (to shine/photograph) + 片 (slice/piece) — combining these gives the sense of 'photograph'."},
+    {id:320, ch:"照相", py:"zhàoxiàng", en:"to take photos", emoji:"📸",
+     why:"照 (to shine/photograph) + 相 (mutual/appearance) — combining these gives the sense of 'to take photos'."},
+    {id:321, ch:"直到", py:"zhídào", en:"until", emoji:"⏳",
+     why:"直 (straight/until) + 到 (to arrive) — combining these gives the sense of 'until'."},
+    {id:322, ch:"只能", py:"zhǐnéng", en:"can only", emoji:"🔒",
+     why:"只 (only) + 能 (to be able to) — combining these gives the sense of 'can only'."},
+    {id:323, ch:"只是", py:"zhǐshì", en:"only; merely", emoji:"➖",
+     why:"只 (only) + 是 (to be) — combining these gives the sense of 'only; merely'."},
+    {id:324, ch:"只要", py:"zhǐyào", en:"as long as", emoji:"✅",
+     why:"只 (only) + 要 (to want/need) — combining these gives the sense of 'as long as'."},
+    {id:325, ch:"只有", py:"zhǐyǒu", en:"only if", emoji:"1️⃣",
+     why:"只 (only) + 有 (to have) — combining these gives the sense of 'only if'."},
+    {id:326, ch:"中间", py:"zhōngjiān", en:"middle; between", emoji:"↔️",
+     why:"中 (middle) + 间 (space/between) — combining these gives the sense of 'middle; between'."},
+    {id:327, ch:"终于", py:"zhōngyú", en:"finally", emoji:"🏁",
+     why:"终 (end/final) + 于 (in 'about') — combining these gives the sense of 'finally'."},
+    {id:328, ch:"重要", py:"zhòngyào", en:"important", emoji:"⭐",
+     why:"重 (heavy/important) + 要 (to want/need) — combining these gives the sense of 'important'."},
+    {id:329, ch:"周末", py:"zhōumò", en:"weekend", emoji:"🎉",
+     why:"周 (week) + 末 (end) — combining these gives the sense of 'weekend'."},
+    {id:330, ch:"主要", py:"zhǔyào", en:"main; principal", emoji:"🔑",
+     why:"主 (main/host) + 要 (to want/need) — combining these gives the sense of 'main; principal'."},
+    {id:331, ch:"注意", py:"zhùyì", en:"to pay attention", emoji:"⚠️",
+     why:"注 (to pour/note) + 意 (meaning/intention) — combining these gives the sense of 'to pay attention'."},
+    {id:332, ch:"住院", py:"zhùyuàn", en:"to be hospitalized", emoji:"🏥",
+     why:"住 (to live/reside) + 院 (courtyard/institution) — combining these gives the sense of 'to be hospitalized'."},
+    {id:333, ch:"字典", py:"zìdiǎn", en:"dictionary", emoji:"📖",
+     why:"字 (character/word) + 典 (standard/dictionary) — combining these gives the sense of 'dictionary'."},
+    {id:334, ch:"总是", py:"zǒngshì", en:"always", emoji:"🔁",
+     why:"总 (always/total) + 是 (to be) — combining these gives the sense of 'always'."},
+    {id:335, ch:"最好", py:"zuìhǎo", en:"had better; best", emoji:"🏆",
+     why:"最 (most) + 好 (good) — combining these gives the sense of 'had better; best'."},
+    {id:336, ch:"最后", py:"zuìhòu", en:"finally; last", emoji:"🏁",
+     why:"最 (most) + 后 (after/back) — combining these gives the sense of 'finally; last'."},
+    {id:337, ch:"最近", py:"zuìjìn", en:"recently", emoji:"🕐",
+     why:"最 (most) + 近 (near) — combining these gives the sense of 'recently'."},
+    {id:338, ch:"做客", py:"zuòkè", en:"to visit as a guest", emoji:"🚪",
+     why:"做 (to do/make) + 客 (guest) — combining these gives the sense of 'to visit as a guest'."},
+    {id:339, ch:"作业", py:"zuòyè", en:"homework", emoji:"📓",
+     why:"作 (to do/make) + 业 (occupation/industry) — combining these gives the sense of 'homework'."},
+    {id:340, ch:"绿茶", py:"lǜchá", en:"green tea", emoji:"🍵",
+     why:"绿 (green) + 茶 (tea) — combining these gives the sense of 'green tea'."},
+    {id:341, ch:"鸡肉", py:"jīròu", en:"chicken (meat)", emoji:"🍗",
+     why:"鸡 (chicken) + 肉 (meat) — combining these gives the sense of 'chicken (meat)'."},
+    {id:342, ch:"漂亮", py:"piàoliang", en:"beautiful", emoji:"✨",
+     why:"漂 (to float/pretty) + 亮 (bright) — combining these gives the sense of 'beautiful'."},
+    {id:343, ch:"便宜", py:"piányi", en:"cheap", emoji:"💰",
+     why:"便 (convenient) + 宜 (suitable) — combining these gives the sense of 'cheap'."},
+    {id:344, ch:"好吃", py:"hǎochī", en:"delicious", emoji:"😋",
+     why:"好 (good) + 吃 (to eat) — combining these gives the sense of 'delicious'."},
+    {id:345, ch:"超市", py:"chāoshì", en:"supermarket", emoji:"🛒",
+     why:"超 (to exceed) + 市 (city/market) — combining these gives the sense of 'supermarket'."},
+    {id:346, ch:"东西", py:"dōngxi", en:"things", emoji:"📦",
+     why:"东 (east) + 西 (west) — combining these gives the sense of 'things'."},
+    {id:347, ch:"汉字", py:"Hànzì", en:"Chinese characters", emoji:"🈶",
+     why:"汉 (Han (Chinese)) + 字 (character/word) — combining these gives the sense of 'Chinese characters'."},
+    {id:348, ch:"衣服", py:"yīfu", en:"clothes", emoji:"👕",
+     why:"衣 (clothing) + 服 (clothing/to serve) — combining these gives the sense of 'clothes'."},
+    {id:349, ch:"学校", py:"xuéxiào", en:"school", emoji:"🏫",
+     why:"学 (to study) + 校 (school) — combining these gives the sense of 'school'."},
+    {id:350, ch:"汉语", py:"Hànyǔ", en:"Chinese language", emoji:"🗣️",
+     why:"汉 (Han (Chinese)) + 语 (language) — combining these gives the sense of 'Chinese language'."},
+    {id:351, ch:"知道", py:"zhīdào", en:"to know", emoji:"💡",
+     why:"知 (to know) + 道 (road/way) — combining these gives the sense of 'to know'."}
+  ],
+};
+const VOCAB = DECK.VOCAB;
+
+/* ============================================================
+   SETS — chunk the 132 characters into study sets of ~30
+   ============================================================ */
+function buildSets(total, size){
+  const sets = [];
+  for(let start=0; start<total; start+=size){
+    const end = Math.min(start+size, total);
+    sets.push({start, end, label:`Set ${sets.length+1} (${start+1}–${end})`});
+  }
+  return sets;
+}
+const SETS = buildSets(VOCAB.length, 30);
+let currentSetIdx = 0;
+function activeVocabIndices(){
+  const s = SETS[currentSetIdx];
+  const arr = [];
+  for(let i=s.start;i<s.end;i++) arr.push(i);
+  return arr;
+}
+function initSetSelector(){
+  const sel = document.getElementById('setSelect');
+  sel.innerHTML = SETS.map((s,i)=>`<option value="${i}">${s.label}</option>`).join('');
+  sel.value = currentSetIdx;
+}
+function changeSet(val){
+  currentSetIdx = parseInt(val, 10);
+  fcOrder = shuffle(activeVocabIndices());
+  fcIndex = 0;
+  fcFilter = 'all';
+  shOrder = shuffle(activeVocabIndices());
+  shIndex = 0;
+  renderFlashcards();
+  renderShadowing();
+  renderMCQSetup('listening');
+  renderMCQSetup('reading');
+  renderMCQSetup('speaking');
+  renderMCQSetup('writing');
+}
+
+/* ============================================================
+   STORAGE / PROGRESS
+   ============================================================ */
+function studentKey(){
+  const n = document.getElementById('studentName').value.trim();
+  return n ? ("aruna_hsk3_compounds_" + n.toLowerCase().replace(/\s+/g,'_')) : "aruna_hsk3_compounds_guest";
+}
+function defaultProgress(){
+  return {
+    flashStatus:{}, shadowed:{},
+    mcq:{ listening:{correct:0,total:0}, reading:{correct:0,total:0}, speaking:{correct:0,total:0}, writing:{correct:0,total:0} },
+    lastVisit:null, streak:0
+  };
+}
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(studentKey());
+    const p = raw ? JSON.parse(raw) : defaultProgress();
+    if(!p.flashStatus) p.flashStatus = {};
+    if(!p.shadowed) p.shadowed = {};
+    if(!p.mcq) p.mcq = defaultProgress().mcq;
+    ['listening','reading','speaking','writing'].forEach(k=>{
+      if(!p.mcq[k]) p.mcq[k] = {correct:0,total:0};
+    });
+    return p;
+  }catch(e){ return defaultProgress(); }
+}
+function saveProgress(p){ try{ localStorage.setItem(studentKey(), JSON.stringify(p)); }catch(e){} }
+function touchStreak(){
+  const p = loadProgress();
+  const today = new Date().toDateString();
+  if(p.lastVisit !== today){
+    const yesterday = new Date(Date.now()-86400000).toDateString();
+    p.streak = (p.lastVisit === yesterday) ? (p.streak||0)+1 : 1;
+    p.lastVisit = today;
+    saveProgress(p);
+  }
+  document.getElementById('streakBadge').textContent = "🔥 " + (p.streak||0) + " day streak";
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+  const saved = localStorage.getItem('aruna_hsk3_compounds_current_name');
+  if(saved) document.getElementById('studentName').value = saved;
+  touchStreak();
+  document.getElementById('studentName').addEventListener('change', ()=>{
+    localStorage.setItem('aruna_hsk3_compounds_current_name', document.getElementById('studentName').value.trim());
+    touchStreak();
+    refreshAllViews();
+  });
+});
+function refreshAllViews(){
+  renderFlashcards();
+  renderShadowing();
+  renderProgress();
+}
+
+/* ============================================================
+   AUDIO: TTS + Recognition + Sound Effects
+   ============================================================ */
+function speak(text, rate){
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = rate || 0.85;
+  const voices = window.speechSynthesis.getVoices();
+  const zh = voices.find(v=>v.lang && v.lang.toLowerCase().startsWith('zh'));
+  if(zh) u.voice = zh;
+  window.speechSynthesis.speak(u);
+}
+function startRecognition(onResult){
+  const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!Rec){ alert('Speech recognition not supported in this browser. Try Chrome or Edge, or use the tap-to-answer option.'); return; }
+  const rec = new Rec();
+  rec.lang = 'zh-CN';
+  rec.interimResults = false;
+  rec.maxAlternatives = 5;
+  rec.onresult = (e)=>{
+    const alts = [];
+    for(let i=0;i<e.results[0].length;i++) alts.push(e.results[0][i].transcript);
+    onResult(alts, null);
+  };
+  rec.onerror = (e)=>{ onResult(null, e.error); };
+  rec.start();
+}
+function normalizeZh(s){ return (s||'').replace(/[，。？！,.?!\s]/g,''); }
+
+let audioCtx;
+function getAudioCtx(){
+  if(!audioCtx){
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if(!AC) return null;
+    audioCtx = new AC();
+  }
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+function playTone(freq, duration, type, gainVal, delay){
+  const ctx = getAudioCtx();
+  if(!ctx) return;
+  const start = ctx.currentTime + (delay||0);
+  try{
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.value = freq;
+    gain.gain.value = gainVal || 0.06;
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(start);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+    osc.stop(start + duration + 0.03);
+  }catch(e){}
+}
+function playEncourage(){
+  // bright, cheerful ascending 3-note arpeggio
+  playTone(523.25, 0.14, 'triangle', 0.07, 0);
+  playTone(659.25, 0.14, 'triangle', 0.07, 0.12);
+  playTone(783.99, 0.22, 'triangle', 0.08, 0.24);
+}
+function playSoftWrong(){
+  playTone(220, 0.18, 'sine', 0.05, 0);
+  playTone(180, 0.22, 'sine', 0.045, 0.1);
+}
+
+/* ============================================================
+   SHARED HELPERS
+   ============================================================ */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function sampleIndices(n, total){
+  return shuffle([...Array(total).keys()]).slice(0, n);
+}
+function getDistractors(targetIdx, count){
+  const target = VOCAB[targetIdx];
+  // Prefer distractors from within the current study set first
+  let pool = activeVocabIndices().filter(i=> i!==targetIdx && VOCAB[i].py !== target.py && VOCAB[i].en !== target.en);
+  pool = shuffle(pool);
+  if(pool.length < count){
+    // fall back to the full 132-word deck if the set is too small
+    pool = VOCAB.map((v,i)=>i).filter(i=> i!==targetIdx && VOCAB[i].py !== target.py && VOCAB[i].en !== target.en);
+    pool = shuffle(pool);
+  }
+  if(pool.length < count){
+    pool = VOCAB.map((v,i)=>i).filter(i=> i!==targetIdx);
+    pool = shuffle(pool);
+  }
+  return pool.slice(0, count);
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+const TABS = [
+  {id:'flashcards', label:'🗂️ Flashcards'},
+  {id:'listening', label:'🎧 Listening MCQ'},
+  {id:'reading', label:'📖 Reading MCQ'},
+  {id:'speaking', label:'🎤 Speaking MCQ'},
+  {id:'writing', label:'✍️ Writing MCQ'},
+  {id:'shadowing', label:'🔁 Shadowing'},
+  {id:'progress', label:'📊 Progress'}
+];
+function initNav(){
+  initSetSelector();
+  const nav = document.getElementById('tabNav');
+  TABS.forEach((t,i)=>{
+    const b = document.createElement('button');
+    b.textContent = t.label;
+    b.dataset.tab = t.id;
+    if(i===0) b.classList.add('active');
+    b.onclick = ()=> switchTab(t.id);
+    nav.appendChild(b);
+  });
+  const main = document.getElementById('mainArea');
+  TABS.forEach((t,i)=>{
+    const div = document.createElement('div');
+    div.className = 'panel' + (i===0?' active':'');
+    div.id = 'panel-' + t.id;
+    main.appendChild(div);
+  });
+  renderFlashcards();
+  renderMCQSetup('listening');
+  renderMCQSetup('reading');
+  renderMCQSetup('speaking');
+  renderMCQSetup('writing');
+  renderShadowing();
+  renderProgress();
+}
+function switchTab(id){
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+id));
+  if(id==='progress') renderProgress();
+}
+
+/* ============================================================
+   1. FLASHCARDS
+   ============================================================ */
+let fcOrder = shuffle(activeVocabIndices());
+let fcIndex = 0;
+let fcFilter = 'all';
+function renderFlashcards(){
+  const el = document.getElementById('panel-flashcards');
+  el.innerHTML = `
+    <div class="card">
+      <h2>🗂️ Flashcards</h2>
+      <p class="note">Tap the card to flip it. Mark each one "I know this" or "Still learning" — your picks are saved and you can filter by them later.</p>
+      <div class="fc-controls" style="margin-bottom:10px;">
+        <button class="btn outline" onclick="fcShuffleDeck()">🔀 Shuffle</button>
+        <select class="selectbox" id="fcFilterSelect" onchange="fcChangeFilter(this.value)">
+          <option value="all">Show: All (${activeVocabIndices().length})</option>
+          <option value="learning">Show: Still Learning</option>
+          <option value="known">Show: Known</option>
+        </select>
+      </div>
+      <div class="fc-wrap">
+        <div class="fc-pos" id="fcPos"></div>
+        <div class="flashcard" id="fcCardEl" onclick="fcFlip()">
+          <div class="flashcard-inner" id="fcInner">
+            <div class="fc-face fc-front">
+              <div class="emoji" id="fcEmoji"></div>
+              <div class="hanzi" id="fcHanzi"></div>
+              <div class="fc-status" id="fcStatusFront" style="margin-top:10px;"></div>
+            </div>
+            <div class="fc-face fc-back">
+              <div class="pinyin" id="fcPinyin"></div>
+              <div class="meaning" id="fcMeaning"></div>
+            </div>
+          </div>
+        </div>
+        <div class="fc-controls">
+          <button class="btn" onclick="event.stopPropagation(); speak(currentFcChar())">🔊 Audio</button>
+          <button class="btn outline" onclick="event.stopPropagation(); fcPrev()">⬅ Prev</button>
+          <button class="btn outline" onclick="event.stopPropagation(); fcNext()">Next ➡</button>
+        </div>
+        <div class="fc-controls">
+          <button class="btn gold" onclick="event.stopPropagation(); fcMark('known')">⭐ I know this</button>
+          <button class="btn" onclick="event.stopPropagation(); fcMark('learning')">🔄 Still learning</button>
+        </div>
+        <div class="fc-controls">
+          <button class="btn outline" onclick="event.stopPropagation(); fcToggleReason()">💡 Why this meaning?</button>
+        </div>
+        <div class="reason-box" id="fcReasonBox" style="display:none;width:100%;max-width:360px;"></div>
+      </div>
+    </div>
+  `;
+  fcRenderCurrent();
+}
+function fcActiveList(){
+  const p = loadProgress();
+  if(fcFilter === 'all') return fcOrder;
+  return fcOrder.filter(i=>{
+    const status = p.flashStatus[VOCAB[i].ch];
+    return status === fcFilter;
+  });
+}
+function fcChangeFilter(val){
+  fcFilter = val;
+  fcIndex = 0;
+  fcRenderCurrent();
+}
+function fcShuffleDeck(){
+  fcOrder = shuffle(activeVocabIndices());
+  fcIndex = 0;
+  fcRenderCurrent();
+}
+function currentFcChar(){
+  const list = fcActiveList();
+  if(!list.length) return '';
+  const idx = list[Math.min(fcIndex, list.length-1)];
+  return VOCAB[idx].ch;
+}
+function fcRenderCurrent(){
+  const list = fcActiveList();
+  const posEl = document.getElementById('fcPos');
+  const reasonBox = document.getElementById('fcReasonBox');
+  if(!list.length){
+    posEl.textContent = 'No cards in this filter yet.';
+    document.getElementById('fcEmoji').textContent = '🤷';
+    document.getElementById('fcHanzi').textContent = '';
+    document.getElementById('fcPinyin').textContent = '';
+    document.getElementById('fcMeaning').textContent = '';
+    document.getElementById('fcStatusFront').textContent = '';
+    reasonBox.style.display = 'none';
+    return;
+  }
+  if(fcIndex >= list.length) fcIndex = 0;
+  const v = VOCAB[list[fcIndex]];
+  posEl.textContent = `Card ${fcIndex+1} / ${list.length}`;
+  document.getElementById('fcCardEl').classList.remove('flipped');
+  document.getElementById('fcEmoji').textContent = v.emoji;
+  document.getElementById('fcHanzi').textContent = v.ch;
+  document.getElementById('fcPinyin').textContent = v.py;
+  document.getElementById('fcMeaning').textContent = v.en;
+  reasonBox.style.display = 'none';
+  reasonBox.innerHTML = `<span class="label">💡 Why:</span> ${v.why || 'No note for this word.'}`;
+  const p = loadProgress();
+  const status = p.flashStatus[v.ch];
+  document.getElementById('fcStatusFront').textContent = status === 'known' ? '⭐ Known' : (status === 'learning' ? '🔄 Learning' : '');
+}
+function fcToggleReason(){
+  const box = document.getElementById('fcReasonBox');
+  box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+}
+function fcFlip(){
+  document.getElementById('fcCardEl').classList.toggle('flipped');
+}
+function fcNext(){
+  const list = fcActiveList();
+  if(!list.length) return;
+  fcIndex = (fcIndex+1) % list.length;
+  fcRenderCurrent();
+}
+function fcPrev(){
+  const list = fcActiveList();
+  if(!list.length) return;
+  fcIndex = (fcIndex-1+list.length) % list.length;
+  fcRenderCurrent();
+}
+function fcMark(status){
+  const list = fcActiveList();
+  if(!list.length) return;
+  const v = VOCAB[list[fcIndex]];
+  const p = loadProgress();
+  p.flashStatus[v.ch] = status;
+  saveProgress(p);
+  if(status === 'known') playEncourage();
+  fcNext();
+}
+
+/* ============================================================
+   2-5. MCQ ENGINE (listening / reading / speaking / writing)
+   ============================================================ */
+const MCQ_META = {
+  listening: {title:'🎧 Listening MCQ', instr:'Listen to the audio, then choose the correct pinyin.'},
+  reading:   {title:'📖 Reading MCQ', instr:'Read the character, then choose the correct meaning.'},
+  speaking:  {title:'🎤 Speaking MCQ', instr:"Say the character out loud for the prompt shown — the app listens and picks the option you said. (You can also tap an option if your mic isn't available.)"},
+  writing:   {title:'✍️ Writing MCQ', instr:'Read the meaning, then choose the character that is written correctly for it.'}
+};
+const mcqState = {
+  listening:{questions:[],index:0,score:0,count:10,active:false},
+  reading:{questions:[],index:0,score:0,count:10,active:false},
+  speaking:{questions:[],index:0,score:0,count:10,active:false},
+  writing:{questions:[],index:0,score:0,count:10,active:false}
+};
+function renderMCQSetup(type){
+  const el = document.getElementById('panel-'+type);
+  const meta = MCQ_META[type];
+  const setSize = activeVocabIndices().length;
+  const choices = [10,20].filter(c => c < setSize);
+  let countButtons = choices.map(c=>`<button class="btn outline" onclick="startMCQ('${type}',${c})">${c}</button>`).join('');
+  countButtons += `<button class="btn outline" onclick="startMCQ('${type}',${setSize})">All (${setSize})</button>`;
+  el.innerHTML = `
+    <div class="card">
+      <h2>${meta.title}</h2>
+      <p class="note">${meta.instr}</p>
+      <p class="note" style="background:#fff;border:1px dashed var(--gold);">Practicing: <strong>${SETS[currentSetIdx].label}</strong> — switch sets using the dropdown at the top of the page.</p>
+      <div class="mcq-setup">
+        <span>How many questions?</span>
+        ${countButtons}
+      </div>
+      <div id="mcqArea-${type}" style="margin-top:14px;"></div>
+    </div>
+  `;
+}
+function buildQuestion(type, targetIdx){
+  const distractors = getDistractors(targetIdx, 3);
+  const optionIdxs = shuffle([targetIdx, ...distractors]);
+  const correctPos = optionIdxs.indexOf(targetIdx);
+  return { targetIdx, optionIdxs, correctPos, answered:false };
+}
+function startMCQ(type, count){
+  const active = activeVocabIndices();
+  const n = Math.min(count, active.length);
+  const idxs = shuffle(active).slice(0, n);
+  mcqState[type].questions = idxs.map(i=> buildQuestion(type, i));
+  mcqState[type].index = 0;
+  mcqState[type].score = 0;
+  mcqState[type].count = n;
+  mcqState[type].active = true;
+  renderMCQQuestion(type);
+}
+function renderMCQQuestion(type){
+  const st = mcqState[type];
+  const area = document.getElementById('mcqArea-'+type);
+  if(st.index >= st.questions.length){
+    renderMCQSummary(type);
+    return;
+  }
+  const q = st.questions[st.index];
+  const target = VOCAB[q.targetIdx];
+  let promptHtml = '';
+  if(type === 'listening'){
+    promptHtml = `<div class="mcq-prompt">🔊 <button class="btn" onclick="speak('${target.ch}')">Play Audio</button></div>`;
+  } else if(type === 'reading'){
+    promptHtml = `<div class="mcq-prompt">${target.ch}<span class="py">${target.emoji}</span></div>`;
+  } else if(type === 'speaking'){
+    promptHtml = `<div class="mcq-prompt">Say: ${target.en}</div>
+      <div style="text-align:center;">
+        <button class="btn big" onclick="speakingRecord('${type}')">🎤 Speak now</button>
+        <div id="speakFeedback-${type}" style="margin-top:8px;font-size:.85rem;color:var(--gray);"></div>
+      </div>`;
+  } else if(type === 'writing'){
+    promptHtml = `<div class="mcq-prompt">${target.en}<span class="py">${target.emoji}</span></div>`;
+  }
+
+  const optsHtml = q.optionIdxs.map((oi,pos)=>{
+    let label = '';
+    if(type === 'listening') label = `<div class="opt-py">${VOCAB[oi].py}</div><div class="opt-ch">${VOCAB[oi].ch}</div>`;
+    else if(type === 'reading') label = VOCAB[oi].en;
+    else if(type === 'speaking' || type === 'writing') label = VOCAB[oi].ch;
+    return `<button class="mcq-opt" id="opt-${type}-${pos}" onclick="answerMCQ('${type}',${pos})">${label}</button>`;
+  }).join('');
+
+  area.innerHTML = `
+    <div class="mcq-top">
+      <span>Question ${st.index+1} / ${st.questions.length}</span>
+      <span class="score-badge">Score: ${st.score}/${st.index}</span>
+    </div>
+    <div class="progressbar-outer"><div class="progressbar-inner" style="width:${(st.index/st.questions.length)*100}%;"></div></div>
+    ${promptHtml}
+    <div class="mcq-options">${optsHtml}</div>
+    <div class="mcq-feedback" id="mcqFeedback-${type}"></div>
+    <div class="reason-box" id="mcqReason-${type}" style="display:none;"></div>
+    <div style="text-align:center;margin-top:10px;">
+      <button class="btn gold" id="mcqNextBtn-${type}" style="display:none;" onclick="nextMCQQuestion('${type}')">Next ➡</button>
+    </div>
+  `;
+}
+function answerMCQ(type, pos){
+  const st = mcqState[type];
+  const q = st.questions[st.index];
+  if(q.answered) return;
+  q.answered = true;
+  const isCorrect = (pos === q.correctPos);
+  document.querySelectorAll(`#mcqArea-${type} .mcq-opt`).forEach(b=>b.disabled = true);
+  document.getElementById(`opt-${type}-${pos}`).classList.add(isCorrect ? 'correct' : 'wrong');
+  if(!isCorrect){
+    document.getElementById(`opt-${type}-${q.correctPos}`).classList.add('correct');
+  }
+  const fb = document.getElementById('mcqFeedback-'+type);
+  if(isCorrect){
+    st.score++;
+    playEncourage();
+    fb.textContent = '✓ Correct!';
+    fb.className = 'mcq-feedback ok';
+  } else {
+    playSoftWrong();
+    fb.textContent = '✗ Not quite — the correct answer is highlighted.';
+    fb.className = 'mcq-feedback bad';
+  }
+  const reasonBox = document.getElementById('mcqReason-'+type);
+  const target = VOCAB[q.targetIdx];
+  reasonBox.innerHTML = `<span class="label">💡 Why:</span> ${target.why || 'No note for this word.'}`;
+  reasonBox.style.display = 'block';
+  document.getElementById(`mcqNextBtn-${type}`).style.display = 'inline-block';
+}
+function speakingRecord(type){
+  const st = mcqState[type];
+  const q = st.questions[st.index];
+  if(q.answered) return;
+  const fb = document.getElementById('speakFeedback-'+type);
+  fb.textContent = '🎙️ Listening...';
+  startRecognition((alts, err)=>{
+    if(err){ fb.textContent = `Could not hear you (${err}). Try again or tap an option.`; return; }
+    let matchedPos = -1;
+    for(const alt of alts){
+      const norm = normalizeZh(alt);
+      const pos = q.optionIdxs.findIndex(oi => norm.includes(VOCAB[oi].ch));
+      if(pos !== -1){ matchedPos = pos; break; }
+    }
+    if(matchedPos === -1){
+      fb.textContent = `Heard: "${alts[0]}" — didn't match an option. Try again or tap one directly.`;
+    } else {
+      fb.textContent = `Heard: "${alts[0]}"`;
+      answerMCQ(type, matchedPos);
+    }
+  });
+}
+function nextMCQQuestion(type){
+  mcqState[type].index++;
+  renderMCQQuestion(type);
+}
+function renderMCQSummary(type){
+  const st = mcqState[type];
+  const area = document.getElementById('mcqArea-'+type);
+  const p = loadProgress();
+  p.mcq[type].correct += st.score;
+  p.mcq[type].total += st.questions.length;
+  saveProgress(p);
+  const pct = Math.round((st.score/st.questions.length)*100);
+  area.innerHTML = `
+    <div class="summary-box">
+      <div class="big-score">${st.score} / ${st.questions.length}</div>
+      <div style="margin:8px 0;color:var(--gray);">${pct}% correct this round</div>
+      <button class="btn gold" onclick="startMCQ('${type}', ${st.questions.length})">🔄 Play Again</button>
+      <button class="btn outline" onclick="renderMCQSetup('${type}')">🔙 Change Question Count</button>
+    </div>
+  `;
+  if(pct >= 70) playEncourage();
+}
+
+/* ============================================================
+   6. SHADOWING
+   ============================================================ */
+let shOrder = shuffle(activeVocabIndices());
+let shIndex = 0;
+function renderShadowing(){
+  const el = document.getElementById('panel-shadowing');
+  const p = loadProgress();
+  const active = activeVocabIndices();
+  const doneCount = active.filter(i => p.shadowed[VOCAB[i].ch]).length;
+  el.innerHTML = `
+    <div class="card">
+      <h2>🔁 Shadowing Practice</h2>
+      <p class="note">Listen to the character, then repeat it out loud right after (shadowing). Mark each one complete as you go — no scoring here, just steady repetition.</p>
+      <div class="progressbar-outer"><div class="progressbar-inner" style="width:${(doneCount/active.length)*100}%;"></div></div>
+      <div style="text-align:center;font-size:.85rem;color:var(--gray);margin-bottom:10px;">Shadowed ${doneCount} / ${active.length} in this set</div>
+      <div id="shPos" class="fc-pos" style="text-align:center;"></div>
+      <div class="shadow-item" id="shCard"></div>
+      <div class="fc-controls" style="margin-top:12px;justify-content:center;">
+        <button class="btn" onclick="speak(shCurrentChar())">🔊 Play</button>
+        <button class="btn outline" onclick="shPrev()">⬅ Prev</button>
+        <button class="btn outline" onclick="shNext()">Next ➡</button>
+      </div>
+      <div class="fc-controls" style="justify-content:center;">
+        <button class="btn gold" onclick="shMarkDone()">✓ Mark as Shadowed</button>
+        <button class="btn outline" onclick="shShuffle()">🔀 Shuffle</button>
+      </div>
+    </div>
+  `;
+  shRenderCurrent();
+}
+function shCurrentChar(){
+  return VOCAB[shOrder[shIndex]].ch;
+}
+function shRenderCurrent(){
+  const v = VOCAB[shOrder[shIndex]];
+  const p = loadProgress();
+  const done = !!p.shadowed[v.ch];
+  document.getElementById('shPos').textContent = `Item ${shIndex+1} / ${shOrder.length}`;
+  document.getElementById('shCard').className = 'shadow-item' + (done ? ' shadow-done' : '');
+  document.getElementById('shCard').innerHTML = `
+    <div class="hanzi">${v.emoji} ${v.ch}</div>
+    <div class="pinyin">${v.py}</div>
+    <div class="meaning">${v.en}</div>
+    <div class="reason-box" style="text-align:left;">${'<span class="label">💡 Why:</span> ' + (v.why || 'No note for this word.')}</div>
+    ${done ? '<div class="fc-status" style="margin-top:8px;">✓ Shadowed</div>' : ''}
+  `;
+}
+function shNext(){ shIndex = (shIndex+1) % shOrder.length; shRenderCurrent(); }
+function shPrev(){ shIndex = (shIndex-1+shOrder.length) % shOrder.length; shRenderCurrent(); }
+function shShuffle(){ shOrder = shuffle(activeVocabIndices()); shIndex = 0; shRenderCurrent(); }
+function shMarkDone(){
+  const v = VOCAB[shOrder[shIndex]];
+  const p = loadProgress();
+  p.shadowed[v.ch] = 1;
+  saveProgress(p);
+  playEncourage();
+  shNext();
+  renderShadowingHeaderCount();
+}
+function renderShadowingHeaderCount(){
+  // refresh the progress bar/count without rebuilding the whole panel
+  const p = loadProgress();
+  const active = activeVocabIndices();
+  const doneCount = active.filter(i => p.shadowed[VOCAB[i].ch]).length;
+  const bar = document.querySelector('#panel-shadowing .progressbar-inner');
+  if(bar) bar.style.width = (doneCount/active.length*100) + '%';
+  const label = document.querySelectorAll('#panel-shadowing .note + .progressbar-outer + div');
+  if(label[0]) label[0].textContent = `Shadowed ${doneCount} / ${active.length} in this set`;
+}
+
+/* ============================================================
+   7. PROGRESS
+   ============================================================ */
+function renderProgress(){
+  const el = document.getElementById('panel-progress');
+  const p = loadProgress();
+  const known = Object.values(p.flashStatus).filter(s=>s==='known').length;
+  const learning = Object.values(p.flashStatus).filter(s=>s==='learning').length;
+  const shadowed = Object.keys(p.shadowed).length;
+  function mcqRow(type){
+    const m = p.mcq[type];
+    return m.total ? `${m.correct}/${m.total} correct (${Math.round(m.correct/m.total*100)}%)` : '— not started —';
+  }
+  const setRows = SETS.map((s,i)=>{
+    let setKnown = 0, setShadowed = 0;
+    for(let idx=s.start; idx<s.end; idx++){
+      const ch = VOCAB[idx].ch;
+      if(p.flashStatus[ch] === 'known') setKnown++;
+      if(p.shadowed[ch]) setShadowed++;
+    }
+    const size = s.end - s.start;
+    return `<tr><td>${s.label}</td><td>⭐ ${setKnown}/${size} known</td><td>🔁 ${setShadowed}/${size} shadowed</td></tr>`;
+  }).join('');
+  el.innerHTML = `
+    <div class="card"><h2>📊 Progress ${document.getElementById('studentName').value ? '— ' + document.getElementById('studentName').value : '(guest)'}</h2>
+      <table class="progress-table">
+        <tr><th>Section</th><th>Completion</th></tr>
+        <tr><td>🗂️ Flashcards known (all 132)</td><td>${known} / ${VOCAB.length} (${learning} still learning)</td></tr>
+        <tr><td>🎧 Listening MCQ (cumulative)</td><td>${mcqRow('listening')}</td></tr>
+        <tr><td>📖 Reading MCQ (cumulative)</td><td>${mcqRow('reading')}</td></tr>
+        <tr><td>🎤 Speaking MCQ (cumulative)</td><td>${mcqRow('speaking')}</td></tr>
+        <tr><td>✍️ Writing MCQ (cumulative)</td><td>${mcqRow('writing')}</td></tr>
+        <tr><td>🔁 Shadowing (all 132)</td><td>${shadowed} / ${VOCAB.length}</td></tr>
+        <tr><td>🔥 Day streak</td><td>${p.streak || 0}</td></tr>
+      </table>
+      <h3 style="color:var(--red-dark);margin-top:16px;">Breakdown by Set</h3>
+      <table class="progress-table">
+        <tr><th>Set</th><th>Flashcards</th><th>Shadowing</th></tr>
+        ${setRows}
+      </table>
+      <p class="note" style="margin-top:12px;">Progress is saved per student name in this browser's local storage. MCQ scores are cumulative across all sets; Flashcards and Shadowing completion is tracked per character, so it's broken down by set above.</p>
+      <button class="btn outline" onclick="resetProgress()">🗑 Reset my progress</button>
+    </div>
+  `;
+}
+function resetProgress(){
+  if(confirm('This will clear all saved progress for this student name. Continue?')){
+    localStorage.removeItem(studentKey());
+    renderProgress();
+  }
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+initNav();
+console.log(COPYRIGHT, "— vocab size:", VOCAB.length, "compound words in", SETS.length, "sets");
+</script>
+</body>
+</html>
