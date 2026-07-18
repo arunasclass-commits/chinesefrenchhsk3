@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<!--
+  Aruna's Classes — HSK 4.0 Single-Character Flashcards & MCQ Practice (189 words, ~7 sets)
+  © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.
+  Standalone, offline-capable (GitHub Pages friendly). No backend, no API key.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="RRAruna Enterprises · ChineseFrench · Aruna's Classes">
+<meta name="copyright" content="© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.">
+<title>Aruna's Classes — HSK 4.0 Single-Character Flashcards &amp; MCQ Practice (189 words)</title>
+<style>
+:root{
+  --red:#a2231d; --red-dark:#7a1a15; --gold:#c99a2e; --gold-light:#f3e3b3;
+  --cream:#fbf6ea; --ink:#2b1a12; --green:#2e7d32; --gray:#8a7f6e;
+  --radius:14px; --shadow:0 4px 14px rgba(122,26,21,.15);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{font-family:"Segoe UI",Helvetica,Arial,sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
+.app-header{background:linear-gradient(135deg,var(--red) 0%,var(--red-dark) 100%);color:var(--gold-light);
+  padding:18px 16px 14px;text-align:center;border-bottom:4px solid var(--gold);position:relative;}
+.app-header h1{margin:0 0 4px;font-size:1.5rem;letter-spacing:.5px;}
+.app-header .sub{font-size:.85rem;color:var(--gold);font-weight:600;}
+.app-header .lesson-title{margin-top:8px;font-size:1.05rem;color:#fff;}
+.student-bar{max-width:720px;margin:12px auto 0;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;}
+.student-bar input{padding:8px 12px;border-radius:20px;border:none;font-size:.9rem;width:220px;}
+.student-bar .streak{background:var(--gold);color:var(--red-dark);font-weight:700;padding:6px 12px;border-radius:20px;font-size:.85rem;}
+nav.tabs{display:flex;overflow-x:auto;gap:6px;padding:10px 10px 0;max-width:1000px;margin:0 auto;-webkit-overflow-scrolling:touch;}
+nav.tabs button{flex:0 0 auto;background:#fff;border:2px solid var(--gold);color:var(--red-dark);padding:9px 14px;
+  border-radius:20px 20px 0 0;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap;transition:.15s;}
+nav.tabs button.active{background:var(--red);color:#fff;border-color:var(--red);}
+main{max-width:1000px;margin:0 auto;padding:18px 14px 60px;}
+.panel{display:none;animation:fadein .25s ease;}
+.panel.active{display:block;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.card{background:#fff;border:1px solid var(--gold-light);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:16px;}
+.card h2{margin-top:0;color:var(--red-dark);border-bottom:2px solid var(--gold-light);padding-bottom:8px;font-size:1.15rem;}
+.btn{background:var(--red);color:#fff;border:none;padding:9px 16px;border-radius:18px;font-size:.85rem;cursor:pointer;margin:3px;font-weight:600;}
+.btn:hover{background:var(--red-dark);}
+.btn.gold{background:var(--gold);color:var(--red-dark);}
+.btn.gold:hover{background:#b3872a;}
+.btn.outline{background:#fff;color:var(--red);border:2px solid var(--red);}
+.btn.big{padding:14px 22px;font-size:1rem;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.note{font-size:.8rem;color:var(--gray);background:var(--gold-light);padding:8px 10px;border-radius:8px;margin-bottom:10px;}
+.score-badge{display:inline-block;background:var(--gold);color:var(--red-dark);font-weight:700;padding:4px 10px;border-radius:14px;font-size:.85rem;}
+.progress-table{width:100%;border-collapse:collapse;}
+.progress-table td,.progress-table th{padding:8px;border-bottom:1px solid var(--gold-light);text-align:left;font-size:.9rem;}
+
+/* Flashcard flip */
+.fc-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+.fc-pos{font-size:.85rem;color:var(--gray);font-weight:600;}
+.flashcard{width:100%;max-width:360px;height:260px;perspective:1200px;cursor:pointer;}
+.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg);}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;border:2px solid var(--gold);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center;
+  background:linear-gradient(160deg,#fff,var(--cream));box-shadow:var(--shadow);}
+.fc-front .emoji{font-size:3rem;}
+.fc-front .hanzi{font-size:3.4rem;font-weight:700;color:var(--red-dark);margin-top:4px;}
+.fc-back{transform:rotateY(180deg);}
+.fc-back .pinyin{font-size:1.5rem;color:var(--gray);font-style:italic;}
+.fc-back .meaning{font-size:1.1rem;margin-top:10px;font-weight:600;}
+.fc-controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+.fc-status{font-size:.75rem;padding:2px 8px;border-radius:10px;background:var(--gold-light);color:var(--red-dark);font-weight:700;}
+select.selectbox{padding:6px 10px;border-radius:8px;border:1px solid var(--gold-light);font-size:.85rem;}
+
+/* MCQ */
+.mcq-setup{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.mcq-prompt{font-size:1.3rem;text-align:center;margin:14px 0;font-weight:700;color:var(--red-dark);}
+.mcq-prompt .py{font-size:1rem;color:var(--gray);font-style:italic;font-weight:400;display:block;margin-top:4px;}
+.mcq-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:10px;}
+.mcq-opt{background:#fff;border:2px solid var(--gold-light);border-radius:12px;padding:16px 10px;font-size:1.1rem;
+  cursor:pointer;text-align:center;font-weight:600;}
+.mcq-opt.correct{background:#e3f5e1;border-color:var(--green);color:var(--green);}
+.mcq-opt.wrong{background:#fbe3e1;border-color:var(--red);color:var(--red);}
+.mcq-opt:disabled{cursor:default;}
+.mcq-opt .opt-py{font-size:1.1rem;font-weight:700;}
+.mcq-opt .opt-ch{font-size:.85rem;color:var(--gray);margin-top:4px;font-weight:400;}
+.reason-box{background:var(--cream);border:1px dashed var(--gold);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:.85rem;color:#444;text-align:left;}
+.reason-box .label{font-weight:700;color:var(--red-dark);}
+.mcq-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
+.mcq-feedback{text-align:center;font-size:.95rem;margin-top:10px;min-height:24px;font-weight:700;}
+.mcq-feedback.ok{color:var(--green);}
+.mcq-feedback.bad{color:var(--red);}
+.summary-box{text-align:center;padding:20px;}
+.summary-box .big-score{font-size:2.4rem;color:var(--red-dark);font-weight:800;}
+
+.shadow-item{background:var(--cream);border:1px solid var(--gold-light);border-radius:12px;padding:18px;text-align:center;}
+.shadow-item .hanzi{font-size:2.6rem;font-weight:700;color:var(--red-dark);}
+.shadow-item .pinyin{font-size:1.2rem;color:var(--gray);font-style:italic;margin-top:4px;}
+.shadow-item .meaning{font-size:1rem;margin-top:6px;}
+.shadow-done{opacity:.55;}
+.progressbar-outer{width:100%;background:var(--gold-light);border-radius:10px;height:10px;overflow:hidden;margin:8px 0;}
+.progressbar-inner{height:100%;background:var(--red);border-radius:10px;transition:width .3s;}
+.footer-copy{text-align:center;color:var(--gray);font-size:.72rem;padding:20px 10px 40px;}
+.watermark{position:fixed;bottom:6px;right:10px;font-size:.62rem;color:rgba(122,26,21,.35);pointer-events:none;z-index:5;}
+@media (max-width:600px){
+  .app-header h1{font-size:1.2rem;}
+  .flashcard{max-width:300px;height:230px;}
+}
+</style>
+</head>
+<body>
+
+<div class="watermark">© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes</div>
+
+<header class="app-header">
+  <h1>爱睿娜的课堂 · Aruna's Classes</h1>
+  <div class="sub">新HSK 4.0 · Single-Character Vocabulary</div>
+  <div class="lesson-title">🗂️ HSK 4.0 Single Characters · Flashcards &amp; MCQ Practice (189 Words, with Reasons)</div>
+  <div class="student-bar">
+    <input id="studentName" type="text" placeholder="Enter your name to save progress...">
+    <select class="selectbox" id="setSelect" onchange="changeSet(this.value)"></select>
+    <span class="streak" id="streakBadge">🔥 0 day streak</span>
+  </div>
+</header>
+
+<nav class="tabs" id="tabNav"></nav>
+<main id="mainArea"></main>
+
+<div class="footer-copy">
+  © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.<br>
+  Audio &amp; microphone features work best in Chrome or Edge on desktop/Android.
+</div>
+
+<script>
+const COPYRIGHT = "© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.";
+
+/* ============================================================
+   VOCABULARY DATA — All 189 HSK4 single-character words, chunked into
+   study sets of 30, each with an etymology "why" note.
+   ============================================================ */
+const DECK = {
+  VOCAB: [
+    {id:1, ch:"城", py:"chéng", en:"city; town", emoji:"🏙️",
+     why:"土 (earth radical) + 成 (phonetic, 'to complete') — originally a rammed-earth city wall, extended to mean 'city'."},
+    {id:2, ch:"乘", py:"chéng", en:"to ride; take (transportation)", emoji:"🚦",
+     why:"A pictograph of a person standing atop a vehicle — depicts 'mounting/riding' something."},
+    {id:3, ch:"迟", py:"chí", en:"late", emoji:"⏰",
+     why:"辶(walk radical) + 尺 (phonetic, 'ruler/measure') — relates to a delayed pace, i.e. being late."},
+    {id:4, ch:"重", py:"chóng", en:"again; repeatedly", emoji:"🔁",
+     why:"A pictograph combining weight and distance elements — originally 'heavy', extended to 'repeated/again' when read chóng."},
+    {id:5, ch:"窗", py:"chuāng", en:"window", emoji:"🪟",
+     why:"穴(cave/hole radical) + a phonetic element — an opening in a wall, i.e. a window."},
+    {id:6, ch:"吹", py:"chuī", en:"to blow", emoji:"💨",
+     why:"口(mouth radical) + 欠 (a person with an open mouth exhaling) — depicts blowing air from the mouth."},
+    {id:7, ch:"此", py:"cǐ", en:"this", emoji:"👉",
+     why:"止(foot/stop radical) + a person element — originally 'to stop at this place', extended to mean 'this'."},
+    {id:8, ch:"粗", py:"cū", en:"thick; coarse", emoji:"📏",
+     why:"米(rice radical) + 且 (phonetic) — originally described coarsely-hulled rice, extended to 'thick/coarse' in general."},
+    {id:9, ch:"村", py:"cūn", en:"village", emoji:"🏘️",
+     why:"木(wood/tree radical) + 寸 (phonetic) — a cluster of trees and homes, i.e. a village."},
+    {id:10, ch:"存", py:"cún", en:"to exist; to save", emoji:"💾",
+     why:"子(child radical) + 才 (phonetic, 'just emerging') — relates to something surviving/continuing to exist."},
+    {id:11, ch:"答", py:"dá", en:"to answer", emoji:"💬",
+     why:"竹(bamboo radical, early writing strips) + 合 (to match/fit) — a written reply that 'matches' the question."},
+    {id:12, ch:"待", py:"dāi", en:"to stay", emoji:"⏳",
+     why:"彳(step/movement radical) + 寺 (phonetic) — relates to waiting or remaining at a place."},
+    {id:13, ch:"戴", py:"dài", en:"to wear", emoji:"🧥",
+     why:"戈(tool radical) + a phonetic element — originally 'to lift onto the head', extended to 'to wear (a hat/accessory)'."},
+    {id:14, ch:"当", py:"dāng", en:"to act as", emoji:"🎭",
+     why:"田 (field radical) + 尚 (phonetic) — originally 'equivalent to/matching', extended to 'act as/serve as'."},
+    {id:15, ch:"刀", py:"dāo", en:"knife", emoji:"🔪",
+     why:"A pictograph of a single-edged blade — directly depicts a knife."},
+    {id:16, ch:"倒", py:"dào", en:"to pour; to fall", emoji:"⬇️",
+     why:"亻(person radical) + 到 (phonetic, 'to arrive') — relates to a person toppling over, i.e. to fall/pour."},
+    {id:17, ch:"道", py:"dào", en:"road; way", emoji:"🛣️",
+     why:"辶(walk radical) + 首 (head, 'leading') — a path one walks and is led along, i.e. a road/way."},
+    {id:18, ch:"等", py:"děng", en:"to wait", emoji:"⌛",
+     why:"竹(bamboo radical, tally sticks) + 寺 (phonetic) — originally 'to sort/grade tallies', extended to 'to wait one's turn'."},
+    {id:19, ch:"低", py:"dī", en:"low", emoji:"🔽",
+     why:"亻(person radical) + 氐 (phonetic, 'base/bottom') — relates to a person bending low."},
+    {id:20, ch:"底", py:"dǐ", en:"bottom", emoji:"⬇️",
+     why:"广(shelter/building radical) + 氐 (phonetic, 'base') — the base/bottom of a structure."},
+    {id:21, ch:"掉", py:"diào", en:"to fall; to drop", emoji:"⬇️",
+     why:"扌(hand radical) + 卓 (phonetic) — relates to letting something drop from the hand."},
+    {id:22, ch:"订", py:"dìng", en:"to book; order", emoji:"📅",
+     why:"讠(speech radical) + 丁 (phonetic) — relates to settling/fixing an agreement, i.e. to book/order."},
+    {id:23, ch:"定", py:"dìng", en:"to decide; fixed", emoji:"✅",
+     why:"宀(roof radical) + 正 (correct/settled) — 'settled under a roof', i.e. fixed/decided."},
+    {id:24, ch:"队", py:"duì", en:"team", emoji:"🏅",
+     why:"阝(mound/formation radical) + a people element — originally troops lined up, extended to 'team/group'."},
+    {id:25, ch:"顿", py:"dùn", en:"meal; measure word", emoji:"📝",
+     why:"屯 (phonetic, 'to store/gather') + 页 (head radical) — originally 'to pause/settle', extended to a measure word for meals/actions."},
+    {id:26, ch:"而", py:"ér", en:"and; but", emoji:"🈺",
+     why:"Originally a pictograph of facial hair, borrowed for the sound to become the connective 'and/but'."},
+    {id:27, ch:"法", py:"fǎ", en:"law; method", emoji:"⚖️",
+     why:"氵(water radical) + 去 (to go) — water flows evenly, symbolizing fairness, hence 'law'."},
+    {id:28, ch:"烦", py:"fán", en:"annoyed", emoji:"😟",
+     why:"火(fire radical) + 页 (head) — originally 'a feverish head', extended to mean 'annoyed/vexed'."},
+    {id:29, ch:"费", py:"fèi", en:"fee; cost", emoji:"💵",
+     why:"弗 (phonetic) + 贝 (shell/money radical) — the money radical marks this as related to cost/expense."},
+    {id:30, ch:"份", py:"fèn", en:"portion; copy", emoji:"📋",
+     why:"亻(person radical) + 分 (to divide) — a person's divided share, i.e. a portion."},
+    {id:31, ch:"幅", py:"fú", en:"measure word for pictures, paintings", emoji:"📝",
+     why:"巾(cloth radical) + 畐 (phonetic) — relates to a width of cloth/paper, hence a measure word for pictures."},
+    {id:32, ch:"付", py:"fù", en:"to pay", emoji:"💳",
+     why:"亻(person radical) + 寸 (hand/measure) — a person handing something over with the hand, i.e. to pay."},
+    {id:33, ch:"改", py:"gǎi", en:"to change", emoji:"🔄",
+     why:"己 (self) + 攵 (action radical) — 'to act upon oneself to correct', i.e. to change/reform."},
+    {id:34, ch:"干", py:"gàn", en:"to do", emoji:"🈺",
+     why:"A simplified character, originally a pictograph of a forked tool, broadened to mean 'to do/work'."},
+    {id:35, ch:"赶", py:"gǎn", en:"to hurry", emoji:"🏃",
+     why:"走(walk/run radical) + 干 (phonetic) — relates to rushing/hurrying on foot."},
+    {id:36, ch:"敢", py:"gǎn", en:"to dare", emoji:"💪",
+     why:"攵(action radical) + a phonetic element — relates to boldly taking action, i.e. to dare."},
+    {id:37, ch:"各", py:"gè", en:"each; every", emoji:"🔸",
+     why:"夂(a footprint, 'to arrive') + 口 (mouth/opening) — originally 'each one arriving separately', extended to 'each/every'."},
+    {id:38, ch:"共", py:"gòng", en:"together; common", emoji:"🤝",
+     why:"A pictograph of two hands jointly holding something up — depicts sharing/togetherness."},
+    {id:39, ch:"狗", py:"gǒu", en:"dog", emoji:"🐶",
+     why:"犭(dog/animal radical) + 句 (phonetic) — the animal radical marks this as a dog."},
+    {id:40, ch:"挂", py:"guà", en:"to hang", emoji:"🈺",
+     why:"扌(hand radical) + 圭 (phonetic) — relates to using the hand to hang something up."},
+    {id:41, ch:"管", py:"guǎn", en:"to manage; to care about", emoji:"🚗",
+     why:"竹(bamboo radical, an early pipe) + 官 (phonetic, official) — extended from 'pipe' to 'to control/manage'."},
+    {id:42, ch:"光", py:"guāng", en:"light", emoji:"🈺",
+     why:"A pictograph of a person carrying fire above their head — depicts light/brightness."},
+    {id:43, ch:"逛", py:"guàng", en:"to stroll; to shop around", emoji:"🚶",
+     why:"辶(walk radical) + 狂 (phonetic, 'wild/roam') — relates to wandering/strolling about."},
+    {id:44, ch:"喊", py:"hǎn", en:"to shout", emoji:"📢",
+     why:"口(mouth radical) + 咸 (phonetic) — the mouth radical marks this as related to vocal sound, i.e. shouting."},
+    {id:45, ch:"汗", py:"hàn", en:"sweat", emoji:"💦",
+     why:"氵(water radical) + 干 (phonetic) — the water radical marks this as a bodily fluid, i.e. sweat."},
+    {id:46, ch:"厚", py:"hòu", en:"thick", emoji:"📏",
+     why:"厂(cliff/shelter radical) + a phonetic element — originally described a thick, substantial mound, extended to 'thick' generally."},
+    {id:47, ch:"活", py:"huó", en:"work; to live", emoji:"🈺",
+     why:"氵(water radical) + 舌 (tongue, phonetic) — water flowing is associated with vitality/life."},
+    {id:48, ch:"火", py:"huǒ", en:"fire", emoji:"🔥",
+     why:"A pictograph of rising flames — directly depicts fire."},
+    {id:49, ch:"货", py:"huò", en:"goods", emoji:"📦",
+     why:"化 (phonetic, 'to transform') + 贝 (shell/money radical) — money 'transformed' into goods."},
+    {id:50, ch:"既", py:"jì", en:"since; already", emoji:"✅",
+     why:"A pictograph of a person turning away from a food vessel, having 'already' finished eating — extended to 'already/since'."},
+    {id:51, ch:"寄", py:"jì", en:"to mail; to send", emoji:"📤",
+     why:"宀(roof radical) + 奇 (phonetic) — originally 'to lodge under someone's roof', extended to 'to send/mail'."},
+    {id:52, ch:"假", py:"jiǎ", en:"false; fake", emoji:"🎭",
+     why:"亻(person radical) + 叚 (phonetic, 'to borrow') — something 'borrowed' and not genuine, i.e. false."},
+    {id:53, ch:"减", py:"jiǎn", en:"to reduce", emoji:"➖",
+     why:"冫(ice radical) + 咸 (phonetic) — relates to diminishing/lessening, extended to 'reduce'."},
+    {id:54, ch:"江", py:"jiāng", en:"river", emoji:"🏞️",
+     why:"氵(water radical) + 工 (phonetic) — the water radical marks this as a waterway, specifically a large river."},
+    {id:55, ch:"将", py:"jiāng", en:"will; shall", emoji:"🏛️",
+     why:"丬(a split-wood radical) + 寸 (hand) — originally 'to hold/lead', extended to the future-tense marker 'will/shall'."},
+    {id:56, ch:"奖", py:"jiǎng", en:"prize; award", emoji:"🏆",
+     why:"大(big) + a phonetic element historically tied to 'to encourage' — relates to praising/rewarding, i.e. a prize."},
+    {id:57, ch:"降", py:"jiàng", en:"to fall; to drop", emoji:"⬇️",
+     why:"阝(mound radical) + 夅 (phonetic, 'descend') — relates to descending from a height, i.e. to fall/drop."},
+    {id:58, ch:"交", py:"jiāo", en:"to hand over; to pay", emoji:"💳",
+     why:"A pictograph of a person with crossed legs — 'crossing over', extended to 'exchange/hand over'."},
+    {id:59, ch:"仅", py:"jǐn", en:"only", emoji:"🈺",
+     why:"亻(person radical) + 又 (phonetic) — relates to a limited/small amount, i.e. 'only'."},
+    {id:60, ch:"举", py:"jǔ", en:"to raise; to hold", emoji:"🙌",
+     why:"手(hand radical) + a phonetic element — depicts hands lifting something up."},
+    {id:61, ch:"聚", py:"jù", en:"to gather", emoji:"🍽️",
+     why:"取 ('to take', phonetic) + a crowd element — relates to people coming together, i.e. to gather."},
+    {id:62, ch:"烤", py:"kǎo", en:"to roast; bake", emoji:"🔥",
+     why:"火(fire radical) + 考 (phonetic) — the fire radical marks this as a cooking method, i.e. to roast."},
+    {id:63, ch:"棵", py:"kē", en:"measure word for trees", emoji:"📝",
+     why:"木(wood/tree radical) + 果 (phonetic) — the tree radical marks this as the counter for trees."},
+    {id:64, ch:"咳", py:"ké", en:"to cough", emoji:"🤧",
+     why:"口(mouth radical) + 亥 (phonetic) — the mouth radical marks this as related to a throat action, i.e. coughing."},
+    {id:65, ch:"克", py:"kè", en:"gram", emoji:"⚖️",
+     why:"Originally 'to overcome/be able to', later borrowed for the sound to represent the metric 'gram'."},
+    {id:66, ch:"空", py:"kōng", en:"empty", emoji:"⬜",
+     why:"穴(cave/hole radical) + 工 (phonetic) — a hollow, empty space."},
+    {id:67, ch:"空", py:"kòng", en:"free (time available)", emoji:"🆓",
+     why:"Same character as 'empty' (穴 + 工); when read kòng it extends 'empty' to mean 'free/available (time)'."},
+    {id:68, ch:"苦", py:"kǔ", en:"bitter; hard", emoji:"😖",
+     why:"艹(grass/plant radical) + 古 (phonetic) — relates to a bitter-tasting plant, extended to 'bitter/hard(ship)'."},
+    {id:69, ch:"困", py:"kùn", en:"sleepy", emoji:"😴",
+     why:"囗(enclosure radical) + 木 (tree) — a tree boxed in, extended to feeling 'trapped' by tiredness, i.e. sleepy."},
+    {id:70, ch:"拉", py:"lā", en:"to pull", emoji:"🈺",
+     why:"扌(hand radical) + 立 (phonetic) — the hand radical marks this as an action done with the hand, i.e. to pull."},
+    {id:71, ch:"来", py:"lái", en:"to come", emoji:"🈺",
+     why:"A pictograph of a ripened wheat stalk — originally 'wheat' (brought from afar), borrowed for the sound to mean 'to come'."},
+    {id:72, ch:"懒", py:"lǎn", en:"lazy", emoji:"🛌",
+     why:"忄(heart radical) + 赖 (phonetic, 'to rely on') — an attitude of not wanting to exert effort."},
+    {id:73, ch:"俩", py:"liǎ", en:"two (people)", emoji:"👬",
+     why:"亻(person radical) + 两 (two) — the person radical plus 'two' directly gives 'two people'."},
+    {id:74, ch:"连", py:"lián", en:"even; connect", emoji:"🈺",
+     why:"辶(walk radical) + 车 (cart) — carts moving one after another in a chain, extended to 'connect/link'."},
+    {id:75, ch:"凉", py:"liáng", en:"cool", emoji:"🈺",
+     why:"冫(ice radical) + 京 (phonetic) — the ice radical marks this as related to coldness/coolness."},
+    {id:76, ch:"量", py:"liàng", en:"quantity", emoji:"🔢",
+     why:"日(sun) over 里 (village/distance) — originally related to measuring distance/weight, extended to 'quantity'."},
+    {id:77, ch:"晾", py:"liàng", en:"to hang up (to dry)", emoji:"🧺",
+     why:"日(sun radical) + 京 (phonetic) — relates to drying something in the sun."},
+    {id:78, ch:"亮", py:"liàng", en:"bright", emoji:"💡",
+     why:"A pictograph of a person atop a high platform catching light — depicts brightness."},
+    {id:79, ch:"列", py:"liè", en:"row; list", emoji:"📋",
+     why:"歹(a bone-fragment radical) + 刂(knife radical) — originally 'to divide/arrange in order', extended to 'a row/list'."},
+    {id:80, ch:"留", py:"liú", en:"to stay; keep", emoji:"⏳",
+     why:"田(field radical) + 卯 (phonetic) — relates to remaining in a fixed place, i.e. to stay."},
+    {id:81, ch:"流", py:"liú", en:"to flow", emoji:"🔽",
+     why:"氵(water radical) + a phonetic element resembling flowing hair — depicts flowing water."},
+    {id:82, ch:"乱", py:"luàn", en:"messy; disorderly", emoji:"📅",
+     why:"A simplified form depicting tangled threads being sorted out — extended to mean 'disorder/messy'."},
+    {id:83, ch:"落", py:"luò", en:"to fall", emoji:"⬇️",
+     why:"艹(grass radical) + 洛 (phonetic) — relates to leaves and petals falling, extended to 'to fall' generally."},
+    {id:84, ch:"满", py:"mǎn", en:"full", emoji:"🈺",
+     why:"氵(water radical) + a phonetic element — water filled to the brim, i.e. full."},
+    {id:85, ch:"美", py:"měi", en:"beautiful", emoji:"🈺",
+     why:"羊(sheep) over 大 (big) — a large, fine sheep was considered beautiful/good in ancient times."},
+    {id:86, ch:"梦", py:"mèng", en:"dream", emoji:"💭",
+     why:"夕(evening/night radical) + a phonetic element — relates to visions that occur at night, i.e. dreams."},
+    {id:87, ch:"秒", py:"miǎo", en:"second (time)", emoji:"⏱️",
+     why:"禾(grain radical) + 少 (small/few) — originally the fine tip of a grain husk, extended to the smallest unit of time."},
+    {id:88, ch:"末", py:"mò", en:"end", emoji:"🈺",
+     why:"A tree (木) with an extra stroke marking the very tip of its branches — depicts the 'end/tip' of something."},
+    {id:89, ch:"内", py:"nèi", en:"inside", emoji:"🈺",
+     why:"冂(an enclosure/boundary) + 入 (to enter) — entering within a boundary, i.e. inside."},
+    {id:90, ch:"嗯", py:"ńg", en:"mm; uh-huh", emoji:"🙂",
+     why:"口(mouth radical) + a phonetic element — a mouth-radical character representing a spoken interjection sound."},
+    {id:91, ch:"弄", py:"nòng", en:"to do; to make", emoji:"🈺",
+     why:"王/玉(jade) + two hands — originally 'to handle jade with both hands', extended to 'to do/make'."},
+    {id:92, ch:"拍", py:"pāi", en:"to clap; to photograph", emoji:"📸",
+     why:"扌(hand radical) + 白 (phonetic) — the hand radical marks this as an action done by hand, i.e. to clap/pat."},
+    {id:93, ch:"排", py:"pái", en:"to arrange; row", emoji:"📋",
+     why:"扌(hand radical) + 非 (phonetic) — relates to arranging things with the hand into a row."},
+    {id:94, ch:"牌", py:"pái", en:"brand; sign; card", emoji:"🚗",
+     why:"片(a slice/plank radical) + 卑 (phonetic) — originally a wooden plank/sign, extended to 'brand/sign'."},
+    {id:95, ch:"陪", py:"péi", en:"to accompany", emoji:"🤝",
+     why:"阝(mound radical) + a phonetic element — relates to standing alongside/accompanying someone."},
+    {id:96, ch:"篇", py:"piān", en:"measure word for articles", emoji:"📝",
+     why:"竹(bamboo radical, early writing material) + 扁 (phonetic, 'flat') — a flat bamboo strip of writing, the counter for articles."},
+    {id:97, ch:"片", py:"piàn", en:"slice; piece", emoji:"🍕",
+     why:"A pictograph of half of a split tree trunk — depicts a flat slice/piece."},
+    {id:98, ch:"破", py:"pò", en:"broken; to break", emoji:"💔",
+     why:"石(stone radical) + 皮 (phonetic, 'skin/surface') — relates to a stone's surface being cracked, i.e. broken."},
+    {id:99, ch:"期", py:"qī", en:"period", emoji:"🈺",
+     why:"其 (phonetic) + 月 (moon, time) — the moon/month radical marks this as related to a period of time."},
+    {id:100, ch:"气", py:"qì", en:"air; anger", emoji:"🈺",
+     why:"A pictograph of rising vapor/steam — depicts air/gas, extended to 'temper/anger'."},
+    {id:101, ch:"强", py:"qiáng", en:"strong", emoji:"🈺",
+     why:"弓(bow radical) + 虫 (phonetic) — originally described a strong-shelled beetle, extended to 'strong' generally."},
+    {id:102, ch:"敲", py:"qiāo", en:"to knock", emoji:"🈺",
+     why:"高 (phonetic, 'tall/loud') + 攵 (action radical) — the action radical marks this as a striking motion, i.e. to knock."},
+    {id:103, ch:"桥", py:"qiáo", en:"bridge", emoji:"🌉",
+     why:"木(wood radical) + 乔 (phonetic, 'tall/arched') — a wooden, arched structure, i.e. a bridge."},
+    {id:104, ch:"巧", py:"qiǎo", en:"clever", emoji:"🈺",
+     why:"工(work/craft radical) + a phonetic element — relates to skillful craftsmanship, extended to 'clever'."},
+    {id:105, ch:"琴", py:"qín", en:"musical instrument", emoji:"🎻",
+     why:"Two jade-like strings over a soundbox — depicts a stringed instrument."},
+    {id:106, ch:"轻", py:"qīng", en:"light (weight)", emoji:"🈺",
+     why:"车(vehicle radical) + a phonetic element — originally described a swift, lightly-loaded cart, extended to 'light in weight'."},
+    {id:107, ch:"区", py:"qū", en:"district", emoji:"🏘️",
+     why:"匚(a container/boundary radical) + items within — items grouped within a boundary, i.e. a district/area."},
+    {id:108, ch:"取", py:"qǔ", en:"to take", emoji:"🈺",
+     why:"耳(ear radical) + 又 (hand) — an ancient practice of taking an ear as a trophy, later generalized to 'to take'."},
+    {id:109, ch:"全", py:"quán", en:"whole; complete", emoji:"🈺",
+     why:"入(enter) + 王/玉 (jade) — flawless jade brought in whole, extended to mean 'whole/complete'."},
+    {id:110, ch:"缺", py:"quē", en:"to lack", emoji:"🈺",
+     why:"缶(a pottery-jar radical) + 夬 (phonetic, 'gap') — a jar with a gap/chip in it, i.e. lacking something."},
+    {id:111, ch:"却", py:"què", en:"however", emoji:"❗",
+     why:"去(to go/leave) + a kneeling-figure element — originally 'to retreat/step back', extended to the contrastive 'however/yet'."},
+    {id:112, ch:"扔", py:"rēng", en:"to throw", emoji:"📋",
+     why:"扌(hand radical) + 乃 (phonetic) — the hand radical marks this as an action of the hand, i.e. to throw."},
+    {id:113, ch:"仍", py:"réng", en:"still", emoji:"🈺",
+     why:"亻(person radical) + 乃 (phonetic) — relates to something continuing/repeating, i.e. 'still'."},
+    {id:114, ch:"入", py:"rù", en:"to enter", emoji:"🈺",
+     why:"A pictograph of a tent flap or wedge shape pointing inward — depicts entering."},
+    {id:115, ch:"稍", py:"shāo", en:"a little; slightly", emoji:"🈺",
+     why:"禾(grain radical) + 肖 (phonetic) — originally the fine tip of a grain stalk, extended to mean 'slightly'."},
+    {id:116, ch:"身", py:"shēn", en:"body", emoji:"🈺",
+     why:"A pictograph of a person's torso — originally 'torso/body', extended to 'body' generally."},
+    {id:117, ch:"深", py:"shēn", en:"deep", emoji:"🈺",
+     why:"氵(water radical) + a phonetic element — the water radical marks this as related to depth (of water), i.e. deep."},
+    {id:118, ch:"生", py:"shēng", en:"to give birth; raw", emoji:"🈺",
+     why:"A pictograph of a plant sprouting from the ground — depicts growth/birth."},
+    {id:119, ch:"省", py:"shěng", en:"province", emoji:"🗺️",
+     why:"少(few) + 目 (eye) — originally 'to inspect closely', extended to an administrative region that is inspected/governed."},
+    {id:120, ch:"剩", py:"shèng", en:"to remain", emoji:"🈺",
+     why:"刂(knife radical) + 乘 (phonetic) — relates to what is 'cut off' and left over, i.e. to remain."},
+    {id:121, ch:"使", py:"shǐ", en:"to make; to cause", emoji:"🈺",
+     why:"亻(person radical) + an official element — an official directing a person to do something, i.e. 'to make/cause'."},
+    {id:122, ch:"首", py:"shǒu", en:"measure word for songs/poems", emoji:"📝",
+     why:"A pictograph of a head with hair/features — originally 'head', extended to a measure word for songs/poems."},
+    {id:123, ch:"输", py:"shū", en:"to lose (a game)", emoji:"😞",
+     why:"车(vehicle radical) + 俞 (phonetic) — originally 'to transport away', extended to 'to lose' (as in losing something away)."},
+    {id:124, ch:"熟", py:"shú", en:"ripe; cooked; familiar", emoji:"👨‍🍳",
+     why:"灬(fire radical) + a phonetic element — relates to food being cooked/ripened by fire, extended to 'familiar'."},
+    {id:125, ch:"数", py:"shù", en:"number; to count", emoji:"🈺",
+     why:"攵(action radical) + a phonetic element — relates to counting/tallying, i.e. number."},
+    {id:126, ch:"帅", py:"shuài", en:"handsome", emoji:"😎",
+     why:"巾(cloth radical) + a phonetic element — originally a military commander's flag/banner, extended to mean 'dashing/handsome'."},
+    {id:127, ch:"死", py:"sǐ", en:"to die", emoji:"🈺",
+     why:"歹(a bone-fragment radical, death) + a person element — depicts a person and remains, i.e. death."},
+    {id:128, ch:"酸", py:"suān", en:"sour", emoji:"🈺",
+     why:"酉(wine/fermentation radical) + a phonetic element — relates to fermented, sour-tasting liquid."},
+    {id:129, ch:"算", py:"suàn", en:"to calculate; count as", emoji:"⏰",
+     why:"竹(bamboo radical, counting rods) + 具 (tool) — bamboo counting rods used as a tool, i.e. to calculate."},
+    {id:130, ch:"台", py:"tái", en:"platform; measure word for machines", emoji:"📝",
+     why:"厶(phonetic) + 口 (mouth/opening) — originally a raised platform, extended to 'platform' and a measure word for machines."},
+    {id:131, ch:"抬", py:"tái", en:"to lift", emoji:"🈺",
+     why:"扌(hand radical) + 台 (phonetic) — the hand radical marks this as an action of the hand, i.e. to lift."},
+    {id:132, ch:"弹", py:"tán", en:"to play (a musical instrument)", emoji:"🎻",
+     why:"弓(bow radical) + 单 (phonetic) — originally 'to shoot with a bow' (a plucking motion), extended to 'to play (strings)'."},
+    {id:133, ch:"谈", py:"tán", en:"to talk; discuss", emoji:"🈺",
+     why:"讠(speech radical) + 炎 (phonetic) — the speech radical marks this as related to conversation, i.e. to talk."},
+    {id:134, ch:"汤", py:"tāng", en:"soup", emoji:"🈺",
+     why:"氵(water radical) + a phonetic element — the water radical marks this as a liquid dish, i.e. soup."},
+    {id:135, ch:"躺", py:"tǎng", en:"to lie down", emoji:"🛌",
+     why:"身(body radical) + 尚 (phonetic) — the body radical marks this as a bodily position, i.e. to lie down."},
+    {id:136, ch:"趟", py:"tàng", en:"measure word for trips", emoji:"📝",
+     why:"走(walk/run radical) + 尚 (phonetic) — the walking radical marks this as related to a journey/trip."},
+    {id:137, ch:"提", py:"tí", en:"to carry; lift", emoji:"🚗",
+     why:"扌(hand radical) + 是 (phonetic) — the hand radical marks this as an action of the hand, i.e. to carry/lift."},
+    {id:138, ch:"停", py:"tíng", en:"to stop", emoji:"🈺",
+     why:"亻(person radical) + 亭 (phonetic, 'pavilion') — a person pausing at a pavilion/rest stop, i.e. to stop."},
+    {id:139, ch:"通", py:"tōng", en:"to pass through", emoji:"➡️",
+     why:"辶(walk radical) + 甬 (phonetic, 'passage') — a path one can walk all the way through."},
+    {id:140, ch:"桶", py:"tǒng", en:"bucket", emoji:"🈺",
+     why:"木(wood radical) + 甬 (phonetic) — originally a wooden container, i.e. a bucket."},
+    {id:141, ch:"痛", py:"tòng", en:"pain; painful", emoji:"😣",
+     why:"疒(sickness radical) + 甬 (phonetic) — the sickness radical marks this as related to physical pain."},
+    {id:142, ch:"图", py:"tú", en:"picture; diagram", emoji:"🖼️",
+     why:"囗(enclosure/border radical) + a phonetic element — originally a map bounded by borders, extended to 'picture/diagram'."},
+    {id:143, ch:"土", py:"tǔ", en:"soil; earth", emoji:"🌍",
+     why:"A pictograph of a mound of earth on the ground — directly depicts soil."},
+    {id:144, ch:"推", py:"tuī", en:"to push", emoji:"🈺",
+     why:"扌(hand radical) + 隹 (phonetic, 'bird') — the hand radical marks this as an action of the hand, i.e. to push."},
+    {id:145, ch:"脱", py:"tuō", en:"to take off (clothes)", emoji:"🧥",
+     why:"月/肉(flesh radical) + 兑 (phonetic) — relates to shedding/removing something from the body, i.e. to take off (clothes)."},
+    {id:146, ch:"为", py:"wèi", en:"for", emoji:"🈺",
+     why:"Simplified from 為, originally a hand leading an elephant for labor — extended to mean 'for/on behalf of'."},
+    {id:147, ch:"味", py:"wèi", en:"taste; flavor", emoji:"😋",
+     why:"口(mouth radical) + 未 (phonetic) — the mouth radical marks this as related to tasting, i.e. flavor."},
+    {id:148, ch:"闻", py:"wén", en:"to smell", emoji:"🈺",
+     why:"门(door radical) + 耳 (ear) — originally 'to hear' (an ear behind a door), later also extended to 'to smell'."},
+    {id:149, ch:"无", py:"wú", en:"without", emoji:"🈺",
+     why:"A pictograph of a person dancing with sleeves, later simplified and borrowed to mean 'nothing/without'."},
+    {id:150, ch:"吸", py:"xī", en:"to inhale", emoji:"🈺",
+     why:"口(mouth radical) + 及 (phonetic, 'to reach') — the mouth radical marks this as related to breathing in."},
+    {id:151, ch:"细", py:"xì", en:"thin; fine", emoji:"🧵",
+     why:"纟(thread/silk radical) + 田 (phonetic) — a fine, thin thread."},
+    {id:152, ch:"鲜", py:"xiān", en:"fresh", emoji:"🈺",
+     why:"鱼(fish radical) + 羊 (sheep/goat radical) — fresh fish and meat, extended to mean 'fresh' generally."},
+    {id:153, ch:"咸", py:"xián", en:"salty", emoji:"🈺",
+     why:"口(mouth radical) + 戌 (phonetic) — the mouth radical marks this as related to taste, i.e. salty."},
+    {id:154, ch:"香", py:"xiāng", en:"fragrant", emoji:"🈺",
+     why:"禾(grain radical) + a sweetness element — the smell of cooking grain, i.e. fragrant."},
+    {id:155, ch:"响", py:"xiǎng", en:"to make a sound", emoji:"🈺",
+     why:"A sound-related radical + 向 (phonetic) — relates to sound echoing, i.e. to make a sound."},
+    {id:156, ch:"项", py:"xiàng", en:"item", emoji:"🈺",
+     why:"工(phonetic) + 页 (head radical) — originally 'the back of the neck', later borrowed to mean 'item/category'."},
+    {id:157, ch:"血", py:"xuè", en:"blood", emoji:"🈺",
+     why:"A pictograph of a sacrificial vessel containing a drop of blood — directly depicts blood."},
+    {id:158, ch:"心", py:"xīn", en:"heart", emoji:"🈺",
+     why:"A pictograph of the physical heart organ — directly depicts the heart."},
+    {id:159, ch:"醒", py:"xǐng", en:"to wake up", emoji:"⏰",
+     why:"酉(wine radical) + 星 (phonetic) — originally 'to sober up from wine', extended to 'to wake up'."},
+    {id:160, ch:"性", py:"xìng", en:"nature; character", emoji:"🌿",
+     why:"忄(heart radical) + 生 (to be born, phonetic) — one's innate, 'born' heart-nature, i.e. character."},
+    {id:161, ch:"熊", py:"xióng", en:"bear", emoji:"🈺",
+     why:"能 (phonetic, originally 'bear' itself) + 灬(fire/legs radical) — depicts a bear standing on its limbs."},
+    {id:162, ch:"修", py:"xiū", en:"to repair", emoji:"🈺",
+     why:"亻(person radical) + action and decoration elements — relates to a person adorning/improving something, extended to 'repair'."},
+    {id:163, ch:"压", py:"yā", en:"to press", emoji:"🈺",
+     why:"厂(cliff/shelter radical) + 土 (earth) — earth/weight pressing down from above."},
+    {id:164, ch:"烟", py:"yān", en:"cigarette; smoke", emoji:"🚬",
+     why:"火(fire radical) + 因 (phonetic) — the fire radical marks this as related to smoke."},
+    {id:165, ch:"盐", py:"yán", en:"salt", emoji:"🈺",
+     why:"A salty/briny radical + 皿 (dish/vessel radical) — salt collected in a vessel."},
+    {id:166, ch:"演", py:"yǎn", en:"to perform", emoji:"🈺",
+     why:"氵(water radical) + 寅 (phonetic) — originally 'to flow/develop', extended to 'to perform/develop (a show)'."},
+    {id:167, ch:"夜", py:"yè", en:"night", emoji:"🈺",
+     why:"夕(evening radical) + a phonetic element — the evening radical marks this as related to nighttime."},
+    {id:168, ch:"已", py:"yǐ", en:"already", emoji:"✅",
+     why:"A pictograph resembling a coiled cord, borrowed for the sound to mean 'already/stop'."},
+    {id:169, ch:"赢", py:"yíng", en:"to win", emoji:"🈺",
+     why:"A complex character historically relating to gaining wealth/advantage, i.e. to win."},
+    {id:170, ch:"由", py:"yóu", en:"by; from", emoji:"🈺",
+     why:"A pictograph of a fruit hanging from a stem — depicts a source/origin, extended to 'from/by'."},
+    {id:171, ch:"油", py:"yóu", en:"oil", emoji:"🈺",
+     why:"氵(water radical) + 由 (phonetic) — the water radical marks this as a liquid, i.e. oil."},
+    {id:172, ch:"与", py:"yǔ", en:"with; and", emoji:"🈺",
+     why:"A pictograph of two hands giving/receiving something — depicts association, extended to 'with/and'."},
+    {id:173, ch:"约", py:"yuē", en:"to make an appointment", emoji:"📅",
+     why:"纟(thread/silk radical) + 勺 (phonetic) — originally 'to bind with a cord', extended to 'to agree/arrange (an appointment)'."},
+    {id:174, ch:"云", py:"yún", en:"cloud", emoji:"🈺",
+     why:"A pictograph of swirling vapor — directly depicts a cloud."},
+    {id:175, ch:"者", py:"zhě", en:"person; -er (suffix)", emoji:"🈺",
+     why:"Originally depicted a pile of firewood being sorted, later borrowed to mean 'one who [does an action]'."},
+    {id:176, ch:"整", py:"zhěng", en:"whole; complete", emoji:"🈺",
+     why:"A bundle + action + 正 (correct) — relates to organizing something into a correct, complete whole."},
+    {id:177, ch:"正", py:"zhèng", en:"correct", emoji:"🈺",
+     why:"止(foot/stop radical) + a line/target element — a foot stopping exactly on the mark, i.e. correct."},
+    {id:178, ch:"值", py:"zhí", en:"value; to be worth", emoji:"💎",
+     why:"亻(person radical) + 直 (straight, phonetic) — relates to a fair, 'straight' price for a person's goods, i.e. value."},
+    {id:179, ch:"指", py:"zhǐ", en:"finger; to point", emoji:"🈺",
+     why:"扌(hand radical) + 旨 (phonetic) — the hand radical marks this as related to the fingers, i.e. to point."},
+    {id:180, ch:"种", py:"zhǒng", en:"kind; type", emoji:"🈺",
+     why:"禾(grain radical) + 中 (phonetic) — originally 'a type of seed/grain', extended to 'kind/type' in general."},
+    {id:181, ch:"祝", py:"zhù", en:"to wish", emoji:"🈺",
+     why:"礻(ritual/altar radical) + 兄 (phonetic) — relates to a person offering prayers/blessings at an altar, i.e. to wish."},
+    {id:182, ch:"转", py:"zhuǎn", en:"to turn", emoji:"🈺",
+     why:"车(vehicle radical) + 专 (phonetic) — relates to a wheel turning, i.e. to turn."},
+    {id:183, ch:"赚", py:"zhuàn", en:"to earn", emoji:"🈺",
+     why:"贝(money radical) + 兼 (phonetic) — the money radical marks this as related to earning/profit."},
+    {id:184, ch:"装", py:"zhuāng", en:"to pack; to pretend", emoji:"🈺",
+     why:"壮 (phonetic, 'to fit out') + 衣 (clothing radical) — relates to outfitting/dressing, extended to 'to pack' and 'to pretend'."},
+    {id:185, ch:"准", py:"zhǔn", en:"accurate", emoji:"🈺",
+     why:"冫(ice radical) + 隹 (bird, phonetic) — originally related to a level/standard, extended to 'accurate'."},
+    {id:186, ch:"自", py:"zì", en:"from; self", emoji:"🈺",
+     why:"A pictograph of a nose — in ancient China, people pointed to their nose to mean 'myself', hence 'self'."},
+    {id:187, ch:"租", py:"zū", en:"to rent", emoji:"🔑",
+     why:"禾(grain radical) + 且 (phonetic) — originally 'grain paid as tax/rent', extended to 'to rent'."},
+    {id:188, ch:"组", py:"zǔ", en:"group", emoji:"🈺",
+     why:"纟(thread radical) + 且 (phonetic) — threads bound together, extended to mean 'a group'."},
+    {id:189, ch:"座", py:"zuò", en:"measure word for buildings, mountains", emoji:"📝",
+     why:"广(shelter/building radical) + 坐 (to sit, phonetic) — a building radical marking this as the counter for large structures."}
+  ],
+};
+const VOCAB = DECK.VOCAB;
+
+/* ============================================================
+   SETS — chunk the 132 characters into study sets of ~30
+   ============================================================ */
+function buildSets(total, size){
+  const sets = [];
+  for(let start=0; start<total; start+=size){
+    const end = Math.min(start+size, total);
+    sets.push({start, end, label:`Set ${sets.length+1} (${start+1}–${end})`});
+  }
+  return sets;
+}
+const SETS = buildSets(VOCAB.length, 30);
+let currentSetIdx = 0;
+function activeVocabIndices(){
+  const s = SETS[currentSetIdx];
+  const arr = [];
+  for(let i=s.start;i<s.end;i++) arr.push(i);
+  return arr;
+}
+function initSetSelector(){
+  const sel = document.getElementById('setSelect');
+  sel.innerHTML = SETS.map((s,i)=>`<option value="${i}">${s.label}</option>`).join('');
+  sel.value = currentSetIdx;
+}
+function changeSet(val){
+  currentSetIdx = parseInt(val, 10);
+  fcOrder = shuffle(activeVocabIndices());
+  fcIndex = 0;
+  fcFilter = 'all';
+  shOrder = shuffle(activeVocabIndices());
+  shIndex = 0;
+  renderFlashcards();
+  renderShadowing();
+  renderMCQSetup('listening');
+  renderMCQSetup('reading');
+  renderMCQSetup('speaking');
+  renderMCQSetup('writing');
+}
+
+/* ============================================================
+   STORAGE / PROGRESS
+   ============================================================ */
+function studentKey(){
+  const n = document.getElementById('studentName').value.trim();
+  return n ? ("aruna_hsk4_single_" + n.toLowerCase().replace(/\s+/g,'_')) : "aruna_hsk4_single_guest";
+}
+function defaultProgress(){
+  return {
+    flashStatus:{}, shadowed:{},
+    mcq:{ listening:{correct:0,total:0}, reading:{correct:0,total:0}, speaking:{correct:0,total:0}, writing:{correct:0,total:0} },
+    lastVisit:null, streak:0
+  };
+}
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(studentKey());
+    const p = raw ? JSON.parse(raw) : defaultProgress();
+    if(!p.flashStatus) p.flashStatus = {};
+    if(!p.shadowed) p.shadowed = {};
+    if(!p.mcq) p.mcq = defaultProgress().mcq;
+    ['listening','reading','speaking','writing'].forEach(k=>{
+      if(!p.mcq[k]) p.mcq[k] = {correct:0,total:0};
+    });
+    return p;
+  }catch(e){ return defaultProgress(); }
+}
+function saveProgress(p){ try{ localStorage.setItem(studentKey(), JSON.stringify(p)); }catch(e){} }
+function touchStreak(){
+  const p = loadProgress();
+  const today = new Date().toDateString();
+  if(p.lastVisit !== today){
+    const yesterday = new Date(Date.now()-86400000).toDateString();
+    p.streak = (p.lastVisit === yesterday) ? (p.streak||0)+1 : 1;
+    p.lastVisit = today;
+    saveProgress(p);
+  }
+  document.getElementById('streakBadge').textContent = "🔥 " + (p.streak||0) + " day streak";
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+  const saved = localStorage.getItem('aruna_hsk4_single_current_name');
+  if(saved) document.getElementById('studentName').value = saved;
+  touchStreak();
+  document.getElementById('studentName').addEventListener('change', ()=>{
+    localStorage.setItem('aruna_hsk4_single_current_name', document.getElementById('studentName').value.trim());
+    touchStreak();
+    refreshAllViews();
+  });
+});
+function refreshAllViews(){
+  renderFlashcards();
+  renderShadowing();
+  renderProgress();
+}
+
+/* ============================================================
+   AUDIO: TTS + Recognition + Sound Effects
+   ============================================================ */
+function speak(text, rate){
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = rate || 0.85;
+  const voices = window.speechSynthesis.getVoices();
+  const zh = voices.find(v=>v.lang && v.lang.toLowerCase().startsWith('zh'));
+  if(zh) u.voice = zh;
+  window.speechSynthesis.speak(u);
+}
+function startRecognition(onResult){
+  const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!Rec){ alert('Speech recognition not supported in this browser. Try Chrome or Edge, or use the tap-to-answer option.'); return; }
+  const rec = new Rec();
+  rec.lang = 'zh-CN';
+  rec.interimResults = false;
+  rec.maxAlternatives = 5;
+  rec.onresult = (e)=>{
+    const alts = [];
+    for(let i=0;i<e.results[0].length;i++) alts.push(e.results[0][i].transcript);
+    onResult(alts, null);
+  };
+  rec.onerror = (e)=>{ onResult(null, e.error); };
+  rec.start();
+}
+function normalizeZh(s){ return (s||'').replace(/[，。？！,.?!\s]/g,''); }
+
+let audioCtx;
+function getAudioCtx(){
+  if(!audioCtx){
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if(!AC) return null;
+    audioCtx = new AC();
+  }
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+function playTone(freq, duration, type, gainVal, delay){
+  const ctx = getAudioCtx();
+  if(!ctx) return;
+  const start = ctx.currentTime + (delay||0);
+  try{
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.value = freq;
+    gain.gain.value = gainVal || 0.06;
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(start);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+    osc.stop(start + duration + 0.03);
+  }catch(e){}
+}
+function playEncourage(){
+  // bright, cheerful ascending 3-note arpeggio
+  playTone(523.25, 0.14, 'triangle', 0.07, 0);
+  playTone(659.25, 0.14, 'triangle', 0.07, 0.12);
+  playTone(783.99, 0.22, 'triangle', 0.08, 0.24);
+}
+function playSoftWrong(){
+  playTone(220, 0.18, 'sine', 0.05, 0);
+  playTone(180, 0.22, 'sine', 0.045, 0.1);
+}
+
+/* ============================================================
+   SHARED HELPERS
+   ============================================================ */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function sampleIndices(n, total){
+  return shuffle([...Array(total).keys()]).slice(0, n);
+}
+function getDistractors(targetIdx, count){
+  const target = VOCAB[targetIdx];
+  // Prefer distractors from within the current study set first
+  let pool = activeVocabIndices().filter(i=> i!==targetIdx && VOCAB[i].py !== target.py && VOCAB[i].en !== target.en);
+  pool = shuffle(pool);
+  if(pool.length < count){
+    // fall back to the full 132-word deck if the set is too small
+    pool = VOCAB.map((v,i)=>i).filter(i=> i!==targetIdx && VOCAB[i].py !== target.py && VOCAB[i].en !== target.en);
+    pool = shuffle(pool);
+  }
+  if(pool.length < count){
+    pool = VOCAB.map((v,i)=>i).filter(i=> i!==targetIdx);
+    pool = shuffle(pool);
+  }
+  return pool.slice(0, count);
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+const TABS = [
+  {id:'flashcards', label:'🗂️ Flashcards'},
+  {id:'listening', label:'🎧 Listening MCQ'},
+  {id:'reading', label:'📖 Reading MCQ'},
+  {id:'speaking', label:'🎤 Speaking MCQ'},
+  {id:'writing', label:'✍️ Writing MCQ'},
+  {id:'shadowing', label:'🔁 Shadowing'},
+  {id:'progress', label:'📊 Progress'}
+];
+function initNav(){
+  initSetSelector();
+  const nav = document.getElementById('tabNav');
+  TABS.forEach((t,i)=>{
+    const b = document.createElement('button');
+    b.textContent = t.label;
+    b.dataset.tab = t.id;
+    if(i===0) b.classList.add('active');
+    b.onclick = ()=> switchTab(t.id);
+    nav.appendChild(b);
+  });
+  const main = document.getElementById('mainArea');
+  TABS.forEach((t,i)=>{
+    const div = document.createElement('div');
+    div.className = 'panel' + (i===0?' active':'');
+    div.id = 'panel-' + t.id;
+    main.appendChild(div);
+  });
+  renderFlashcards();
+  renderMCQSetup('listening');
+  renderMCQSetup('reading');
+  renderMCQSetup('speaking');
+  renderMCQSetup('writing');
+  renderShadowing();
+  renderProgress();
+}
+function switchTab(id){
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+id));
+  if(id==='progress') renderProgress();
+}
+
+/* ============================================================
+   1. FLASHCARDS
+   ============================================================ */
+let fcOrder = shuffle(activeVocabIndices());
+let fcIndex = 0;
+let fcFilter = 'all';
+function renderFlashcards(){
+  const el = document.getElementById('panel-flashcards');
+  el.innerHTML = `
+    <div class="card">
+      <h2>🗂️ Flashcards</h2>
+      <p class="note">Tap the card to flip it. Mark each one "I know this" or "Still learning" — your picks are saved and you can filter by them later.</p>
+      <div class="fc-controls" style="margin-bottom:10px;">
+        <button class="btn outline" onclick="fcShuffleDeck()">🔀 Shuffle</button>
+        <select class="selectbox" id="fcFilterSelect" onchange="fcChangeFilter(this.value)">
+          <option value="all">Show: All (${activeVocabIndices().length})</option>
+          <option value="learning">Show: Still Learning</option>
+          <option value="known">Show: Known</option>
+        </select>
+      </div>
+      <div class="fc-wrap">
+        <div class="fc-pos" id="fcPos"></div>
+        <div class="flashcard" id="fcCardEl" onclick="fcFlip()">
+          <div class="flashcard-inner" id="fcInner">
+            <div class="fc-face fc-front">
+              <div class="emoji" id="fcEmoji"></div>
+              <div class="hanzi" id="fcHanzi"></div>
+              <div class="fc-status" id="fcStatusFront" style="margin-top:10px;"></div>
+            </div>
+            <div class="fc-face fc-back">
+              <div class="pinyin" id="fcPinyin"></div>
+              <div class="meaning" id="fcMeaning"></div>
+            </div>
+          </div>
+        </div>
+        <div class="fc-controls">
+          <button class="btn" onclick="event.stopPropagation(); speak(currentFcChar())">🔊 Audio</button>
+          <button class="btn outline" onclick="event.stopPropagation(); fcPrev()">⬅ Prev</button>
+          <button class="btn outline" onclick="event.stopPropagation(); fcNext()">Next ➡</button>
+        </div>
+        <div class="fc-controls">
+          <button class="btn gold" onclick="event.stopPropagation(); fcMark('known')">⭐ I know this</button>
+          <button class="btn" onclick="event.stopPropagation(); fcMark('learning')">🔄 Still learning</button>
+        </div>
+        <div class="fc-controls">
+          <button class="btn outline" onclick="event.stopPropagation(); fcToggleReason()">💡 Why this meaning?</button>
+        </div>
+        <div class="reason-box" id="fcReasonBox" style="display:none;width:100%;max-width:360px;"></div>
+      </div>
+    </div>
+  `;
+  fcRenderCurrent();
+}
+function fcActiveList(){
+  const p = loadProgress();
+  if(fcFilter === 'all') return fcOrder;
+  return fcOrder.filter(i=>{
+    const status = p.flashStatus[VOCAB[i].ch];
+    return status === fcFilter;
+  });
+}
+function fcChangeFilter(val){
+  fcFilter = val;
+  fcIndex = 0;
+  fcRenderCurrent();
+}
+function fcShuffleDeck(){
+  fcOrder = shuffle(activeVocabIndices());
+  fcIndex = 0;
+  fcRenderCurrent();
+}
+function currentFcChar(){
+  const list = fcActiveList();
+  if(!list.length) return '';
+  const idx = list[Math.min(fcIndex, list.length-1)];
+  return VOCAB[idx].ch;
+}
+function fcRenderCurrent(){
+  const list = fcActiveList();
+  const posEl = document.getElementById('fcPos');
+  const reasonBox = document.getElementById('fcReasonBox');
+  if(!list.length){
+    posEl.textContent = 'No cards in this filter yet.';
+    document.getElementById('fcEmoji').textContent = '🤷';
+    document.getElementById('fcHanzi').textContent = '';
+    document.getElementById('fcPinyin').textContent = '';
+    document.getElementById('fcMeaning').textContent = '';
+    document.getElementById('fcStatusFront').textContent = '';
+    reasonBox.style.display = 'none';
+    return;
+  }
+  if(fcIndex >= list.length) fcIndex = 0;
+  const v = VOCAB[list[fcIndex]];
+  posEl.textContent = `Card ${fcIndex+1} / ${list.length}`;
+  document.getElementById('fcCardEl').classList.remove('flipped');
+  document.getElementById('fcEmoji').textContent = v.emoji;
+  document.getElementById('fcHanzi').textContent = v.ch;
+  document.getElementById('fcPinyin').textContent = v.py;
+  document.getElementById('fcMeaning').textContent = v.en;
+  reasonBox.style.display = 'none';
+  reasonBox.innerHTML = `<span class="label">💡 Why:</span> ${v.why || 'No note for this word.'}`;
+  const p = loadProgress();
+  const status = p.flashStatus[v.ch];
+  document.getElementById('fcStatusFront').textContent = status === 'known' ? '⭐ Known' : (status === 'learning' ? '🔄 Learning' : '');
+}
+function fcToggleReason(){
+  const box = document.getElementById('fcReasonBox');
+  box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+}
+function fcFlip(){
+  document.getElementById('fcCardEl').classList.toggle('flipped');
+}
+function fcNext(){
+  const list = fcActiveList();
+  if(!list.length) return;
+  fcIndex = (fcIndex+1) % list.length;
+  fcRenderCurrent();
+}
+function fcPrev(){
+  const list = fcActiveList();
+  if(!list.length) return;
+  fcIndex = (fcIndex-1+list.length) % list.length;
+  fcRenderCurrent();
+}
+function fcMark(status){
+  const list = fcActiveList();
+  if(!list.length) return;
+  const v = VOCAB[list[fcIndex]];
+  const p = loadProgress();
+  p.flashStatus[v.ch] = status;
+  saveProgress(p);
+  if(status === 'known') playEncourage();
+  fcNext();
+}
+
+/* ============================================================
+   2-5. MCQ ENGINE (listening / reading / speaking / writing)
+   ============================================================ */
+const MCQ_META = {
+  listening: {title:'🎧 Listening MCQ', instr:'Listen to the audio, then choose the correct pinyin.'},
+  reading:   {title:'📖 Reading MCQ', instr:'Read the character, then choose the correct meaning.'},
+  speaking:  {title:'🎤 Speaking MCQ', instr:"Say the character out loud for the prompt shown — the app listens and picks the option you said. (You can also tap an option if your mic isn't available.)"},
+  writing:   {title:'✍️ Writing MCQ', instr:'Read the meaning, then choose the character that is written correctly for it.'}
+};
+const mcqState = {
+  listening:{questions:[],index:0,score:0,count:10,active:false},
+  reading:{questions:[],index:0,score:0,count:10,active:false},
+  speaking:{questions:[],index:0,score:0,count:10,active:false},
+  writing:{questions:[],index:0,score:0,count:10,active:false}
+};
+function renderMCQSetup(type){
+  const el = document.getElementById('panel-'+type);
+  const meta = MCQ_META[type];
+  const setSize = activeVocabIndices().length;
+  const choices = [10,20].filter(c => c < setSize);
+  let countButtons = choices.map(c=>`<button class="btn outline" onclick="startMCQ('${type}',${c})">${c}</button>`).join('');
+  countButtons += `<button class="btn outline" onclick="startMCQ('${type}',${setSize})">All (${setSize})</button>`;
+  el.innerHTML = `
+    <div class="card">
+      <h2>${meta.title}</h2>
+      <p class="note">${meta.instr}</p>
+      <p class="note" style="background:#fff;border:1px dashed var(--gold);">Practicing: <strong>${SETS[currentSetIdx].label}</strong> — switch sets using the dropdown at the top of the page.</p>
+      <div class="mcq-setup">
+        <span>How many questions?</span>
+        ${countButtons}
+      </div>
+      <div id="mcqArea-${type}" style="margin-top:14px;"></div>
+    </div>
+  `;
+}
+function buildQuestion(type, targetIdx){
+  const distractors = getDistractors(targetIdx, 3);
+  const optionIdxs = shuffle([targetIdx, ...distractors]);
+  const correctPos = optionIdxs.indexOf(targetIdx);
+  return { targetIdx, optionIdxs, correctPos, answered:false };
+}
+function startMCQ(type, count){
+  const active = activeVocabIndices();
+  const n = Math.min(count, active.length);
+  const idxs = shuffle(active).slice(0, n);
+  mcqState[type].questions = idxs.map(i=> buildQuestion(type, i));
+  mcqState[type].index = 0;
+  mcqState[type].score = 0;
+  mcqState[type].count = n;
+  mcqState[type].active = true;
+  renderMCQQuestion(type);
+}
+function renderMCQQuestion(type){
+  const st = mcqState[type];
+  const area = document.getElementById('mcqArea-'+type);
+  if(st.index >= st.questions.length){
+    renderMCQSummary(type);
+    return;
+  }
+  const q = st.questions[st.index];
+  const target = VOCAB[q.targetIdx];
+  let promptHtml = '';
+  if(type === 'listening'){
+    promptHtml = `<div class="mcq-prompt">🔊 <button class="btn" onclick="speak('${target.ch}')">Play Audio</button></div>`;
+  } else if(type === 'reading'){
+    promptHtml = `<div class="mcq-prompt">${target.ch}<span class="py">${target.emoji}</span></div>`;
+  } else if(type === 'speaking'){
+    promptHtml = `<div class="mcq-prompt">Say: ${target.en}<span class="py">${target.py}</span></div>
+      <div style="text-align:center;">
+        <button class="btn big" onclick="speakingRecord('${type}')">🎤 Speak now</button>
+        <div id="speakFeedback-${type}" style="margin-top:8px;font-size:.85rem;color:var(--gray);"></div>
+      </div>`;
+  } else if(type === 'writing'){
+    promptHtml = `<div class="mcq-prompt">${target.en}<span class="py">${target.emoji}</span></div>`;
+  }
+
+  const optsHtml = q.optionIdxs.map((oi,pos)=>{
+    let label = '';
+    if(type === 'listening') label = `<div class="opt-py">${VOCAB[oi].py}</div><div class="opt-ch">${VOCAB[oi].ch}</div>`;
+    else if(type === 'reading') label = VOCAB[oi].en;
+    else if(type === 'speaking' || type === 'writing') label = VOCAB[oi].ch;
+    return `<button class="mcq-opt" id="opt-${type}-${pos}" onclick="answerMCQ('${type}',${pos})">${label}</button>`;
+  }).join('');
+
+  area.innerHTML = `
+    <div class="mcq-top">
+      <span>Question ${st.index+1} / ${st.questions.length}</span>
+      <span class="score-badge">Score: ${st.score}/${st.index}</span>
+    </div>
+    <div class="progressbar-outer"><div class="progressbar-inner" style="width:${(st.index/st.questions.length)*100}%;"></div></div>
+    ${promptHtml}
+    <div class="mcq-options">${optsHtml}</div>
+    <div class="mcq-feedback" id="mcqFeedback-${type}"></div>
+    <div class="reason-box" id="mcqReason-${type}" style="display:none;"></div>
+    <div style="text-align:center;margin-top:10px;">
+      <button class="btn gold" id="mcqNextBtn-${type}" style="display:none;" onclick="nextMCQQuestion('${type}')">Next ➡</button>
+    </div>
+  `;
+}
+function answerMCQ(type, pos){
+  const st = mcqState[type];
+  const q = st.questions[st.index];
+  if(q.answered) return;
+  q.answered = true;
+  const isCorrect = (pos === q.correctPos);
+  document.querySelectorAll(`#mcqArea-${type} .mcq-opt`).forEach(b=>b.disabled = true);
+  document.getElementById(`opt-${type}-${pos}`).classList.add(isCorrect ? 'correct' : 'wrong');
+  if(!isCorrect){
+    document.getElementById(`opt-${type}-${q.correctPos}`).classList.add('correct');
+  }
+  const fb = document.getElementById('mcqFeedback-'+type);
+  if(isCorrect){
+    st.score++;
+    playEncourage();
+    fb.textContent = '✓ Correct!';
+    fb.className = 'mcq-feedback ok';
+  } else {
+    playSoftWrong();
+    fb.textContent = '✗ Not quite — the correct answer is highlighted.';
+    fb.className = 'mcq-feedback bad';
+  }
+  const reasonBox = document.getElementById('mcqReason-'+type);
+  const target = VOCAB[q.targetIdx];
+  reasonBox.innerHTML = `<span class="label">💡 Why:</span> ${target.why || 'No note for this word.'}`;
+  reasonBox.style.display = 'block';
+  document.getElementById(`mcqNextBtn-${type}`).style.display = 'inline-block';
+}
+function speakingRecord(type){
+  const st = mcqState[type];
+  const q = st.questions[st.index];
+  if(q.answered) return;
+  const fb = document.getElementById('speakFeedback-'+type);
+  fb.textContent = '🎙️ Listening...';
+  startRecognition((alts, err)=>{
+    if(err){ fb.textContent = `Could not hear you (${err}). Try again or tap an option.`; return; }
+    let matchedPos = -1;
+    for(const alt of alts){
+      const norm = normalizeZh(alt);
+      const pos = q.optionIdxs.findIndex(oi => norm.includes(VOCAB[oi].ch));
+      if(pos !== -1){ matchedPos = pos; break; }
+    }
+    if(matchedPos === -1){
+      fb.textContent = `Heard: "${alts[0]}" — didn't match an option. Try again or tap one directly.`;
+    } else {
+      fb.textContent = `Heard: "${alts[0]}"`;
+      answerMCQ(type, matchedPos);
+    }
+  });
+}
+function nextMCQQuestion(type){
+  mcqState[type].index++;
+  renderMCQQuestion(type);
+}
+function renderMCQSummary(type){
+  const st = mcqState[type];
+  const area = document.getElementById('mcqArea-'+type);
+  const p = loadProgress();
+  p.mcq[type].correct += st.score;
+  p.mcq[type].total += st.questions.length;
+  saveProgress(p);
+  const pct = Math.round((st.score/st.questions.length)*100);
+  area.innerHTML = `
+    <div class="summary-box">
+      <div class="big-score">${st.score} / ${st.questions.length}</div>
+      <div style="margin:8px 0;color:var(--gray);">${pct}% correct this round</div>
+      <button class="btn gold" onclick="startMCQ('${type}', ${st.questions.length})">🔄 Play Again</button>
+      <button class="btn outline" onclick="renderMCQSetup('${type}')">🔙 Change Question Count</button>
+    </div>
+  `;
+  if(pct >= 70) playEncourage();
+}
+
+/* ============================================================
+   6. SHADOWING
+   ============================================================ */
+let shOrder = shuffle(activeVocabIndices());
+let shIndex = 0;
+function renderShadowing(){
+  const el = document.getElementById('panel-shadowing');
+  const p = loadProgress();
+  const active = activeVocabIndices();
+  const doneCount = active.filter(i => p.shadowed[VOCAB[i].ch]).length;
+  el.innerHTML = `
+    <div class="card">
+      <h2>🔁 Shadowing Practice</h2>
+      <p class="note">Listen to the character, then repeat it out loud right after (shadowing). Mark each one complete as you go — no scoring here, just steady repetition.</p>
+      <div class="progressbar-outer"><div class="progressbar-inner" style="width:${(doneCount/active.length)*100}%;"></div></div>
+      <div style="text-align:center;font-size:.85rem;color:var(--gray);margin-bottom:10px;">Shadowed ${doneCount} / ${active.length} in this set</div>
+      <div id="shPos" class="fc-pos" style="text-align:center;"></div>
+      <div class="shadow-item" id="shCard"></div>
+      <div class="fc-controls" style="margin-top:12px;justify-content:center;">
+        <button class="btn" onclick="speak(shCurrentChar())">🔊 Play</button>
+        <button class="btn outline" onclick="shPrev()">⬅ Prev</button>
+        <button class="btn outline" onclick="shNext()">Next ➡</button>
+      </div>
+      <div class="fc-controls" style="justify-content:center;">
+        <button class="btn gold" onclick="shMarkDone()">✓ Mark as Shadowed</button>
+        <button class="btn outline" onclick="shShuffle()">🔀 Shuffle</button>
+      </div>
+    </div>
+  `;
+  shRenderCurrent();
+}
+function shCurrentChar(){
+  return VOCAB[shOrder[shIndex]].ch;
+}
+function shRenderCurrent(){
+  const v = VOCAB[shOrder[shIndex]];
+  const p = loadProgress();
+  const done = !!p.shadowed[v.ch];
+  document.getElementById('shPos').textContent = `Item ${shIndex+1} / ${shOrder.length}`;
+  document.getElementById('shCard').className = 'shadow-item' + (done ? ' shadow-done' : '');
+  document.getElementById('shCard').innerHTML = `
+    <div class="hanzi">${v.emoji} ${v.ch}</div>
+    <div class="pinyin">${v.py}</div>
+    <div class="meaning">${v.en}</div>
+    <div class="reason-box" style="text-align:left;">${'<span class="label">💡 Why:</span> ' + (v.why || 'No note for this word.')}</div>
+    ${done ? '<div class="fc-status" style="margin-top:8px;">✓ Shadowed</div>' : ''}
+  `;
+}
+function shNext(){ shIndex = (shIndex+1) % shOrder.length; shRenderCurrent(); }
+function shPrev(){ shIndex = (shIndex-1+shOrder.length) % shOrder.length; shRenderCurrent(); }
+function shShuffle(){ shOrder = shuffle(activeVocabIndices()); shIndex = 0; shRenderCurrent(); }
+function shMarkDone(){
+  const v = VOCAB[shOrder[shIndex]];
+  const p = loadProgress();
+  p.shadowed[v.ch] = 1;
+  saveProgress(p);
+  playEncourage();
+  shNext();
+  renderShadowingHeaderCount();
+}
+function renderShadowingHeaderCount(){
+  // refresh the progress bar/count without rebuilding the whole panel
+  const p = loadProgress();
+  const active = activeVocabIndices();
+  const doneCount = active.filter(i => p.shadowed[VOCAB[i].ch]).length;
+  const bar = document.querySelector('#panel-shadowing .progressbar-inner');
+  if(bar) bar.style.width = (doneCount/active.length*100) + '%';
+  const label = document.querySelectorAll('#panel-shadowing .note + .progressbar-outer + div');
+  if(label[0]) label[0].textContent = `Shadowed ${doneCount} / ${active.length} in this set`;
+}
+
+/* ============================================================
+   7. PROGRESS
+   ============================================================ */
+function renderProgress(){
+  const el = document.getElementById('panel-progress');
+  const p = loadProgress();
+  const known = Object.values(p.flashStatus).filter(s=>s==='known').length;
+  const learning = Object.values(p.flashStatus).filter(s=>s==='learning').length;
+  const shadowed = Object.keys(p.shadowed).length;
+  function mcqRow(type){
+    const m = p.mcq[type];
+    return m.total ? `${m.correct}/${m.total} correct (${Math.round(m.correct/m.total*100)}%)` : '— not started —';
+  }
+  const setRows = SETS.map((s,i)=>{
+    let setKnown = 0, setShadowed = 0;
+    for(let idx=s.start; idx<s.end; idx++){
+      const ch = VOCAB[idx].ch;
+      if(p.flashStatus[ch] === 'known') setKnown++;
+      if(p.shadowed[ch]) setShadowed++;
+    }
+    const size = s.end - s.start;
+    return `<tr><td>${s.label}</td><td>⭐ ${setKnown}/${size} known</td><td>🔁 ${setShadowed}/${size} shadowed</td></tr>`;
+  }).join('');
+  el.innerHTML = `
+    <div class="card"><h2>📊 Progress ${document.getElementById('studentName').value ? '— ' + document.getElementById('studentName').value : '(guest)'}</h2>
+      <table class="progress-table">
+        <tr><th>Section</th><th>Completion</th></tr>
+        <tr><td>🗂️ Flashcards known (all 132)</td><td>${known} / ${VOCAB.length} (${learning} still learning)</td></tr>
+        <tr><td>🎧 Listening MCQ (cumulative)</td><td>${mcqRow('listening')}</td></tr>
+        <tr><td>📖 Reading MCQ (cumulative)</td><td>${mcqRow('reading')}</td></tr>
+        <tr><td>🎤 Speaking MCQ (cumulative)</td><td>${mcqRow('speaking')}</td></tr>
+        <tr><td>✍️ Writing MCQ (cumulative)</td><td>${mcqRow('writing')}</td></tr>
+        <tr><td>🔁 Shadowing (all 132)</td><td>${shadowed} / ${VOCAB.length}</td></tr>
+        <tr><td>🔥 Day streak</td><td>${p.streak || 0}</td></tr>
+      </table>
+      <h3 style="color:var(--red-dark);margin-top:16px;">Breakdown by Set</h3>
+      <table class="progress-table">
+        <tr><th>Set</th><th>Flashcards</th><th>Shadowing</th></tr>
+        ${setRows}
+      </table>
+      <p class="note" style="margin-top:12px;">Progress is saved per student name in this browser's local storage. MCQ scores are cumulative across all sets; Flashcards and Shadowing completion is tracked per character, so it's broken down by set above.</p>
+      <button class="btn outline" onclick="resetProgress()">🗑 Reset my progress</button>
+    </div>
+  `;
+}
+function resetProgress(){
+  if(confirm('This will clear all saved progress for this student name. Continue?')){
+    localStorage.removeItem(studentKey());
+    renderProgress();
+  }
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+initNav();
+console.log(COPYRIGHT, "— HSK4 single-char vocab size:", VOCAB.length, "in", SETS.length, "sets");
+</script>
+</body>
+</html>
