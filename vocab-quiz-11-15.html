@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>词语测验 · Vocabulary Quiz L11–15</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#101E1A; --ink-2:#182C26; --ink-3:#21382F;
+    --paper:#F6EFDD; --paper-2:#EDE2C7;
+    --lacquer:#B33A22; --lacquer-dk:#7C2412;
+    --jade:#2F7D6A; --jade-lt:#4FA88F;
+    --gold:#E5A93C;
+    --right:#3E9E7A; --wrong:#C24631;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{min-height:100%}
+  body{
+    background:
+      radial-gradient(circle at 50% 22%, rgba(229,169,60,.10), transparent 46%),
+      radial-gradient(circle at 50% 60%, rgba(79,168,143,.08), transparent 60%),
+      var(--ink);
+    color:var(--paper);
+    font-family:"Baloo 2","Noto Sans SC",system-ui,sans-serif;
+    display:flex;justify-content:center;padding:12px 12px 26px;
+  }
+  .app{width:100%;max-width:480px;display:flex;flex-direction:column;gap:12px}
+
+  /* masthead */
+  .masthead{display:flex;align-items:center;gap:10px}
+  .wordmark{font-family:"Noto Sans SC";font-weight:700;font-size:20px;letter-spacing:.1em;color:var(--gold);line-height:1.1}
+  .wordmark small{display:block;font-family:"Baloo 2";font-weight:700;font-size:9px;letter-spacing:.26em;color:var(--jade-lt);text-transform:uppercase}
+  .home{margin-left:auto;flex:none;width:42px;height:42px;border:0;border-radius:50%;cursor:pointer;
+    background:var(--ink-2);color:var(--gold);font-family:"Noto Sans SC";font-weight:700;font-size:18px;
+    box-shadow:0 3px 0 #0A1512, inset 0 0 0 1px rgba(229,169,60,.45)}
+  .home:active{transform:translateY(2px);box-shadow:0 1px 0 #0A1512, inset 0 0 0 1px rgba(229,169,60,.45)}
+
+  /* progress */
+  .track{display:flex;align-items:center;gap:10px;font-weight:700;font-size:12px;color:rgba(246,239,221,.6)}
+  .bar{flex:1;height:8px;border-radius:99px;background:rgba(246,239,221,.14);overflow:hidden}
+  .bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--jade),var(--gold));transition:width .3s}
+  .track .sc{color:var(--gold)}
+
+  /* question card */
+  .qcard{background:linear-gradient(180deg,var(--paper),var(--paper-2));border-radius:16px;padding:16px 14px 18px;
+    box-shadow:0 8px 0 rgba(0,0,0,.28);text-align:center;color:#1D1A14}
+  .ask{font-family:"Baloo 2";font-weight:800;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--lacquer)}
+  .hanzi{font-family:"Noto Sans SC";font-weight:900;font-size:58px;line-height:1.1;margin:6px 0 2px;cursor:pointer;display:inline-block}
+  .hanzi:active{transform:scale(.96)}
+  .sub{font-family:"Baloo 2";font-weight:600;font-size:13px;color:#8A7E63;min-height:18px}
+  .sub.reveal{color:var(--jade)}
+  .lesson-tag{display:inline-block;margin-top:6px;font-size:10px;font-weight:800;letter-spacing:.1em;
+    text-transform:uppercase;color:#8A7E63}
+
+  /* options */
+  .opts{display:grid;gap:9px}
+  .opt{border:0;border-radius:13px;padding:15px 16px;cursor:pointer;text-align:left;
+    font-family:"Baloo 2";font-weight:700;font-size:18px;
+    background:var(--ink-2);color:var(--paper);
+    box-shadow:0 4px 0 #0A1512, inset 0 0 0 1px rgba(246,239,221,.10);
+    transition:transform .05s, background .15s;display:flex;align-items:center;gap:12px}
+  .opt .k{flex:none;width:26px;height:26px;border-radius:8px;background:var(--ink-3);color:var(--jade-lt);
+    display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+  .opt.zh{font-family:"Noto Sans SC";font-weight:700}
+  .opt:active{transform:translateY(2px)}
+  .opt:disabled{cursor:default}
+  .opt.correct{background:var(--right);box-shadow:0 4px 0 #256B50, inset 0 0 0 1px rgba(255,255,255,.2);color:#fff}
+  .opt.correct .k{background:rgba(255,255,255,.25);color:#fff}
+  .opt.chosen-wrong{background:var(--wrong);box-shadow:0 4px 0 #8A2E1E, inset 0 0 0 1px rgba(255,255,255,.2);color:#fff}
+  .opt.chosen-wrong .k{background:rgba(255,255,255,.25);color:#fff}
+  .opt.dim{opacity:.4}
+
+  .next{width:100%;border:0;border-radius:14px;padding:15px;cursor:pointer;
+    background:var(--lacquer);color:#FFF6DE;font-family:"Baloo 2";font-weight:800;font-size:18px;letter-spacing:.03em;
+    box-shadow:0 5px 0 var(--lacquer-dk);visibility:hidden}
+  .next.show{visibility:visible}
+  .next:active{transform:translateY(4px);box-shadow:0 1px 0 var(--lacquer-dk)}
+
+  /* overlays */
+  .veil{position:fixed;inset:0;z-index:20;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px 16px 34px;
+    background:rgba(9,17,15,.95);backdrop-filter:blur(3px)}
+  .veil[hidden]{display:none}
+  .card{width:100%;max-width:430px;margin:0 auto;text-align:center}
+  .card h1{font-family:"Noto Sans SC";font-size:30px;font-weight:700;color:var(--gold);letter-spacing:.08em}
+  .card h1 + p{font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--jade-lt);margin-bottom:14px}
+  .lede{font-size:13px;color:rgba(246,239,221,.62);margin-bottom:16px;line-height:1.5}
+  .label{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(246,239,221,.4);margin:0 0 7px;text-align:left}
+  .chips{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:14px}
+  .chip{border:0;border-radius:11px;padding:11px 6px;cursor:pointer;text-align:center;
+    background:var(--ink-2);color:var(--paper);box-shadow:inset 0 0 0 1px rgba(246,239,221,.14)}
+  .chip .zh{display:block;font-family:"Noto Sans SC";font-weight:700;font-size:16px}
+  .chip .en{display:block;font-family:"Baloo 2";font-weight:600;font-size:10px;color:rgba(246,239,221,.5);margin-top:1px}
+  .chip[aria-pressed="true"]{background:var(--jade);box-shadow:inset 0 0 0 2px var(--gold)}
+  .chip[aria-pressed="true"] .en{color:rgba(255,255,255,.8)}
+  .lens{grid-template-columns:1fr 1fr;margin-bottom:16px}
+  .go{width:100%;border:0;border-radius:14px;padding:15px;cursor:pointer;
+    background:var(--lacquer);color:#FFF6DE;font-family:"Baloo 2";font-weight:800;font-size:19px;letter-spacing:.03em;
+    box-shadow:0 5px 0 var(--lacquer-dk)}
+  .go:active{transform:translateY(4px);box-shadow:0 1px 0 var(--lacquer-dk)}
+  .go[disabled]{opacity:.4;box-shadow:0 5px 0 var(--lacquer-dk)}
+  .ghost{background:none;border:0;color:rgba(246,239,221,.45);font-family:"Baloo 2";font-weight:700;font-size:13px;
+    margin-top:12px;cursor:pointer;text-decoration:underline}
+
+  /* results */
+  .scorebig{font-family:"Noto Sans SC";font-weight:900;font-size:64px;line-height:1;color:var(--gold)}
+  .scorebig small{font-family:"Baloo 2";font-size:24px;color:rgba(246,239,221,.4)}
+  .verdict{font-family:"Baloo 2";font-weight:800;font-size:20px;margin:6px 0 2px}
+  .tally{display:flex;justify-content:center;gap:20px;margin:12px 0 18px;font-weight:700;font-size:13px}
+  .tally b{display:block;font-size:22px}
+  .tally .r b{color:var(--right)} .tally .w b{color:var(--wrong)}
+  .review{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;text-align:left}
+  .row{display:flex;align-items:center;gap:12px;background:var(--ink-2);border-radius:12px;padding:10px 12px;
+    box-shadow:inset 0 0 0 1px rgba(194,70,49,.4)}
+  .row .zh{font-family:"Noto Sans SC";font-weight:700;font-size:26px;flex:none;cursor:pointer}
+  .row .meta{flex:1;min-width:0}
+  .row .py{font-weight:700;font-size:14px;color:var(--gold)}
+  .row .en{font-size:13px;color:rgba(246,239,221,.7)}
+  .row .yours{font-size:11px;color:var(--wrong);font-weight:700;margin-top:2px}
+  .row .tag{flex:none;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(246,239,221,.35)}
+  .allright{background:var(--ink-2);border-radius:12px;padding:18px;font-size:14px;color:var(--jade-lt);font-weight:700;margin-bottom:16px}
+
+  button:focus-visible,.chip:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="app" id="game" hidden>
+  <div class="masthead">
+    <div class="wordmark">词语测验<small>Vocab Quiz · L11–15</small></div>
+    <button class="home" id="home" title="Back to menu" aria-label="Back to menu">换</button>
+  </div>
+
+  <div class="track">
+    <span id="qcount">1 / 50</span>
+    <div class="bar"><i id="barfill"></i></div>
+    <span class="sc" id="live">0</span>
+  </div>
+
+  <div class="qcard">
+    <div class="ask" id="ask">What does this mean?</div>
+    <div class="hanzi" id="hanzi" title="Tap to hear it">字</div>
+    <div class="sub" id="sub">Tap the character to hear it</div>
+    <div class="lesson-tag" id="ltag">Lesson 11</div>
+  </div>
+
+  <div class="opts" id="opts"></div>
+  <button class="next" id="next">Next →</button>
+</div>
+
+<!-- START -->
+<div class="veil" id="startVeil">
+  <div class="card">
+    <h1>词语测验</h1>
+    <p>Lessons 11 – 15</p>
+    <p class="lede">Every word from Lessons 11 to 15. Each question shows a character — pick its meaning or its pinyin. Mistakes are collected for review at the end.</p>
+
+    <p class="label">Which lessons?</p>
+    <div class="chips" id="lessonChips"></div>
+
+    <p class="label">How many questions?</p>
+    <div class="chips lens" id="lenChips"></div>
+
+    <p class="label">Ask me about…</p>
+    <div class="chips lens" id="modeChips"></div>
+
+    <button class="go" id="startBtn">Start quiz</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="veil" id="resultVeil" hidden>
+  <div class="card">
+    <div class="scorebig" id="pct">0<small>%</small></div>
+    <div class="verdict" id="verdict">—</div>
+    <div class="tally">
+      <div class="r">Correct<b id="rCount">0</b></div>
+      <div class="w">To review<b id="wCount">0</b></div>
+    </div>
+    <p class="label" id="reviewLabel">Words to review</p>
+    <div class="review" id="review"></div>
+    <button class="go" id="againBtn">New quiz</button>
+    <button class="ghost" id="retryWrongBtn" hidden>Practise just the missed words</button>
+  </div>
+</div>
+
+<script>
+/* on-screen error reporter */
+window.onerror=function(m,s,l,c){showErr(m+"  (line "+l+":"+c+")")};
+window.addEventListener("unhandledrejection",e=>showErr("Promise: "+(e.reason&&e.reason.message||e.reason)));
+function showErr(t){let b=document.getElementById("errbar");if(!b){b=document.createElement("div");b.id="errbar";
+  b.style.cssText="position:fixed;left:0;right:0;bottom:0;z-index:99;background:#B33A22;color:#FFF6DE;font:600 12px/1.4 monospace;padding:8px 10px;word-break:break-word";document.body.appendChild(b);}b.textContent="⚠ "+t;}
+
+/* ---------------- vocabulary : Lessons 11–15 ---------------- */
+/* Lesson 12 source in project duplicates L11, so L12 words are taken from the
+   HSK1 vocabulary index (weather + illness set) — the authoritative list. */
+const VOCAB=[
+  // Lesson 11 — 我读大学呢
+  {L:11,h:"时候",p:"shíhou",e:"time; moment"},
+  {L:11,h:"饭店",p:"fàndiàn",e:"restaurant"},
+  {L:11,h:"知道",p:"zhīdào",e:"to know"},
+  {L:11,h:"正在",p:"zhèngzài",e:"in the middle of (doing)"},
+  {L:11,h:"找",p:"zhǎo",e:"to look for"},
+  {L:11,h:"开车",p:"kāichē",e:"to drive"},
+  {L:11,h:"车",p:"chē",e:"vehicle; car"},
+  {L:11,h:"读",p:"dú",e:"to study; read"},
+  {L:11,h:"大学",p:"dàxué",e:"university"},
+  {L:11,h:"大学生",p:"dàxuéshēng",e:"university student"},
+  {L:11,h:"学",p:"xué",e:"to study; learn"},
+  {L:11,h:"医",p:"yī",e:"medicine"},
+  {L:11,h:"弟弟",p:"dìdi",e:"younger brother"},
+  {L:11,h:"起床",p:"qǐchuáng",e:"to get up"},
+  {L:11,h:"睡觉",p:"shuìjiào",e:"to sleep"},
+  {L:11,h:"睡",p:"shuì",e:"to sleep"},
+  {L:11,h:"那里",p:"nàlǐ",e:"there"},
+  {L:11,h:"哪里",p:"nǎlǐ",e:"where"},
+  {L:11,h:"昨天",p:"zuótiān",e:"yesterday"},
+  {L:11,h:"问",p:"wèn",e:"to ask"},
+  {L:11,h:"说",p:"shuō",e:"to say; speak"},
+  {L:11,h:"要",p:"yào",e:"to want; will"},
+  {L:11,h:"小朋友",p:"xiǎopéngyou",e:"child; kid"},
+
+  // Lesson 12 — weather & illness (from vocab index)
+  {L:12,h:"喝",p:"hē",e:"to drink"},
+  {L:12,h:"回",p:"huí",e:"to return; go back"},
+  {L:12,h:"觉得",p:"juéde",e:"to feel; think"},
+  {L:12,h:"来",p:"lái",e:"to come"},
+  {L:12,h:"冷",p:"lěng",e:"cold"},
+  {L:12,h:"看病",p:"kànbìng",e:"to see a doctor"},
+  {L:12,h:"热",p:"rè",e:"hot; warm"},
+  {L:12,h:"生病",p:"shēngbìng",e:"to fall ill"},
+  {L:12,h:"太",p:"tài",e:"too; overly"},
+  {L:12,h:"天",p:"tiān",e:"day; sky"},
+  {L:12,h:"天气",p:"tiānqì",e:"weather"},
+  {L:12,h:"水",p:"shuǐ",e:"water"},
+  {L:12,h:"下雪",p:"xiàxuě",e:"to snow"},
+  {L:12,h:"下雨",p:"xiàyǔ",e:"to rain"},
+  {L:12,h:"医生",p:"yīshēng",e:"doctor"},
+  {L:12,h:"一点儿",p:"yìdiǎnr",e:"a little"},
+  {L:12,h:"有点儿",p:"yǒudiǎnr",e:"a bit; rather"},
+  {L:12,h:"雨",p:"yǔ",e:"rain"},
+  {L:12,h:"雪",p:"xuě",e:"snow"},
+
+  // Lesson 13 — 请给我一杯茶
+  {L:13,h:"可以",p:"kěyǐ",e:"may; can"},
+  {L:13,h:"再",p:"zài",e:"again; once more"},
+  {L:13,h:"问题",p:"wèntí",e:"question; problem"},
+  {L:13,h:"卖",p:"mài",e:"to sell"},
+  {L:13,h:"打电话",p:"dǎ diànhuà",e:"to make a phone call"},
+  {L:13,h:"一下",p:"yíxià",e:"briefly; once"},
+  {L:13,h:"服务员",p:"fúwùyuán",e:"waiter; attendant"},
+  {L:13,h:"女士",p:"nǚshì",e:"madam; lady"},
+  {L:13,h:"请",p:"qǐng",e:"please; to invite"},
+  {L:13,h:"给",p:"gěi",e:"to give"},
+  {L:13,h:"杯",p:"bēi",e:"cup; glass (measure word)"},
+  {L:13,h:"早饭",p:"zǎofàn",e:"breakfast"},
+  {L:13,h:"面包",p:"miànbāo",e:"bread"},
+  {L:13,h:"鸡蛋",p:"jīdàn",e:"egg"},
+  {L:13,h:"先生",p:"xiānsheng",e:"Mr.; sir"},
+  {L:13,h:"一半",p:"yíbàn",e:"half"},
+  {L:13,h:"茶",p:"chá",e:"tea"},
+
+  // Lesson 14 — 我看了一个电影
+  {L:14,h:"火车",p:"huǒchē",e:"train"},
+  {L:14,h:"中午",p:"zhōngwǔ",e:"noon"},
+  {L:14,h:"开",p:"kāi",e:"to depart; open"},
+  {L:14,h:"有些",p:"yǒuxiē",e:"some"},
+  {L:14,h:"有的",p:"yǒude",e:"some (of them)"},
+  {L:14,h:"写",p:"xiě",e:"to write"},
+  {L:14,h:"都",p:"dōu",e:"all; both"},
+  {L:14,h:"听见",p:"tīngjiàn",e:"to hear"},
+  {L:14,h:"不要",p:"búyào",e:"don't"},
+  {L:14,h:"说话",p:"shuōhuà",e:"to speak; talk"},
+  {L:14,h:"听",p:"tīng",e:"to listen"},
+  {L:14,h:"哪些",p:"nǎxiē",e:"which ones"},
+  {L:14,h:"字",p:"zì",e:"character; word"},
+  {L:14,h:"汉语",p:"Hànyǔ",e:"Chinese language"},
+  {L:14,h:"汉字",p:"Hànzì",e:"Chinese characters"},
+  {L:14,h:"明年",p:"míngnián",e:"next year"},
+  {L:14,h:"了",p:"le",e:"(completed action marker)"},
+
+  // Lesson 15 — 大兴机场见
+  {L:15,h:"爱",p:"ài",e:"to love; like"},
+  {L:15,h:"哪个",p:"nǎge",e:"which"},
+  {L:15,h:"好玩儿",p:"hǎowánr",e:"fun; interesting"},
+  {L:15,h:"飞机",p:"fēijī",e:"airplane"},
+  {L:15,h:"早",p:"zǎo",e:"early"},
+  {L:15,h:"男朋友",p:"nánpéngyou",e:"boyfriend"},
+  {L:15,h:"北京",p:"Běijīng",e:"Beijing"},
+  {L:15,h:"机场",p:"jīchǎng",e:"airport"},
+  {L:15,h:"家人",p:"jiārén",e:"family member"},
+  {L:15,h:"接",p:"jiē",e:"to pick up; receive"},
+  {L:15,h:"年",p:"nián",e:"year"},
+  {L:15,h:"去年",p:"qùnián",e:"last year"},
+  {L:15,h:"西安",p:"Xī'ān",e:"Xi'an"}
+];
+
+/* ---------------- state ---------------- */
+const $=id=>document.getElementById(id);
+let sel={lessons:new Set([11,12,13,14,15]), len:50, mode:"mix"};
+let queue=[], idx=0, right=0, wrong=[], answered=false, forcedPool=null;
+
+/* ---------------- start menu ---------------- */
+const LESSONS=[11,12,13,14,15];
+const lc=$("lessonChips");
+LESSONS.forEach(L=>{
+  const b=document.createElement("button");
+  b.className="chip"; b.dataset.l=L; b.setAttribute("aria-pressed","true");
+  b.innerHTML=`<span class="zh">L${L}</span><span class="en">Lesson ${L}</span>`;
+  b.onclick=()=>{ b.getAttribute("aria-pressed")==="true"?deselL(b,L):selL(b,L); syncStart(); };
+  lc.appendChild(b);
+});
+function selL(b,L){sel.lessons.add(L);b.setAttribute("aria-pressed","true");}
+function deselL(b,L){ if(sel.lessons.size<=1) return; sel.lessons.delete(L);b.setAttribute("aria-pressed","false"); }
+
+const LENS=[{v:50,t:"50"},{v:75,t:"75"},{v:9999,t:"All"}];
+const lenc=$("lenChips");
+LENS.forEach(o=>{
+  const b=document.createElement("button");
+  b.className="chip"; b.setAttribute("aria-pressed", o.v===sel.len);
+  b.innerHTML=`<span class="zh">${o.t}</span><span class="en">${o.v===9999?"every word":"questions"}</span>`;
+  b.onclick=()=>{sel.len=o.v;[...lenc.children].forEach(c=>c.setAttribute("aria-pressed",c===b));syncStart();};
+  lenc.appendChild(b);
+});
+
+const MODES=[{v:"mix",zh:"混合",en:"Meaning + pinyin"},{v:"meaning",zh:"意思",en:"Meaning only"},{v:"pinyin",zh:"拼音",en:"Pinyin only"}];
+const mc=$("modeChips"); mc.style.gridTemplateColumns="1fr 1fr 1fr";
+MODES.forEach(o=>{
+  const b=document.createElement("button");
+  b.className="chip"; b.setAttribute("aria-pressed", o.v===sel.mode);
+  b.innerHTML=`<span class="zh">${o.zh}</span><span class="en">${o.en}</span>`;
+  b.onclick=()=>{sel.mode=o.v;[...mc.children].forEach(c=>c.setAttribute("aria-pressed",c===b));};
+  mc.appendChild(b);
+});
+
+function poolNow(){ return forcedPool || VOCAB.filter(w=>sel.lessons.has(w.L)); }
+function syncStart(){
+  const n=poolNow().length;
+  const ask=Math.min(sel.len,n);
+  $("startBtn").textContent = `Start quiz · ${ask} question${ask>1?"s":""}`;
+  $("startBtn").disabled = n===0;
+}
+
+/* ---------------- quiz build ---------------- */
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function buildQueue(){
+  const pool=shuffle(poolNow().slice());
+  const take=Math.min(sel.len,pool.length);
+  queue=pool.slice(0,take).map(w=>{
+    const kind = sel.mode==="mix" ? (Math.random()<0.5?"meaning":"pinyin") : sel.mode;
+    return {w, kind};
+  });
+  idx=0; right=0; wrong=[];
+}
+
+function distractors(word, kind){
+  // prefer same lesson, fall back to all vocab
+  const field = kind==="meaning" ? "e" : "p";
+  const same = VOCAB.filter(x=>x.L===word.L && x[field]!==word[field]);
+  const rest = VOCAB.filter(x=>x.L!==word.L && x[field]!==word[field]);
+  const picks=[];
+  const seen=new Set([word[field]]);
+  for(const src of [shuffle(same.slice()), shuffle(rest.slice())]){
+    for(const x of src){ if(picks.length>=3) break; if(!seen.has(x[field])){picks.push(x);seen.add(x[field]);} }
+    if(picks.length>=3) break;
+  }
+  return picks;
+}
+
+/* ---------------- render question ---------------- */
+function showQ(){
+  answered=false;
+  const {w,kind}=queue[idx];
+  $("qcount").textContent=`${idx+1} / ${queue.length}`;
+  $("barfill").style.width=`${(idx)/queue.length*100}%`;
+  $("live").textContent=right;
+
+  $("ask").textContent = kind==="meaning" ? "What does this mean?" : "How is it pronounced?";
+  $("hanzi").textContent=w.h;
+  $("sub").className="sub"; $("sub").textContent="Tap the character to hear it";
+  $("ltag").textContent=`Lesson ${w.L}`;
+
+  const field = kind==="meaning" ? "e" : "p";
+  const options = shuffle([w, ...distractors(w,kind)]);
+  const box=$("opts"); box.innerHTML="";
+  const KEYS=["A","B","C","D"];
+  options.forEach((o,i)=>{
+    const b=document.createElement("button");
+    b.className="opt"+(kind==="pinyin"?"":"");
+    b.innerHTML=`<span class="k">${KEYS[i]}</span><span>${o[field]}</span>`;
+    b.onclick=()=>choose(b, o, w, kind);
+    box.appendChild(b);
+  });
+  $("next").classList.remove("show");
+  say(w.h);
+}
+
+function choose(btn, chosen, w, kind){
+  if(answered) return;
+  answered=true;
+  const field = kind==="meaning" ? "e" : "p";
+  const correct = chosen[field]===w[field];
+  const buttons=[...$("opts").children];
+  buttons.forEach(b=>{
+    b.disabled=true;
+    const txt=b.querySelector("span:last-child").textContent;
+    if(txt===w[field]) b.classList.add("correct");
+    else b.classList.add("dim");
+  });
+  if(correct){
+    right++;
+    $("live").textContent=right;
+    $("sub").className="sub reveal";
+    $("sub").textContent=`${w.h} · ${w.p} · ${w.e}`;
+  }else{
+    btn.classList.remove("dim");
+    btn.classList.add("chosen-wrong");
+    wrong.push({w, kind, picked:chosen[field]});
+    $("sub").className="sub reveal";
+    $("sub").textContent=`${w.h} · ${w.p} · ${w.e}`;
+  }
+  $("barfill").style.width=`${(idx+1)/queue.length*100}%`;
+  $("next").classList.add("show");
+  $("next").textContent = idx+1>=queue.length ? "See results →" : "Next →";
+}
+
+$("next").onclick=()=>{
+  idx++;
+  if(idx>=queue.length) finish();
+  else showQ();
+};
+
+/* ---------------- results ---------------- */
+function finish(){
+  hush();
+  const total=queue.length;
+  const pct=Math.round(right/total*100);
+  $("pct").innerHTML=`${pct}<small>%</small>`;
+  $("rCount").textContent=right;
+  $("wCount").textContent=wrong.length;
+  $("verdict").textContent =
+    pct===100 ? "Perfect! 太棒了！" :
+    pct>=85 ? "Excellent 很好！" :
+    pct>=70 ? "Good work 不错！" :
+    pct>=50 ? "Getting there 加油！" : "Keep practising 加油！";
+
+  const rev=$("review"); rev.innerHTML="";
+  if(wrong.length===0){
+    $("reviewLabel").style.display="none";
+    const d=document.createElement("div");
+    d.className="allright"; d.textContent="No mistakes to review — every character correct. 🏮";
+    rev.appendChild(d);
+    $("retryWrongBtn").hidden=true;
+  }else{
+    $("reviewLabel").style.display="";
+    wrong.forEach(m=>{
+      const row=document.createElement("div"); row.className="row";
+      const askedFor = m.kind==="meaning" ? "meaning" : "pinyin";
+      row.innerHTML=
+        `<span class="zh" title="Hear it">${m.w.h}</span>`+
+        `<div class="meta"><div class="py">${m.w.p}</div><div class="en">${m.w.e}</div>`+
+        `<div class="yours">you picked: ${m.picked}</div></div>`+
+        `<span class="tag">L${m.w.L}<br>${askedFor}</span>`;
+      row.querySelector(".zh").onclick=()=>say(m.w.h);
+      rev.appendChild(row);
+    });
+    $("retryWrongBtn").hidden=false;
+  }
+  $("game").hidden=true;
+  $("resultVeil").hidden=false;
+  try{scrollTo(0,0);}catch(e){}
+}
+
+/* ---------------- flow ---------------- */
+function begin(){
+  buildQueue();
+  $("startVeil").hidden=true;
+  $("resultVeil").hidden=true;
+  $("game").hidden=false;
+  showQ();
+  try{scrollTo(0,0);}catch(e){}
+}
+$("startBtn").onclick=()=>{ forcedPool=null; begin(); };
+$("againBtn").onclick=()=>{ forcedPool=null; $("resultVeil").hidden=true; openMenu(); };
+$("retryWrongBtn").onclick=()=>{
+  forcedPool = wrong.map(m=>m.w);
+  sel.len=9999;
+  begin();
+};
+$("home").onclick=()=>{ hush(); forcedPool=null; $("game").hidden=true; openMenu(); };
+function openMenu(){ $("resultVeil").hidden=true; $("startVeil").hidden=false; syncStart(); try{scrollTo(0,0);}catch(e){} }
+
+/* ---------------- speech ---------------- */
+let voice=null;
+const canSpeak=(()=>{try{return typeof window.speechSynthesis!=="undefined"&&typeof window.SpeechSynthesisUtterance!=="undefined";}catch(e){return false;}})();
+function pickVoice(){ if(!canSpeak)return; try{const v=speechSynthesis.getVoices()||[];
+  voice=v.find(x=>x.lang==="zh-CN")||v.find(x=>x.lang&&x.lang.toLowerCase().startsWith("zh"))||null;}catch(e){voice=null;} }
+if(canSpeak){ pickVoice(); try{speechSynthesis.onvoiceschanged=pickVoice;}catch(e){} }
+function say(t){ if(!canSpeak)return; try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
+  u.lang="zh-CN";u.rate=.8;if(voice)u.voice=voice;speechSynthesis.speak(u);}catch(e){} }
+function hush(){ if(!canSpeak)return; try{speechSynthesis.cancel();}catch(e){} }
+$("hanzi").onclick=()=>{ if(queue[idx]) say(queue[idx].w.h); };
+
+syncStart();
+</script>
+</body>
+</html>
