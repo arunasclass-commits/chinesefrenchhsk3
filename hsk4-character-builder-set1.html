@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>字格 · Character Builder — HSK 4 Set 1</title>
+<style>
+  :root{
+    --paper:#FAF8F2;
+    --panel:#FFFFFF;
+    --ink:#1F1D1A;
+    --muted:#7A7266;
+    --line:#E4DED0;
+    --grid:#CFC7B4;
+    --red:#A8322A;
+    --red-soft:#F3E4E1;
+    --green:#2F6B4F;
+    --green-soft:#E3EDE6;
+    --gold:#9A7B33;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,sans-serif;
+    overscroll-behavior:none;}
+  .han{font-family:"Kaiti SC","KaiTi","STKaiti","Songti SC","Noto Serif SC","SimSun",serif;}
+
+  /* ---------- header ---------- */
+  .top{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);
+    background:var(--panel);position:sticky;top:0;z-index:20;}
+  .logo{width:38px;height:38px;background:var(--red);color:#fff;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;font-size:22px;flex:0 0 auto;}
+  .top h1{margin:0;font-size:16px;font-weight:600;letter-spacing:.3px;}
+  .top p{margin:2px 0 0;font-size:11.5px;color:var(--muted);}
+
+  .wrap{max-width:640px;margin:0 auto;padding:0 16px 40px;}
+
+  /* ---------- tabs ---------- */
+  .tabs{display:flex;gap:6px;background:#F0EBDF;padding:4px;border-radius:10px;margin:14px 0 12px;}
+  .tabs button{flex:1;padding:9px 4px;border:0;border-radius:7px;background:transparent;color:var(--muted);
+    font-size:13px;font-family:inherit;cursor:pointer;transition:.15s;}
+  .tabs button.on{background:var(--panel);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.09);}
+
+  /* ---------- pill nav ---------- */
+  .pills{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;}
+  .pill{width:26px;height:24px;border:1px solid var(--line);border-radius:5px;background:var(--panel);
+    font-size:11px;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;
+    font-family:inherit;padding:0;transition:.12s;}
+  .pill.done{background:var(--green);border-color:var(--green);color:#fff;}
+  .pill.cur{background:var(--red);border-color:var(--red);color:#fff;font-weight:600;}
+
+  /* ---------- challenge bar ---------- */
+  .chalbar{display:none;margin-bottom:14px;}
+  .chalbar.on{display:block;}
+  .tline{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);}
+  .track{flex:1;height:6px;background:#EAE4D6;border-radius:4px;overflow:hidden;}
+  .track > i{display:block;height:100%;width:100%;background:var(--red);transition:width 1s linear;}
+  .stats{display:flex;justify-content:center;gap:22px;font-size:12.5px;color:var(--muted);margin-top:9px;}
+  .stats b{color:var(--ink);font-size:15px;}
+  .stats .st b{color:var(--gold);}
+
+  /* ---------- prompt ---------- */
+  .prompt{text-align:center;margin:6px 0 18px;min-height:52px;}
+  .prompt .lead{font-size:10.5px;letter-spacing:2.2px;color:var(--muted);text-transform:uppercase;}
+  .prompt .mean{font-size:23px;line-height:1.25;font-weight:600;margin-top:5px;}
+  .prompt .parts{font-size:11.5px;color:var(--muted);margin-top:5px;}
+
+  /* ---------- grid squares ---------- */
+  .frames{display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap;min-height:168px;}
+  .square{position:relative;width:152px;height:152px;font-size:152px;background:var(--panel);
+    border:2px solid var(--grid);border-radius:7px;transition:border-color .25s;}
+  .square.done{border-color:var(--green);}
+  .frames.three .square{width:104px;height:104px;font-size:104px;}
+  @media(max-width:420px){
+    .square{width:130px;height:130px;font-size:130px;}
+    .frames.three .square{width:94px;height:94px;font-size:94px;}
+    .frames{gap:10px;}
+  }
+  .square::before,.square::after{content:"";position:absolute;
+    background-image:repeating-linear-gradient(var(--d),var(--grid) 0 5px,transparent 5px 11px);opacity:.75;}
+  .square::before{--d:to right;left:0;right:0;top:50%;height:1px;}
+  .square::after{--d:to bottom;top:0;bottom:0;left:50%;width:1px;}
+
+  .outline{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:.8em;line-height:1;color:#E0DACB;pointer-events:none;user-select:none;opacity:0;transition:opacity .2s;}
+  .outline.on{opacity:1;}
+
+  .slot{position:absolute;display:flex;align-items:center;justify-content:center;
+    border:1.5px dashed #C6BDA6;border-radius:4px;font-size:.30em;line-height:1;color:var(--ink);
+    transition:background .15s,border-color .15s,transform .12s;}
+  .slot.hot{border-color:var(--green);background:var(--green-soft);transform:scale(1.04);}
+  .slot.filled{border:1.5px solid transparent;background:transparent;}
+  .slot .stack{display:flex;flex-direction:column;line-height:.86;font-size:.62em;}
+  .pop-in{animation:pin .4s cubic-bezier(.2,1.3,.4,1);}
+  @keyframes pin{0%{transform:scale(1.35);opacity:.2}100%{transform:scale(1);opacity:1}}
+
+  .stamp{position:absolute;top:-11px;left:-11px;width:30px;height:30px;background:var(--green);
+    color:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;
+    transform:scale(0);}
+  .stamp.on{animation:st .45s cubic-bezier(.2,1.5,.4,1) forwards;}
+  @keyframes st{0%{transform:scale(1.8);opacity:0}60%{opacity:1}100%{transform:scale(1);opacity:1}}
+
+  /* ---------- reveal card ---------- */
+  .card{max-width:420px;margin:18px auto 0;background:var(--panel);border:1px solid var(--line);
+    border-radius:12px;padding:20px 16px;text-align:center;opacity:0;transform:translateY(8px);
+    transition:.35s;pointer-events:none;}
+  .card.on{opacity:1;transform:none;}
+  .card .w{font-size:34px;letter-spacing:6px;}
+  .card .py{font-size:16px;color:var(--red);margin-top:6px;letter-spacing:.6px;}
+  .card .mn{font-size:13.5px;color:var(--muted);margin-top:2px;}
+  .card .seal{display:inline-block;margin-top:11px;border:1.5px solid var(--red);color:var(--red);
+    border-radius:5px;padding:2px 9px;font-size:12px;letter-spacing:3px;}
+  .card .gain{font-size:13px;color:var(--green);margin-top:8px;font-weight:600;}
+
+  .hint{text-align:center;font-size:12px;color:var(--muted);margin-top:14px;min-height:16px;}
+
+  /* ---------- tray ---------- */
+  .traylab{text-align:center;font-size:10.5px;letter-spacing:2.2px;color:var(--muted);margin:22px 0 9px;}
+  .tray{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:72px;padding:14px;
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;}
+  .tile{width:62px;height:62px;background:var(--panel);border:1px solid var(--line);border-radius:9px;
+    display:flex;align-items:center;justify-content:center;font-size:36px;line-height:1;color:var(--ink);
+    cursor:grab;touch-action:none;user-select:none;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:.12s;}
+  .tile:hover{border-color:var(--grid);}
+  .tile .stack{display:flex;flex-direction:column;line-height:.86;font-size:22px;}
+  .tile.gone{visibility:hidden;}
+  .tile.no{border-color:var(--red);background:var(--red-soft);animation:nud .3s;}
+  @keyframes nud{0%,100%{transform:translateX(0)}30%{transform:translateX(-5px)}70%{transform:translateX(5px)}}
+
+  .dragging{position:fixed;z-index:60;width:62px;height:62px;background:var(--panel);
+    border:1.5px solid var(--green);border-radius:9px;display:flex;align-items:center;justify-content:center;
+    font-size:36px;pointer-events:none;box-shadow:0 10px 24px rgba(0,0,0,.2);
+    transform:translate(-50%,-50%) scale(1.06);}
+  .dragging .stack{display:flex;flex-direction:column;line-height:.86;font-size:22px;}
+
+  /* ---------- etymology popup ---------- */
+  .etym{position:fixed;z-index:70;max-width:264px;background:#221F1A;color:#F6F2E8;border-radius:11px;
+    padding:12px 14px;box-shadow:0 14px 34px rgba(0,0,0,.32);pointer-events:none;
+    opacity:0;transform:translate(-50%,-100%) scale(.94);transition:opacity .16s,transform .16s;}
+  .etym.on{opacity:1;transform:translate(-50%,-100%) scale(1);}
+  .etym .hd{display:flex;align-items:baseline;gap:9px;}
+  .etym .gl{font-size:27px;line-height:1;}
+  .etym .nm{font-size:12.5px;color:#C9BE9E;letter-spacing:.4px;}
+  .etym .bd{font-size:12.5px;line-height:1.5;margin-top:7px;color:#E8E2D4;}
+  .etym::after{content:"";position:absolute;bottom:-6px;left:50%;margin-left:-6px;width:12px;height:12px;
+    background:#221F1A;transform:rotate(45deg);border-radius:2px;}
+
+  /* ---------- controls ---------- */
+  .ctrls{display:flex;gap:9px;justify-content:center;margin-top:20px;}
+  .btn{padding:11px 20px;border-radius:9px;border:1px solid var(--line);background:var(--panel);
+    color:var(--ink);font-size:13.5px;cursor:pointer;font-family:inherit;transition:.12s;}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--red);border-color:var(--red);color:#fff;}
+  .btn:disabled{opacity:.4;cursor:default;}
+  .togrow{display:flex;justify-content:center;margin-top:13px;}
+  .tog{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;cursor:pointer;}
+  .tog .bx{width:32px;height:18px;background:#DDD6C6;border-radius:10px;position:relative;transition:.2s;}
+  .tog .bx i{position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:.2s;}
+  .tog.on .bx{background:var(--green);}
+  .tog.on .bx i{left:16px;}
+
+  /* ---------- summary ---------- */
+  .summary{display:none;text-align:center;padding:26px 12px;background:var(--panel);
+    border:1px solid var(--line);border-radius:12px;margin-top:10px;}
+  .summary.on{display:block;}
+  .summary h2{margin:0;font-size:18px;letter-spacing:2px;}
+  .summary .big{font-size:48px;color:var(--red);font-weight:600;margin:8px 0 2px;}
+  .summary .r{font-size:13px;color:var(--muted);margin:3px 0;}
+  .rev{margin-top:18px;text-align:left;display:inline-block;font-size:13px;}
+  .rev .t{color:var(--ink);font-weight:600;margin-bottom:7px;font-size:12px;letter-spacing:1px;}
+  .rev div.i{margin:5px 0;color:var(--muted);}
+  .rev div.i b{color:var(--ink);letter-spacing:2px;font-weight:500;}
+  .hide{display:none !important;}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="logo han">字</div>
+  <div>
+    <h1>字格 · Character Builder</h1>
+    <p>HSK 4 · Set 1 (words 1–30) · drag the parts into the grid</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="tabs">
+    <button id="tBuild" class="on">练习 Build</button>
+    <button id="tChal">挑战 Challenge</button>
+  </div>
+
+  <div class="pills" id="pills"></div>
+
+  <div class="chalbar" id="chalbar">
+    <div class="tline"><span id="cCount">1 / 10</span><span class="track"><i id="cFill"></i></span><span id="cTime">45s</span></div>
+    <div class="stats">
+      <span>Score <b id="sScore">0</b></span>
+      <span class="st">Streak <b id="sStreak">0</b></span>
+      <span>Lives <b id="sLives">3</b></span>
+    </div>
+  </div>
+
+  <div id="play">
+    <div class="prompt">
+      <div class="lead" id="pLead">Build this word</div>
+      <div class="mean" id="pMean">—</div>
+      <div class="parts" id="pParts"></div>
+    </div>
+
+    <div class="frames" id="frames"></div>
+
+    <div class="card" id="card">
+      <div class="w han" id="cW"></div>
+      <div class="py" id="cPy"></div>
+      <div class="mn" id="cMn"></div>
+      <div class="seal han" id="cSeal">完成</div>
+      <div class="gain" id="cGain"></div>
+    </div>
+
+    <div class="hint" id="hint">Pick up a part — its story appears while you hold it.</div>
+
+    <div class="traylab">RADICALS</div>
+    <div class="tray" id="tray"></div>
+
+    <div class="togrow" id="togrow">
+      <div class="tog" id="tog"><span>Show faint outline (hint)</span><span class="bx"><i></i></span></div>
+    </div>
+
+    <div class="ctrls" id="ctrls">
+      <button class="btn" id="bPrev">‹ Back</button>
+      <button class="btn" id="bReset">Reset</button>
+      <button class="btn primary" id="bNext">Next ›</button>
+    </div>
+  </div>
+
+  <div class="summary" id="summary"></div>
+</div>
+
+<div class="etym" id="etym">
+  <div class="hd"><span class="gl han" id="eGl"></span><span class="nm" id="eNm"></span></div>
+  <div class="bd" id="eBd"></div>
+</div>
+
+<script>
+/* ============================================================
+   SET 1 — HSK 4 words 1–30
+   layouts: single | lr | tb | tb2top
+   ============================================================ */
+const WORDS=[
+ {w:"车速",py:"chēsù",m:"vehicle speed",c:[{ch:"车",l:"single",p:["车"]},{ch:"速",l:"lr",p:["辶","束"]}]},
+ {w:"车位",py:"chēwèi",m:"parking space",c:[{ch:"车",l:"single",p:["车"]},{ch:"位",l:"lr",p:["亻","立"]}]},
+ {w:"城",py:"chéng",m:"city; town",c:[{ch:"城",l:"lr",p:["土","成"]}]},
+ {w:"乘",py:"chéng",m:"to ride; to take",c:[{ch:"乘",l:"single",p:["乘"]}]},
+ {w:"成功",py:"chénggōng",m:"success; to succeed",c:[{ch:"成",l:"single",p:["成"]},{ch:"功",l:"lr",p:["工","力"]}]},
+ {w:"乘客",py:"chéngkè",m:"passenger",c:[{ch:"乘",l:"single",p:["乘"]},{ch:"客",l:"tb",p:["宀","各"]}]},
+ {w:"诚实",py:"chéngshí",m:"honest",c:[{ch:"诚",l:"lr",p:["讠","成"]},{ch:"实",l:"tb",p:["宀","头"]}]},
+ {w:"成为",py:"chéngwéi",m:"to become",c:[{ch:"成",l:"single",p:["成"]},{ch:"为",l:"single",p:["为"]}]},
+ {w:"乘坐",py:"chéngzuò",m:"to take (transport)",c:[{ch:"乘",l:"single",p:["乘"]},{ch:"坐",l:"tb2top",p:["人","人","土"]}]},
+ {w:"吃惊",py:"chījīng",m:"to be surprised",c:[{ch:"吃",l:"lr",p:["口","乞"]},{ch:"惊",l:"lr",p:["忄","京"]}]},
+ {w:"迟",py:"chí",m:"late",c:[{ch:"迟",l:"lr",p:["辶","尺"]}]},
+ {w:"重",py:"chóng",m:"again; repeatedly",c:[{ch:"重",l:"single",p:["重"]}]},
+ {w:"重新",py:"chóngxīn",m:"again; anew",c:[{ch:"重",l:"single",p:["重"]},{ch:"新",l:"lr",p:["亲","斤"]}]},
+ {w:"出差",py:"chūchāi",m:"business trip",c:[{ch:"出",l:"single",p:["出"]},{ch:"差",l:"single",p:["差"]}]},
+ {w:"出口",py:"chūkǒu",m:"exit; export",c:[{ch:"出",l:"single",p:["出"]},{ch:"口",l:"single",p:["口"]}]},
+ {w:"出现",py:"chūxiàn",m:"to appear",c:[{ch:"出",l:"single",p:["出"]},{ch:"现",l:"lr",p:["王","见"]}]},
+ {w:"出行",py:"chūxíng",m:"to travel",c:[{ch:"出",l:"single",p:["出"]},{ch:"行",l:"lr",p:["彳","亍"]}]},
+ {w:"出租",py:"chūzū",m:"to rent out",c:[{ch:"出",l:"single",p:["出"]},{ch:"租",l:"lr",p:["禾","且"]}]},
+ {w:"厨房",py:"chúfáng",m:"kitchen",c:[{ch:"厨",l:"lr",p:["厂","豆寸"]},{ch:"房",l:"tb",p:["户","方"]}]},
+ {w:"厨师",py:"chúshī",m:"cook; chef",c:[{ch:"厨",l:"lr",p:["厂","豆寸"]},{ch:"师",l:"single",p:["师"]}]},
+ {w:"窗",py:"chuāng",m:"window",c:[{ch:"窗",l:"tb",p:["穴","㖣"]}]},
+ {w:"窗户",py:"chuānghu",m:"window",c:[{ch:"窗",l:"tb",p:["穴","㖣"]},{ch:"户",l:"single",p:["户"]}]},
+ {w:"吹",py:"chuī",m:"to blow",c:[{ch:"吹",l:"lr",p:["口","欠"]}]},
+ {w:"词语",py:"cíyǔ",m:"word; expression",c:[{ch:"词",l:"lr",p:["讠","司"]},{ch:"语",l:"lr",p:["讠","吾"]}]},
+ {w:"此",py:"cǐ",m:"this",c:[{ch:"此",l:"lr",p:["止","匕"]}]},
+ {w:"此次",py:"cǐcì",m:"this time",c:[{ch:"此",l:"lr",p:["止","匕"]},{ch:"次",l:"lr",p:["冫","欠"]}]},
+ {w:"此外",py:"cǐwài",m:"besides; moreover",c:[{ch:"此",l:"lr",p:["止","匕"]},{ch:"外",l:"lr",p:["夕","卜"]}]},
+ {w:"从此",py:"cóngcǐ",m:"from now on",c:[{ch:"从",l:"lr",p:["人","人"]},{ch:"此",l:"lr",p:["止","匕"]}]},
+ {w:"从来",py:"cónglái",m:"always; ever",c:[{ch:"从",l:"lr",p:["人","人"]},{ch:"来",l:"single",p:["来"]}]},
+ {w:"从中",py:"cóngzhōng",m:"from among",c:[{ch:"从",l:"lr",p:["人","人"]},{ch:"中",l:"single",p:["中"]}]}
+];
+
+/* ============================================================
+   ETYMOLOGY — shown as a popup the moment a part is picked up
+   ============================================================ */
+const ETYM={
+ "车":["chē · cart","A chariot seen from above: the long axle running through the middle, with the wheel and carriage box around it."],
+ "辶":["chuò · movement","The 'walking' radical, squeezed from 辵 — a foot stepping onto a crossroad. Almost every character with it involves going somewhere."],
+ "束":["shù · bundle","A tree 木 with a cord tied around its middle — firewood bound up. It carries the sense of tying and restraining."],
+ "亻":["rén · person","The side form of 人. A human seen in profile, standing on two legs."],
+ "立":["lì · to stand","A person with arms out, drawn on top of a ground line — someone standing upright in one place."],
+ "土":["tǔ · earth","A mound of soil heaped on the ground. It marks anything made of earth: walls, cities, dust, graves."],
+ "成":["chéng · to complete","A weapon 戈 used to seal an oath. The task is struck through and finished — hence 'accomplish'."],
+ "乘":["chéng · to mount","A person standing up in the branches of a tree. Originally climbing on top of something, later riding it."],
+ "工":["gōng · work","A carpenter's tool — a ruler or a tamping post. The mark of a craftsman, so it means labour and skill."],
+ "力":["lì · strength","A plough pushed into the soil, or a flexed arm. Either way, the picture of physical effort."],
+ "宀":["mián · roof","The outline of a house roof. Anything under it happens indoors: 家 home, 客 guest, 安 peace."],
+ "各":["gè · each","A foot 夂 coming down toward a doorway 口 — people arriving one at a time, so 'each, every'."],
+ "讠":["yán · speech","Condensed 言: a mouth with sound lines rising out of it. Marks words, speaking and language."],
+ "头":["tóu · head","Simplified from 頭. The head, and by extension the top or beginning of anything."],
+ "为":["wéi · to do","Originally a hand leading an elephant — taming a beast to work. It became the general word for doing and acting."],
+ "人":["rén · person","A standing human seen from the side, the two strokes being the legs. The most basic figure in the script."],
+ "口":["kǒu · mouth","An open mouth. It marks eating, speaking, and shouting — and doubles as any small opening."],
+ "乞":["qǐ · to beg","Trimmed from 气 'vapour' — breath rising and asking. It came to mean requesting or begging."],
+ "忄":["xīn · heart","The side form of 心. Whenever you see it, the character is about a feeling: 忙 busy, 怕 afraid, 惊 startled."],
+ "京":["jīng · capital","A tall building raised on a mound — a watchtower over a city. It came to mean the capital itself."],
+ "尺":["chǐ · a foot (measure)","A hand held out to measure a span, standardised into the ruler-length 'chi'."],
+ "重":["zhòng · heavy","A person carrying a loaded bundle on their back — weight pressing down."],
+ "亲":["qīn · close kin","Simplified from 親. It carries the sense of nearness, family and intimacy."],
+ "斤":["jīn · axe","The head and handle of an adze. Characters with it involve cutting or splitting: 新 was originally cutting fresh wood."],
+ "出":["chū · to go out","A foot stepping up and out of a hollow or cave mouth — leaving the shelter."],
+ "差":["chā · to differ","Grain stalks of uneven length compared side by side, hence difference and discrepancy."],
+ "王":["wáng · king / jade","Three lines — heaven, humanity, earth — joined by one vertical: the ruler who links them. On the left of a character it usually stands for 玉 jade instead."],
+ "见":["jiàn · to see","An eye 目 set on a pair of legs 儿 — a person actively looking at something."],
+ "彳":["chì · step","The left half of 行 'road' — one side of a crossroads. It signals walking and travel."],
+ "亍":["chù · pace","The right half of 行. Paired with 彳 it restores the full crossroads: 彳 + 亍 = 行."],
+ "禾":["hé · grain","A stalk of millet bending under a ripe head. It marks crops, harvest and, by extension, taxes and rent."],
+ "且":["qiě · moreover","A stone ancestral altar, stacked slabs seen from the side. It was borrowed for the grammar word 'moreover'."],
+ "厂":["chǎng · cliff","An overhanging rock face. Things drawn under it are sheltered against the cliff — workshops, factories, kitchens."],
+ "豆寸":["dòu + cùn · vessel and hand","豆 is a tall-stemmed ritual food vessel; 寸 is a hand with a mark at the pulse. Together under the cliff 厂 they make 厨 — the place where hands work over the pots."],
+ "户":["hù · door","A single-leaf door, exactly half of the old double gate 門. It also means a household."],
+ "方":["fāng · square","A plough handle, or a banner on a pole. It came to mean direction, region and the square shape."],
+ "师":["shī · master","Originally a large body of troops and their commander, then the one who instructs — teacher, master craftsman."],
+ "穴":["xué · cave","A roofed opening dug into a hillside — the earliest dwelling. Characters with it involve holes and hollows: 窗 window, 空 empty."],
+ "㖣":["the lattice of 窗","The lower element of 窗: the crossed wooden frame of a window, drawn under the cave roof 穴 that lets in light."],
+ "欠":["qiàn · to yawn / lack","A kneeling person with the mouth wide open, breath streaming out. It marks yawning, blowing, and what is missing."],
+ "司":["sī · to manage","A hand above a mouth 口 issuing commands — an official taking charge of affairs."],
+ "吾":["wú · I, me","五 'five' over 口 'mouth', used for its sound. The classical word for 'I'."],
+ "止":["zhǐ · foot, to stop","A footprint: toes above, heel below. It first meant the foot itself, then halting where the foot rests."],
+ "匕":["bǐ · spoon","A ladle or spoon seen from the side. It is also a person turned around, which is why it appears in 化 'to change'."],
+ "冫":["bīng · ice","Two strokes of frozen water, the thin cousin of 氵. It marks cold: 冷 cold, 冰 ice, 次 originally a shiver."],
+ "夕":["xī · evening","A crescent moon only half risen — the moon 月 with a stroke removed, meaning dusk."],
+ "卜":["bǔ · divination","The crack that opens in a heated turtle shell. Diviners read the shape of it to foretell events."],
+ "来":["lái · to come","A wheat plant with drooping ears. The grain 'came' to the people, and the character was borrowed for 'come'."],
+ "中":["zhōng · middle","A banner pole planted through the centre of an enclosure — the exact middle of a camp."],
+ /* decoys */
+ "氵":["shuǐ · water","Three drops squeezed from 水. Any character with it touches liquid: rivers, washing, drinking."],
+ "木":["mù · tree","A tree drawn whole: trunk up the middle, branches spreading, roots below."],
+ "日":["rì · sun","The sun as a circle with a dot at its centre, later squared off by the brush. It means sun and day."],
+ "月":["yuè · moon","A crescent moon. Inside a character it often stands instead for 肉 flesh, marking parts of the body."],
+ "女":["nǚ · woman","A figure kneeling with arms folded across the body, in the posture of old formal seating."],
+ "火":["huǒ · fire","Flames leaping upward with sparks flying off to each side."],
+ "目":["mù · eye","An eye turned upright so it fits the square: the outline with the pupil lines inside."],
+ "田":["tián · field","A plot of farmland divided by the raised paths that run between the sections."],
+ "石":["shí · stone","A lump of rock lying at the foot of a cliff 厂."],
+ "犭":["quǎn · beast","The side form of 犬 dog. It marks animals, especially four-legged ones: 猫 cat, 狗 dog."],
+ "阝":["mound or city","Two different things in one shape. On the left it is 阜, a hill or earthen mound; on the right it is 邑, a walled city."],
+ "广":["guǎng · shelter","A roof built out against a cliff face — a lean-to. It marks buildings and wide covered spaces."],
+ "竹":["zhú · bamboo","Two bamboo stalks with their leaves drooping. It marks things made of bamboo, especially writing slips."],
+ "纟":["sī · silk","Twisted threads drawn off a cocoon. It marks thread, cloth, and anything bound or connected."],
+ "钅":["jīn · metal","Condensed 金: nuggets of ore lying beneath the earth. It marks metals and metal tools."],
+ "扌":["shǒu · hand","The side form of 手. A very common radical — almost every character with it is an action done by hand."],
+ "心":["xīn · heart","The organ itself, with the chambers sketched inside. In Chinese thought the heart is where thinking happens too."],
+ "大":["dà · big","A person standing face-on with arms and legs stretched wide — the picture of largeness."],
+ "又":["yòu · right hand","A right hand with three fingers shown. It appears wherever a hand grasps or acts."],
+ "米":["mǐ · rice","Grains of rice scattered on either side of a threshing line."]
+};
+const DECOY_POOL=["氵","木","日","月","女","火","目","田","石","犭","阝","广","竹","纟","钅","扌","心","大","又","米"];
+
+/* ---------- layout geometry ---------- */
+function specs(l){
+  const p=6;
+  if(l==="lr")return[{x:p,y:p,w:50-p-2,h:100-2*p},{x:52,y:p,w:50-p-2,h:100-2*p}];
+  if(l==="tb")return[{x:p,y:p,w:100-2*p,h:44},{x:p,y:52,w:100-2*p,h:42}];
+  if(l==="tb2top")return[{x:p,y:p,w:42,h:44},{x:52,y:p,w:42,h:44},{x:p,y:52,w:100-2*p,h:42}];
+  return[{x:p,y:p,w:100-2*p,h:100-2*p}];
+}
+
+/* ---------- state ---------- */
+const $=i=>document.getElementById(i);
+let mode="build",idx=0,slots=[],drag=null,dragEl=null,outline=false;
+let done=new Set();
+let chalQ=[],chalPos=0,score=0,streak=0,lives=3,tLeft=0,tId=null,missed=[],live=false;
+const CHAL_N=10,CHAL_T=45;
+
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const glyph=t=>t.length>1?`<span class="stack">${[...t].map(c=>`<span>${c}</span>`).join("")}</span>`:t;
+const cur=()=>mode==="build"?WORDS[idx]:chalQ[chalPos];
+
+/* ---------- pills ---------- */
+function pills(){
+  const box=$("pills");box.innerHTML="";
+  WORDS.forEach((_,i)=>{
+    const b=document.createElement("button");
+    b.className="pill"+(i===idx?" cur":done.has(i)?" done":"");
+    b.textContent=i+1;
+    b.onclick=()=>{idx=i;render();};
+    box.appendChild(b);
+  });
+}
+
+/* ---------- render ---------- */
+function render(){
+  const d=cur();
+  const f=$("frames");f.innerHTML="";slots=[];
+  f.className="frames"+(d.c.length>=3?" three":"");
+  $("card").classList.remove("on");
+  $("cGain").textContent="";
+
+  d.c.forEach((co,ci)=>{
+    const sq=document.createElement("div");sq.className="square";sq.dataset.ci=ci;
+    const ol=document.createElement("div");
+    ol.className="outline han"+((outline&&mode==="build")?" on":"");
+    ol.textContent=co.ch;sq.appendChild(ol);
+    specs(co.l).forEach((s,si)=>{
+      const el=document.createElement("div");el.className="slot han";
+      el.style.cssText=`left:${s.x}%;top:${s.y}%;width:${s.w}%;height:${s.h}%`;
+      el.dataset.exp=co.p[si];el.dataset.ci=ci;el.dataset.f="0";
+      sq.appendChild(el);slots.push(el);
+    });
+    const st=document.createElement("div");st.className="stamp";st.textContent="✓";st.dataset.ci=ci;
+    sq.appendChild(st);
+    f.appendChild(sq);
+  });
+
+  /* prompt: English meaning only */
+  $("pMean").textContent=d.m;
+  $("pParts").textContent=d.c.length+(d.c.length>1?" characters":" character");
+  $("pLead").textContent=mode==="build"?"Build this word":"What word is this?";
+
+  /* tray */
+  const pieces=[];d.c.forEach(c=>c.p.forEach(p=>pieces.push(p)));
+  if(mode==="challenge"){
+    const extra=DECOY_POOL.filter(x=>!pieces.includes(x));
+    shuffle(extra).slice(0,4).forEach(x=>pieces.push(x));
+  }
+  shuffle(pieces);
+  const tr=$("tray");tr.innerHTML="";
+  pieces.forEach(p=>{
+    const t=document.createElement("div");t.className="tile han";t.dataset.t=p;
+    t.innerHTML=glyph(p);
+    t.addEventListener("pointerdown",grab);
+    tr.appendChild(t);
+  });
+
+  if(mode==="build"){
+    pills();
+    $("bPrev").disabled=idx===0;
+    hint("Pick up a part — its story appears while you hold it.");
+  }else{
+    hint("Extra parts are mixed in. Only the right ones will stick.");
+  }
+}
+const hint=t=>$("hint").textContent=t;
+
+/* ---------- etymology popup ---------- */
+function showEtym(key,x,y){
+  const e=ETYM[key];
+  if(!e){$("etym").classList.remove("on");return;}
+  $("eGl").textContent=key;$("eNm").textContent=e[0];$("eBd").textContent=e[1];
+  const pop=$("etym");
+  pop.classList.add("on");
+  const w=pop.offsetWidth||264;
+  const cx=Math.min(Math.max(x,w/2+10),window.innerWidth-w/2-10);
+  pop.style.left=cx+"px";
+  pop.style.top=Math.max(y-56,pop.offsetHeight+14)+"px";
+}
+const hideEtym=()=>$("etym").classList.remove("on");
+
+/* ---------- drag ---------- */
+function grab(e){
+  const t=e.currentTarget;
+  if(t.classList.contains("gone"))return;
+  if(mode==="challenge"&&!live)return;
+  drag={t,txt:t.dataset.t};
+  dragEl=document.createElement("div");dragEl.className="dragging han";
+  dragEl.innerHTML=glyph(drag.txt);document.body.appendChild(dragEl);
+  move(e);
+  showEtym(drag.txt,e.clientX,e.clientY-40);
+  t.setPointerCapture(e.pointerId);
+  t.addEventListener("pointermove",onMove);
+  t.addEventListener("pointerup",drop);
+  t.addEventListener("pointercancel",drop);
+  e.preventDefault();
+}
+function move(e){if(dragEl){dragEl.style.left=e.clientX+"px";dragEl.style.top=e.clientY+"px";}}
+function onMove(e){
+  move(e);
+  showEtym(drag.txt,e.clientX,e.clientY-40);
+  const h=hit(e.clientX,e.clientY);
+  slots.forEach(s=>s.classList.toggle("hot",s===h&&s.dataset.f==="0"&&s.dataset.exp===drag.txt));
+  e.preventDefault();
+}
+function hit(x,y){
+  for(const s of slots){const r=s.getBoundingClientRect();
+    if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)return s;}
+  return null;
+}
+function drop(e){
+  const t=drag.t;
+  t.removeEventListener("pointermove",onMove);
+  t.removeEventListener("pointerup",drop);
+  t.removeEventListener("pointercancel",drop);
+  const h=hit(e.clientX,e.clientY);
+  slots.forEach(s=>s.classList.remove("hot"));
+  if(dragEl){dragEl.remove();dragEl=null;}
+  setTimeout(hideEtym,900);
+  if(h&&h.dataset.f==="0"&&h.dataset.exp===drag.txt){
+    h.dataset.f="1";h.classList.add("filled","pop-in");h.innerHTML=glyph(drag.txt);
+    t.classList.add("gone");
+    checkChar(+h.dataset.ci);
+  }else if(h){
+    t.classList.add("no");setTimeout(()=>t.classList.remove("no"),320);
+    if(mode==="challenge"){tLeft=Math.max(0,tLeft-3);paintT();hint("Not part of this word — 3 seconds gone.");}
+    else hint("That part doesn't belong there. Try another slot.");
+  }
+  drag=null;
+}
+
+/* ---------- completion ---------- */
+function checkChar(ci){
+  const cs=slots.filter(s=>+s.dataset.ci===ci);
+  if(cs.every(s=>s.dataset.f==="1")){
+    document.querySelector(`.stamp[data-ci="${ci}"]`)?.classList.add("on");
+    document.querySelector(`.square[data-ci="${ci}"]`)?.classList.add("done");
+  }
+  if(slots.every(s=>s.dataset.f==="1"))finish();
+}
+function finish(){
+  const d=cur();
+  $("cW").textContent=d.w;$("cPy").textContent=d.py;$("cMn").textContent=d.m;
+  $("card").classList.add("on");
+  if(mode==="build"){
+    done.add(idx);pills();
+    hint("Built. Tap Next for the following word.");
+  }else{
+    const g=10+Math.max(0,tLeft)*2+streak*5;
+    score+=g;streak++;$("cGain").textContent="+"+g+" points";
+    paintS();hint("对了 — correct.");
+    clearInterval(tId);
+    setTimeout(nextChal,1500);
+  }
+}
+
+/* ---------- challenge ---------- */
+function startChal(){
+  chalQ=shuffle([...WORDS]).slice(0,CHAL_N);
+  chalPos=0;score=0;streak=0;lives=3;missed=[];live=true;
+  $("summary").classList.remove("on");$("play").classList.remove("hide");
+  paintS();loadChal();
+}
+function loadChal(){tLeft=CHAL_T;render();paintT();clearInterval(tId);
+  tId=setInterval(()=>{tLeft--;paintT();if(tLeft<=0){clearInterval(tId);timeUp();}},1000);}
+function timeUp(){
+  const d=cur();lives--;streak=0;missed.push(d);paintS();
+  $("cW").textContent=d.w;$("cPy").textContent=d.py;$("cMn").textContent=d.m;
+  $("cGain").textContent="";$("card").classList.add("on");
+  hint(lives>0?"Out of time. One life lost.":"Out of time — no lives left.");
+  setTimeout(nextChal,2000);
+}
+function nextChal(){
+  if(lives<=0||chalPos>=CHAL_N-1){endChal();return;}
+  chalPos++;loadChal();
+}
+function paintT(){
+  $("cFill").style.width=(Math.max(0,tLeft)/CHAL_T*100)+"%";
+  $("cTime").textContent=Math.max(0,tLeft)+"s";
+  $("cCount").textContent=(chalPos+1)+" / "+CHAL_N;
+}
+function paintS(){$("sScore").textContent=score;$("sStreak").textContent=streak;$("sLives").textContent=lives;}
+function endChal(){
+  clearInterval(tId);live=false;
+  const built=(chalPos+1)-missed.length;
+  $("play").classList.add("hide");
+  $("summary").innerHTML=`<h2 class="han">挑战结束</h2>
+    <div class="r">Challenge complete</div>
+    <div class="big">${score}</div>
+    <div class="r">${Math.max(0,built)} of ${CHAL_N} words built · ${lives} lives left</div>
+    ${missed.length?`<div class="rev"><div class="t">WORTH ANOTHER LOOK</div>
+      ${missed.map(m=>`<div class="i"><b class="han">${m.w}</b> — ${m.py} · ${m.m}</div>`).join("")}</div>`
+      :`<div class="r" style="margin-top:14px;color:var(--green)">Clean run. Nothing missed.</div>`}
+    <div class="ctrls"><button class="btn primary" id="bAgain">Play again</button></div>`;
+  $("summary").classList.add("on");
+  $("bAgain").onclick=startChal;
+}
+
+/* ---------- mode ---------- */
+function setMode(m){
+  clearInterval(tId);live=false;hideEtym();
+  mode=m;
+  $("tBuild").classList.toggle("on",m==="build");
+  $("tChal").classList.toggle("on",m==="challenge");
+  $("pills").classList.toggle("hide",m!=="build");
+  $("chalbar").classList.toggle("on",m==="challenge");
+  $("togrow").classList.toggle("hide",m!=="build");
+  $("ctrls").classList.toggle("hide",m!=="build");
+  $("summary").classList.remove("on");
+  $("play").classList.remove("hide");
+  if(m==="build")render();else startChal();
+}
+
+/* ---------- controls ---------- */
+$("tBuild").onclick=()=>setMode("build");
+$("tChal").onclick=()=>setMode("challenge");
+$("bNext").onclick=()=>{idx=(idx+1)%WORDS.length;render();};
+$("bPrev").onclick=()=>{if(idx>0){idx--;render();}};
+$("bReset").onclick=render;
+$("tog").onclick=()=>{
+  outline=!outline;$("tog").classList.toggle("on",outline);
+  document.querySelectorAll(".outline").forEach(o=>o.classList.toggle("on",outline));
+};
+document.addEventListener("pointerdown",e=>{if(!e.target.closest(".tile"))hideEtym();});
+
+render();
+</script>
+</body>
+</html>
