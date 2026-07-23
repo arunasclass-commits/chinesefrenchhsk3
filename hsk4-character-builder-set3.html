@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>字格 · Character Builder — HSK 4 Set 3</title>
+<style>
+  :root{
+    --paper:#FAF8F2;
+    --panel:#FFFFFF;
+    --ink:#1F1D1A;
+    --muted:#7A7266;
+    --line:#E4DED0;
+    --grid:#CFC7B4;
+    --red:#A8322A;
+    --red-soft:#F3E4E1;
+    --green:#2F6B4F;
+    --green-soft:#E3EDE6;
+    --gold:#9A7B33;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,sans-serif;
+    overscroll-behavior:none;}
+  .han{font-family:"Kaiti SC","KaiTi","STKaiti","Songti SC","Noto Serif SC","SimSun",serif;}
+
+  .top{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);
+    background:var(--panel);position:sticky;top:0;z-index:20;}
+  .logo{width:38px;height:38px;background:var(--red);color:#fff;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;font-size:22px;flex:0 0 auto;}
+  .top h1{margin:0;font-size:16px;font-weight:600;letter-spacing:.3px;}
+  .top p{margin:2px 0 0;font-size:11.5px;color:var(--muted);}
+
+  .wrap{max-width:640px;margin:0 auto;padding:0 16px 40px;}
+
+  .tabs{display:flex;gap:6px;background:#F0EBDF;padding:4px;border-radius:10px;margin:14px 0 12px;}
+  .tabs button{flex:1;padding:9px 4px;border:0;border-radius:7px;background:transparent;color:var(--muted);
+    font-size:13px;font-family:inherit;cursor:pointer;transition:.15s;}
+  .tabs button.on{background:var(--panel);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.09);}
+
+  .pills{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;}
+  .pill{width:26px;height:24px;border:1px solid var(--line);border-radius:5px;background:var(--panel);
+    font-size:11px;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;
+    font-family:inherit;padding:0;transition:.12s;}
+  .pill.done{background:var(--green);border-color:var(--green);color:#fff;}
+  .pill.cur{background:var(--red);border-color:var(--red);color:#fff;font-weight:600;}
+
+  .chalbar{display:none;margin-bottom:14px;}
+  .chalbar.on{display:block;}
+  .tline{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);}
+  .track{flex:1;height:6px;background:#EAE4D6;border-radius:4px;overflow:hidden;}
+  .track > i{display:block;height:100%;width:100%;background:var(--red);transition:width 1s linear;}
+  .stats{display:flex;justify-content:center;gap:22px;font-size:12.5px;color:var(--muted);margin-top:9px;}
+  .stats b{color:var(--ink);font-size:15px;}
+  .stats .st b{color:var(--gold);}
+
+  .prompt{text-align:center;margin:6px 0 18px;min-height:52px;}
+  .prompt .lead{font-size:10.5px;letter-spacing:2.2px;color:var(--muted);text-transform:uppercase;}
+  .prompt .mean{font-size:23px;line-height:1.25;font-weight:600;margin-top:5px;}
+  .prompt .parts{font-size:11.5px;color:var(--muted);margin-top:5px;}
+
+  .frames{display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap;min-height:168px;}
+  .square{position:relative;width:152px;height:152px;font-size:152px;background:var(--panel);
+    border:2px solid var(--grid);border-radius:7px;transition:border-color .25s;}
+  .square.done{border-color:var(--green);}
+  .frames.three .square{width:104px;height:104px;font-size:104px;}
+  @media(max-width:420px){
+    .square{width:130px;height:130px;font-size:130px;}
+    .frames.three .square{width:94px;height:94px;font-size:94px;}
+    .frames{gap:10px;}
+  }
+  .square::before,.square::after{content:"";position:absolute;
+    background-image:repeating-linear-gradient(var(--d),var(--grid) 0 5px,transparent 5px 11px);opacity:.75;}
+  .square::before{--d:to right;left:0;right:0;top:50%;height:1px;}
+  .square::after{--d:to bottom;top:0;bottom:0;left:50%;width:1px;}
+
+  .outline{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:.8em;line-height:1;color:#E0DACB;pointer-events:none;user-select:none;opacity:0;transition:opacity .2s;}
+  .outline.on{opacity:1;}
+
+  .slot{position:absolute;display:flex;align-items:center;justify-content:center;
+    border:1.5px dashed #C6BDA6;border-radius:4px;font-size:.30em;line-height:1;color:var(--ink);
+    transition:background .15s,border-color .15s,transform .12s;}
+  .slot.hot{border-color:var(--green);background:var(--green-soft);transform:scale(1.04);}
+  .slot.filled{border:1.5px solid transparent;background:transparent;}
+  .slot .stack{display:flex;flex-direction:column;line-height:.86;font-size:.62em;}
+  .pop-in{animation:pin .4s cubic-bezier(.2,1.3,.4,1);}
+  @keyframes pin{0%{transform:scale(1.35);opacity:.2}100%{transform:scale(1);opacity:1}}
+
+  .stamp{position:absolute;top:-11px;left:-11px;width:30px;height:30px;background:var(--green);
+    color:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;
+    transform:scale(0);}
+  .stamp.on{animation:st .45s cubic-bezier(.2,1.5,.4,1) forwards;}
+  @keyframes st{0%{transform:scale(1.8);opacity:0}60%{opacity:1}100%{transform:scale(1);opacity:1}}
+
+  .card{max-width:420px;margin:18px auto 0;background:var(--panel);border:1px solid var(--line);
+    border-radius:12px;padding:20px 16px;text-align:center;opacity:0;transform:translateY(8px);
+    transition:.35s;pointer-events:none;}
+  .card.on{opacity:1;transform:none;}
+  .card .w{font-size:34px;letter-spacing:6px;}
+  .card .py{font-size:16px;color:var(--red);margin-top:6px;letter-spacing:.6px;}
+  .card .mn{font-size:13.5px;color:var(--muted);margin-top:2px;}
+  .card .seal{display:inline-block;margin-top:11px;border:1.5px solid var(--red);color:var(--red);
+    border-radius:5px;padding:2px 9px;font-size:12px;letter-spacing:3px;}
+  .card .gain{font-size:13px;color:var(--green);margin-top:8px;font-weight:600;}
+
+  .hint{text-align:center;font-size:12px;color:var(--muted);margin-top:14px;min-height:16px;}
+
+  .traylab{text-align:center;font-size:10.5px;letter-spacing:2.2px;color:var(--muted);margin:22px 0 9px;}
+  .tray{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:72px;padding:14px;
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;}
+  .tile{width:62px;height:62px;background:var(--panel);border:1px solid var(--line);border-radius:9px;
+    display:flex;align-items:center;justify-content:center;font-size:36px;line-height:1;color:var(--ink);
+    cursor:grab;touch-action:none;user-select:none;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:.12s;}
+  .tile:hover{border-color:var(--grid);}
+  .tile .stack{display:flex;flex-direction:column;line-height:.86;font-size:22px;}
+  .tile.gone{visibility:hidden;}
+  .tile.no{border-color:var(--red);background:var(--red-soft);animation:nud .3s;}
+  @keyframes nud{0%,100%{transform:translateX(0)}30%{transform:translateX(-5px)}70%{transform:translateX(5px)}}
+
+  .dragging{position:fixed;z-index:60;width:62px;height:62px;background:var(--panel);
+    border:1.5px solid var(--green);border-radius:9px;display:flex;align-items:center;justify-content:center;
+    font-size:36px;pointer-events:none;box-shadow:0 10px 24px rgba(0,0,0,.2);
+    transform:translate(-50%,-50%) scale(1.06);}
+  .dragging .stack{display:flex;flex-direction:column;line-height:.86;font-size:22px;}
+
+  .etym{position:fixed;z-index:70;max-width:264px;background:#221F1A;color:#F6F2E8;border-radius:11px;
+    padding:12px 14px;box-shadow:0 14px 34px rgba(0,0,0,.32);pointer-events:none;
+    opacity:0;transform:translate(-50%,-100%) scale(.94);transition:opacity .16s,transform .16s;}
+  .etym.on{opacity:1;transform:translate(-50%,-100%) scale(1);}
+  .etym .hd{display:flex;align-items:baseline;gap:9px;}
+  .etym .gl{font-size:27px;line-height:1;}
+  .etym .nm{font-size:12.5px;color:#C9BE9E;letter-spacing:.4px;}
+  .etym .bd{font-size:12.5px;line-height:1.5;margin-top:7px;color:#E8E2D4;}
+  .etym::after{content:"";position:absolute;bottom:-6px;left:50%;margin-left:-6px;width:12px;height:12px;
+    background:#221F1A;transform:rotate(45deg);border-radius:2px;}
+
+  .ctrls{display:flex;gap:9px;justify-content:center;margin-top:20px;}
+  .btn{padding:11px 20px;border-radius:9px;border:1px solid var(--line);background:var(--panel);
+    color:var(--ink);font-size:13.5px;cursor:pointer;font-family:inherit;transition:.12s;}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--red);border-color:var(--red);color:#fff;}
+  .btn:disabled{opacity:.4;cursor:default;}
+  .togrow{display:flex;justify-content:center;margin-top:13px;}
+  .tog{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;cursor:pointer;}
+  .tog .bx{width:32px;height:18px;background:#DDD6C6;border-radius:10px;position:relative;transition:.2s;}
+  .tog .bx i{position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:.2s;}
+  .tog.on .bx{background:var(--green);}
+  .tog.on .bx i{left:16px;}
+
+  .summary{display:none;text-align:center;padding:26px 12px;background:var(--panel);
+    border:1px solid var(--line);border-radius:12px;margin-top:10px;}
+  .summary.on{display:block;}
+  .summary h2{margin:0;font-size:18px;letter-spacing:2px;}
+  .summary .big{font-size:48px;color:var(--red);font-weight:600;margin:8px 0 2px;}
+  .summary .r{font-size:13px;color:var(--muted);margin:3px 0;}
+  .rev{margin-top:18px;text-align:left;display:inline-block;font-size:13px;}
+  .rev .t{color:var(--ink);font-weight:600;margin-bottom:7px;font-size:12px;letter-spacing:1px;}
+  .rev div.i{margin:5px 0;color:var(--muted);}
+  .rev div.i b{color:var(--ink);letter-spacing:2px;font-weight:500;}
+  .hide{display:none !important;}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="logo han">字</div>
+  <div>
+    <h1>字格 · Character Builder</h1>
+    <p>HSK 4 · Set 3 (words 61–90) · drag the parts into the grid</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="tabs">
+    <button id="tBuild" class="on">练习 Build</button>
+    <button id="tChal">挑战 Challenge</button>
+  </div>
+
+  <div class="pills" id="pills"></div>
+
+  <div class="chalbar" id="chalbar">
+    <div class="tline"><span id="cCount">1 / 10</span><span class="track"><i id="cFill"></i></span><span id="cTime">45s</span></div>
+    <div class="stats">
+      <span>Score <b id="sScore">0</b></span>
+      <span class="st">Streak <b id="sStreak">0</b></span>
+      <span>Lives <b id="sLives">3</b></span>
+    </div>
+  </div>
+
+  <div id="play">
+    <div class="prompt">
+      <div class="lead" id="pLead">Build this word</div>
+      <div class="mean" id="pMean">—</div>
+      <div class="parts" id="pParts"></div>
+    </div>
+
+    <div class="frames" id="frames"></div>
+
+    <div class="card" id="card">
+      <div class="w han" id="cW"></div>
+      <div class="py" id="cPy"></div>
+      <div class="mn" id="cMn"></div>
+      <div class="seal han" id="cSeal">完成</div>
+      <div class="gain" id="cGain"></div>
+    </div>
+
+    <div class="hint" id="hint">Pick up a part — its story appears while you hold it.</div>
+
+    <div class="traylab">RADICALS</div>
+    <div class="tray" id="tray"></div>
+
+    <div class="togrow" id="togrow">
+      <div class="tog" id="tog"><span>Show faint outline (hint)</span><span class="bx"><i></i></span></div>
+    </div>
+
+    <div class="ctrls" id="ctrls">
+      <button class="btn" id="bPrev">‹ Back</button>
+      <button class="btn" id="bReset">Reset</button>
+      <button class="btn primary" id="bNext">Next ›</button>
+    </div>
+  </div>
+
+  <div class="summary" id="summary"></div>
+</div>
+
+<div class="etym" id="etym">
+  <div class="hd"><span class="gl han" id="eGl"></span><span class="nm" id="eNm"></span></div>
+  <div class="bd" id="eBd"></div>
+</div>
+
+<script>
+/* ============================================================
+   SET 3 — HSK 4 words 61–90  (当 → 定)
+   layouts: single | lr | tb | tb2top
+   ============================================================ */
+const WORDS=[
+ {w:"当",py:"dāng",m:"to act as; to serve as",c:[{ch:"当",l:"single",p:["当"]}]},
+ {w:"当时",py:"dāngshí",m:"at that time",c:[{ch:"当",l:"single",p:["当"]},{ch:"时",l:"lr",p:["日","寸"]}]},
+ {w:"刀",py:"dāo",m:"knife",c:[{ch:"刀",l:"single",p:["刀"]}]},
+ {w:"导游",py:"dǎoyóu",m:"tour guide",c:[{ch:"导",l:"tb",p:["巳","寸"]},{ch:"游",l:"lr",p:["氵","斿"]}]},
+ {w:"倒",py:"dào",m:"to pour; to fall over",c:[{ch:"倒",l:"lr",p:["亻","到"]}]},
+ {w:"道",py:"dào",m:"road; way",c:[{ch:"道",l:"lr",p:["辶","首"]}]},
+ {w:"到底",py:"dàodǐ",m:"after all; in the end",c:[{ch:"到",l:"lr",p:["至","刂"]},{ch:"底",l:"lr",p:["广","氐"]}]},
+ {w:"到来",py:"dàolái",m:"to arrive",c:[{ch:"到",l:"lr",p:["至","刂"]},{ch:"来",l:"single",p:["来"]}]},
+ {w:"道路",py:"dàolù",m:"road; path",c:[{ch:"道",l:"lr",p:["辶","首"]},{ch:"路",l:"lr",p:["足","各"]}]},
+ {w:"道歉",py:"dàoqiàn",m:"to apologise",c:[{ch:"道",l:"lr",p:["辶","首"]},{ch:"歉",l:"lr",p:["兼","欠"]}]},
+ {w:"得意",py:"déyì",m:"pleased with oneself",c:[{ch:"得",l:"single",p:["得"]},{ch:"意",l:"tb",p:["音","心"]}]},
+ {w:"登机",py:"dēngjī",m:"to board a plane",c:[{ch:"登",l:"tb",p:["癶","豆"]},{ch:"机",l:"lr",p:["木","几"]}]},
+ {w:"等",py:"děng",m:"to wait",c:[{ch:"等",l:"tb",p:["𥫗","寺"]}]},
+ {w:"等到",py:"děngdào",m:"to wait until",c:[{ch:"等",l:"tb",p:["𥫗","寺"]},{ch:"到",l:"lr",p:["至","刂"]}]},
+ {w:"低",py:"dī",m:"low",c:[{ch:"低",l:"lr",p:["亻","氐"]}]},
+ {w:"低价",py:"dījià",m:"low price",c:[{ch:"低",l:"lr",p:["亻","氐"]},{ch:"价",l:"lr",p:["亻","介"]}]},
+ {w:"低温",py:"dīwēn",m:"low temperature",c:[{ch:"低",l:"lr",p:["亻","氐"]},{ch:"温",l:"lr",p:["氵","日皿"]}]},
+ {w:"低于",py:"dīyú",m:"lower than",c:[{ch:"低",l:"lr",p:["亻","氐"]},{ch:"于",l:"single",p:["于"]}]},
+ {w:"底",py:"dǐ",m:"bottom",c:[{ch:"底",l:"lr",p:["广","氐"]}]},
+ {w:"底下",py:"dǐxia",m:"underneath",c:[{ch:"底",l:"lr",p:["广","氐"]},{ch:"下",l:"single",p:["下"]}]},
+ {w:"地球",py:"dìqiú",m:"the Earth",c:[{ch:"地",l:"lr",p:["土","也"]},{ch:"球",l:"lr",p:["王","求"]}]},
+ {w:"地址",py:"dìzhǐ",m:"address",c:[{ch:"地",l:"lr",p:["土","也"]},{ch:"址",l:"lr",p:["土","止"]}]},
+ {w:"点名",py:"diǎnmíng",m:"to call the roll",c:[{ch:"点",l:"tb",p:["占","灬"]},{ch:"名",l:"tb",p:["夕","口"]}]},
+ {w:"点头",py:"diǎntóu",m:"to nod",c:[{ch:"点",l:"tb",p:["占","灬"]},{ch:"头",l:"single",p:["头"]}]},
+ {w:"电视车",py:"diànshìchē",m:"television broadcast van",c:[{ch:"电",l:"single",p:["电"]},{ch:"视",l:"lr",p:["礻","见"]},{ch:"车",l:"single",p:["车"]}]},
+ {w:"电视剧",py:"diànshìjù",m:"TV drama series",c:[{ch:"电",l:"single",p:["电"]},{ch:"视",l:"lr",p:["礻","见"]},{ch:"剧",l:"lr",p:["居","刂"]}]},
+ {w:"掉",py:"diào",m:"to drop; to fall",c:[{ch:"掉",l:"lr",p:["扌","卓"]}]},
+ {w:"调查",py:"diàochá",m:"to investigate; survey",c:[{ch:"调",l:"lr",p:["讠","周"]},{ch:"查",l:"tb",p:["木","旦"]}]},
+ {w:"订",py:"dìng",m:"to book; to order",c:[{ch:"订",l:"lr",p:["讠","丁"]}]},
+ {w:"定",py:"dìng",m:"to decide; fixed",c:[{ch:"定",l:"tb",p:["宀","疋"]}]}
+];
+
+/* ============================================================
+   ETYMOLOGY — pops up the moment a part is picked up
+   ============================================================ */
+const ETYM={
+ "当":["dāng · to serve as","Simplified from 當: a field 田 set under a roof — the plot that matches its owner. From 'to match' came 'to act as' and 'at that very time'."],
+ "日":["rì · sun","The sun as a circle with a mark at its centre, squared off by the brush. It means sun, day and daylight."],
+ "寸":["cùn · inch; hand","A hand with a mark at the wrist where the pulse is taken — one 'inch' below the palm. It marks careful, measured hand actions and rules."],
+ "刀":["dāo · knife","A blade with its handle, the curve of the cutting edge clearly drawn. Squeezed to the right of a character it becomes 刂."],
+ "巳":["sì · the curled one","A foetus curled head-down, the sixth of the twelve earthly branches. In 导 it gives the shape at the top."],
+ "斿":["yóu · streaming banner","A pennant flying from its pole with a child 子 beneath. It is the picture of something drifting on the wind — add water 氵 and you get 游, to swim and to roam."],
+ "氵":["shuǐ · water","Three drops squeezed from 水. Any character with it touches liquid — rivers, washing, drinking, swimming."],
+ "亻":["rén · person","The side form of 人 — a human seen in profile, standing on two legs."],
+ "到":["dào · to arrive","An arrow 至 landing in the ground with 刂 beside it for the sound. It marks reaching a point — and inside 倒 it means falling to that point."],
+ "辶":["chuò · movement","The walking radical, squeezed from 辵 — a foot stepping onto a crossroad. Nearly every character with it involves going somewhere."],
+ "首":["shǒu · head; chief","A head with the hair drawn above the eye. It means the head, and so the first or foremost. Walking 辶 beside a head gives 道 — the road you follow, and the Way."],
+ "至":["zhì · to arrive","An arrow landing point-down in the ground. It marks the point reached, the utmost, the arrival."],
+ "刂":["dāo · knife (side form)","The side form of 刀, a blade standing upright on the right. It marks cutting — 剧, 别, 剪."],
+ "广":["guǎng · shelter","A roof built out against a cliff face, a lean-to. It marks buildings and wide covered spaces — 店 shop, 底 the floor beneath."],
+ "氐":["dǐ · base","A hand reaching down to a ground line — the bottom of something. It gives both sound and sense to 低 low and 底 the bottom."],
+ "来":["lái · to come","A wheat plant with drooping ears. The grain 'came' to the people, and the character was borrowed for 'to come'."],
+ "足":["zú · foot","The whole leg: calf and knee above, the footprint 止 below. It marks walking, stepping, kicking — and roads underfoot."],
+ "各":["gè · each","A foot 夂 coming down toward a doorway 口 — people arriving one at a time, hence 'each, every'. Under a foot 足 it gives 路, the road each person walks."],
+ "兼":["jiān · both at once","A hand grasping two stalks of grain in a single grip. It means holding two things together, doing both simultaneously."],
+ "欠":["qiàn · to yawn; to lack","A kneeling person with the mouth wide open, breath streaming out. It marks yawning, sighing, and what is missing — fitting for an apology 歉."],
+ "得":["dé · to obtain","A hand 寸 picking up a cowrie shell while walking 彳 — finding money on the road. Hence gaining, getting, and 得意 the pleasure of having got it."],
+ "音":["yīn · sound","A mouth speaking 言 with one extra stroke inside it — sound set apart from words. It covers tone, music and noise."],
+ "心":["xīn · heart","The organ itself, chambers sketched inside. In Chinese thought the heart is where thinking happens, so 意 — sound over heart — is what the heart means to say."],
+ "癶":["bō · two feet","Two feet turned outward, stepping upward. It sits on top of 登 and shows exactly what climbing looks like from above."],
+ "豆":["dòu · ritual vessel","A tall food vessel on a stem, lid above and foot below. Only later was it borrowed for 'bean'."],
+ "木":["mù · tree","A tree drawn whole: trunk up the middle, branches spreading out, roots below."],
+ "几":["jī · small table","A low table seen from the side, top and two legs. In 机 it supplies the sound; the tree 木 beside it makes the wooden machine."],
+ "𥫗":["zhú · bamboo (top form)","Two bamboo stalks with drooping leaves, flattened to sit on a character's roof. Bamboo tallies were used for counting and ranking — which is why 等 means both 'to wait' and 'grade, class'."],
+ "寺":["sì · office; temple","Earth 土 above a hand 寸 — a place where affairs were handled by officials, later the Buddhist temple."],
+ "介":["jiè · between","A person 人 with a plate marked on either side — someone in armour, or someone standing in the middle. Hence to introduce, to come between."],
+ "日皿":["wēn · warmth (日 over 皿)","The sun 日 resting above a dish 皿 — heat held in a vessel, steam rising off food. Put water beside it and you have 温, warm."],
+ "于":["yú · at; in; than","Breath curving outward as it leaves the mouth. It became the plain grammatical word for 'at, in, than' — 低于 is 'lower than'."],
+ "下":["xià · below","A mark placed under a horizontal line: literally 'beneath'. Its mirror image is 上, above."],
+ "土":["tǔ · earth","A mound of soil heaped on the ground. It marks anything made of earth — walls, cities, dust, ground."],
+ "也":["yě · also","A coiled shape, read variously as a basin or a serpent. Its old meaning faded and it became the everyday word 'also'."],
+ "王":["wáng · king; jade","Three lines — heaven, humanity, earth — joined by one vertical. On the left of a character it usually stands for 玉 jade instead."],
+ "求":["qiú · to seek","A fur coat with the hairs sticking out, borrowed for 'to seek'. Beside jade 王 it makes 球 — a rounded piece of jade, hence ball and globe."],
+ "止":["zhǐ · foot; to stop","A footprint: toes above, heel below. It first meant the foot, then halting where the foot rests. On earth 土 it marks a fixed spot — an address 址."],
+ "占":["zhàn · to divine; occupy","The divination crack 卜 above a mouth 口 — reading the omen aloud. From claiming what the omen said came 'to occupy'."],
+ "灬":["huǒ · fire (foot form)","Four dots — fire 火 flattened to lie beneath a character. Wherever you see it, heat is involved: 点 was originally a spot of burning, 热 hot, 煮 to boil."],
+ "夕":["xī · evening","A crescent moon only half risen. In the dark you cannot be seen, so a mouth 口 beneath it gives 名 — the name you must call out to be known."],
+ "口":["kǒu · mouth","An open mouth. It marks eating, speaking and shouting, and doubles as any small opening."],
+ "头":["tóu · head","Simplified from 頭. The head, and by extension the top or the beginning of anything."],
+ "电":["diàn · electricity","Simplified from 電 — rain 雨 with a lightning bolt beneath it. The bolt is all that survives, and it now means electricity."],
+ "礻":["shì · altar","The side form of 示, a stone altar table where offerings were laid. It marks the sacred — 礼 rites, 神 spirit, and 视, originally the act of gazing at the altar."],
+ "见":["jiàn · to see","An eye 目 set on a pair of legs 儿 — a person actively looking at something."],
+ "车":["chē · cart","A chariot seen from above: the long axle running through the middle, wheel and carriage box around it."],
+ "居":["jū · to dwell","A body 尸 seated at rest above 古 — settling somewhere and staying. Beside a knife 刂 it forms 剧, once 'intense', now the drama on stage."],
+ "扌":["shǒu · hand","The side form of 手. One of the busiest radicals in the language — almost every character carrying it is something done with the hands."],
+ "卓":["zhuó · outstanding","A figure raised high above the rest — tall, eminent, standing out. In 掉 it lends only its sound."],
+ "讠":["yán · speech","Condensed 言: a mouth with sound lines rising out of it. Marks words, speaking and language."],
+ "周":["zhōu · all around","A field densely planted, drawn inside a boundary — nothing left out. Hence complete, all around, and the week that comes full circle."],
+ "旦":["dàn · daybreak","The sun 日 sitting on the horizon line — the moment of dawn. Under a tree 木 it makes 查, to look into something closely."],
+ "丁":["dīng · nail","A nail seen from the side, flat head above and shank below. It usually lends its sound rather than its meaning — 订, 打, 厅, 灯."],
+ "宀":["mián · roof","The outline of a house roof. Anything under it happens indoors — 家 home, 客 guest, 安 peace."],
+ "疋":["shū · foot","A variant of 足, the foot below the knee. Settled under a roof 宀 it gives 定 — feet planted in one place, hence to fix, to settle, to decide."],
+ /* decoys */
+ "米":["mǐ · rice","Grains of rice scattered on both sides of a threshing line. It marks rice, grain and anything ground fine."],
+ "贝":["bèi · cowrie shell","The shell used as money before coins. Any character with it concerns wealth, trade or worth — 财 riches, 买 buy, 败 to lose everything."],
+ "攵":["pū · to strike","A hand holding a stick, raised to tap or beat. It marks making something happen by force — 教 teach, 改 correct, 败 defeat."],
+ "纟":["sī · silk","Twisted threads drawn off a cocoon. It marks thread and cloth, and anything bound, tied or connected."],
+ "钅":["jīn · metal","Condensed 金: nuggets of ore lying beneath the earth. Marks metals and metal tools — 钱 money, 针 needle."],
+ "女":["nǚ · woman","A figure kneeling with the arms folded across the body, in the posture of old formal seating."],
+ "火":["huǒ · fire","Flames leaping upward with sparks flying off to either side."],
+ "目":["mù · eye","An eye turned upright so it fits the square, with the pupil lines drawn inside."],
+ "田":["tián · field","A plot of farmland divided by the raised paths running between the sections."],
+ "石":["shí · stone","A lump of rock lying at the foot of a cliff 厂."],
+ "犭":["quǎn · beast","The side form of 犬 dog. It marks animals, especially four-legged ones — 猫 cat, 狗 dog, 猪 pig."],
+ "阝":["mound or city","Two different things wearing one shape. On the left it is 阜, a hill or earthen mound; on the right it is 邑, a walled city."],
+ "穴":["xué · cave","A roofed opening dug into a hillside — the earliest dwelling. Characters with it involve holes and hollows: 窗 window, 空 empty."],
+ "禾":["hé · grain","A stalk of millet bending under a ripe head. It marks crops and harvest, and by extension rent and taxes."],
+ "户":["hù · door","A single-leaf door, exactly half of the old double gate 門. It also means a household."],
+ "方":["fāng · square; direction","A plough handle, or a banner on its pole. It came to mean direction, region and the square shape."],
+ "忄":["xīn · heart (side form)","The side form of 心. Whenever you see it the character is about a feeling — 忙 busy, 怕 afraid, 惊 startled."],
+ "衣":["yī · clothing","A robe seen from the front: collar folded at the top, sleeves falling to each side."],
+ "立":["lì · to stand","A person with arms out, drawn on top of a ground line — someone standing upright in one place."],
+ "子":["zǐ · child","A baby with a large head and open arms, swaddled so tightly the legs become a single stroke."]
+};
+const DECOY_POOL=["米","贝","攵","纟","钅","女","火","目","田","石","犭","阝","穴","禾","户","方","忄","衣","立","子"];
+
+function specs(l){
+  const p=6;
+  if(l==="lr")return[{x:p,y:p,w:50-p-2,h:100-2*p},{x:52,y:p,w:50-p-2,h:100-2*p}];
+  if(l==="tb")return[{x:p,y:p,w:100-2*p,h:44},{x:p,y:52,w:100-2*p,h:42}];
+  if(l==="tb2top")return[{x:p,y:p,w:42,h:44},{x:52,y:p,w:42,h:44},{x:p,y:52,w:100-2*p,h:42}];
+  return[{x:p,y:p,w:100-2*p,h:100-2*p}];
+}
+
+const $=i=>document.getElementById(i);
+let mode="build",idx=0,slots=[],drag=null,dragEl=null,outline=false;
+let done=new Set();
+let chalQ=[],chalPos=0,score=0,streak=0,lives=3,tLeft=0,tId=null,missed=[],live=false;
+const CHAL_N=10,CHAL_T=45;
+
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const glyph=t=>t.length>1?`<span class="stack">${[...t].map(c=>`<span>${c}</span>`).join("")}</span>`:t;
+const cur=()=>mode==="build"?WORDS[idx]:chalQ[chalPos];
+
+function pills(){
+  const box=$("pills");box.innerHTML="";
+  WORDS.forEach((_,i)=>{
+    const b=document.createElement("button");
+    b.className="pill"+(i===idx?" cur":done.has(i)?" done":"");
+    b.textContent=i+61;
+    b.onclick=()=>{idx=i;render();};
+    box.appendChild(b);
+  });
+}
+
+function render(){
+  const d=cur();
+  const f=$("frames");f.innerHTML="";slots=[];
+  f.className="frames"+(d.c.length>=3?" three":"");
+  $("card").classList.remove("on");
+  $("cGain").textContent="";
+
+  d.c.forEach((co,ci)=>{
+    const sq=document.createElement("div");sq.className="square";sq.dataset.ci=ci;
+    const ol=document.createElement("div");
+    ol.className="outline han"+((outline&&mode==="build")?" on":"");
+    ol.textContent=co.ch;sq.appendChild(ol);
+    specs(co.l).forEach((s,si)=>{
+      const el=document.createElement("div");el.className="slot han";
+      el.style.cssText=`left:${s.x}%;top:${s.y}%;width:${s.w}%;height:${s.h}%`;
+      el.dataset.exp=co.p[si];el.dataset.ci=ci;el.dataset.f="0";
+      sq.appendChild(el);slots.push(el);
+    });
+    const st=document.createElement("div");st.className="stamp";st.textContent="✓";st.dataset.ci=ci;
+    sq.appendChild(st);
+    f.appendChild(sq);
+  });
+
+  $("pMean").textContent=d.m;
+  $("pParts").textContent=d.c.length+(d.c.length>1?" characters":" character");
+  $("pLead").textContent=mode==="build"?"Build this word":"What word is this?";
+
+  const pieces=[];d.c.forEach(c=>c.p.forEach(p=>pieces.push(p)));
+  if(mode==="challenge"){
+    const extra=DECOY_POOL.filter(x=>!pieces.includes(x));
+    shuffle(extra).slice(0,4).forEach(x=>pieces.push(x));
+  }
+  shuffle(pieces);
+  const tr=$("tray");tr.innerHTML="";
+  pieces.forEach(p=>{
+    const t=document.createElement("div");t.className="tile han";t.dataset.t=p;
+    t.innerHTML=glyph(p);
+    t.addEventListener("pointerdown",grab);
+    tr.appendChild(t);
+  });
+
+  if(mode==="build"){
+    pills();
+    $("bPrev").disabled=idx===0;
+    hint("Pick up a part — its story appears while you hold it.");
+  }else{
+    hint("Extra parts are mixed in. Only the right ones will stick.");
+  }
+}
+const hint=t=>$("hint").textContent=t;
+
+function showEtym(key,x,y){
+  const e=ETYM[key];
+  if(!e){$("etym").classList.remove("on");return;}
+  $("eGl").textContent=key;$("eNm").textContent=e[0];$("eBd").textContent=e[1];
+  const pop=$("etym");
+  pop.classList.add("on");
+  const w=pop.offsetWidth||264;
+  const cx=Math.min(Math.max(x,w/2+10),window.innerWidth-w/2-10);
+  pop.style.left=cx+"px";
+  pop.style.top=Math.max(y-56,pop.offsetHeight+14)+"px";
+}
+const hideEtym=()=>$("etym").classList.remove("on");
+
+function grab(e){
+  const t=e.currentTarget;
+  if(t.classList.contains("gone"))return;
+  if(mode==="challenge"&&!live)return;
+  drag={t,txt:t.dataset.t};
+  dragEl=document.createElement("div");dragEl.className="dragging han";
+  dragEl.innerHTML=glyph(drag.txt);document.body.appendChild(dragEl);
+  move(e);
+  showEtym(drag.txt,e.clientX,e.clientY-40);
+  t.setPointerCapture(e.pointerId);
+  t.addEventListener("pointermove",onMove);
+  t.addEventListener("pointerup",drop);
+  t.addEventListener("pointercancel",drop);
+  e.preventDefault();
+}
+function move(e){if(dragEl){dragEl.style.left=e.clientX+"px";dragEl.style.top=e.clientY+"px";}}
+function onMove(e){
+  move(e);
+  showEtym(drag.txt,e.clientX,e.clientY-40);
+  const h=hit(e.clientX,e.clientY);
+  slots.forEach(s=>s.classList.toggle("hot",s===h&&s.dataset.f==="0"&&s.dataset.exp===drag.txt));
+  e.preventDefault();
+}
+function hit(x,y){
+  for(const s of slots){const r=s.getBoundingClientRect();
+    if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)return s;}
+  return null;
+}
+function drop(e){
+  const t=drag.t;
+  t.removeEventListener("pointermove",onMove);
+  t.removeEventListener("pointerup",drop);
+  t.removeEventListener("pointercancel",drop);
+  const h=hit(e.clientX,e.clientY);
+  slots.forEach(s=>s.classList.remove("hot"));
+  if(dragEl){dragEl.remove();dragEl=null;}
+  setTimeout(hideEtym,900);
+  if(h&&h.dataset.f==="0"&&h.dataset.exp===drag.txt){
+    h.dataset.f="1";h.classList.add("filled","pop-in");h.innerHTML=glyph(drag.txt);
+    t.classList.add("gone");
+    checkChar(+h.dataset.ci);
+  }else if(h){
+    t.classList.add("no");setTimeout(()=>t.classList.remove("no"),320);
+    if(mode==="challenge"){tLeft=Math.max(0,tLeft-3);paintT();hint("Not part of this word — 3 seconds gone.");}
+    else hint("That part doesn't belong there. Try another slot.");
+  }
+  drag=null;
+}
+
+function checkChar(ci){
+  const cs=slots.filter(s=>+s.dataset.ci===ci);
+  if(cs.every(s=>s.dataset.f==="1")){
+    document.querySelector(`.stamp[data-ci="${ci}"]`)?.classList.add("on");
+    document.querySelector(`.square[data-ci="${ci}"]`)?.classList.add("done");
+  }
+  if(slots.every(s=>s.dataset.f==="1"))finish();
+}
+function finish(){
+  const d=cur();
+  $("cW").textContent=d.w;$("cPy").textContent=d.py;$("cMn").textContent=d.m;
+  $("card").classList.add("on");
+  if(mode==="build"){
+    done.add(idx);pills();
+    hint("Built. Tap Next for the following word.");
+  }else{
+    const g=10+Math.max(0,tLeft)*2+streak*5;
+    score+=g;streak++;$("cGain").textContent="+"+g+" points";
+    paintS();hint("对了 — correct.");
+    clearInterval(tId);
+    setTimeout(nextChal,1500);
+  }
+}
+
+function startChal(){
+  chalQ=shuffle([...WORDS]).slice(0,CHAL_N);
+  chalPos=0;score=0;streak=0;lives=3;missed=[];live=true;
+  $("summary").classList.remove("on");$("play").classList.remove("hide");
+  paintS();loadChal();
+}
+function loadChal(){tLeft=CHAL_T;render();paintT();clearInterval(tId);
+  tId=setInterval(()=>{tLeft--;paintT();if(tLeft<=0){clearInterval(tId);timeUp();}},1000);}
+function timeUp(){
+  const d=cur();lives--;streak=0;missed.push(d);paintS();
+  $("cW").textContent=d.w;$("cPy").textContent=d.py;$("cMn").textContent=d.m;
+  $("cGain").textContent="";$("card").classList.add("on");
+  hint(lives>0?"Out of time. One life lost.":"Out of time — no lives left.");
+  setTimeout(nextChal,2000);
+}
+function nextChal(){
+  if(lives<=0||chalPos>=CHAL_N-1){endChal();return;}
+  chalPos++;loadChal();
+}
+function paintT(){
+  $("cFill").style.width=(Math.max(0,tLeft)/CHAL_T*100)+"%";
+  $("cTime").textContent=Math.max(0,tLeft)+"s";
+  $("cCount").textContent=(chalPos+1)+" / "+CHAL_N;
+}
+function paintS(){$("sScore").textContent=score;$("sStreak").textContent=streak;$("sLives").textContent=lives;}
+function endChal(){
+  clearInterval(tId);live=false;
+  const built=(chalPos+1)-missed.length;
+  $("play").classList.add("hide");
+  $("summary").innerHTML=`<h2 class="han">挑战结束</h2>
+    <div class="r">Challenge complete</div>
+    <div class="big">${score}</div>
+    <div class="r">${Math.max(0,built)} of ${CHAL_N} words built · ${lives} lives left</div>
+    ${missed.length?`<div class="rev"><div class="t">WORTH ANOTHER LOOK</div>
+      ${missed.map(m=>`<div class="i"><b class="han">${m.w}</b> — ${m.py} · ${m.m}</div>`).join("")}</div>`
+      :`<div class="r" style="margin-top:14px;color:var(--green)">Clean run. Nothing missed.</div>`}
+    <div class="ctrls"><button class="btn primary" id="bAgain">Play again</button></div>`;
+  $("summary").classList.add("on");
+  $("bAgain").onclick=startChal;
+}
+
+function setMode(m){
+  clearInterval(tId);live=false;hideEtym();
+  mode=m;
+  $("tBuild").classList.toggle("on",m==="build");
+  $("tChal").classList.toggle("on",m==="challenge");
+  $("pills").classList.toggle("hide",m!=="build");
+  $("chalbar").classList.toggle("on",m==="challenge");
+  $("togrow").classList.toggle("hide",m!=="build");
+  $("ctrls").classList.toggle("hide",m!=="build");
+  $("summary").classList.remove("on");
+  $("play").classList.remove("hide");
+  if(m==="build")render();else startChal();
+}
+
+$("tBuild").onclick=()=>setMode("build");
+$("tChal").onclick=()=>setMode("challenge");
+$("bNext").onclick=()=>{idx=(idx+1)%WORDS.length;render();};
+$("bPrev").onclick=()=>{if(idx>0){idx--;render();}};
+$("bReset").onclick=render;
+$("tog").onclick=()=>{
+  outline=!outline;$("tog").classList.toggle("on",outline);
+  document.querySelectorAll(".outline").forEach(o=>o.classList.toggle("on",outline));
+};
+document.addEventListener("pointerdown",e=>{if(!e.target.closest(".tile"))hideEtym();});
+
+render();
+</script>
+</body>
+</html>
