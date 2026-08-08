@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HSK 1 Final Exam · Lessons 1–13 · ChineseFrench — Aruna's Class</title>
+<style>
+:root{--cream:#f7f2e9;--card:#fffdf8;--ink:#3a2f28;--muted:#9a8c7d;--maroon:#8b2233;--gold:#b98a3e;--line:#e4d9c6;--green:#2f8f5b;--red:#c0392b;--blue:#3f6f9c;}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--cream);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:780px;margin:0 auto;padding:14px 14px 80px}
+.head h1{font-size:20px;margin:0;font-weight:700;color:var(--maroon)}
+.head .sub{color:var(--muted);font-size:13px;margin-top:2px}
+.scorebar{position:sticky;top:0;z-index:20;background:var(--cream);padding:8px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:8px}
+.scorebar b{color:var(--maroon)}
+.tabs{display:flex;background:#efe6d6;border-radius:14px;padding:5px;margin:12px 0}
+.tabs button{flex:1;border:0;background:transparent;color:var(--muted);padding:10px 4px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:600}
+.tabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:12px}
+.parttl{font-weight:700;font-size:16px;color:var(--maroon)}
+.partsub{color:var(--muted);font-size:12px;margin-bottom:6px}
+.sec{margin-top:18px}
+.secttl{font-weight:700;font-size:14px;color:var(--maroon)}
+.secsub{color:var(--muted);font-size:12px;margin:2px 0 8px}
+.q{border-top:1px dashed var(--line);padding:11px 0}
+.qnum{font-weight:700;color:var(--gold);margin-right:6px}
+.cn{font-size:17px}.py{font-style:italic;color:var(--muted);font-size:12px}.en{color:var(--muted);font-size:12px}
+.rubyrow{display:inline-flex;gap:5px;flex-wrap:wrap;align-items:flex-end;vertical-align:middle}
+.syl{display:inline-flex;flex-direction:column;align-items:center;min-width:22px}
+.syl .p{font-size:11px;color:var(--maroon);font-style:italic;line-height:1.1}
+.syl .c{font-size:20px;line-height:1.2}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.opt{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 12px;cursor:pointer;font-size:15px;min-width:44px;text-align:center}
+.opt small{color:var(--muted);font-style:italic;margin-left:4px;font-size:11px}
+.opt.sel{border-color:var(--blue);background:#f2f7fc}
+.opt.ok{border-color:var(--green);background:#eef8f0}
+.opt.bad{border-color:var(--red);background:#fbeeec}
+.tf{display:flex;gap:10px;margin-top:8px}
+.tf .opt{font-weight:700}
+.audiobtns{display:inline-flex;gap:6px;margin-left:2px;vertical-align:middle}
+.abtn{border:1px solid var(--maroon);color:var(--maroon);background:#fff;border-radius:20px;padding:5px 12px;font-size:13px;cursor:pointer}
+.abtn.play{background:var(--maroon);color:#fff}
+.matchGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.mcol{display:flex;flex-direction:column;gap:8px}
+.mitem{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px;text-align:center;cursor:pointer;font-size:15px;min-height:44px;display:flex;align-items:center;justify-content:center}
+.mitem.sel{border-color:var(--blue);background:#f2f7fc}
+.mitem.matched{border-color:var(--green);background:#eef8f0;opacity:.85;cursor:default}
+.mitem.bad{border-color:var(--red);background:#fbeeec}
+/* ordering */
+.answerRow{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;border:2px dashed #d3c5ac;border-radius:10px;padding:8px;margin-top:8px;background:#fffef9}
+.pool{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.wtile{border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 12px;font-size:15px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.05);user-select:none;font-style:italic}
+.wtile:active{transform:scale(.95)}
+.answerRow.ok{border-color:var(--green);background:#eef8f0}
+.answerRow.bad{border-color:var(--red);background:#fbeeec}
+.solution{font-size:12px;color:var(--green);margin-top:4px;display:none}
+.solution.show{display:block}
+/* blank choose */
+.blankbox{display:inline-flex;flex-direction:column;align-items:center;min-width:40px}
+.blankbox .p{font-size:11px;color:var(--maroon);font-style:italic;font-weight:700;line-height:1.1}
+.blankslot{border-bottom:2px solid var(--maroon);min-width:34px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-size:20px}
+.blankslot.ok{color:var(--green);border-color:var(--green)}
+.blankslot.bad{color:var(--red);border-color:var(--red)}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer}
+.btn.primary{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+.note{background:#fff7ec;border:1px solid #ecdcbf;border-radius:10px;padding:8px 12px;font-size:12px;color:#7a6a52;margin-top:10px}
+.teacher{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer;margin-top:8px}
+.script{font-size:12px;color:var(--blue);margin-top:4px;display:none}.script.show{display:block}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:26px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>HSK 1 · Final Exam</h1>
+    <div class="sub">New HSK Course 1 · Lessons 1–13 · Listening · Reading · Writing · ChineseFrench — Aruna's Class</div>
+  </div>
+  <div class="scorebar">
+    <span>Score: <b id="score">0</b> / <b id="maxscore">0</b></span>
+    <button class="btn primary" id="checkAll">Check my answers</button>
+  </div>
+  <div class="tabs" id="tabs">
+    <button data-t="listen" class="on">听力 Listening</button>
+    <button data-t="read">阅读 Reading</button>
+    <button data-t="write">书写 Writing</button>
+  </div>
+  <section id="panel-listen"></section>
+  <section id="panel-read" class="hidden"></section>
+  <section id="panel-write" class="hidden"></section>
+  <div class="foot">ChineseFrench — Aruna's Class · HSK 1 Final Exam · Lessons 1–13</div>
+</div>
+
+<script>
+/* ===== audio ===== */
+let VOICES=[]; function loadVoices(){VOICES=window.speechSynthesis?speechSynthesis.getVoices():[];}
+if(window.speechSynthesis){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+function speak(text,slow){ if(!window.speechSynthesis){alert("Audio needs Chrome or Edge.");return;}
+ speechSynthesis.cancel(); (Array.isArray(text)?text:[text]).forEach(t=>{const u=new SpeechSynthesisUtterance(t);u.lang="zh-CN";u.rate=slow?0.55:0.9;const v=VOICES.find(v=>/zh|Chinese|中文|普通/i.test((v.lang||"")+(v.name||"")));if(v)u.voice=v;speechSynthesis.speak(u);}); }
+window.SPK=speak;
+function audioBtns(text){return '<span class="audiobtns"><button class="abtn play" onclick=\'SPK('+JSON.stringify(text)+',false)\'>🔊</button><button class="abtn" onclick=\'SPK('+JSON.stringify(text)+',true)\'>🐢</button></span>';}
+function ruby(segs){return '<span class="rubyrow">'+segs.map(s=>'<span class="syl"><span class="p">'+s[0]+'</span><span class="c">'+s[1]+'</span></span>').join('')+'</span>';}
+
+/* ===== scoring ===== */
+let answers={},MAX=0;
+function reg(k){MAX++;answers[k]={done:false,correct:false};}
+function updateScore(){let s=0;for(const k in answers)if(answers[k].correct)s++;document.getElementById("score").textContent=s;document.getElementById("maxscore").textContent=MAX;}
+
+/* ===== generic renderers ===== */
+function mcqHTML(container,key,optionHTMLs,ansIdx){
+ const box=document.createElement("div");box.className="opts";
+ optionHTMLs.forEach((h,j)=>{const b=document.createElement("div");b.className="opt";b.innerHTML=h;
+  b.onclick=()=>{if(box.dataset.lock)return;[...box.children].forEach(x=>x.classList.remove("sel"));b.classList.add("sel");answers[key].sel=j;answers[key].done=true;};
+  box.appendChild(b);});
+ container.appendChild(box);
+ answers[key].grade=()=>{box.dataset.lock="1";[...box.children].forEach((x,j)=>{x.classList.remove("sel");if(j===ansIdx)x.classList.add("ok");else if(answers[key].sel===j)x.classList.add("bad");});answers[key].correct=(answers[key].sel===ansIdx);};
+}
+function truefalse(container,key,ansBool){
+ const box=document.createElement("div");box.className="tf";
+ [["✔ True",true],["✘ False",false]].forEach(([lab,val])=>{const b=document.createElement("div");b.className="opt";b.textContent=lab;
+  b.onclick=()=>{if(box.dataset.lock)return;[...box.children].forEach(x=>x.classList.remove("sel"));b.classList.add("sel");answers[key].sel=val;answers[key].done=true;};box.appendChild(b);});
+ container.appendChild(box);
+ answers[key].grade=()=>{box.dataset.lock="1";[...box.children].forEach((x,i)=>{const val=i===0;x.classList.remove("sel");if(val===ansBool)x.classList.add("ok");else if(answers[key].sel===val)x.classList.add("bad");});answers[key].correct=(answers[key].sel===ansBool);};
+}
+function matchingHTML(container,keyPrefix,items){
+ // items: [{l:HTML, r:HTML}]
+ items.forEach((_,i)=>reg(keyPrefix+i));
+ const grid=document.createElement("div");grid.className="matchGrid";
+ const L=document.createElement("div");L.className="mcol";const R=document.createElement("div");R.className="mcol";
+ grid.appendChild(L);grid.appendChild(R);container.appendChild(grid);
+ let sel=null;
+ items.map((it,i)=>({it,i})).sort(()=>Math.random()-0.5).forEach(o=>{const d=document.createElement("div");d.className="mitem";d.dataset.i=o.i;d.innerHTML=o.it.l;
+  d.onclick=()=>{if(d.classList.contains("matched"))return;L.querySelectorAll(".mitem").forEach(x=>x.classList.remove("sel"));sel=d;d.classList.add("sel");};L.appendChild(d);});
+ items.map((it,i)=>({it,i})).sort(()=>Math.random()-0.5).forEach(o=>{const d=document.createElement("div");d.className="mitem";d.dataset.i=o.i;d.innerHTML=o.it.r;
+  d.onclick=()=>{if(!sel||d.classList.contains("matched"))return;
+   if(sel.dataset.i===d.dataset.i){sel.classList.add("matched");d.classList.add("matched");sel.classList.remove("sel");answers[keyPrefix+sel.dataset.i].correct=true;answers[keyPrefix+sel.dataset.i].done=true;sel=null;}
+   else{const s=sel;d.classList.add("bad");s.classList.add("bad");setTimeout(()=>{d.classList.remove("bad");s.classList.remove("bad","sel");},350);sel=null;}};R.appendChild(d);});
+}
+function orderTask(container,key,correctWords){
+ reg(key);
+ const ans=document.createElement("div");ans.className="answerRow";container.appendChild(ans);
+ const pool=document.createElement("div");pool.className="pool";container.appendChild(pool);
+ const sol=document.createElement("div");sol.className="solution";sol.textContent="Correct order: "+correctWords.join("  ");container.appendChild(sol);
+ const shuffled=correctWords.map((w,i)=>({w,i})).sort(()=>Math.random()-0.5);
+ shuffled.forEach(o=>{const t=document.createElement("div");t.className="wtile";t.textContent=o.w;
+  t.onclick=()=>{ if(ans.dataset.lock)return; ans.appendChild(t); reflow(); };
+  pool.appendChild(t);});
+ function reflow(){ answers[key].seq=[...ans.querySelectorAll(".wtile")].map(x=>x.textContent); answers[key].done=answers[key].seq.length===correctWords.length; }
+ ans.addEventListener("click",e=>{ if(e.target.classList.contains("wtile") && !ans.dataset.lock){ pool.appendChild(e.target); reflow(); }});
+ answers[key].grade=()=>{ ans.dataset.lock="1"; const seq=[...ans.querySelectorAll(".wtile")].map(x=>x.textContent);
+   const ok=seq.length===correctWords.length && seq.every((w,i)=>w===correctWords[i]);
+   answers[key].correct=ok; ans.classList.add(ok?"ok":"bad"); if(!ok) sol.classList.add("show"); };
+}
+function blankChoose(container,key,before,blankPy,after,options,ansChar,showBlankPy,showOptPy){
+ // before/after: arrays of [py,hz]; options: array of [char] or [char,py]
+ reg(key);
+ const row=document.createElement("div");row.className="rubyrow";row.style.fontSize="17px";
+ before.forEach(s=>row.insertAdjacentHTML("beforeend",'<span class="syl"><span class="p">'+s[0]+'</span><span class="c">'+s[1]+'</span></span>'));
+ const bb=document.createElement("span");bb.className="blankbox";
+ bb.innerHTML='<span class="p">'+(showBlankPy?blankPy:'&nbsp;')+'</span>';
+ const slot=document.createElement("span");slot.className="blankslot";bb.appendChild(slot);row.appendChild(bb);
+ after.forEach(s=>row.insertAdjacentHTML("beforeend",'<span class="syl"><span class="p">'+s[0]+'</span><span class="c">'+s[1]+'</span></span>'));
+ container.appendChild(row);
+ const ob=document.createElement("div");ob.className="opts";
+ options.forEach(o=>{const b=document.createElement("div");b.className="opt";b.innerHTML=o[0]+(showOptPy&&o[1]?' <small>'+o[1]+'</small>':'');
+  b.onclick=()=>{if(ob.dataset.lock)return;[...ob.children].forEach(x=>x.classList.remove("sel"));b.classList.add("sel");slot.textContent=o[0];answers[key].val=o[0];answers[key].done=true;};ob.appendChild(b);});
+ container.appendChild(ob);
+ answers[key].grade=()=>{ob.dataset.lock="1";answers[key].correct=(answers[key].val===ansChar);slot.classList.add(answers[key].correct?"ok":"bad");
+  [...ob.children].forEach(x=>{const c=x.textContent.trim().charAt(0);if(c===ansChar)x.classList.add("ok");else if(answers[key].val===c&&!answers[key].correct)x.classList.add("bad");}); if(!answers[key].correct)slot.textContent=ansChar;};
+}
+function sect(card,ttl,sub){const d=document.createElement("div");d.className="sec";d.innerHTML='<div class="secttl">'+ttl+'</div>'+(sub?'<div class="secsub">'+sub+'</div>':'');card.appendChild(d);return d;}
+function qrow(sec,label){const d=document.createElement("div");d.className="q";d.innerHTML='<span class="qnum">'+label+'</span>';sec.appendChild(d);return d;}
+
+/* ============ LISTENING DATA ============ */
+const L_TF=[{stmt:"It is 8 o'clock now.",a:"现在八点。",ok:true},{stmt:"I have three children.",a:"我有两个孩子。",ok:false},{stmt:"Today is Monday.",a:"今天星期一。",ok:true},{stmt:"The cat is under the table.",a:"小猫在桌子下。",ok:true},{stmt:"It rained yesterday.",a:"昨天下雪了。",ok:false}];
+const L_REPLY=[{a:"你叫什么名字？",o:[["我叫李文。","Wǒ jiào Lǐ Wén."],["我很好。","Wǒ hěn hǎo."],["谢谢。","Xièxie."]],x:0},{a:"现在几点？",o:[["星期一","xīngqīyī"],["八点半","bā diǎn bàn"],["两个","liǎng ge"]],x:1},{a:"你家有几口人？",o:[["四口人","sì kǒu rén"],["十块","shí kuài"],["在医院","zài yīyuàn"]],x:0},{a:"你想喝什么？",o:[["我是学生。","Wǒ shì xuésheng."],["我想喝茶。","Wǒ xiǎng hē chá."],["昨天。","Zuótiān."]],x:1},{a:"苹果多少钱？",o:[["五块钱","wǔ kuài qián"],["星期天","xīngqītiān"],["很高兴","hěn gāoxìng"]],x:0}];
+const L_DIAG=[{a:["你好，你是老师吗？","不是，我是学生。","女的是老师吗？"],o:[["是","shì"],["不是","bú shì"],["是医生","shì yīshēng"]],x:1},{a:["现在几点？","现在下午三点。","现在几点？"],o:[["三点","sān diǎn"],["八点","bā diǎn"],["两点","liǎng diǎn"]],x:0},{a:["你爸爸在哪儿工作？","我爸爸在医院工作。","她爸爸在哪儿工作？"],o:[["学校","xuéxiào"],["医院","yīyuàn"],["商店","shāngdiàn"]],x:1},{a:["今天天气怎么样？","今天太冷了。","今天天气怎么样？"],o:[["很热","hěn rè"],["很冷","hěn lěng"],["下雨","xià yǔ"]],x:1},{a:["你明天上午做什么？","我明天上午在学校学习。","她明天上午做什么？"],o:[["学习","xuéxí"],["工作","gōngzuò"],["休息","xiūxi"]],x:0}];
+const L_DICT=[{a:"医院",o:["yīyuàn","xuéxiào","shāngdiàn"],x:0},{a:"苹果",o:["píngguǒ","péngyou","píngzi"],x:0},{a:"星期天",o:["xīngqītiān","xiàwǔ","shàngwǔ"],x:0},{a:"便宜",o:["piányi","piàoliang","péngyou"],x:0},{a:"手机",o:["shǒujī","shǒubiǎo","shāngdiàn"],x:0}];
+
+/* ============ READING DATA (pinyin readable + hanzi; English only where meaning is tested) ============ */
+const R1=[ // match ruby <-> english
+ {seg:[["lǎo","老"],["shī","师"]],en:"teacher"},
+ {seg:[["yī","医"],["yuàn","院"]],en:"hospital"},
+ {seg:[["píng","苹"],["guǒ","果"]],en:"apple"},
+ {seg:[["xué","学"],["xiào","校"]],en:"school"},
+ {seg:[["shǒu","手"],["jī","机"]],en:"cell phone"},
+ {seg:[["yī","医"],["shēng","生"]],en:"doctor"},
+];
+const R2=[ // fill-choose (grammar word), blank has no pinyin; options show pinyin
+ {before:[["nǐ","你"],["jiā","家"],["yǒu","有"]],after:[["kǒu","口"],["rén","人"]],opts:[["几","jǐ"],["在","zài"],["会","huì"]],ans:"几"},
+ {before:[["wǒ","我"],["bà","爸"],["ba","爸"]],after:[["yī","医"],["yuàn","院"],["gōng","工"],["zuò","作"]],opts:[["在","zài"],["很","hěn"],["有","yǒu"]],ans:"在"},
+ {before:[["wǒ","我"]],after:[["hē","喝"],["yì","一"],["bēi","杯"],["chá","茶"]],opts:[["想","xiǎng"],["是","shì"],["呢","ne"]],ans:"想"},
+ {before:[["jīn","今"],["tiān","天"]],after:[["lěng","冷"],["le","了"]],opts:[["太","tài"],["到","dào"],["在","zài"]],ans:"太"},
+ {before:[["wǒ","我"]],after:[["zuò","做"],["Zhōng","中"],["guó","国"],["cài","菜"]],opts:[["会","huì"],["几","jǐ"],["前","qián"]],ans:"会"},
+];
+const R3=[ // read & choose; passage ruby + question ruby + options ruby
+ {p:[["xiàn","现"],["zài","在"],["zǎo","早"],["shang","上"],["bā","八"],["diǎn","点"]],q:[["xiàn","现"],["zài","在"],["jǐ","几"],["diǎn","点"]],o:[[["zǎo","早"],["shang","上"],["bā","八"],["diǎn","点"]],[["wǎn","晚"],["shang","上"],["bā","八"],["diǎn","点"]],[["xià","下"],["wǔ","午"],["bā","八"],["diǎn","点"]]],x:0},
+ {p:[["zhèr","这儿"],["de","的"],["píng","苹"],["guǒ","果"],["zhēn","真"],["pián","便"],["yi","宜"]],q:[["píng","苹"],["guǒ","果"],["guì","贵"],["ma","吗"]],o:[[["hěn","很"],["guì","贵"]],[["hěn","很"],["pián","便"],["yi","宜"]],[["bù","不"],["zhī","知"],["dào","道"]]],x:1},
+ {p:[["wǒ","我"],["míng","明"],["tiān","天"],["shàng","上"],["wǔ","午"],["zài","在"],["xué","学"],["xiào","校"],["xué","学"],["xí","习"]],q:[["tā","他"],["zài","在"],["nǎr","哪儿"]],o:[[["yī","医"],["yuàn","院"]],[["xué","学"],["xiào","校"]],[["jiā","家"]]],x:1},
+ {p:[["xiǎo","小"],["māo","猫"],["zài","在"],["zhuō","桌"],["zi","子"],["xià","下"],["ne","呢"]],q:[["xiǎo","小"],["māo","猫"],["zài","在"],["nǎr","哪儿"]],o:[[["zhuō","桌"],["zi","子"],["shàng","上"]],[["zhuō","桌"],["zi","子"],["xià","下"]],[["fáng","房"],["jiān","间"],["wài","外"]]],x:1},
+ {p:[["wǒ","我"],["jiào","叫"],["Lǐ","李"],["Wén","文"],["wǒ","我"],["shì","是"],["Fǎ","法"],["guó","国"],["rén","人"]],q:[["Lǐ","李"],["Wén","文"],["shì","是"],["nǎ","哪"],["guó","国"],["rén","人"]],o:[[["Zhōng","中"],["guó","国"],["rén","人"]],[["Fǎ","法"],["guó","国"],["rén","人"]],[["Měi","美"],["guó","国"],["rén","人"]]],x:1},
+];
+const R4=[ // match Q <-> reply, both ruby
+ {q:[["nǐ","你"],["hǎo","好"],["ma","吗"]],r:[["wǒ","我"],["hěn","很"],["hǎo","好"]]},
+ {q:[["nǐ","你"],["jiào","叫"],["shén","什"],["me","么"],["míng","名"],["zi","字"]],r:[["wǒ","我"],["jiào","叫"],["Wáng","王"],["Yuè","月"]]},
+ {q:[["xiàn","现"],["zài","在"],["jǐ","几"],["diǎn","点"]],r:[["xiàn","现"],["zài","在"],["jiǔ","九"],["diǎn","点"]]},
+ {q:[["nǐ","你"],["bà","爸"],["ba","爸"],["zài","在"],["nǎr","哪儿"],["gōng","工"],["zuò","作"]],r:[["zài","在"],["yī","医"],["yuàn","院"],["gōng","工"],["zuò","作"]]},
+ {q:[["zhè","这"],["ge","个"],["duō","多"],["shao","少"],["qián","钱"]],r:[["wǔ","五"],["kuài","块"],["qián","钱"]]},
+];
+
+/* ============ WRITING DATA ============ */
+const W1_ORDER=[ // 20 jumbled pinyin sentences (arrange), all 13 lessons
+ ["wǒ","hěn","gāoxìng","rènshi","nǐ"],
+ ["wǒ de","lǎoshī","jiào","Wáng Yuè"],
+ ["tā","shì bu shì","Zhōngguó","rén"],
+ ["wǒ","jiā","yǒu","sì","kǒu","rén"],
+ ["wǒ","yǒu","liǎng","ge","háizi"],
+ ["wǒ","huì","zuò","Zhōngguó","cài"],
+ ["nǐ","xīngqītiān","zuò","shénme"],
+ ["nǐ de","shǒujī hào","shì","duōshao"],
+ ["wǒ","xiǎng","qù","xuéxiào"],
+ ["xiànzài","shì","xiàwǔ","liǎng diǎn","bàn"],
+ ["wǒ","wǎnshang","liù diǎn bàn","xiàbān"],
+ ["wǒmen","xiàwǔ","qù","kàn","diànyǐng","ba"],
+ ["wǒ","bàba","zài","yīyuàn","gōngzuò"],
+ ["xiǎo māo","zài","zhuōzi","xià"],
+ ["wǒ","míngtiān shàngwǔ","zài","xuéxiào","xuéxí"],
+ ["zhèr de","píngguǒ","zhēn","piányi"],
+ ["zhège","píngguǒ","duōshao","qián"],
+ ["wǒ","zài","dú","dàxué","ne"],
+ ["zuótiān","xiàwǔ","xià xuě","le"],
+ ["qǐng","gěi","wǒ","yì bēi","chá"],
+];
+const W2_MATCH=[ // 15 pinyin 3-word phrases <-> english
+ ["xiàwǔ liǎng diǎn","2:00 in the afternoon"],
+ ["wǎnshang qī diǎn","7:00 in the evening"],
+ ["zài yīyuàn gōngzuò","to work at a hospital"],
+ ["zài xuéxiào xuéxí","to study at school"],
+ ["sì kǒu rén","a family of four"],
+ ["liǎng ge háizi","two children"],
+ ["yì bēi chá","a cup of tea"],
+ ["kàn diànyǐng ba","let's watch a movie"],
+ ["jīntiān xīngqī jǐ","what day is it today"],
+ ["zhège duōshao qián","how much is this"],
+ ["wǒ de shǒujī hào","my phone number"],
+ ["hěn gāoxìng rènshi","pleased to meet"],
+ ["zài zhuōzi xià","under the table"],
+ ["míngtiān shàngwǔ xuéxí","study tomorrow morning"],
+ ["hē yì bēi shuǐ","drink a glass of water"],
+];
+const W3_FILL=[ // pinyin on top; choose the right character from 3 confusables
+ {before:[["wǒ","我"],["shì","是"],["Zhōng","中"],["guó","国"]],py:"rén",after:[],opts:[["人"],["入"],["八"]],ans:"人"},
+ {before:[["xiàn","现"],["zài","在"],["bā","八"]],py:"diǎn",after:[],opts:[["点"],["店"],["占"]],ans:"点"},
+ {before:[["wǒ","我"],["yǒu","有"],["liǎng","两"],["ge","个"],["hái","孩"]],py:"zi",after:[],opts:[["子"],["了"],["字"]],ans:"子"},
+ {before:[["qǐng","请"],["gěi","给"],["wǒ","我"],["yì","一"]],py:"bēi",after:[["chá","茶"]],opts:[["杯"],["本"],["木"]],ans:"杯"},
+ {before:[["wǒ","我"],["bà","爸"],["ba","爸"],["zài","在"]],py:"yī",after:[["yuàn","院"],["gōng","工"],["zuò","作"]],opts:[["医"],["区"],["匹"]],ans:"医"},
+];
+
+/* ============ BUILD ============ */
+function buildListen(){
+ const p=document.getElementById("panel-listen");p.innerHTML="";const c=document.createElement("div");c.className="card";p.appendChild(c);
+ c.innerHTML='<div class="parttl">Part I · Listening 听力</div><div class="partsub">Press 🔊 to hear each item, 🐢 for slow. Uses your device\'s Chinese voice.</div><label class="teacher"><input type="checkbox" id="showScripts"> Teacher: show scripts</label><div class="note">Audio needs a Chinese (zh-CN) voice — Chrome/Edge include one. No sound? Switch on scripts and read aloud.</div>';
+ let n=1;
+ let s=sect(c,"Section 1 · True or False","Listen, then decide if it matches the statement.");
+ L_TF.forEach(it=>{const k="L"+n;reg(k);const q=qrow(s,n+".");q.insertAdjacentHTML("beforeend",'<span class="en">'+it.stmt+'</span> '+audioBtns(it.a)+'<div class="script">'+it.a+'</div>');truefalse(q,k,it.ok);n++;});
+ s=sect(c,"Section 2 · Choose the best reply","Listen to the question, choose the answer.");
+ L_REPLY.forEach(it=>{const k="L"+n;reg(k);const q=qrow(s,n+".");q.insertAdjacentHTML("beforeend",audioBtns(it.a)+'<div class="script">'+it.a+'</div>');mcqHTML(q,k,it.o.map(o=>o[0]+' <small>'+o[1]+'</small>'),it.x);n++;});
+ s=sect(c,"Section 3 · Dialogue","Listen to the dialogue and question, choose A/B/C.");
+ L_DIAG.forEach(it=>{const k="L"+n;reg(k);const q=qrow(s,n+".");q.insertAdjacentHTML("beforeend",audioBtns(it.a)+'<div class="script">'+it.a.join(" / ")+'</div>');mcqHTML(q,k,it.o.map(o=>o[0]+' <small>'+o[1]+'</small>'),it.x);n++;});
+ s=sect(c,"Section 4 · Dictation","Listen to the word, choose the pinyin.");
+ L_DICT.forEach(it=>{const k="L"+n;reg(k);const q=qrow(s,n+".");q.insertAdjacentHTML("beforeend",audioBtns(it.a)+'<div class="script">'+it.a+'</div>');mcqHTML(q,k,it.o,it.x);n++;});
+ document.getElementById("showScripts").onchange=e=>document.querySelectorAll("#panel-listen .script").forEach(x=>x.classList.toggle("show",e.target.checked));
+}
+function buildRead(){
+ const p=document.getElementById("panel-read");p.innerHTML="";const c=document.createElement("div");c.className="card";p.appendChild(c);
+ c.innerHTML='<div class="parttl">Part II · Reading 阅读</div><div class="partsub">Four sections.</div>';
+ let s=sect(c,"Section 1 · Match the word with its meaning","Tap a word on the left, then its English meaning on the right.");
+ matchingHTML(s,"R1_",R1.map(it=>({l:ruby(it.seg),r:it.en})));
+ s=sect(c,"Section 2 · Choose the right word for the blank","");
+ let n=21;R2.forEach(it=>{const k="R2_"+n;const q=qrow(s,n+".");blankChoose(q,k,it.before,"",it.after,it.opts,it.ans,false,true);n++;});
+ s=sect(c,"Section 3 · Read and choose the correct answer","");
+ R3.forEach(it=>{const k="R3_"+n;reg(k);const q=qrow(s,n+".");q.insertAdjacentHTML("beforeend",ruby(it.p));const qb=document.createElement("div");qb.style.margin="6px 0 2px";qb.innerHTML='<span class="qnum" style="color:#9a8c7d">问</span> '+ruby(it.q);q.appendChild(qb);mcqHTML(q,k,it.o.map(o=>ruby(o)),it.x);n++;});
+ s=sect(c,"Section 4 · Match each question with its reply","Tap a question, then its reply.");
+ matchingHTML(s,"R4_",R4.map(it=>({l:ruby(it.q),r:ruby(it.r)})));
+}
+function buildWrite(){
+ const p=document.getElementById("panel-write");p.innerHTML="";const c=document.createElement("div");c.className="card";p.appendChild(c);
+ c.innerHTML='<div class="parttl">Part III · Writing 书写</div><div class="partsub">Three sections.</div>';
+ let s=sect(c,"Section 1 · Arrange the words into a correct sentence","Tap the pinyin words in the right order. Tap a placed word to send it back.");
+ let n=1;W1_ORDER.forEach(words=>{const q=qrow(s,n+".");orderTask(q,"W1_"+n,words);n++;});
+ s=sect(c,"Section 2 · Match the phrase with its meaning","Tap a pinyin phrase, then its English meaning.");
+ matchingHTML(s,"W2_",W2_MATCH.map(it=>({l:'<span style="font-style:italic;color:#8b2233">'+it[0]+'</span>',r:it[1]})));
+ s=sect(c,"Section 3 · Fill in the blank — choose the correct character","The pinyin above the box tells you the sound. Choose the character that matches it.");
+ let m=1;W3_FILL.forEach(it=>{const q=qrow(s,"W"+m+".");blankChoose(q,"W3_"+m,it.before,it.py,it.after,it.opts,it.ans,true,false);m++;});
+}
+
+document.getElementById("checkAll").onclick=()=>{for(const k in answers)if(answers[k].grade)answers[k].grade();updateScore();const s=document.getElementById("score").textContent;alert("Your score: "+s+" / "+MAX);window.scrollTo({top:0,behavior:"smooth"});};
+document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#tabs button").forEach(x=>x.classList.toggle("on",x===b));const t=b.dataset.t;["listen","read","write"].forEach(x=>document.getElementById("panel-"+x).classList.toggle("hidden",x!==t));});
+
+buildListen();buildRead();buildWrite();updateScore();
+</script>
+</body>
+</html>
