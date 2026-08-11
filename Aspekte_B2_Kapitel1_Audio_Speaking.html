@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aspekte B2 · Kapitel 1 — Audio &amp; Speaking</title>
+<style>
+  :root{--navy:#1f3864;--blue:#2e5496;--accent:#c0392b;--green:#2e8b57;--bg:#eef3f9;--line:#d6deea;--grey:#5a6270;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:#1b2330;line-height:1.5;padding-bottom:40px;}
+  header{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:26px 20px 20px;text-align:center;}
+  header .kicker{letter-spacing:.14em;font-size:.7rem;text-transform:uppercase;opacity:.85;}
+  header h1{font-size:1.55rem;margin:6px 0 3px;}
+  header .sub{opacity:.9;font-size:.86rem;font-style:italic;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 16px;}
+  nav{display:flex;gap:8px;justify-content:center;margin:18px 0 8px;}
+  nav button{border:1px solid var(--line);background:#fff;color:var(--navy);padding:10px 20px;border-radius:999px;font-size:.9rem;font-weight:700;cursor:pointer;}
+  nav button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+  section{display:none;} section.on{display:block;}
+  .note{background:#fff8e6;border:1px solid #f0d78a;color:#7a5b12;border-radius:10px;padding:10px 13px;font-size:.82rem;margin:12px 0;}
+  .controls{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(20,40,80,.06);margin-bottom:14px;}
+  .now{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:14px 8px;min-height:120px;justify-content:center;}
+  .now .de{font-size:1.7rem;font-weight:800;color:var(--navy);}
+  .now .pron{color:var(--accent);font-style:italic;font-size:.95rem;}
+  .now .en{font-size:1.05rem;color:#333;}
+  .now .why{font-size:.8rem;color:var(--grey);max-width:520px;}
+  .now .idx{font-size:.75rem;color:var(--grey);letter-spacing:.05em;text-transform:uppercase;}
+  .pbar{height:8px;background:#e7edf6;border-radius:999px;overflow:hidden;margin:6px 0 14px;}
+  .pbar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),#4fb37a);transition:width .3s;}
+  .transport{display:flex;gap:10px;justify-content:center;align-items:center;margin-bottom:8px;}
+  .transport button{border:none;background:#eef3f9;color:var(--navy);width:52px;height:52px;border-radius:50%;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .transport .play{background:var(--accent);color:#fff;width:66px;height:66px;font-size:1.6rem;}
+  .opts{display:flex;flex-wrap:wrap;gap:8px 14px;justify-content:center;align-items:center;margin-top:12px;font-size:.85rem;color:var(--grey);}
+  .opts label{display:flex;align-items:center;gap:5px;cursor:pointer;}
+  .opts select{border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-size:.82rem;font-weight:600;color:var(--navy);}
+  .opts input[type=range]{width:120px;}
+  .chiprow{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px;}
+  .chip{border:1px solid var(--line);background:#fff;color:var(--navy);padding:6px 12px;border-radius:999px;font-size:.8rem;font-weight:600;cursor:pointer;}
+  .chip.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+  /* speak mode */
+  .speakcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px 18px;text-align:center;box-shadow:0 2px 8px rgba(20,40,80,.06);}
+  .speakcard .prompt{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:700;}
+  .speakcard .big{font-size:1.9rem;font-weight:800;color:var(--navy);margin:10px 0 4px;}
+  .speakcard .pron{color:var(--accent);font-style:italic;font-size:.95rem;}
+  .speakcard .answer{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);display:none;}
+  .speakcard .answer.show{display:block;}
+  .speakcard .answer .a-de{font-size:1.5rem;font-weight:800;color:var(--green);}
+  .speakcard .answer .a-en{font-size:1.05rem;color:#333;}
+  .speakcard .answer .a-why{font-size:.82rem;color:var(--grey);margin-top:4px;}
+  .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;}
+  .btn{border:none;color:#fff;padding:11px 20px;border-radius:10px;font-weight:700;font-size:.9rem;cursor:pointer;}
+  .btn.a{background:var(--navy);} .btn.b{background:var(--accent);} .btn.c{background:#8b93a1;}
+  .tip{background:#eef7ff;border:1px solid #cfe4fb;color:#1c4d80;border-radius:10px;padding:10px 13px;font-size:.83rem;margin-top:14px;}
+  footer{max-width:760px;margin:24px auto 0;padding:0 16px;color:var(--grey);font-size:.78rem;text-align:center;}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">Aspekte neu · B2 (Band 1) · Kapitel 1</div>
+  <h1>🎧 Audio &amp; Speaking — „Heimat ist …“</h1>
+  <div class="sub">Your browser reads it aloud in German — all <span id="totn"></span> words + example sentences</div>
+</header>
+
+<div class="wrap">
+  <nav>
+    <button data-t="listen" class="active">🎧 Listen (car mode)</button>
+    <button data-t="speak">🗣️ Speak &amp; practise</button>
+  </nav>
+
+  <div class="note" id="voicenote">Tip: press ▶ once to start (browsers require a tap before speaking). For the car, prop the phone up — on iPhone the audio pauses if the screen locks, so keep the screen on. Use headphones or the car's Bluetooth. If you hear an English accent on the German words, pick a German voice in the ⚙ voice box below.</div>
+
+  <!-- LISTEN -->
+  <section id="listen" class="on">
+    <div class="controls">
+      <div class="now">
+        <div class="idx" id="nowidx">Ready</div>
+        <div class="de" id="nowde">Press ▶ to begin</div>
+        <div class="pron" id="nowpron"></div>
+        <div class="en" id="nowen"></div>
+        <div class="why" id="nowwhy"></div>
+      </div>
+      <div class="pbar"><span id="pbar"></span></div>
+      <div class="transport">
+        <button onclick="prev()" title="Previous">⏮</button>
+        <button class="play" id="playbtn" onclick="togglePlay()" title="Play/Pause">▶</button>
+        <button onclick="next()" title="Next">⏭</button>
+        <button onclick="repeatOne()" title="Repeat this word">🔁</button>
+      </div>
+      <div class="opts">
+        <label>Speed <input type="range" id="speed" min="0.6" max="1.1" step="0.05" value="0.85"></label>
+        <label><input type="checkbox" id="deen" checked> German + English</label>
+        <label><input type="checkbox" id="twice"> Say German twice</label>
+        <label><input type="checkbox" id="loop" checked> Loop</label>
+        <label>⚙ Voice <select id="voicesel"></select></label>
+      </div>
+      <div class="chiprow" id="modchips"></div>
+    </div>
+  </section>
+
+  <!-- SPEAK -->
+  <section id="speak">
+    <div class="chiprow" style="margin-bottom:12px">
+      <span class="chip active" data-dir="de">See German → say meaning</span>
+      <span class="chip" data-dir="en">See English → say German</span>
+    </div>
+    <div class="speakcard">
+      <div class="prompt" id="sprompt">Say the English meaning aloud</div>
+      <div class="big" id="sbig">—</div>
+      <div class="pron" id="spron"></div>
+      <div class="answer" id="sanswer">
+        <div class="a-de" id="sade"></div>
+        <div class="a-en" id="saen"></div>
+        <div class="a-why" id="sawhy"></div>
+      </div>
+      <div class="btns">
+        <button class="btn a" onclick="hearIt()">🔊 Hear it</button>
+        <button class="btn b" onclick="reveal()">👁️ Reveal</button>
+        <button class="btn c" onclick="nextSpeak()">Next →</button>
+      </div>
+    </div>
+    <div class="tip">🗣️ <b>Shadowing:</b> tap “Hear it”, then repeat immediately, copying the rhythm. Do each word 2–3 times. This trains your accent faster than silent study — and you can do it all by ear in the car.</div>
+  </section>
+</div>
+
+<footer>Audio is generated live by your device's speech engine (no files needed). Covers the complete Kapitel 1 vocabulary + example sentences — the copyrighted reading passages are not included.</footer>
+
+<script>
+const VOCAB = [
+// ===== Auftakt =====
+["die Heimat","home / homeland","b1","HY-maht","Heim (home) + old suffix -at → the place you belong to.","Auftakt"],
+["das Heimweh","homesickness","b1","HYM-vay","Heim (home) + Weh (ache) → a 'home-ache'.","Auftakt"],
+["die Vorstellung","idea / notion (also: performance)","b1","FOR-shtel-lung","vor (before) + stellen (to place) → to place before the mind.","Auftakt"],
+["das Zitat","quotation","b1","tsi-TAHT","Latin citare (to cite/summon) → a cited saying.","Auftakt"],
+["das Fernweh","wanderlust","b2","FERN-vay","fern (far) + Weh (ache) → an 'ache for far away', the opposite of Heimweh.","Auftakt"],
+// ===== Modul 1 =====
+["der Arbeitsvertrag","employment contract","b1","AR-bytes-fair-trahk","Arbeit (work) + Vertrag (contract).","Modul 1"],
+["auflösen (eine Wohnung)","to give up / clear out (a flat)","b2","OWF-lur-zen","auf + lösen (to loosen/dissolve) → you 'dissolve' the household.","Modul 1"],
+["beantragen","to apply for","b2","buh-AHN-trah-gen","be- + Antrag (application) → to file an application.","Modul 1"],
+["eröffnen (ein Konto)","to open (an account)","b1","air-URF-nen","er- + öffnen (to open).","Modul 1"],
+["der Handyvertrag","mobile-phone contract","b1","HEN-dee-fair-trahk","Handy (German for cell phone) + Vertrag.","Modul 1"],
+["knüpfen (Kontakte)","to make / tie (contacts)","b2","KNUEP-fen","knüpfen literally = to tie a knot → you 'tie' new connections.","Modul 1"],
+["der Kontakt","contact","b1","kon-TAHKT","Latin contactus (a touching).","Modul 1"],
+["der Mietvertrag","tenancy agreement","b1","MEET-fair-trahk","Miete (rent) + Vertrag.","Modul 1"],
+["der/die Nachmieter/in","successor tenant","b2","NAHKH-mee-ter","nach (after) + Mieter (tenant) → the 'after-tenant'.","Modul 1"],
+["abenteuerlich","adventurous","b2","AH-ben-toy-er-likh","Abenteuer (adventure) + -lich.","Modul 1"],
+["die Arbeitserlaubnis","work permit","b2","AR-bytes-er-lowp-nis","Arbeit + Erlaubnis (permission, from erlauben 'to allow').","Modul 1"],
+["aufgeregt","excited / nervous","b2","OWF-guh-rekt","auf + regen (to stir) → 'stirred up' inside.","Modul 1"],
+["die Auslandserfahrung","experience abroad","b2","OWS-lahnts-er-fah-rung","Ausland (abroad) + Erfahrung (experience).","Modul 1"],
+["auswandern (nach)","to emigrate","b1","OWS-van-dern","aus (out) + wandern (to wander) → to 'wander out' of the country.","Modul 1"],
+["bereuen","to regret","b2","buh-ROY-en","linked to Reue (remorse) → 'to feel rue'.","Modul 1"],
+["der Blog","blog","b1","blog","English loan (web + log).","Modul 1"],
+["einleben (sich)","to settle in","b2","YN-lay-ben","ein (in) + leben (to live) → to 'live your way into' a place.","Modul 1"],
+["die Erfahrung (machen)","experience (to have one)","b1","air-FAH-rung","erfahren (to find out), root fahren (to travel) → gathered by 'travelling through' life.","Modul 1"],
+["erweitern (den Horizont)","to broaden (one's horizons)","b2","air-VY-tern","weit (wide) + er- → to make wider.","Modul 1"],
+["gestresst (von)","stressed","b1","guh-SHTREST","from Stress (English loan) → put under stress.","Modul 1"],
+["der/die Grafiker/in","graphic designer","b1","GRAH-fi-ker","Grafik (graphics) + -er.","Modul 1"],
+["der Horizont (erweitern)","horizon","b1","ho-ri-TSONT","Greek horizon (the bounding circle) → the limit of your view.","Modul 1"],
+["leichtfallen","to be easy (for sb)","b2","LYKHT-fah-len","leicht (easy/light) + fallen (to fall) → something 'falls easily' to you.","Modul 1"],
+["machen (die Erfahrung)","to make / have (an experience)","b1","MAH-khen","general 'to do/make'; here you 'make' an experience.","Modul 1"],
+["mittlerweile","meanwhile / by now","b2","MIT-ler-vy-le","mittler (middle) + Weile (while) → in the middle-while.","Modul 1"],
+["netterweise","kindly (nice of them)","b2","NET-ter-vy-ze","nett (nice) + -erweise (in a ... manner).","Modul 1"],
+["riskieren","to risk","b1","ris-KEE-ren","from Risiko (risk), Italian loan.","Modul 1"],
+["schaffen","to manage / pull off","b1","SHAH-fen","to create/manage → to succeed in doing something.","Modul 1"],
+["sehnsüchtig (nach)","longing / yearning","b2","ZAYN-zuekh-tikh","Sehnsucht (longing: sehnen 'to yearn' + Sucht 'craving') + -ig.","Modul 1"],
+["spontan","spontaneous","b1","shpon-TAHN","Latin spontaneus (of free will).","Modul 1"],
+["wagen","to dare","b2","VAH-gen","related to Wagnis (a venture) → to venture / take a chance.","Modul 1"],
+["die Wohnungssuche","flat-hunting","b2","VOH-nungs-zoo-khe","Wohnung (flat) + Suche (search).","Modul 1"],
+["zwischendurch","in between (times)","b2","TSVISH-en-doorkh","zwischen (between) + durch (through) → now and then.","Modul 1"],
+["empfinden","to feel / perceive","b2","emp-FIN-den","emp- + finden (to find) → to 'find' a feeling within.","Modul 1"],
+["die Faustregel","rule of thumb","b2","FOWST-ray-gel","Faust (fist) + Regel (rule) → a rough 'fist rule'.","Modul 1"],
+["die Merkformel","memory formula (mnemonic)","b2","MAIRK-for-mel","merken (to note/remember) + Formel (formula).","Modul 1"],
+["die Position","position","b1","po-zi-TSYOHN","Latin positio (a placing).","Modul 1"],
+["ständig","constant(ly)","b1","SHTEN-dikh","from Stand (a standing state) + -ig → continuously.","Modul 1"],
+["zerschneiden","to cut up","b2","tsair-SHNY-den","zer- (apart) + schneiden (to cut) → cut to pieces.","Modul 1"],
+// ===== Modul 2 =====
+["die Landessprache","national language","b2","LAHN-des-shprah-khe","Land (country) + Sprache (language).","Modul 2"],
+["die Amtssprache","official language","b2","AHMTS-shprah-khe","Amt (office/authority) + Sprache → the language of officialdom.","Modul 2"],
+["anerkennen","to recognize officially","b2","AHN-air-ken-nen","an + erkennen (to recognize) → to formally acknowledge.","Modul 2"],
+["die Elite","elite","b1","e-LEE-te","French élite (the chosen ones).","Modul 2"],
+["die Identität","identity","b1","i-den-ti-TAYT","Latin idem (the same) → your 'sameness', your self.","Modul 2"],
+["komplex","complex","b1","kom-PLEKS","Latin complexus (interwoven).","Modul 2"],
+["konfrontieren (mit)","to confront","b2","kon-fron-TEE-ren","Latin con + frons (front/forehead) → to face head-on.","Modul 2"],
+["multikulturell","multicultural","b1","mul-ti-kul-tu-REL","multi (many) + kulturell (cultural).","Modul 2"],
+["das Parlament","parliament","b1","par-la-MENT","French parler (to speak) → the 'speaking' assembly.","Modul 2"],
+["der Sachverhalt","state of affairs / the facts","b2","ZAHKH-fair-halt","Sache (matter) + Verhalt (how it is held) → how a matter stands.","Modul 2"],
+["trösten","to comfort / console","b2","TRUR-sten","related to Trost (consolation).","Modul 2"],
+["die Vertrautheit","familiarity","b2","fair-TROWT-hyte","vertraut (familiar, from trauen 'to trust') + -heit.","Modul 2"],
+["die Verwaltungssprache","administrative language","b2","fair-VAHL-tungs-shprah-khe","Verwaltung (administration) + Sprache.","Modul 2"],
+["die Vielfalt","diversity","b2","FEEL-falt","viel (many) + -falt (fold, from falten) → 'many folds', variety.","Modul 2"],
+["vielsprachig","multilingual","b2","FEEL-shprah-khikh","viel (many) + Sprache + -ig → 'many-languaged'.","Modul 2"],
+["das Landesgesetz","national law","b2","LAHN-des-guh-zets","Land (country) + Gesetz (law).","Modul 2"],
+["die Vielsprachigkeit","multilingualism","b2","FEEL-shprah-khikh-kyte","vielsprachig + -keit (noun ending).","Modul 2"],
+["das Alltagsprodukt","everyday product","b2","AHL-tahks-pro-dukt","Alltag (everyday) + Produkt.","Modul 2"],
+["amtlich","official","b2","AHMT-likh","Amt (office) + -lich → pertaining to office.","Modul 2"],
+["beherrschen (eine Sprache)","to master (a language)","b2","buh-HAIR-shen","be- + herrschen (to rule), Herr (master) → to have mastery over.","Modul 2"],
+["die Bekanntmachung","announcement / notice","b2","buh-KAHNT-mah-khung","bekannt (known) + machen → the act of making known.","Modul 2"],
+["beschriften","to label / write on","b2","buh-SHRIF-ten","be- + Schrift (writing) → to put writing on something.","Modul 2"],
+["betreffen","to concern / affect","b2","buh-TREF-fen","be- + treffen (to hit/meet) → to touch upon.","Modul 2"],
+["einheitlich","uniform / standardized","b2","YN-hyte-likh","Einheit (unit/unity) + -lich → of one unit.","Modul 2"],
+["fälschlicherweise","mistakenly","b2","FELSH-likh-er-vy-ze","falsch (wrong) + -licherweise → in a wrong manner.","Modul 2"],
+["der Flyer","flyer","b1","FLY-er","English loan.","Modul 2"],
+["die Geschäftsbeziehung","business relationship","b2","guh-SHEFTS-buh-tsee-ung","Geschäft (business) + Beziehung (relationship).","Modul 2"],
+["die Geschäftsverhandlung","business negotiation","b2","guh-SHEFTS-fair-hahnd-lung","Geschäft (business) + Verhandlung (negotiation).","Modul 2"],
+["jedoch","however","b1","yay-DOKH","je + doch → yet, nevertheless.","Modul 2"],
+["die Konferenz","conference","b1","kon-fe-RENTS","Latin conferre (to bring together).","Modul 2"],
+["das Platzproblem","space problem","b2","PLAHTS-pro-blaym","Platz (space/room) + Problem.","Modul 2"],
+["sämtlich","all / entire","b2","ZEMT-likh","related to samt (together with) → all together.","Modul 2"],
+["die Sitzung","meeting / session","b1","ZIT-tsung","from sitzen (to sit) → a 'sitting'.","Modul 2"],
+["die Sprachenvielfalt","linguistic diversity","b2","SHPRAH-khen-feel-falt","Sprachen (languages) + Vielfalt (diversity).","Modul 2"],
+["das Sprachgebiet","language area","b2","SHPRAHKH-guh-beet","Sprache + Gebiet (area/territory).","Modul 2"],
+["die Sprachregion","language region","b2","SHPRAHKH-re-gyohn","Sprache + Region.","Modul 2"],
+["das Verkehrsschild","traffic sign","b1","fair-KAIRS-shilt","Verkehr (traffic) + Schild (sign).","Modul 2"],
+["veröffentlichen","to publish","b2","fair-URF-ent-likh-en","ver- + öffentlich (public) → to make public.","Modul 2"],
+["die Verpackung","packaging","b1","fair-PAH-kung","ver- + packen (to pack) → the wrapping.","Modul 2"],
+["voraussetzen","to presuppose / require","b2","for-OWS-zets-en","voraus (ahead) + setzen (to set) → to set as a precondition.","Modul 2"],
+["der Wandel","change","b2","VAHN-del","from wandeln (to transform), related to wandern → a shift.","Modul 2"],
+["die Webseite","web page","b1","VEP-zy-te","Web (English) + Seite (page).","Modul 2"],
+["die Auffassung","view / opinion","b2","OWF-fah-sung","auffassen (to grasp): auf + fassen (to seize) → how you 'grasp' something.","Modul 2"],
+["entscheidend","decisive","b2","ent-SHY-dent","from entscheiden (to decide) → 'deciding'.","Modul 2"],
+["erstaunlich","astonishing","b2","air-SHTOWN-likh","erstaunen (to astonish), Staunen (amazement) + -lich.","Modul 2"],
+["geteilt (geteilter Meinung)","divided (of two minds)","b2","guh-TYLT","from teilen (to divide/split) → split.","Modul 2"],
+["hilfreich (bei)","helpful","b1","HILF-rykh","Hilfe (help) + reich (rich) → 'rich in help'.","Modul 2"],
+["die Mehrsprachigkeit","multilingualism","b2","MAIR-shprah-khikh-kyte","mehr (more) + sprachig + -keit.","Modul 2"],
+["nützlich (für)","useful","b1","NUETS-likh","Nutzen (use/benefit) + -lich.","Modul 2"],
+["die Seite (auf der einen)","side (on the one hand)","b1","ZY-te","a side/page; 'auf der einen Seite' = on the one hand.","Modul 2"],
+["die Sicht (aus meiner)","view / perspective","b2","zikht","from sehen (to see) → what is seen, one's viewpoint.","Modul 2"],
+// ===== Modul 3 =====
+["missverständlich","ambiguous / misleading","b2","MISS-fair-shtent-likh","miss- (wrong) + verständlich (understandable) → easily misunderstood.","Modul 3"],
+["das Abteil","(train) compartment","b2","ahp-TYLE","from abteilen (to partition): ab + Teil → a partitioned space.","Modul 3"],
+["missverstehen","to misunderstand","b2","miss-fair-SHTAY-en","miss- (wrong) + verstehen (to understand).","Modul 3"],
+["peinlich","embarrassing","b2","PYNE-likh","from Pein (pain/torment) + -lich → painfully awkward.","Modul 3"],
+["der Abstand","distance / gap","b2","AHP-shtahnt","ab + Stand (standing) → how far things stand apart.","Modul 3"],
+["die Art (Fragen jeglicher Art)","kind / manner","b1","art","a type or way of doing things.","Modul 3"],
+["äußerst","extremely","b2","OY-serst","superlative of außen (outside) → to the outermost degree.","Modul 3"],
+["bedenken","to consider","b2","buh-DEN-ken","be- + denken (to think) → to think something over.","Modul 3"],
+["der/die Begleiter/in","companion","b2","buh-GLY-ter","begleiten (to accompany): be + leiten (to lead) → one who goes along.","Modul 3"],
+["breit (ein breites Lächeln)","broad / wide","b1","bryte","wide; a 'broad' smile.","Modul 3"],
+["die Freundlichkeit","friendliness","b1","FROYNT-likh-kyte","freundlich (friendly, from Freund 'friend') + -keit.","Modul 3"],
+["das Gegenüber","the person opposite / counterpart","b2","gay-gen-UE-ber","gegenüber (opposite): gegen (against) + über (over) → the one facing you.","Modul 3"],
+["jeglich","any / each","b2","YAYK-likh","old form of jed- (each) → any at all.","Modul 3"],
+["das Lächeln","smile","b1","LEKH-eln","from lächeln (to smile), a gentle form of lachen (to laugh).","Modul 3"],
+["die Öffentlichkeit","the public","b2","URF-ent-likh-kyte","öffentlich (public, from offen 'open') + -keit → openness to all.","Modul 3"],
+["die Privatsphäre","privacy","b2","pri-VAHT-sfay-re","privat (private) + Sphäre (sphere) → one's private sphere.","Modul 3"],
+["stellen (eine Frage)","to pose (a question)","b1","SHTEL-len","to place/put → to 'put' a question to someone.","Modul 3"],
+["üblich","usual / customary","b2","UEP-likh","from üben/Übung (habit/practice) → what is habitually done.","Modul 3"],
+["die Spielregel","rule (of the game)","b1","SHPEEL-ray-gel","Spiel (game) + Regel (rule).","Modul 3"],
+["die Geste","gesture","b1","GES-te","Latin gestus (bearing/movement of the body).","Modul 3"],
+["alkoholfrei","alcohol-free","b1","AHL-ko-hol-fry","Alkohol + frei (free of).","Modul 3"],
+["atypisch (für)","atypical","b2","AH-tue-pish","a- (not) + typisch (typical).","Modul 3"],
+["das Desinteresse","lack of interest","b2","DES-in-te-res-se","des- (un-) + Interesse (interest).","Modul 3"],
+["disqualifizieren","to disqualify","b2","dis-kva-li-fi-TSEE-ren","dis- (un-) + qualifizieren (to qualify).","Modul 3"],
+["inhaltsleer","devoid of content","b2","IN-hahlts-lair","Inhalt (content) + leer (empty).","Modul 3"],
+["intolerant","intolerant","b1","IN-to-le-rant","in- (not) + tolerant.","Modul 3"],
+["irreal","unreal","b2","IR-re-ahl","ir- (not) + real.","Modul 3"],
+["der/die Nichtschwimmer/in","non-swimmer","b2","NIKHT-shvim-mer","nicht (not) + Schwimmer (swimmer).","Modul 3"],
+["nonverbal","non-verbal","b2","NON-vair-bahl","non- (not) + verbal.","Modul 3"],
+["das Unverständnis","incomprehension","b2","UN-fair-shtent-nis","un- (not) + Verständnis (understanding).","Modul 3"],
+["trennbar","separable","b2","TREN-bar","trennen (to separate) + -bar (-able) → able to be separated.","Modul 3"],
+// ===== Modul 4 =====
+["die Chancengleichheit","equal opportunity","b2","SHAHNG-sen-glykh-hyte","Chance (chance) + Gleichheit (equality).","Modul 4"],
+["der Migrationshintergrund","migration background","b2","mi-gra-TSYOHNS-hin-ter-grunt","Migration + Hintergrund (background: hinter 'behind' + Grund 'ground').","Modul 4"],
+["das Schlüsselwort","keyword","b2","SHLUE-sel-vort","Schlüssel (key) + Wort (word).","Modul 4"],
+["völlig","completely","b1","FUR-likh","from voll (full) → 'fully'.","Modul 4"],
+["die Kindergartenpflicht","compulsory kindergarten","b2","KIN-der-gar-ten-pflikht","Kindergarten + Pflicht (duty/obligation).","Modul 4"],
+["die Schuluniform","school uniform","b1","SHOOL-u-ni-form","Schule (school) + Uniform.","Modul 4"],
+["eingehen (auf)","to respond to / go into","b2","YN-gay-en","ein (in) + gehen (to go) → to 'go into' a point.","Modul 4"],
+["die Einrichtung","institution / facility","b2","YN-rikh-tung","einrichten (to set up): ein + richten → an established facility.","Modul 4"],
+["ermöglichen","to make possible","b2","air-MURG-likh-en","er- + möglich (possible) → to enable.","Modul 4"],
+["die Lehrkraft","teacher (teaching staff)","b2","LAIR-kraft","Lehre (teaching) + Kraft (force/worker) → a teaching staff member.","Modul 4"],
+["die Migrantenfamilie","migrant family","b2","mi-GRAHN-ten-fa-mee-lye","Migrant + Familie.","Modul 4"],
+["das Migrantenkind","migrant child","b2","mi-GRAHN-ten-kint","Migrant + Kind (child).","Modul 4"],
+["der/die Pate/Patin","godparent / mentor","b2","PAH-te","Latin patrinus → a sponsor or mentor.","Modul 4"],
+["der/die Senior/in","senior (elderly person)","b1","ZAY-ni-or","Latin senior (older).","Modul 4"],
+["sinnvoll","sensible / meaningful","b1","ZIN-fol","Sinn (sense/meaning) + voll (full) → 'full of sense'.","Modul 4"],
+["der/die Zugewanderte","newcomer / immigrant","b2","TSOO-guh-van-der-te","zugewandert (migrated here): zu + gewandert → one who has moved here.","Modul 4"],
+["anfügen","to add / attach","b2","AHN-fue-gen","an + fügen (to join) → to attach.","Modul 4"],
+["ausbremsen","to slow down / block","b2","OWS-brem-zen","aus + bremsen (to brake) → to brake someone's progress.","Modul 4"],
+["die Ausländerquote","foreigner quota","b2","OWS-len-der-kvoh-te","Ausländer (foreigner) + Quote (quota).","Modul 4"],
+["der Automobilhersteller","car manufacturer","b2","ow-to-mo-BEEL-hair-shtel-ler","Automobil + Hersteller (maker, from herstellen 'to produce').","Modul 4"],
+["die Betriebswirtschaft","business administration","b2","buh-TREEPS-virt-shaft","Betrieb (business/operation) + Wirtschaft (economy).","Modul 4"],
+["die Diskriminierung","discrimination","b2","dis-kri-mi-NEE-rung","Latin discriminare (to separate/distinguish).","Modul 4"],
+["farbenfroh","colourful","b2","FAR-ben-fro","Farben (colours) + froh (happy) → cheerfully colourful.","Modul 4"],
+["fernliegen","to be far from (one's mind)","b2","FERN-lee-gen","fern (far) + liegen (to lie) → to lie far away.","Modul 4"],
+["das Feuerholz","firewood","b2","FOY-er-holts","Feuer (fire) + Holz (wood).","Modul 4"],
+["flechten","to braid / weave","b2","FLEKH-ten","to plait → to weave strands together.","Modul 4"],
+["führen (ein Geschäft)","to run (a business)","b1","FUE-ren","to lead → to run or manage.","Modul 4"],
+["gelegentlich","occasional(ly)","b2","guh-LAY-gent-likh","from Gelegenheit (occasion) → now and then.","Modul 4"],
+["das Gemüsegeschäft","greengrocer's shop","b2","guh-MUE-ze-guh-sheft","Gemüse (vegetables) + Geschäft (shop).","Modul 4"],
+["der/die Gründer/in","founder","b2","GRUEN-der","gründen (to found), Grund (ground) → one who lays the ground.","Modul 4"],
+["die Hausverwaltung","property management","b2","HOWS-fair-vahl-tung","Haus (house) + Verwaltung (management).","Modul 4"],
+["die Hochschulreife","university entrance qualification","b2","HOKH-shool-ry-fe","Hochschule (university) + Reife (maturity) → readiness for university.","Modul 4"],
+// ===== Porträt (Fatih Akin) =====
+["die Abstammung","descent / ancestry","b2","AHP-shtah-mung","abstammen (to descend): ab + Stamm (tribe/trunk) → your lineage.","Porträt"],
+["der/die Amateur-Boxer/in","amateur boxer","b2","AH-ma-tur-bok-ser","Amateur (French, from amare 'to love') + Boxer.","Porträt"],
+["auszeichnen","to honour / award","b2","OWS-tsykh-nen","aus + zeichnen (to mark/draw) → to single out with a mark of honour.","Porträt"],
+["begehrt (bei)","sought-after","b2","buh-GAIRT","from begehren (to desire) → much desired.","Porträt"],
+["bürgerlich","middle-class / civil","b2","BUER-ger-likh","Bürger (citizen) + -lich → pertaining to citizens.","Porträt"],
+["das Diplom","diploma","b1","di-PLOHM","Greek diploma (a folded document).","Porträt"],
+["der/die Drehbuchautor/in","screenwriter","b2","DRAY-bookh-ow-tor","Drehbuch (screenplay: drehen 'to shoot/film' + Buch 'book') + Autor.","Porträt"],
+["der Drehbuchpreis","screenplay award","b2","DRAY-bookh-prys","Drehbuch + Preis (prize).","Porträt"],
+["der Durchbruch","breakthrough","b2","DOORKH-brukh","durch (through) + Bruch (break) → breaking through.","Porträt"],
+["der/die Einwanderer/in","immigrant","b2","YN-van-der-er","ein (in) + wandern (to wander) → one who wanders in.","Porträt"],
+["entstammen","to originate / descend from","b2","ent-SHTAH-men","ent- + Stamm (stem) → to stem from.","Porträt"],
+["der/die Filmregisseur/in","film director","b2","FILM-re-zhi-sur","Film + Regisseur (French, director).","Porträt"],
+["das Gangsterkino","gangster cinema","b2","GANG-ster-kee-no","Gangster (English) + Kino (cinema).","Porträt"],
+["geprägt (von)","shaped / marked by","b2","guh-PRAYKT","from prägen (to stamp/coin) → 'stamped' by an influence.","Porträt"],
+["gläubig","devout / religious","b2","GLOY-bikh","from glauben (to believe) + -ig → believing.","Porträt"],
+["die Härte","hardness / toughness","b2","HAIR-te","from hart (hard) → harshness.","Porträt"],
+["die Hauptrolle","leading role","b1","HOWPT-rol-le","Haupt (main/head) + Rolle (role).","Porträt"],
+["heimisch","native / local","b2","HY-mish","from Heim (home) → belonging to home.","Porträt"],
+["die Hommage (an)","homage / tribute","b2","o-MAH-zhe","French hommage → a tribute.","Porträt"],
+["der Juryvorsitz","jury chairmanship","b2","ZHUE-ree-for-zits","Jury + Vorsitz (chairmanship: vor + sitzen 'to sit in front').","Porträt"],
+["katholisch","Catholic","b1","ka-TOH-lish","Greek katholikos (universal).","Porträt"],
+["der Kiez","(city) neighbourhood","b2","keets","a North-German/Berlin word for a local quarter.","Porträt"],
+["der Kinofilm","cinema film","b1","KEE-no-film","Kino (cinema) + Film.","Porträt"],
+["die Kinokasse","box office","b2","KEE-no-kah-se","Kino + Kasse (till/cash desk).","Porträt"],
+["die Kleinkriminellenstudie","study on petty criminals","b2","KLYNE-kri-mi-nel-len-shtoo-dye","klein (small) + Kriminelle (criminals) + Studie (study).","Porträt"],
+["der/die Kneipenbesitzer/in","pub owner","b2","KNY-pen-buh-zit-ser","Kneipe (pub) + Besitzer (owner).","Porträt"],
+["kommerziell","commercial","b2","ko-mer-TSYEL","from Kommerz (commerce).","Porträt"],
+["der Langspielfilm","feature-length film","b2","LAHNG-shpeel-film","lang (long) + Spielfilm (feature film).","Porträt"],
+["der Lebensweg","life path / journey","b2","LAY-bens-vayk","Leben (life) + Weg (path).","Porträt"],
+["das Melodram","melodrama","b2","me-lo-DRAHM","Greek melos (song) + drama.","Porträt"],
+["das Migrationsdrama","migration drama","b2","mi-gra-TSYOHNS-drah-ma","Migration + Drama.","Porträt"],
+["das Milieu","milieu / social setting","b2","mi-LYUR","French milieu (middle/environment).","Porträt"],
+["der/die Muslim/in","Muslim","b1","MOOS-lim","Arabic loanword.","Porträt"],
+["passioniert","passionate / keen","b2","pah-syo-NEERT","from Passion (passion), Latin passio.","Porträt"],
+["der/die Produzent/in","producer","b1","pro-du-TSENT","Latin producere (to bring forth).","Porträt"],
+["der/die Regisseur/in","director","b2","re-zhi-SUR","French régisseur → stage/film director.","Porträt"],
+["die Scheinehe","sham marriage","b2","SHYNE-ay-e","Schein (appearance/pretence) + Ehe (marriage).","Porträt"],
+["schmerzlos","painless","b2","SHMAIRTS-los","Schmerz (pain) + -los (without).","Porträt"],
+["der Spielfilm","feature film","b1","SHPEEL-film","Spiel (play) + Film → a fictional film.","Porträt"],
+["stets","always / constantly","b2","shtayts","related to stetig (steady) → steadily, ever.","Porträt"],
+["treu (treu bleiben)","loyal / faithful","b1","troy","related to Treue (loyalty) and English 'true'.","Porträt"],
+["die Trophäe","trophy","b2","tro-FAY-e","Greek tropaion (a monument to victory).","Porträt"],
+["visuell","visual","b2","vi-zu-EL","Latin visus (sight).","Porträt"],
+["voller","full of","b1","FOL-ler","from voll (full) → brimming with.","Porträt"],
+["das Vorbild","role model","b1","FOR-bilt","vor (before) + Bild (image) → an image to hold before you.","Porträt"],
+// ===== Grammatik =====
+["der Nonsens","nonsense","b2","NON-zens","non- (not) + Sens (sense) → not making sense.","Grammatik"],
+["unerwartet","unexpected","b2","UN-air-var-tet","un- (not) + erwartet (expected).","Grammatik"],
+];
+
+const SENTENCES = [
+ ["Ich bin letztes Jahr nach Australien ausgewandert.","I emigrated to Australia last year.","Example sentence"],
+ ["Meine Entscheidung habe ich nie bereut.","I have never regretted my decision.","Example sentence"],
+ ["Der Anfang in einem neuen Land ist ganz schön schwierig.","The start in a new country is quite difficult.","Example sentence"],
+ ["Die Schweiz hat vier offizielle Landessprachen.","Switzerland has four official national languages.","Example sentence"],
+ ["Jede Kultur hat ihre eigenen Spielregeln.","Every culture has its own rules.","Example sentence"],
+ ["Ich habe schnell neue Freunde gefunden.","I quickly found new friends.","Example sentence"],
+ ["Eine Auslandserfahrung erweitert einfach den Horizont.","An experience abroad simply broadens your horizons.","Example sentence"],
+ ["Ich warte seit Monaten sehnsüchtig auf ihren Besuch.","I have been waiting longingly for her visit for months.","Example sentence"],
+];
+
+const cleanDE = s => s.replace(/\s*\(.*?\)\s*/g," ").replace(/\s+/g," ").trim();
+document.getElementById("totn").textContent = VOCAB.length;
+const MODULES = [...new Set(VOCAB.map(v=>v[5]))];
+
+/* nav */
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("on"));document.getElementById(b.dataset.t).classList.add("on");
+  stop();
+}));
+
+/* voices */
+let deVoice=null, enVoice=null, voices=[];
+function loadVoices(){
+  voices=speechSynthesis.getVoices();
+  const sel=document.getElementById("voicesel");
+  const de=voices.filter(v=>/de(-|_)|german|deutsch/i.test(v.lang+" "+v.name));
+  enVoice=voices.find(v=>/^en(-|_)/i.test(v.lang))||null;
+  sel.innerHTML = de.length? de.map((v,i)=>`<option value="${voices.indexOf(v)}">${v.name}</option>`).join("")
+                            : `<option value="-1">(no German voice found)</option>`;
+  deVoice = de[0]||null;
+  sel.onchange=()=>{ const i=+sel.value; deVoice = i>=0?voices[i]:null; };
+  if(!de.length){ document.getElementById("voicenote").innerHTML="⚠ No German voice is installed on this device, so words may sound English. On Android: Settings → Languages → Text-to-speech → install German. On iPhone: Settings → Accessibility → Spoken Content → Voices → add Deutsch. Everything else still works."; }
+}
+speechSynthesis.onvoiceschanged=loadVoices; loadVoices();
+
+/* build listening list with module filter */
+let activeMod="All";
+function buildChips(){
+  const row=document.getElementById("modchips");
+  const opts=["All","Example sentences",...MODULES];
+  row.innerHTML=opts.map(o=>`<span class="chip${o==="All"?" active":""}" data-m="${o}">${o}</span>`).join("");
+  row.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{
+    row.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));c.classList.add("active");
+    activeMod=c.dataset.m; stop(); buildList(); setNow(0,true);
+  }));
+}
+let LIST=[];
+function buildList(){
+  if(activeMod==="Example sentences") LIST=SENTENCES.map(s=>[s[0],s[1],"",""]);
+  else if(activeMod==="All") LIST=VOCAB.map(v=>[v[0],v[1],v[3],v[4]]);
+  else LIST=VOCAB.filter(v=>v[5]===activeMod).map(v=>[v[0],v[1],v[3],v[4]]);
+}
+buildChips(); buildList();
+
+/* player */
+let idx=0, playing=false, cancelFlag=false;
+function setNow(i,resetOnly){
+  const it=LIST[i]; if(!it)return;
+  document.getElementById("nowidx").textContent=(activeMod==="All"?"Word":activeMod)+" "+(i+1)+" / "+LIST.length;
+  document.getElementById("nowde").textContent=it[0];
+  document.getElementById("nowpron").textContent=it[2]?("/ "+it[2]+" /"):"";
+  document.getElementById("nowen").textContent=it[1];
+  document.getElementById("nowwhy").innerHTML=it[3]?("Why: "+it[3]):"";
+  document.getElementById("pbar").style.width=((i+1)/LIST.length*100)+"%";
+}
+function speakUtt(text,lang,voice,rate,cb){
+  const u=new SpeechSynthesisUtterance(text); u.lang=lang; if(voice)u.voice=voice; u.rate=rate; u.pitch=1;
+  u.onend=()=>{ if(!cancelFlag) cb&&cb(); };
+  u.onerror=()=>{ if(!cancelFlag) cb&&cb(); };
+  speechSynthesis.speak(u);
+}
+function playCurrent(){
+  if(!playing) return;
+  const it=LIST[idx]; if(!it){ stop(); return; }
+  setNow(idx);
+  const rate=+document.getElementById("speed").value;
+  const deen=document.getElementById("deen").checked;
+  const twice=document.getElementById("twice").checked;
+  const advance=()=>{ if(!playing) return; setTimeout(()=>{ if(!playing) return;
+      idx++; if(idx>=LIST.length){ if(document.getElementById("loop").checked){ idx=0; } else { stop(); return; } }
+      playCurrent();
+    }, 350); };
+  const sayEn=()=> deen ? speakUtt(it[1],"en-US",enVoice,Math.min(rate+0.05,1.0),advance) : advance();
+  const sayDe2=()=> twice ? speakUtt(cleanDE(it[0]),"de-DE",deVoice,rate,sayEn) : sayEn();
+  speakUtt(cleanDE(it[0]),"de-DE",deVoice,rate,sayDe2);
+}
+function togglePlay(){
+  if(playing){ stop(); }
+  else { playing=true; cancelFlag=false; document.getElementById("playbtn").textContent="⏸"; playCurrent(); }
+}
+function stop(){ playing=false; cancelFlag=true; speechSynthesis.cancel(); const b=document.getElementById("playbtn"); if(b)b.textContent="▶"; }
+function next(){ stop(); idx=Math.min(idx+1,LIST.length-1); setNow(idx); }
+function prev(){ stop(); idx=Math.max(idx-1,0); setNow(idx); }
+function repeatOne(){ stop(); playing=true; cancelFlag=false; document.getElementById("playbtn").textContent="⏸";
+  const it=LIST[idx]; const rate=+document.getElementById("speed").value;
+  speakUtt(cleanDE(it[0]),"de-DE",deVoice,rate,()=>{ if(document.getElementById("deen").checked) speakUtt(it[1],"en-US",enVoice,rate,()=>stop()); else stop(); }); }
+setNow(0,true);
+
+/* ---- SPEAK MODE ---- */
+let sDir="de", sIdx=0, sOrder=[];
+function shuffleSpeak(){ sOrder=VOCAB.map((v,i)=>i).sort(()=>Math.random()-.5); sIdx=0; }
+shuffleSpeak();
+document.querySelectorAll("[data-dir]").forEach(c=>c.addEventListener("click",()=>{
+  document.querySelectorAll("[data-dir]").forEach(x=>x.classList.remove("active"));c.classList.add("active");
+  sDir=c.dataset.dir; renderSpeak();
+}));
+function renderSpeak(){
+  const v=VOCAB[sOrder[sIdx]];
+  document.getElementById("sanswer").classList.remove("show");
+  if(sDir==="de"){
+    document.getElementById("sprompt").textContent="Say the English meaning aloud";
+    document.getElementById("sbig").textContent=v[0];
+    document.getElementById("spron").textContent="/ "+v[3]+" /";
+  } else {
+    document.getElementById("sprompt").textContent="Say it in German aloud";
+    document.getElementById("sbig").textContent=v[1];
+    document.getElementById("spron").textContent="";
+  }
+  document.getElementById("sade").textContent=v[0];
+  document.getElementById("saen").textContent=v[1];
+  document.getElementById("sawhy").textContent="Why: "+v[4];
+}
+function hearIt(){ const v=VOCAB[sOrder[sIdx]]; speechSynthesis.cancel();
+  speakUtt(cleanDE(v[0]),"de-DE",deVoice,+document.getElementById("speed").value||0.85,null); }
+function reveal(){ document.getElementById("sanswer").classList.add("show"); const v=VOCAB[sOrder[sIdx]];
+  speechSynthesis.cancel(); speakUtt(cleanDE(v[0]),"de-DE",deVoice,0.85,null); }
+function nextSpeak(){ speechSynthesis.cancel(); sIdx++; if(sIdx>=sOrder.length) shuffleSpeak(); renderSpeak(); }
+renderSpeak();
+</script>
+</body>
+</html>
