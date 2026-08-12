@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aspekte B2 · Kapitel 1 — Satzbau (drag &amp; drop)</title>
+<style>
+  :root{--navy:#1f3864;--blue:#2e5496;--accent:#c0392b;--green:#2e8b57;--orange:#d97706;--bg:#eef3f9;--line:#d6deea;--grey:#5a6270;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:#1b2330;line-height:1.5;padding-bottom:50px;}
+  header{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:24px 20px 18px;text-align:center;}
+  header .kicker{letter-spacing:.14em;font-size:.7rem;text-transform:uppercase;opacity:.85;}
+  header h1{font-size:1.5rem;margin:6px 0 3px;}
+  header .sub{opacity:.9;font-size:.86rem;font-style:italic;}
+  .wrap{max-width:840px;margin:0 auto;padding:0 16px;}
+  .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0 6px;justify-content:center;}
+  .filters select{border:1px solid var(--line);border-radius:8px;padding:8px 11px;font-size:.85rem;font-weight:600;color:var(--navy);background:#fff;}
+  .filters label{font-size:.83rem;color:var(--grey);display:flex;align-items:center;gap:5px;}
+  .progress{display:flex;align-items:center;gap:10px;margin:10px 0;}
+  .bar{flex:1;height:9px;background:#e7edf6;border-radius:999px;overflow:hidden;}
+  .bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),#4fb37a);transition:width .3s;}
+  .pcount{font-size:.82rem;color:var(--grey);white-space:nowrap;}
+  .box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 2px 8px rgba(20,40,80,.06);}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;}
+  .tag{font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:999px;background:#eef3f9;color:var(--navy);}
+  .tag.mod{background:#e5f1ff;color:#1c5aa8;}
+  .tags.hidden{display:none;}
+  .hintline{font-size:.85rem;color:var(--grey);min-height:20px;margin:2px 0 8px;}
+  .tray{display:flex;flex-wrap:wrap;gap:8px;padding:14px;background:#f7faff;border:2px dashed var(--blue);border-radius:12px;min-height:58px;margin-bottom:10px;align-content:flex-start;}
+  .bank{display:flex;flex-wrap:wrap;gap:8px;padding:14px;background:#fff;border:1px solid var(--line);border-radius:12px;min-height:58px;margin-bottom:6px;}
+  .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--grey);font-weight:700;margin:2px 0;}
+  .chip{background:var(--navy);color:#fff;padding:9px 13px;border-radius:9px;font-size:1rem;font-weight:600;cursor:grab;user-select:none;border:none;}
+  .chip:active{cursor:grabbing;} .chip.dragging{opacity:.4;} .chip.sel{outline:3px solid #ffd35c;}
+  .endmark{align-self:center;font-size:1.3rem;font-weight:800;color:var(--navy);padding:0 4px;}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+  .btn{border:none;color:#fff;padding:10px 16px;border-radius:9px;font-weight:700;font-size:.86rem;cursor:pointer;}
+  .btn.check{background:var(--accent);} .btn.clear{background:#8b93a1;} .btn.hint{background:var(--blue);} .btn.rev{background:#6b7280;} .btn.next{background:var(--green);}
+  .fb{font-weight:700;font-size:.92rem;margin-top:10px;min-height:22px;} .fb.ok{color:var(--green);} .fb.no{color:var(--accent);}
+  .solution{margin-top:8px;font-size:1.1rem;display:none;}
+  .solution.show{display:block;}
+  .solution .w-v{color:var(--green);font-weight:800;}   /* finite verb */
+  .solution .w-e{color:var(--orange);font-weight:800;}  /* end verb part */
+  .solution .w-n{color:var(--accent);font-weight:800;}  /* negation */
+  .solution .w-s{color:var(--blue);font-weight:800;}    /* subordinator */
+  .legend{font-size:.75rem;color:var(--grey);margin-top:6px;}
+  .legend b{padding:0 3px;border-radius:3px;}
+  footer{max-width:840px;margin:22px auto 0;padding:0 16px;color:var(--grey);font-size:.78rem;text-align:center;}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">Aspekte neu · B2 (Band 1) · Kapitel 1</div>
+  <h1>🧩 Satzbau — jumbled sentences</h1>
+  <div class="sub">Drag the words into the right order · <span id="tot"></span> German B2 sentences · grammar highlighted</div>
+</header>
+
+<div class="wrap">
+  <div class="filters">
+    <label>Module <select id="fmod"></select></label>
+    <label>Grammar focus <select id="ffocus"></select></label>
+    <label><input type="checkbox" id="hideTags"> Hide grammar tags</label>
+    <label><input type="checkbox" id="shuffleAll" checked> Shuffle order</label>
+  </div>
+  <div class="progress"><div class="bar"><span id="bar"></span></div><div class="pcount" id="pcount"></div></div>
+
+  <div class="box">
+    <div class="tags" id="tags"></div>
+    <div class="hintline" id="hint"></div>
+
+    <div class="lbl">Your sentence — drop words here (drag or tap)</div>
+    <div class="tray" id="tray"></div>
+    <div class="lbl">Word bank</div>
+    <div class="bank" id="bank"></div>
+
+    <div class="btns">
+      <button class="btn check" onclick="check()">✓ Check</button>
+      <button class="btn hint" onclick="hint()">💡 Hint (first word)</button>
+      <button class="btn rev" onclick="revealSol()">👁️ Reveal</button>
+      <button class="btn clear" onclick="clearTray()">↺ Clear</button>
+      <button class="btn next" onclick="nextItem()">Next →</button>
+    </div>
+    <div class="fb" id="fb"></div>
+    <div class="solution" id="solution"></div>
+    <div class="legend">Highlights: <b style="color:var(--green)">finite verb</b> · <b style="color:var(--orange)">verb part at the end (Satzklammer)</b> · <b style="color:var(--accent)">Negation</b> · <b style="color:var(--blue)">Nebensatz-Konjunktion</b></div>
+  </div>
+
+  <footer>All sentences are original examples using the Kapitel 1 vocabulary. Grammar is detected automatically to emphasise German word order (Verbklammer), negation, and subordinate clauses.</footer>
+</div>
+
+<script>
+const VOCAB = [
+// ===== Auftakt =====
+["die Heimat","home / homeland","b1","HY-maht","Heim (home) + old suffix -at → the place you belong to.","Auftakt"],
+["das Heimweh","homesickness","b1","HYM-vay","Heim (home) + Weh (ache) → a 'home-ache'.","Auftakt"],
+["die Vorstellung","idea / notion (also: performance)","b1","FOR-shtel-lung","vor (before) + stellen (to place) → to place before the mind.","Auftakt"],
+["das Zitat","quotation","b1","tsi-TAHT","Latin citare (to cite/summon) → a cited saying.","Auftakt"],
+["das Fernweh","wanderlust","b2","FERN-vay","fern (far) + Weh (ache) → an 'ache for far away', the opposite of Heimweh.","Auftakt"],
+// ===== Modul 1 =====
+["der Arbeitsvertrag","employment contract","b1","AR-bytes-fair-trahk","Arbeit (work) + Vertrag (contract).","Modul 1"],
+["auflösen (eine Wohnung)","to give up / clear out (a flat)","b2","OWF-lur-zen","auf + lösen (to loosen/dissolve) → you 'dissolve' the household.","Modul 1"],
+["beantragen","to apply for","b2","buh-AHN-trah-gen","be- + Antrag (application) → to file an application.","Modul 1"],
+["eröffnen (ein Konto)","to open (an account)","b1","air-URF-nen","er- + öffnen (to open).","Modul 1"],
+["der Handyvertrag","mobile-phone contract","b1","HEN-dee-fair-trahk","Handy (German for cell phone) + Vertrag.","Modul 1"],
+["knüpfen (Kontakte)","to make / tie (contacts)","b2","KNUEP-fen","knüpfen literally = to tie a knot → you 'tie' new connections.","Modul 1"],
+["der Kontakt","contact","b1","kon-TAHKT","Latin contactus (a touching).","Modul 1"],
+["der Mietvertrag","tenancy agreement","b1","MEET-fair-trahk","Miete (rent) + Vertrag.","Modul 1"],
+["der/die Nachmieter/in","successor tenant","b2","NAHKH-mee-ter","nach (after) + Mieter (tenant) → the 'after-tenant'.","Modul 1"],
+["abenteuerlich","adventurous","b2","AH-ben-toy-er-likh","Abenteuer (adventure) + -lich.","Modul 1"],
+["die Arbeitserlaubnis","work permit","b2","AR-bytes-er-lowp-nis","Arbeit + Erlaubnis (permission, from erlauben 'to allow').","Modul 1"],
+["aufgeregt","excited / nervous","b2","OWF-guh-rekt","auf + regen (to stir) → 'stirred up' inside.","Modul 1"],
+["die Auslandserfahrung","experience abroad","b2","OWS-lahnts-er-fah-rung","Ausland (abroad) + Erfahrung (experience).","Modul 1"],
+["auswandern (nach)","to emigrate","b1","OWS-van-dern","aus (out) + wandern (to wander) → to 'wander out' of the country.","Modul 1"],
+["bereuen","to regret","b2","buh-ROY-en","linked to Reue (remorse) → 'to feel rue'.","Modul 1"],
+["der Blog","blog","b1","blog","English loan (web + log).","Modul 1"],
+["einleben (sich)","to settle in","b2","YN-lay-ben","ein (in) + leben (to live) → to 'live your way into' a place.","Modul 1"],
+["die Erfahrung (machen)","experience (to have one)","b1","air-FAH-rung","erfahren (to find out), root fahren (to travel) → gathered by 'travelling through' life.","Modul 1"],
+["erweitern (den Horizont)","to broaden (one's horizons)","b2","air-VY-tern","weit (wide) + er- → to make wider.","Modul 1"],
+["gestresst (von)","stressed","b1","guh-SHTREST","from Stress (English loan) → put under stress.","Modul 1"],
+["der/die Grafiker/in","graphic designer","b1","GRAH-fi-ker","Grafik (graphics) + -er.","Modul 1"],
+["der Horizont (erweitern)","horizon","b1","ho-ri-TSONT","Greek horizon (the bounding circle) → the limit of your view.","Modul 1"],
+["leichtfallen","to be easy (for sb)","b2","LYKHT-fah-len","leicht (easy/light) + fallen (to fall) → something 'falls easily' to you.","Modul 1"],
+["machen (die Erfahrung)","to make / have (an experience)","b1","MAH-khen","general 'to do/make'; here you 'make' an experience.","Modul 1"],
+["mittlerweile","meanwhile / by now","b2","MIT-ler-vy-le","mittler (middle) + Weile (while) → in the middle-while.","Modul 1"],
+["netterweise","kindly (nice of them)","b2","NET-ter-vy-ze","nett (nice) + -erweise (in a ... manner).","Modul 1"],
+["riskieren","to risk","b1","ris-KEE-ren","from Risiko (risk), Italian loan.","Modul 1"],
+["schaffen","to manage / pull off","b1","SHAH-fen","to create/manage → to succeed in doing something.","Modul 1"],
+["sehnsüchtig (nach)","longing / yearning","b2","ZAYN-zuekh-tikh","Sehnsucht (longing: sehnen 'to yearn' + Sucht 'craving') + -ig.","Modul 1"],
+["spontan","spontaneous","b1","shpon-TAHN","Latin spontaneus (of free will).","Modul 1"],
+["wagen","to dare","b2","VAH-gen","related to Wagnis (a venture) → to venture / take a chance.","Modul 1"],
+["die Wohnungssuche","flat-hunting","b2","VOH-nungs-zoo-khe","Wohnung (flat) + Suche (search).","Modul 1"],
+["zwischendurch","in between (times)","b2","TSVISH-en-doorkh","zwischen (between) + durch (through) → now and then.","Modul 1"],
+["empfinden","to feel / perceive","b2","emp-FIN-den","emp- + finden (to find) → to 'find' a feeling within.","Modul 1"],
+["die Faustregel","rule of thumb","b2","FOWST-ray-gel","Faust (fist) + Regel (rule) → a rough 'fist rule'.","Modul 1"],
+["die Merkformel","memory formula (mnemonic)","b2","MAIRK-for-mel","merken (to note/remember) + Formel (formula).","Modul 1"],
+["die Position","position","b1","po-zi-TSYOHN","Latin positio (a placing).","Modul 1"],
+["ständig","constant(ly)","b1","SHTEN-dikh","from Stand (a standing state) + -ig → continuously.","Modul 1"],
+["zerschneiden","to cut up","b2","tsair-SHNY-den","zer- (apart) + schneiden (to cut) → cut to pieces.","Modul 1"],
+// ===== Modul 2 =====
+["die Landessprache","national language","b2","LAHN-des-shprah-khe","Land (country) + Sprache (language).","Modul 2"],
+["die Amtssprache","official language","b2","AHMTS-shprah-khe","Amt (office/authority) + Sprache → the language of officialdom.","Modul 2"],
+["anerkennen","to recognize officially","b2","AHN-air-ken-nen","an + erkennen (to recognize) → to formally acknowledge.","Modul 2"],
+["die Elite","elite","b1","e-LEE-te","French élite (the chosen ones).","Modul 2"],
+["die Identität","identity","b1","i-den-ti-TAYT","Latin idem (the same) → your 'sameness', your self.","Modul 2"],
+["komplex","complex","b1","kom-PLEKS","Latin complexus (interwoven).","Modul 2"],
+["konfrontieren (mit)","to confront","b2","kon-fron-TEE-ren","Latin con + frons (front/forehead) → to face head-on.","Modul 2"],
+["multikulturell","multicultural","b1","mul-ti-kul-tu-REL","multi (many) + kulturell (cultural).","Modul 2"],
+["das Parlament","parliament","b1","par-la-MENT","French parler (to speak) → the 'speaking' assembly.","Modul 2"],
+["der Sachverhalt","state of affairs / the facts","b2","ZAHKH-fair-halt","Sache (matter) + Verhalt (how it is held) → how a matter stands.","Modul 2"],
+["trösten","to comfort / console","b2","TRUR-sten","related to Trost (consolation).","Modul 2"],
+["die Vertrautheit","familiarity","b2","fair-TROWT-hyte","vertraut (familiar, from trauen 'to trust') + -heit.","Modul 2"],
+["die Verwaltungssprache","administrative language","b2","fair-VAHL-tungs-shprah-khe","Verwaltung (administration) + Sprache.","Modul 2"],
+["die Vielfalt","diversity","b2","FEEL-falt","viel (many) + -falt (fold, from falten) → 'many folds', variety.","Modul 2"],
+["vielsprachig","multilingual","b2","FEEL-shprah-khikh","viel (many) + Sprache + -ig → 'many-languaged'.","Modul 2"],
+["das Landesgesetz","national law","b2","LAHN-des-guh-zets","Land (country) + Gesetz (law).","Modul 2"],
+["die Vielsprachigkeit","multilingualism","b2","FEEL-shprah-khikh-kyte","vielsprachig + -keit (noun ending).","Modul 2"],
+["das Alltagsprodukt","everyday product","b2","AHL-tahks-pro-dukt","Alltag (everyday) + Produkt.","Modul 2"],
+["amtlich","official","b2","AHMT-likh","Amt (office) + -lich → pertaining to office.","Modul 2"],
+["beherrschen (eine Sprache)","to master (a language)","b2","buh-HAIR-shen","be- + herrschen (to rule), Herr (master) → to have mastery over.","Modul 2"],
+["die Bekanntmachung","announcement / notice","b2","buh-KAHNT-mah-khung","bekannt (known) + machen → the act of making known.","Modul 2"],
+["beschriften","to label / write on","b2","buh-SHRIF-ten","be- + Schrift (writing) → to put writing on something.","Modul 2"],
+["betreffen","to concern / affect","b2","buh-TREF-fen","be- + treffen (to hit/meet) → to touch upon.","Modul 2"],
+["einheitlich","uniform / standardized","b2","YN-hyte-likh","Einheit (unit/unity) + -lich → of one unit.","Modul 2"],
+["fälschlicherweise","mistakenly","b2","FELSH-likh-er-vy-ze","falsch (wrong) + -licherweise → in a wrong manner.","Modul 2"],
+["der Flyer","flyer","b1","FLY-er","English loan.","Modul 2"],
+["die Geschäftsbeziehung","business relationship","b2","guh-SHEFTS-buh-tsee-ung","Geschäft (business) + Beziehung (relationship).","Modul 2"],
+["die Geschäftsverhandlung","business negotiation","b2","guh-SHEFTS-fair-hahnd-lung","Geschäft (business) + Verhandlung (negotiation).","Modul 2"],
+["jedoch","however","b1","yay-DOKH","je + doch → yet, nevertheless.","Modul 2"],
+["die Konferenz","conference","b1","kon-fe-RENTS","Latin conferre (to bring together).","Modul 2"],
+["das Platzproblem","space problem","b2","PLAHTS-pro-blaym","Platz (space/room) + Problem.","Modul 2"],
+["sämtlich","all / entire","b2","ZEMT-likh","related to samt (together with) → all together.","Modul 2"],
+["die Sitzung","meeting / session","b1","ZIT-tsung","from sitzen (to sit) → a 'sitting'.","Modul 2"],
+["die Sprachenvielfalt","linguistic diversity","b2","SHPRAH-khen-feel-falt","Sprachen (languages) + Vielfalt (diversity).","Modul 2"],
+["das Sprachgebiet","language area","b2","SHPRAHKH-guh-beet","Sprache + Gebiet (area/territory).","Modul 2"],
+["die Sprachregion","language region","b2","SHPRAHKH-re-gyohn","Sprache + Region.","Modul 2"],
+["das Verkehrsschild","traffic sign","b1","fair-KAIRS-shilt","Verkehr (traffic) + Schild (sign).","Modul 2"],
+["veröffentlichen","to publish","b2","fair-URF-ent-likh-en","ver- + öffentlich (public) → to make public.","Modul 2"],
+["die Verpackung","packaging","b1","fair-PAH-kung","ver- + packen (to pack) → the wrapping.","Modul 2"],
+["voraussetzen","to presuppose / require","b2","for-OWS-zets-en","voraus (ahead) + setzen (to set) → to set as a precondition.","Modul 2"],
+["der Wandel","change","b2","VAHN-del","from wandeln (to transform), related to wandern → a shift.","Modul 2"],
+["die Webseite","web page","b1","VEP-zy-te","Web (English) + Seite (page).","Modul 2"],
+["die Auffassung","view / opinion","b2","OWF-fah-sung","auffassen (to grasp): auf + fassen (to seize) → how you 'grasp' something.","Modul 2"],
+["entscheidend","decisive","b2","ent-SHY-dent","from entscheiden (to decide) → 'deciding'.","Modul 2"],
+["erstaunlich","astonishing","b2","air-SHTOWN-likh","erstaunen (to astonish), Staunen (amazement) + -lich.","Modul 2"],
+["geteilt (geteilter Meinung)","divided (of two minds)","b2","guh-TYLT","from teilen (to divide/split) → split.","Modul 2"],
+["hilfreich (bei)","helpful","b1","HILF-rykh","Hilfe (help) + reich (rich) → 'rich in help'.","Modul 2"],
+["die Mehrsprachigkeit","multilingualism","b2","MAIR-shprah-khikh-kyte","mehr (more) + sprachig + -keit.","Modul 2"],
+["nützlich (für)","useful","b1","NUETS-likh","Nutzen (use/benefit) + -lich.","Modul 2"],
+["die Seite (auf der einen)","side (on the one hand)","b1","ZY-te","a side/page; 'auf der einen Seite' = on the one hand.","Modul 2"],
+["die Sicht (aus meiner)","view / perspective","b2","zikht","from sehen (to see) → what is seen, one's viewpoint.","Modul 2"],
+// ===== Modul 3 =====
+["missverständlich","ambiguous / misleading","b2","MISS-fair-shtent-likh","miss- (wrong) + verständlich (understandable) → easily misunderstood.","Modul 3"],
+["das Abteil","(train) compartment","b2","ahp-TYLE","from abteilen (to partition): ab + Teil → a partitioned space.","Modul 3"],
+["missverstehen","to misunderstand","b2","miss-fair-SHTAY-en","miss- (wrong) + verstehen (to understand).","Modul 3"],
+["peinlich","embarrassing","b2","PYNE-likh","from Pein (pain/torment) + -lich → painfully awkward.","Modul 3"],
+["der Abstand","distance / gap","b2","AHP-shtahnt","ab + Stand (standing) → how far things stand apart.","Modul 3"],
+["die Art (Fragen jeglicher Art)","kind / manner","b1","art","a type or way of doing things.","Modul 3"],
+["äußerst","extremely","b2","OY-serst","superlative of außen (outside) → to the outermost degree.","Modul 3"],
+["bedenken","to consider","b2","buh-DEN-ken","be- + denken (to think) → to think something over.","Modul 3"],
+["der/die Begleiter/in","companion","b2","buh-GLY-ter","begleiten (to accompany): be + leiten (to lead) → one who goes along.","Modul 3"],
+["breit (ein breites Lächeln)","broad / wide","b1","bryte","wide; a 'broad' smile.","Modul 3"],
+["die Freundlichkeit","friendliness","b1","FROYNT-likh-kyte","freundlich (friendly, from Freund 'friend') + -keit.","Modul 3"],
+["das Gegenüber","the person opposite / counterpart","b2","gay-gen-UE-ber","gegenüber (opposite): gegen (against) + über (over) → the one facing you.","Modul 3"],
+["jeglich","any / each","b2","YAYK-likh","old form of jed- (each) → any at all.","Modul 3"],
+["das Lächeln","smile","b1","LEKH-eln","from lächeln (to smile), a gentle form of lachen (to laugh).","Modul 3"],
+["die Öffentlichkeit","the public","b2","URF-ent-likh-kyte","öffentlich (public, from offen 'open') + -keit → openness to all.","Modul 3"],
+["die Privatsphäre","privacy","b2","pri-VAHT-sfay-re","privat (private) + Sphäre (sphere) → one's private sphere.","Modul 3"],
+["stellen (eine Frage)","to pose (a question)","b1","SHTEL-len","to place/put → to 'put' a question to someone.","Modul 3"],
+["üblich","usual / customary","b2","UEP-likh","from üben/Übung (habit/practice) → what is habitually done.","Modul 3"],
+["die Spielregel","rule (of the game)","b1","SHPEEL-ray-gel","Spiel (game) + Regel (rule).","Modul 3"],
+["die Geste","gesture","b1","GES-te","Latin gestus (bearing/movement of the body).","Modul 3"],
+["alkoholfrei","alcohol-free","b1","AHL-ko-hol-fry","Alkohol + frei (free of).","Modul 3"],
+["atypisch (für)","atypical","b2","AH-tue-pish","a- (not) + typisch (typical).","Modul 3"],
+["das Desinteresse","lack of interest","b2","DES-in-te-res-se","des- (un-) + Interesse (interest).","Modul 3"],
+["disqualifizieren","to disqualify","b2","dis-kva-li-fi-TSEE-ren","dis- (un-) + qualifizieren (to qualify).","Modul 3"],
+["inhaltsleer","devoid of content","b2","IN-hahlts-lair","Inhalt (content) + leer (empty).","Modul 3"],
+["intolerant","intolerant","b1","IN-to-le-rant","in- (not) + tolerant.","Modul 3"],
+["irreal","unreal","b2","IR-re-ahl","ir- (not) + real.","Modul 3"],
+["der/die Nichtschwimmer/in","non-swimmer","b2","NIKHT-shvim-mer","nicht (not) + Schwimmer (swimmer).","Modul 3"],
+["nonverbal","non-verbal","b2","NON-vair-bahl","non- (not) + verbal.","Modul 3"],
+["das Unverständnis","incomprehension","b2","UN-fair-shtent-nis","un- (not) + Verständnis (understanding).","Modul 3"],
+["trennbar","separable","b2","TREN-bar","trennen (to separate) + -bar (-able) → able to be separated.","Modul 3"],
+// ===== Modul 4 =====
+["die Chancengleichheit","equal opportunity","b2","SHAHNG-sen-glykh-hyte","Chance (chance) + Gleichheit (equality).","Modul 4"],
+["der Migrationshintergrund","migration background","b2","mi-gra-TSYOHNS-hin-ter-grunt","Migration + Hintergrund (background: hinter 'behind' + Grund 'ground').","Modul 4"],
+["das Schlüsselwort","keyword","b2","SHLUE-sel-vort","Schlüssel (key) + Wort (word).","Modul 4"],
+["völlig","completely","b1","FUR-likh","from voll (full) → 'fully'.","Modul 4"],
+["die Kindergartenpflicht","compulsory kindergarten","b2","KIN-der-gar-ten-pflikht","Kindergarten + Pflicht (duty/obligation).","Modul 4"],
+["die Schuluniform","school uniform","b1","SHOOL-u-ni-form","Schule (school) + Uniform.","Modul 4"],
+["eingehen (auf)","to respond to / go into","b2","YN-gay-en","ein (in) + gehen (to go) → to 'go into' a point.","Modul 4"],
+["die Einrichtung","institution / facility","b2","YN-rikh-tung","einrichten (to set up): ein + richten → an established facility.","Modul 4"],
+["ermöglichen","to make possible","b2","air-MURG-likh-en","er- + möglich (possible) → to enable.","Modul 4"],
+["die Lehrkraft","teacher (teaching staff)","b2","LAIR-kraft","Lehre (teaching) + Kraft (force/worker) → a teaching staff member.","Modul 4"],
+["die Migrantenfamilie","migrant family","b2","mi-GRAHN-ten-fa-mee-lye","Migrant + Familie.","Modul 4"],
+["das Migrantenkind","migrant child","b2","mi-GRAHN-ten-kint","Migrant + Kind (child).","Modul 4"],
+["der/die Pate/Patin","godparent / mentor","b2","PAH-te","Latin patrinus → a sponsor or mentor.","Modul 4"],
+["der/die Senior/in","senior (elderly person)","b1","ZAY-ni-or","Latin senior (older).","Modul 4"],
+["sinnvoll","sensible / meaningful","b1","ZIN-fol","Sinn (sense/meaning) + voll (full) → 'full of sense'.","Modul 4"],
+["der/die Zugewanderte","newcomer / immigrant","b2","TSOO-guh-van-der-te","zugewandert (migrated here): zu + gewandert → one who has moved here.","Modul 4"],
+["anfügen","to add / attach","b2","AHN-fue-gen","an + fügen (to join) → to attach.","Modul 4"],
+["ausbremsen","to slow down / block","b2","OWS-brem-zen","aus + bremsen (to brake) → to brake someone's progress.","Modul 4"],
+["die Ausländerquote","foreigner quota","b2","OWS-len-der-kvoh-te","Ausländer (foreigner) + Quote (quota).","Modul 4"],
+["der Automobilhersteller","car manufacturer","b2","ow-to-mo-BEEL-hair-shtel-ler","Automobil + Hersteller (maker, from herstellen 'to produce').","Modul 4"],
+["die Betriebswirtschaft","business administration","b2","buh-TREEPS-virt-shaft","Betrieb (business/operation) + Wirtschaft (economy).","Modul 4"],
+["die Diskriminierung","discrimination","b2","dis-kri-mi-NEE-rung","Latin discriminare (to separate/distinguish).","Modul 4"],
+["farbenfroh","colourful","b2","FAR-ben-fro","Farben (colours) + froh (happy) → cheerfully colourful.","Modul 4"],
+["fernliegen","to be far from (one's mind)","b2","FERN-lee-gen","fern (far) + liegen (to lie) → to lie far away.","Modul 4"],
+["das Feuerholz","firewood","b2","FOY-er-holts","Feuer (fire) + Holz (wood).","Modul 4"],
+["flechten","to braid / weave","b2","FLEKH-ten","to plait → to weave strands together.","Modul 4"],
+["führen (ein Geschäft)","to run (a business)","b1","FUE-ren","to lead → to run or manage.","Modul 4"],
+["gelegentlich","occasional(ly)","b2","guh-LAY-gent-likh","from Gelegenheit (occasion) → now and then.","Modul 4"],
+["das Gemüsegeschäft","greengrocer's shop","b2","guh-MUE-ze-guh-sheft","Gemüse (vegetables) + Geschäft (shop).","Modul 4"],
+["der/die Gründer/in","founder","b2","GRUEN-der","gründen (to found), Grund (ground) → one who lays the ground.","Modul 4"],
+["die Hausverwaltung","property management","b2","HOWS-fair-vahl-tung","Haus (house) + Verwaltung (management).","Modul 4"],
+["die Hochschulreife","university entrance qualification","b2","HOKH-shool-ry-fe","Hochschule (university) + Reife (maturity) → readiness for university.","Modul 4"],
+// ===== Porträt (Fatih Akin) =====
+["die Abstammung","descent / ancestry","b2","AHP-shtah-mung","abstammen (to descend): ab + Stamm (tribe/trunk) → your lineage.","Porträt"],
+["der/die Amateur-Boxer/in","amateur boxer","b2","AH-ma-tur-bok-ser","Amateur (French, from amare 'to love') + Boxer.","Porträt"],
+["auszeichnen","to honour / award","b2","OWS-tsykh-nen","aus + zeichnen (to mark/draw) → to single out with a mark of honour.","Porträt"],
+["begehrt (bei)","sought-after","b2","buh-GAIRT","from begehren (to desire) → much desired.","Porträt"],
+["bürgerlich","middle-class / civil","b2","BUER-ger-likh","Bürger (citizen) + -lich → pertaining to citizens.","Porträt"],
+["das Diplom","diploma","b1","di-PLOHM","Greek diploma (a folded document).","Porträt"],
+["der/die Drehbuchautor/in","screenwriter","b2","DRAY-bookh-ow-tor","Drehbuch (screenplay: drehen 'to shoot/film' + Buch 'book') + Autor.","Porträt"],
+["der Drehbuchpreis","screenplay award","b2","DRAY-bookh-prys","Drehbuch + Preis (prize).","Porträt"],
+["der Durchbruch","breakthrough","b2","DOORKH-brukh","durch (through) + Bruch (break) → breaking through.","Porträt"],
+["der/die Einwanderer/in","immigrant","b2","YN-van-der-er","ein (in) + wandern (to wander) → one who wanders in.","Porträt"],
+["entstammen","to originate / descend from","b2","ent-SHTAH-men","ent- + Stamm (stem) → to stem from.","Porträt"],
+["der/die Filmregisseur/in","film director","b2","FILM-re-zhi-sur","Film + Regisseur (French, director).","Porträt"],
+["das Gangsterkino","gangster cinema","b2","GANG-ster-kee-no","Gangster (English) + Kino (cinema).","Porträt"],
+["geprägt (von)","shaped / marked by","b2","guh-PRAYKT","from prägen (to stamp/coin) → 'stamped' by an influence.","Porträt"],
+["gläubig","devout / religious","b2","GLOY-bikh","from glauben (to believe) + -ig → believing.","Porträt"],
+["die Härte","hardness / toughness","b2","HAIR-te","from hart (hard) → harshness.","Porträt"],
+["die Hauptrolle","leading role","b1","HOWPT-rol-le","Haupt (main/head) + Rolle (role).","Porträt"],
+["heimisch","native / local","b2","HY-mish","from Heim (home) → belonging to home.","Porträt"],
+["die Hommage (an)","homage / tribute","b2","o-MAH-zhe","French hommage → a tribute.","Porträt"],
+["der Juryvorsitz","jury chairmanship","b2","ZHUE-ree-for-zits","Jury + Vorsitz (chairmanship: vor + sitzen 'to sit in front').","Porträt"],
+["katholisch","Catholic","b1","ka-TOH-lish","Greek katholikos (universal).","Porträt"],
+["der Kiez","(city) neighbourhood","b2","keets","a North-German/Berlin word for a local quarter.","Porträt"],
+["der Kinofilm","cinema film","b1","KEE-no-film","Kino (cinema) + Film.","Porträt"],
+["die Kinokasse","box office","b2","KEE-no-kah-se","Kino + Kasse (till/cash desk).","Porträt"],
+["die Kleinkriminellenstudie","study on petty criminals","b2","KLYNE-kri-mi-nel-len-shtoo-dye","klein (small) + Kriminelle (criminals) + Studie (study).","Porträt"],
+["der/die Kneipenbesitzer/in","pub owner","b2","KNY-pen-buh-zit-ser","Kneipe (pub) + Besitzer (owner).","Porträt"],
+["kommerziell","commercial","b2","ko-mer-TSYEL","from Kommerz (commerce).","Porträt"],
+["der Langspielfilm","feature-length film","b2","LAHNG-shpeel-film","lang (long) + Spielfilm (feature film).","Porträt"],
+["der Lebensweg","life path / journey","b2","LAY-bens-vayk","Leben (life) + Weg (path).","Porträt"],
+["das Melodram","melodrama","b2","me-lo-DRAHM","Greek melos (song) + drama.","Porträt"],
+["das Migrationsdrama","migration drama","b2","mi-gra-TSYOHNS-drah-ma","Migration + Drama.","Porträt"],
+["das Milieu","milieu / social setting","b2","mi-LYUR","French milieu (middle/environment).","Porträt"],
+["der/die Muslim/in","Muslim","b1","MOOS-lim","Arabic loanword.","Porträt"],
+["passioniert","passionate / keen","b2","pah-syo-NEERT","from Passion (passion), Latin passio.","Porträt"],
+["der/die Produzent/in","producer","b1","pro-du-TSENT","Latin producere (to bring forth).","Porträt"],
+["der/die Regisseur/in","director","b2","re-zhi-SUR","French régisseur → stage/film director.","Porträt"],
+["die Scheinehe","sham marriage","b2","SHYNE-ay-e","Schein (appearance/pretence) + Ehe (marriage).","Porträt"],
+["schmerzlos","painless","b2","SHMAIRTS-los","Schmerz (pain) + -los (without).","Porträt"],
+["der Spielfilm","feature film","b1","SHPEEL-film","Spiel (play) + Film → a fictional film.","Porträt"],
+["stets","always / constantly","b2","shtayts","related to stetig (steady) → steadily, ever.","Porträt"],
+["treu (treu bleiben)","loyal / faithful","b1","troy","related to Treue (loyalty) and English 'true'.","Porträt"],
+["die Trophäe","trophy","b2","tro-FAY-e","Greek tropaion (a monument to victory).","Porträt"],
+["visuell","visual","b2","vi-zu-EL","Latin visus (sight).","Porträt"],
+["voller","full of","b1","FOL-ler","from voll (full) → brimming with.","Porträt"],
+["das Vorbild","role model","b1","FOR-bilt","vor (before) + Bild (image) → an image to hold before you.","Porträt"],
+// ===== Grammatik =====
+["der Nonsens","nonsense","b2","NON-zens","non- (not) + Sens (sense) → not making sense.","Grammatik"],
+["unerwartet","unexpected","b2","UN-air-var-tet","un- (not) + erwartet (expected).","Grammatik"],
+];
+const SENT = [
+["Meine Heimat ist ein kleines Dorf in den Bergen.","Auch nach vielen Jahren im Ausland vermisse ich meine Heimat."],
+["In der ersten Woche im Ausland hatte ich starkes Heimweh.","Gegen das Heimweh telefoniere ich oft mit meiner Familie."],
+["Meine Vorstellung von einem guten Leben ist ganz einfach.","Er hat eine klare Vorstellung von seiner Zukunft."],
+["Dieses Zitat von Goethe gefällt mir besonders gut.","Sie beginnt ihren Vortrag immer mit einem passenden Zitat."],
+["Wenn ich Bilder vom Meer sehe, bekomme ich sofort Fernweh.","Sein Fernweh ist so groß, dass er am liebsten sofort verreisen würde."],
+["Bevor du anfängst, musst du den Arbeitsvertrag unterschreiben.","Mein Arbeitsvertrag ist leider nur auf ein Jahr befristet."],
+["Vor dem Umzug musste sie ihre alte Wohnung auflösen.","Nach dem Tod der Großmutter mussten wir ihre Wohnung auflösen."],
+["Für die Reise muss ich rechtzeitig ein Visum beantragen.","Sie hat bei der Behörde eine neue Aufenthaltserlaubnis beantragt."],
+["Als Erstes wollte er in Deutschland ein Konto eröffnen.","Um ein Konto zu eröffnen, braucht man einen Ausweis."],
+["Mein Handyvertrag läuft nächsten Monat aus.","Er hat seinen Handyvertrag gekündigt, weil er zu teuer war."],
+["Auf der Party konnte ich viele neue Kontakte knüpfen.","Im Ausland ist es wichtig, schnell Kontakte zu knüpfen."],
+["Der Kontakt zu meinen alten Freunden ist mir sehr wichtig.","Nach dem Umzug haben wir den Kontakt leider verloren."],
+["Wir haben gestern endlich den Mietvertrag unterschrieben.","Im Mietvertrag steht, dass Haustiere nicht erlaubt sind."],
+["Wenn du früher ausziehst, brauchst du einen Nachmieter.","Zum Glück haben wir schnell einen netten Nachmieter gefunden."],
+["Seine Reise durch den Dschungel war ziemlich abenteuerlich.","Sie führt ein abenteuerliches Leben und reist um die Welt."],
+["Ohne Arbeitserlaubnis darf man in Deutschland nicht arbeiten.","Es hat lange gedauert, bis ich meine Arbeitserlaubnis bekommen habe."],
+["Vor der Prüfung war ich sehr aufgeregt.","Die Kinder sind vor Weihnachten immer ganz aufgeregt."],
+["Eine Auslandserfahrung sieht im Lebenslauf immer gut aus.","Durch ihre Auslandserfahrung spricht sie heute fließend Spanisch."],
+["Viele junge Leute wollen nach Kanada auswandern.","Aus Liebe ist sie nach Australien ausgewandert."],
+["Ich habe meine Entscheidung nie bereut.","Später hat er es bereut, den Job nicht angenommen zu haben."],
+["In ihrem Blog schreibt sie über das Leben im Ausland.","Sein Blog über gesunde Ernährung hat viele Leser."],
+["Am Anfang ist es schwer, sich in einem neuen Land einzuleben.","Nach ein paar Monaten hatte er sich gut eingelebt."],
+["Im Ausland habe ich viele neue Erfahrungen gemacht.","Aus dieser schlechten Erfahrung habe ich viel gelernt."],
+["Das Reisen hat meinen Horizont sehr erweitert.","Die Firma möchte ihr Angebot im nächsten Jahr erweitern."],
+["Nach der langen Arbeitswoche war sie total gestresst.","Ich bin von dem vielen Lärm ziemlich gestresst."],
+["Als Grafiker gestaltet er Logos und Webseiten.","Sie arbeitet als Grafikerin in einer kleinen Agentur."],
+["Am Morgen ging die Sonne langsam am Horizont auf.","Neue Bücher erweitern den geistigen Horizont."],
+["Mathematik fällt ihm besonders leicht.","Das Sprechen fällt mir leichter als das Schreiben."],
+["Ich habe die Erfahrung gemacht, dass Geduld wichtig ist.","Er hat mit dieser Firma schlechte Erfahrungen gemacht."],
+["Am Anfang war es schwer, aber mittlerweile fühle ich mich wohl.","Mittlerweile spricht sie fast perfekt Deutsch."],
+["Ein Nachbar hat mir netterweise beim Umzug geholfen.","Netterweise hat sie mir ihr Auto geliehen."],
+["Ich möchte meinen sicheren Job nicht riskieren.","Er hat alles riskiert, um seinen Traum zu erfüllen."],
+["Ich bin sicher, dass du die Prüfung schaffst.","Wir haben es geschafft, pünktlich anzukommen."],
+["Sie wartet sehnsüchtig auf den Besuch ihrer Freundin.","Sehnsüchtig denkt er an seine Heimat."],
+["Wir haben ganz spontan einen Ausflug gemacht.","Sie ist ein sehr spontaner Mensch."],
+["Er hat es gewagt, seine Meinung offen zu sagen.","Manchmal muss man etwas Neues wagen."],
+["Die Wohnungssuche in der Großstadt ist sehr schwierig.","Nach langer Wohnungssuche haben wir endlich etwas gefunden."],
+["Ich arbeite viel, aber zwischendurch mache ich kurze Pausen.","Zwischendurch trinke ich gern einen Kaffee."],
+["Viele Menschen empfinden Musik als sehr beruhigend.","Sie empfindet große Freude, wenn sie malt."],
+["Als Faustregel gilt: Trink genug Wasser am Tag.","Eine gute Faustregel ist, immer freundlich zu bleiben."],
+["Mit einer Merkformel kann man sich Regeln leichter merken.","Der Lehrer hat uns eine praktische Merkformel gezeigt."],
+["Bitte stellen Sie das wichtigste Wort an die erste Position.","In seiner neuen Position hat er viel Verantwortung."],
+["Mein Nachbar hört ständig laute Musik.","Sie beschwert sich ständig über das Wetter."],
+["Bitte zerschneiden Sie das Papier in kleine Stücke.","Er hat den Brief aus Wut zerschnitten."],
+["Deutsch ist eine der vier Landessprachen der Schweiz.","In diesem Land gibt es mehrere offizielle Landessprachen."],
+["Die Amtssprache in Österreich ist Deutsch.","Vor Gericht wird nur die Amtssprache verwendet."],
+["Sein Diplom wurde in Deutschland leider nicht anerkannt.","Man sollte die Leistung anderer Menschen anerkennen."],
+["Nur eine kleine Elite konnte damals studieren.","Er gehört zur sportlichen Elite des Landes."],
+["Die Muttersprache ist ein wichtiger Teil unserer Identität.","Im Ausland hat sie ihre kulturelle Identität nicht verloren."],
+["Das ist ein sehr komplexes Thema.","Die Aufgabe war komplexer, als ich gedacht hatte."],
+["Im Ausland wird man oft mit einer fremden Kultur konfrontiert.","Man hat ihn direkt mit den Fakten konfrontiert."],
+["Berlin ist eine sehr multikulturelle Stadt.","In einer multikulturellen Gesellschaft leben viele Kulturen zusammen."],
+["Das Parlament hat ein neues Gesetz beschlossen.","Jeder Kanton in der Schweiz hat sein eigenes Parlament."],
+["Bitte erklären Sie mir den genauen Sachverhalt.","Der Sachverhalt ist komplizierter, als er scheint."],
+["Die Mutter hat ihr weinendes Kind getröstet.","Ein paar liebe Worte können einen oft trösten."],
+["In der Muttersprache fühlt man eine besondere Vertrautheit.","Zwischen den alten Freunden herrschte große Vertrautheit."],
+["Früher war Deutsch die Verwaltungssprache des Landes.","In den Ämtern wird nur die Verwaltungssprache benutzt."],
+["Die sprachliche Vielfalt der Schweiz ist beeindruckend.","Auf dem Markt gibt es eine große Vielfalt an Obst."],
+["Die Schweiz ist ein vielsprachiges Land.","In einer vielsprachigen Familie wachsen Kinder mit mehreren Sprachen auf."],
+["Jedes Landesgesetz gilt nur in einem bestimmten Gebiet.","Das neue Landesgesetz tritt nächstes Jahr in Kraft."],
+["Die Vielsprachigkeit gehört in der Schweiz zum Alltag.","Vielsprachigkeit ist ein großer Vorteil im Berufsleben."],
+["Verpackungen von Alltagsprodukten sind oft mehrsprachig.","Zahnpasta ist ein typisches Alltagsprodukt."],
+["Für den Antrag brauchen Sie ein amtliches Dokument.","Das ist die amtliche Bezeichnung der Stadt."],
+["Sie beherrscht drei Sprachen fließend.","Um hier zu arbeiten, muss man Deutsch gut beherrschen."],
+["An der Tür hing eine offizielle Bekanntmachung.","Die Bekanntmachung wurde in mehreren Sprachen veröffentlicht."],
+["Bitte beschriften Sie alle Kisten vor dem Umzug.","Die Schilder sind auf Deutsch und Französisch beschriftet."],
+["Diese Regel betrifft alle Mitarbeiter.","Das Problem betrifft das ganze Land."],
+["Die Lehrpläne sind nicht überall einheitlich.","Alle Mitarbeiter tragen eine einheitliche Kleidung."],
+["Manche glauben fälschlicherweise, alle Schweizer sprächen vier Sprachen.","Er wurde fälschlicherweise für den Täter gehalten."],
+["In der Stadt hat man mir einen Flyer in die Hand gedrückt.","Der Flyer für das Konzert ist sehr bunt gestaltet."],
+["Unsere Firma pflegt gute Geschäftsbeziehungen ins Ausland.","Eine langjährige Geschäftsbeziehung beruht auf Vertrauen."],
+["Bei der Geschäftsverhandlung sprachen alle Englisch.","Die Geschäftsverhandlung dauerte mehrere Stunden."],
+["Ich wollte kommen, jedoch hatte ich keine Zeit.","Das Zimmer ist klein, jedoch sehr gemütlich."],
+["Nächste Woche findet eine internationale Konferenz statt.","Auf der Konferenz hielt sie einen interessanten Vortrag."],
+["In der kleinen Wohnung haben wir ein echtes Platzproblem.","Mehrsprachige Verpackungen können zu einem Platzproblem führen."],
+["Sämtliche Dokumente müssen übersetzt werden.","Er hat sämtliche Bücher von diesem Autor gelesen."],
+["Die Sitzung beginnt pünktlich um neun Uhr.","In der Sitzung wurde über das neue Projekt gesprochen."],
+["Die Sprachenvielfalt macht Europa besonders interessant.","In dieser Region ist die Sprachenvielfalt sehr groß."],
+["Im französischen Sprachgebiet spricht man natürlich Französisch.","Jedes Sprachgebiet hat seine eigenen Traditionen."],
+["Die Schweiz ist in mehrere Sprachregionen aufgeteilt.","In dieser Sprachregion wird Italienisch gesprochen."],
+["Das rote Verkehrsschild bedeutet „Halt“.","In der Schweiz sind viele Verkehrsschilder mehrsprachig."],
+["Die Firma hat die Ergebnisse im Internet veröffentlicht.","Sie hat gerade ihr erstes Buch veröffentlicht."],
+["Die Verpackung dieses Produkts ist aus Papier.","Auf der Verpackung stehen die Informationen in drei Sprachen."],
+["Diese Arbeit setzt gute Deutschkenntnisse voraus.","Man setzt voraus, dass alle die Regeln kennen."],
+["Die Gesellschaft befindet sich in einem ständigen Wandel.","Der digitale Wandel verändert unsere Arbeit stark."],
+["Alle Informationen finden Sie auf unserer Webseite.","Die Webseite ist in vier Sprachen verfügbar."],
+["Ich bin der Auffassung, dass Sprachen sehr wichtig sind.","Nach seiner Auffassung sollte man mehr reisen."],
+["Sprachkenntnisse sind ein entscheidender Vorteil im Beruf.","Seine Hilfe war für unseren Erfolg entscheidend."],
+["Es ist erstaunlich, wie schnell sie Deutsch gelernt hat.","Der Film war erstaunlich gut."],
+["Bei diesem Thema bin ich geteilter Meinung.","Die Klasse war in dieser Frage geteilter Meinung."],
+["Deine Tipps waren beim Umzug sehr hilfreich.","Ein Wörterbuch ist beim Lernen sehr hilfreich."],
+["Die Mehrsprachigkeit hat viele Vorteile.","In dieser Familie ist Mehrsprachigkeit ganz normal."],
+["Diese App ist sehr nützlich für das Vokabellernen.","Fremdsprachen sind für die Karriere sehr nützlich."],
+["Auf der einen Seite ist es teuer, auf der anderen Seite sehr praktisch.","Jede Geschichte hat immer zwei Seiten."],
+["Aus meiner Sicht ist das die beste Lösung.","Aus wirtschaftlicher Sicht ist das Projekt sinnvoll."],
+["Deine Nachricht war leider etwas missverständlich.","Er hat sich missverständlich ausgedrückt."],
+["Im Zug saß ein Mann allein im Abteil.","Wir haben ein ruhiges Abteil für die lange Fahrt gesucht."],
+["Bitte missverstehen Sie mich nicht.","Sie hat meine Frage völlig missverstanden."],
+["Es war mir sehr peinlich, dass ich den Namen vergessen hatte.","Ihm ist auf der Reise etwas Peinliches passiert."],
+["In manchen Kulturen hält man beim Sprechen mehr Abstand.","Bitte halten Sie genug Abstand zum Vordermann."],
+["Auf diese Art lernt man am schnellsten.","Fragen jeglicher Art sind hier erlaubt."],
+["Das Gespräch war äußerst interessant.","Sie ist eine äußerst freundliche Person."],
+["Man sollte immer die Folgen einer Entscheidung bedenken.","Bedenke, dass du morgen früh aufstehen musst."],
+["Ihr Hund ist ein treuer Begleiter.","Er kam mit einer netten Begleiterin zur Feier."],
+["Sie begrüßte uns mit einem breiten Lächeln.","Die Straße hier ist sehr breit."],
+["Vielen Dank für Ihre Freundlichkeit.","Ihre Freundlichkeit hat mich sehr gefreut."],
+["Sprechen Sie bitte deutlich mit Ihrem Gegenüber.","Beim Gespräch sollte man sein Gegenüber ansehen."],
+["Jegliche Hilfe ist herzlich willkommen.","Ihm fehlte jegliches Verständnis für das Problem."],
+["Ein freundliches Lächeln versteht man in jedem Land.","Ihr Lächeln hat mich sofort beruhigt."],
+["In der Öffentlichkeit sollte man höflich sein.","Der Politiker sprach vor der Öffentlichkeit."],
+["Jeder Mensch hat ein Recht auf Privatsphäre.","Im Großraumbüro fehlt oft die Privatsphäre."],
+["Darf ich Ihnen eine Frage stellen?","Die Schüler stellten dem Lehrer viele Fragen."],
+["In Deutschland ist es üblich, pünktlich zu sein.","In jedem Land gibt es andere übliche Regeln."],
+["Jedes Spiel hat seine eigenen Spielregeln.","Auch in einer Kultur gibt es unsichtbare Spielregeln."],
+["In manchen Ländern hat eine Geste eine andere Bedeutung.","Mit einer freundlichen Geste begrüßte er die Gäste."],
+["Ich hätte gern ein alkoholfreies Getränk.","Dieses Bier ist völlig alkoholfrei."],
+["Dieses Wetter ist atypisch für den Sommer.","Sein Verhalten war atypisch für ihn."],
+["Sein Desinteresse am Unterricht war deutlich zu sehen.","Mit Desinteresse kommt man im Beruf nicht weit."],
+["Der Sportler wurde nach dem Regelverstoß disqualifiziert.","Wer betrügt, wird sofort disqualifiziert."],
+["Seine Rede war lang, aber völlig inhaltsleer.","Solche inhaltsleeren Worte helfen niemandem."],
+["Intolerante Menschen akzeptieren andere Meinungen nicht.","Gegenüber anderen Kulturen sollte man nicht intolerant sein."],
+["Der Traum wirkte völlig irreal.","Seine Pläne sind leider ziemlich irreal."],
+["Als Nichtschwimmer sollte man im tiefen Wasser vorsichtig sein.","Für Nichtschwimmer gibt es ein extra flaches Becken."],
+["Ein großer Teil der Kommunikation ist nonverbal.","Gesten und Mimik gehören zur nonverbalen Sprache."],
+["Seine Reaktion stieß auf großes Unverständnis.","Mit Unverständnis schüttelte sie den Kopf."],
+["Das Verb „aufstehen“ ist trennbar.","Bei trennbaren Verben steht die Vorsilbe am Satzende."],
+["Chancengleichheit in der Bildung ist sehr wichtig.","Das Projekt setzt sich für Chancengleichheit ein."],
+["Viele Kinder in der Klasse haben einen Migrationshintergrund.","Menschen mit Migrationshintergrund bereichern die Gesellschaft."],
+["Notieren Sie zu jeder Aussage ein Schlüsselwort.","„Toleranz“ ist hier das wichtigste Schlüsselwort."],
+["Ich bin völlig deiner Meinung.","Das habe ich völlig vergessen."],
+["In manchen Ländern gibt es eine Kindergartenpflicht.","Über die Kindergartenpflicht wird viel diskutiert."],
+["In England tragen viele Kinder eine Schuluniform.","Eine Schuluniform kann Unterschiede zwischen Schülern verringern."],
+["Der Lehrer geht auf jede Frage der Schüler ein.","Bitte gehen Sie in Ihrem Text auf drei Punkte ein."],
+["Diese Einrichtung hilft Migrantenfamilien im Alltag.","Die Stadt hat eine neue soziale Einrichtung eröffnet."],
+["Das Stipendium ermöglicht ihr ein Studium im Ausland.","Neue Technik ermöglicht schnelleres Arbeiten."],
+["Jede Lehrkraft an dieser Schule spricht zwei Sprachen.","Wir suchen eine neue Lehrkraft für Deutsch."],
+["Das Projekt unterstützt Kinder aus Migrantenfamilien.","Viele Migrantenfamilien leben schon lange in dieser Stadt."],
+["Ehemalige Lehrer helfen den Migrantenkindern bei den Hausaufgaben.","Migrantenkinder wachsen oft mit zwei Sprachen auf."],
+["Ein älterer Herr ist der Pate des kleinen Jungen.","Als Patin hilft sie einem Flüchtlingskind beim Lernen."],
+["Viele Senioren möchten auch im Alter aktiv bleiben.","Der Senior gibt sein Wissen gern an junge Leute weiter."],
+["Ich finde solche Integrationsprojekte sehr sinnvoll.","Es ist sinnvoll, jeden Tag ein bisschen zu lernen."],
+["Die Stadt hilft Zugewanderten bei der Wohnungssuche.","Viele Zugewanderte lernen sehr schnell Deutsch."],
+["„Noch nicht“, fügte sie nachdenklich an.","Bitte fügen Sie Ihrem Antrag ein Foto an."],
+["Die vielen Regeln bremsen die jungen Leute aus.","Lass dich von Kritik nicht ausbremsen."],
+["In manchen Stadtteilen ist die Ausländerquote sehr hoch.","Über die Ausländerquote wird oft diskutiert."],
+["Er arbeitet bei einem großen Automobilhersteller.","Der Automobilhersteller stellt jetzt auch Elektroautos her."],
+["Sie hat Betriebswirtschaft an der Universität studiert.","In Betriebswirtschaft lernt man, ein Unternehmen zu führen."],
+["Diskriminierung am Arbeitsplatz ist verboten.","Viele Menschen kämpfen gegen Diskriminierung."],
+["Sie trägt gern farbenfrohe Kleider.","Der Markt war bunt und farbenfroh."],
+["Nichts liegt mir ferner, als dich zu ärgern.","Dieser Gedanke lag ihm völlig fern."],
+["Sie verdiente ihren Lebensunterhalt mit dem Verkauf von Feuerholz.","Im Winter brauchen wir viel Feuerholz."],
+["Die Mutter flicht ihrer Tochter einen Zopf.","Sie kann aus Stroh kleine Körbe flechten."],
+["Sie führt zusammen mit ihrem Mann ein kleines Geschäft.","Er führt seit Jahren ein erfolgreiches Restaurant."],
+["Wir treffen uns nur gelegentlich.","Gelegentlich fährt er mit dem Fahrrad zur Arbeit."],
+["An der Ecke gibt es ein kleines Gemüsegeschäft.","Im Gemüsegeschäft kaufe ich frisches Obst und Gemüse."],
+["Er ist der Gründer einer erfolgreichen Softwarefirma.","Die Gründerin des Vereins hält heute eine Rede."],
+["Bei Problemen mit der Wohnung rufen Sie die Hausverwaltung an.","Sie leitet zusammen mit ihrem Mann eine Hausverwaltung."],
+["Mit der Hochschulreife darf man an der Universität studieren.","Er hat seine Hochschulreife im Abendkurs nachgeholt."],
+["Er ist ein deutscher Regisseur türkischer Abstammung.","Ihre Abstammung ist ihr sehr wichtig."],
+["In seiner Freizeit ist er Amateur-Boxer.","Als Amateur-Boxer trainiert er dreimal pro Woche."],
+["Der Regisseur wurde mit vielen Preisen ausgezeichnet.","Ihre Arbeit zeichnet sich durch große Sorgfalt aus."],
+["Dieser Preis ist bei allen Regisseuren sehr begehrt.","Karten für das Konzert sind sehr begehrt."],
+["Er stammt aus einer bürgerlichen Familie.","Sie führt ein ruhiges, bürgerliches Leben."],
+["Nach dem Studium bekam sie ihr Diplom.","Sein Diplom wurde im Ausland nicht anerkannt."],
+["Als Drehbuchautor schreibt er die Geschichten für Filme.","Die Drehbuchautorin gewann einen wichtigen Preis."],
+["Für seinen Film erhielt er den Drehbuchpreis.","Der Drehbuchpreis wird jedes Jahr verliehen."],
+["Mit diesem Film gelang ihm der große Durchbruch.","Die Forscher feierten einen wichtigen Durchbruch."],
+["Viele Einwanderer haben das Land mit aufgebaut.","Als Einwanderer musste er zuerst die Sprache lernen."],
+["Er entstammt einer einfachen Arbeiterfamilie.","Dieses Wort entstammt dem Lateinischen."],
+["Der Filmregisseur arbeitet an seinem neuen Projekt.","Sie ist eine bekannte Filmregisseurin aus Deutschland."],
+["Seine ersten Filme gehörten zum Gangsterkino.","Das Gangsterkino zeigt oft ein hartes Milieu."],
+["Seine Kindheit war von der Musik geprägt.","Die Stadt ist stark von ihrer Geschichte geprägt."],
+["Seine Eltern sind sehr gläubige Menschen.","Sie ist gläubig und geht jeden Sonntag in die Kirche."],
+["Seine Filme zeigen oft die Härte des Lebens.","Mit großer Härte setzte er seine Ziele durch."],
+["Sie spielt die Hauptrolle in dem neuen Film.","Für seine Hauptrolle bekam er viel Lob."],
+["In Hamburg fühlt er sich richtig heimisch.","Diese Pflanze ist in Europa heimisch."],
+["Der Film ist eine Hommage an seine Heimatstadt.","Das Lied ist eine Hommage an seine Mutter."],
+["Er hatte den Juryvorsitz bei dem Festival.","Den Juryvorsitz übernahm eine bekannte Regisseurin."],
+["Seine Mutter ist streng katholisch.","In dieser Region sind die meisten Menschen katholisch."],
+["In seinem Kiez kennt ihn fast jeder.","Dem Kiez ist er immer treu geblieben."],
+["Sein neuer Kinofilm läuft ab morgen im Kino.","Der Kinofilm hat viele Zuschauer begeistert."],
+["Der Film war ein großer Erfolg an der Kinokasse.","An der Kinokasse gab es keine Karten mehr."],
+["Für seine Kleinkriminellenstudie sprach er mit vielen Jugendlichen.","Die Kleinkriminellenstudie zeigte überraschende Ergebnisse."],
+["Der Kneipenbesitzer kennt fast alle seine Gäste.","Als Kneipenbesitzer arbeitet er oft bis spät in die Nacht."],
+["Der Film war ein großer kommerzieller Erfolg.","Manche Künstler mögen keine kommerzielle Musik."],
+["Sein erster Langspielfilm wurde ein großer Erfolg.","Ein Langspielfilm dauert meistens über neunzig Minuten."],
+["Ihr Lebensweg war nicht immer einfach.","Jeder Mensch hat seinen eigenen Lebensweg."],
+["Der Film ist ein trauriges Melodram.","In einem Melodram geht es oft um große Gefühle."],
+["Sein Film ist ein bewegendes Migrationsdrama.","Das Migrationsdrama erzählt von einer schwierigen Flucht."],
+["Seine Filme spielen oft in einem harten Milieu.","Er ist in einem bürgerlichen Milieu aufgewachsen."],
+["Als gläubiger Muslim betet er jeden Tag.","In dieser Stadt leben viele Muslime friedlich zusammen."],
+["Er ist ein passionierter Hobby-Koch.","Sie spielt passioniert Klavier."],
+["Der Produzent finanziert den neuen Film.","Sie arbeitet als Produzentin beim Fernsehen."],
+["Der Regisseur erklärt den Schauspielern die Szene.","Sie ist eine talentierte junge Regisseurin."],
+["Der Film erzählt die Geschichte einer Scheinehe.","Eine Scheinehe ist in Deutschland verboten."],
+["Die Behandlung beim Zahnarzt war völlig schmerzlos.","Der Abschied verlief überraschend schmerzlos."],
+["Am Abend lief ein spannender Spielfilm im Fernsehen.","Sein neuer Spielfilm dauert zwei Stunden."],
+["Er ist stets freundlich zu seinen Nachbarn.","Sie kommt stets pünktlich zur Arbeit."],
+["Er ist seinem Stadtteil immer treu geblieben.","Ein Hund ist ein treuer Freund."],
+["Der Gewinner hielt stolz seine Trophäe in der Hand.","Auf dem Regal stehen viele Trophäen."],
+["Der Film beeindruckt vor allem visuell.","Manche Menschen lernen eher visuell."],
+["Der Saal war voller begeisterter Zuschauer.","Ihr Herz war voller Freude."],
+["Ihr Vater ist ihr großes Vorbild.","Gute Lehrer sind oft ein Vorbild für ihre Schüler."],
+["Was er da erzählt, ist völliger Nonsens.","Red keinen Nonsens!"],
+["Der Besuch kam völlig unerwartet.","Unerwartet fing es an zu regnen."],
+];
+
+/* build 410 items with module */
+const ITEMS=[];
+SENT.forEach((pair,i)=>{ const mod=(VOCAB[i]&&VOCAB[i][5])||"—"; pair.forEach(s=>ITEMS.push({s:s,mod:mod})); });
+document.getElementById("tot").textContent=ITEMS.length;
+
+/* ---- grammar analysis ---- */
+const AUX=new Set(["habe","hast","hat","haben","habt","bin","bist","ist","sind","seid"]);
+const MODAL=new Set(["muss","musst","müssen","müsst","kann","kannst","können","könnt","soll","sollst","sollte","sollten","will","willst","wollen","wollt","möchte","möchten","darf","darfst","dürfen","könnte","müsste"]);
+const WERDEN=new Set(["werde","wirst","wird","werden","werdet"]);
+const SUB=new Set(["weil","dass","als","wenn","ob","obwohl","damit","während","bis","sobald","sodass","indem","da"]);
+const NEG=new Set(["nicht","kein","keine","keinen","keiner","keinem","nichts","nie","niemals","niemand","nirgendwo","nirgends","ohne"]);
+const SEP=new Set(["an","auf","aus","mit","zu","ein","vor","ab","nach","her","hin","zurück","weg","los","bei","fest","frei","vorbei","zusammen","um","dabei","mit"]);
+const norm=w=>w.replace(/[„“”",.:;!?]/g,"").toLowerCase();
+function isPart(w){ return /^ge.+/.test(w) || /iert$/.test(w) || /^(be|ver|er|ent|emp|zer|miss|unter|über|auf|aus|an|ab|ein)\w+(t|en)$/.test(w) || /en$/.test(w); }
+function stripEnd(s){ return s.replace(/\s*[.?!]+$/,"").trim(); }
+function endPunct(s){ const m=s.match(/[.?!]+$/); return m?m[0]:""; }
+function analyze(s){
+  const clean=stripEnd(s);
+  const toks=clean.split(" ");
+  const low=toks.map(norm);
+  const last=low[low.length-1];
+  const hasAux=low.some(w=>AUX.has(w));
+  const hasModal=low.some(w=>MODAL.has(w));
+  const hasWerden=low.some(w=>WERDEN.has(w));
+  const sub=low.find(w=>SUB.has(w) && low.indexOf(w)>0) || (SUB.has(low[0])?low[0]:null);
+  const neg=low.some(w=>NEG.has(w));
+  const sepEnd=SEP.has(last);
+  const perfekt=hasAux && isPart(last) && !AUX.has(last);
+  const modal=hasModal && /en$/.test(last);
+  const futur=hasWerden && /en$/.test(last);
+  const excl=/[!]$/.test(s.trim());
+  const tags=[];
+  if(excl) tags.push("Imperativ / Ausruf");
+  if(sub) tags.push("Nebensatz — Verb am Ende");
+  if(perfekt) tags.push("Perfekt — haben/sein + Partizip");
+  if(modal) tags.push("Modalverb + Infinitiv am Ende");
+  if(futur) tags.push("Futur — werden + Infinitiv");
+  if(sepEnd && !perfekt) tags.push("Trennbares Verb — Vorsilbe am Ende");
+  if(neg) tags.push("Negation");
+  if(!tags.length) tags.push("Hauptsatz — Verb an Position 2");
+  const focus=tags[0];
+  return {clean,toks,low,tags,focus,last,perfekt,modal,futur,sepEnd,sub,neg,end:endPunct(s)};
+}
+ITEMS.forEach(it=>{ it.a=analyze(it.s); });
+
+/* highlight solution */
+function highlight(it){
+  const a=it.a;
+  return a.toks.map((t,i)=>{
+    const w=a.low[i];
+    let cls="";
+    if(AUX.has(w)||MODAL.has(w)||WERDEN.has(w)) cls="w-v";
+    else if(i===a.toks.length-1 && (a.perfekt||a.modal||a.futur||a.sepEnd)) cls="w-e";
+    else if(NEG.has(w)) cls="w-n";
+    else if(SUB.has(w) && i>0) cls="w-s";
+    return cls? `<span class="${cls}">${t}</span>` : t;
+  }).join(" ")+a.end;
+}
+
+/* ---- filters ---- */
+const MODS=["All",...new Set(ITEMS.map(i=>i.mod))];
+const FOCI=["All",...new Set(ITEMS.map(i=>i.a.focus))];
+const fmod=document.getElementById("fmod"), ffocus=document.getElementById("ffocus");
+fmod.innerHTML=MODS.map(m=>`<option>${m}</option>`).join("");
+ffocus.innerHTML=FOCI.map(f=>`<option>${f}</option>`).join("");
+fmod.onchange=ffocus.onchange=rebuild;
+document.getElementById("shuffleAll").onchange=rebuild;
+document.getElementById("hideTags").onchange=()=>document.getElementById("tags").classList.toggle("hidden",document.getElementById("hideTags").checked);
+
+let DECK=[], pos=0;
+function rebuild(){
+  DECK=ITEMS.filter(it=>(fmod.value==="All"||it.mod===fmod.value)&&(ffocus.value==="All"||it.a.focus===ffocus.value));
+  if(document.getElementById("shuffleAll").checked) DECK.sort(()=>Math.random()-.5);
+  pos=0; load();
+}
+
+/* ---- drag & drop sortable across bank/tray ---- */
+let dragEl=null, clickSel=null;
+function afterEl(container,x,y){
+  const els=[...container.querySelectorAll(".chip:not(.dragging)")];
+  let closest={off:-Infinity,el:null};
+  els.forEach(el=>{const b=el.getBoundingClientRect();const off=x-b.left-b.width/2; if(off<0&&off>closest.off)closest={off,el};});
+  return closest.el;
+}
+function mkChip(text){
+  const c=document.createElement("button");c.className="chip";c.textContent=text;c.dataset.w=text;
+  c.setAttribute("draggable","true");
+  c.addEventListener("dragstart",()=>{dragEl=c;c.classList.add("dragging");});
+  c.addEventListener("dragend",()=>{c.classList.remove("dragging");dragEl=null;});
+  c.addEventListener("click",()=>{ // tap fallback: toggle bank<->tray
+    const inTray=c.parentElement.id==="tray";
+    (inTray?bank:tray).appendChild(c);
+  });
+  return c;
+}
+const tray=document.getElementById("tray"), bank=document.getElementById("bank");
+[tray,bank].forEach(zone=>{
+  zone.addEventListener("dragover",e=>{e.preventDefault(); if(!dragEl)return; const after=afterEl(zone,e.clientX,e.clientY); if(after==null)zone.appendChild(dragEl); else zone.insertBefore(dragEl,after);});
+});
+
+/* ---- load an item ---- */
+function load(){
+  const it=DECK[pos];
+  document.getElementById("fb").textContent="";
+  document.getElementById("solution").classList.remove("show");
+  document.getElementById("solution").innerHTML="";
+  document.getElementById("hint").textContent="";
+  tray.innerHTML=""; bank.innerHTML="";
+  if(!it){ document.getElementById("tags").innerHTML='<span class="tag">No sentences for this filter.</span>'; document.getElementById("pcount").textContent="0 / 0"; return; }
+  // tags
+  document.getElementById("tags").innerHTML=`<span class="tag mod">${it.mod}</span>`+it.a.tags.map(t=>`<span class="tag">${t}</span>`).join("");
+  // jumbled chips
+  const toks=[...it.a.toks];
+  const order=toks.map((t,i)=>i).sort(()=>Math.random()-.5);
+  order.forEach(i=>bank.appendChild(mkChip(toks[i])));
+  // end mark
+  document.getElementById("bar").style.width=((pos+1)/DECK.length*100)+"%";
+  document.getElementById("pcount").textContent=(pos+1)+" / "+DECK.length;
+}
+function currentBuilt(){ return [...tray.children].map(c=>c.dataset.w).join(" "); }
+function check(){
+  const it=DECK[pos]; if(!it)return;
+  const built=currentBuilt(), target=it.a.toks.join(" ");
+  const fb=document.getElementById("fb");
+  if(built===target){ fb.textContent="✓ Richtig! "+it.a.focus; fb.className="fb ok"; revealSol(); }
+  else if(built.length===0){ fb.textContent="Drag the words into the box first."; fb.className="fb no"; }
+  else { fb.textContent="✗ Noch nicht ganz — schau auf die Verbposition und versuche es nochmal."; fb.className="fb no"; }
+}
+function hint(){ const it=DECK[pos]; if(!it)return; document.getElementById("hint").textContent="Starts with: „"+it.a.toks[0]+" …“  ("+it.a.toks.length+" words)"; }
+function revealSol(){ const it=DECK[pos]; if(!it)return; const sol=document.getElementById("solution"); sol.innerHTML="<b>Correct:</b> "+highlight(it); sol.classList.add("show"); }
+function clearTray(){ [...tray.children].forEach(c=>bank.appendChild(c)); document.getElementById("fb").textContent=""; }
+function nextItem(){ if(!DECK.length)return; pos=(pos+1)%DECK.length; load(); }
+
+rebuild();
+</script>
+</body>
+</html>
