@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aspekte neu B2 – Wortschatztrainer</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#1e293b; --panel2:#273449; --ink:#e2e8f0; --muted:#94a3b8;
+    --accent:#38bdf8; --accent2:#a78bfa; --good:#34d399; --bad:#f87171; --gold:#fbbf24;
+    --line:#334155; --radius:16px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+  header{padding:22px 18px 10px;text-align:center;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#111c33,#0f172a)}
+  header h1{margin:0;font-size:1.5rem;letter-spacing:.3px}
+  header p{margin:6px 0 0;color:var(--muted);font-size:.9rem}
+  .voicebar{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:10px;font-size:.8rem;color:var(--muted)}
+  .voicebar select{background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:4px 6px;font-size:.8rem;max-width:230px}
+  nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:12px;position:sticky;top:0;background:rgba(15,23,42,.95);backdrop-filter:blur(6px);z-index:20;border-bottom:1px solid var(--line)}
+  nav button{background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:9px 13px;border-radius:999px;cursor:pointer;font-size:.85rem;transition:.15s}
+  nav button:hover{border-color:var(--accent)}
+  nav button.active{background:var(--accent);color:#04222e;border-color:var(--accent);font-weight:600}
+  main{max-width:960px;margin:0 auto;padding:18px}
+  section{display:none;animation:fade .25s}
+  section.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+  h2.sec{font-size:1.15rem;margin:.2em 0 .1em}
+  .hint{color:var(--muted);font-size:.85rem;margin:0 0 14px}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+  .toolbar select,.toolbar button{background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:.85rem;cursor:pointer}
+  .toolbar button:hover{border-color:var(--accent)}
+  .pill{font-size:.72rem;color:var(--muted)}
+  .spk{background:none;border:none;cursor:pointer;color:var(--accent);font-size:1rem;padding:2px 5px;border-radius:8px}
+  .spk:hover{background:var(--panel2)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;min-height:135px;cursor:pointer;position:relative;display:flex;flex-direction:column;justify-content:center;transition:.15s}
+  .card:hover{border-color:var(--accent2)}
+  .card .de{font-size:1.12rem;font-weight:600;color:#fff}
+  .card .ph{font-size:.8rem;color:var(--accent);margin-top:3px;font-style:italic}
+  .card .en{font-size:.98rem;color:var(--gold);margin-top:8px}
+  .card .cat{position:absolute;top:8px;right:10px;font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .card .tap{font-size:.72rem;color:var(--muted);margin-top:10px}
+  .hidden-val{filter:blur(7px);user-select:none}
+  .card .spkrow{margin-top:10px}
+  .word-block{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px}
+  .word-block .wh{font-size:1.08rem;font-weight:600;color:#fff}
+  .word-block .wen{color:var(--gold);font-size:.9rem}
+  .sent{margin:9px 0;padding-left:10px;border-left:2px solid var(--accent2)}
+  .sent .s-de{color:var(--ink)}
+  .sent .s-en{color:var(--muted);font-size:.86rem;display:none}
+  .sent.show-en .s-en{display:block}
+  .ex-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:16px}
+  .ex-card h3{margin:0 0 4px;font-size:1rem}
+  .q{margin:14px 0;padding:12px;background:var(--panel2);border-radius:12px}
+  .q .prompt{font-weight:600;margin-bottom:8px}
+  .opts{display:flex;flex-direction:column;gap:7px}
+  .opt{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer;text-align:left;color:var(--ink);font-size:.9rem}
+  .opt:hover{border-color:var(--accent)}
+  .opt.correct{background:rgba(52,211,153,.18);border-color:var(--good)}
+  .opt.wrong{background:rgba(248,113,113,.18);border-color:var(--bad)}
+  .opt:disabled{cursor:default;opacity:.9}
+  .match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .match-col{display:flex;flex-direction:column;gap:7px}
+  .m-item{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 11px;cursor:pointer;font-size:.88rem}
+  .m-item.sel{border-color:var(--accent);background:var(--panel2)}
+  .m-item.done{opacity:.45;cursor:default;border-color:var(--good)}
+  .score{font-weight:600;color:var(--gold)}
+  .fb{font-size:.85rem;margin-top:6px;min-height:1.1em}
+  .fb.ok{color:var(--good)} .fb.no{color:var(--bad)}
+  .fam{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px}
+  .fam h3{margin:0;font-size:1.05rem;color:var(--accent2)}
+  .fam .root{color:var(--muted);font-size:.82rem;margin:3px 0 8px}
+  .fam .ety{color:var(--muted);font-size:.85rem;font-style:italic;margin-bottom:8px}
+  .fam ul{margin:0;padding-left:2px;list-style:none}
+  .fam li{padding:5px 0;border-top:1px dashed var(--line)}
+  .fam li b{color:#fff}
+  .fam li .mng{color:var(--gold);font-size:.88rem}
+  .fam li .we{color:var(--muted);font-size:.8rem}
+  .conf{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px}
+  .conf .tag{display:inline-block;font-size:.68rem;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:999px;margin-bottom:8px}
+  .tag.homo{background:rgba(251,191,36,.18);color:var(--gold)}
+  .tag.syn{background:rgba(167,139,250,.18);color:var(--accent2)}
+  .conf .pair{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px}
+  .conf .side{flex:1;min-width:190px;background:var(--panel2);border-radius:10px;padding:10px}
+  .conf .side b{color:#fff}
+  .conf .side .g{color:var(--gold);font-size:.86rem}
+  .conf .note{color:var(--muted);font-size:.86rem}
+  footer{text-align:center;color:var(--muted);font-size:.78rem;padding:26px 12px}
+  .count{font-size:.75rem;color:var(--muted)}
+  @media(max-width:560px){.match-wrap{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🇩🇪 Aspekte neu B2 – Wortschatztrainer</h1>
+  <p>Karteikarten · Beispielsätze · Übungen · Wortfamilien · Verwechslungsgefahr — mit deutscher Aussprache 🔊</p>
+  <div class="voicebar">
+    <span>Stimme:</span>
+    <select id="voiceSel"></select>
+    <button class="spk" id="testVoice" title="Test">🔊 Test</button>
+  </div>
+</header>
+<nav id="nav">
+  <button data-tab="cards" class="active">1 · Karteikarten</button>
+  <button data-tab="sent">2 · Beispielsätze</button>
+  <button data-tab="ex">3 · Übungen</button>
+  <button data-tab="fam">4 · Wortfamilien</button>
+  <button data-tab="conf">5 · Verwechslungsgefahr</button>
+</nav>
+<main>
+  <section id="cards" class="active">
+    <h2 class="sec">1 · Karteikarten <span class="count" id="cardCount"></span></h2>
+    <p class="hint">Wähle, was verborgen wird. Klicke auf eine Karte, um die Lösung zu zeigen. 🔊 hört das Wort auf Deutsch. Unter jedem Wort steht eine Aussprachehilfe.</p>
+    <div class="toolbar">
+      <label class="pill">Verbergen:</label>
+      <select id="hideMode">
+        <option value="en">Englisch verbergen (DE → EN)</option>
+        <option value="de">Deutsch verbergen (EN → DE)</option>
+        <option value="none">Nichts verbergen</option>
+      </select>
+      <select id="catFilter"></select>
+      <button id="shuffleBtn">🔀 Mischen</button>
+    </div>
+    <div class="grid" id="cardGrid"></div>
+  </section>
+  <section id="sent">
+    <h2 class="sec">2 · Beispielsätze (2 pro Wort, B2-Grammatik)</h2>
+    <p class="hint">Zwei Beispielsätze für jedes Wort. Klicke 🔊 um den Satz auf Deutsch zu hören, oder „EN" für die Übersetzung.</p>
+    <div class="toolbar">
+      <select id="sentCat"></select>
+      <button id="toggleAllEn">👁 Alle Übersetzungen ein/aus</button>
+    </div>
+    <div id="sentList"></div>
+  </section>
+  <section id="ex">
+    <h2 class="sec">3 · Übungen</h2>
+    <p class="hint">Drei Übungstypen. Bei „Wortwahl" sind die falschen Optionen absichtlich ähnlich (Verwechslungsgefahr).</p>
+    <div class="toolbar">
+      <select id="exCat"></select>
+      <button id="newExercises">🔄 Neue Übungen</button>
+      <span class="score" id="exScore"></span>
+    </div>
+    <div class="ex-card">
+      <h3>A · Zuordnung (Match the following)</h3>
+      <p class="hint">Klicke ein deutsches Wort und dann die passende englische Bedeutung.</p>
+      <div class="match-wrap"><div class="match-col" id="matchDe"></div><div class="match-col" id="matchEn"></div></div>
+      <div class="fb" id="matchFb"></div>
+    </div>
+    <div class="ex-card">
+      <h3>B · Lückentext (Fill in the blanks)</h3>
+      <p class="hint">Wähle das Wort, das in die Lücke passt.</p>
+      <div id="blankBox"></div>
+    </div>
+    <div class="ex-card">
+      <h3>C · Wortwahl (Choose the correct German word)</h3>
+      <p class="hint">Englisch ist vorgegeben – wähle das richtige deutsche Wort. Achtung: ähnliche Wörter!</p>
+      <div id="mcBox"></div>
+    </div>
+  </section>
+  <section id="fam">
+    <h2 class="sec">4 · Wortfamilien &amp; Etymologie</h2>
+    <p class="hint">Wörter nach gemeinsamem Wortstamm gruppiert, mit Bedeutung und Herkunft (Etymologie).</p>
+    <div id="famList"></div>
+  </section>
+  <section id="conf">
+    <h2 class="sec">5 · Verwechslungsgefahr</h2>
+    <p class="hint">Wörter, die sich ähnlich anhören (aber anderes bedeuten) oder Ähnliches bedeuten (aber anders benutzt werden).</p>
+    <div id="confList"></div>
+  </section>
+</main>
+<footer>Erstellt für Aruna's Deutschkurs · Aspekte neu B2 Kapitelwortschatz · Aussprache über die Sprachausgabe deines Browsers.</footer>
+<script>
+const VOCAB = [
+{de:"der Arbeitsvertrag, ¨-e",base:"der Arbeitsvertrag",ph:"AR-baits-fer-trahk",en:"employment contract",s1:["Bevor ich nach München zog, hatte ich bereits einen unbefristeten Arbeitsvertrag unterschrieben.","Before I moved to Munich, I had already signed a permanent employment contract."],s2:["Der Arbeitsvertrag, der mir angeboten wurde, enthielt eine sechsmonatige Probezeit.","The employment contract that I was offered contained a six-month probationary period."],fam:"vertrag",ety:"ver- + tragen (lat. trahere = ziehen); ein Vertrag 'trägt' Verpflichtungen.",cat:"Verträge & Umzug"},
+{de:"auflösen (eine Wohnung auflösen)",base:"auflösen",ph:"OWF-ler-zen",en:"to dissolve; to clear out / give up (an apartment)",s1:["Als meine Großmutter ins Heim zog, mussten wir ihre Wohnung innerhalb eines Monats auflösen.","When my grandmother moved into the care home, we had to clear out her apartment within a month."],s2:["Der Verein wurde aufgelöst, weil sich keine neuen Mitglieder mehr fanden.","The club was dissolved because no new members could be found."],fam:"loesen",ety:"auf- + lösen (locker/frei machen); verwandt mit 'los'.",cat:"Verträge & Umzug"},
+{de:"beantragen",base:"beantragen",ph:"be-AN-trah-gen",en:"to apply for",s1:["Sie müssen das Visum rechtzeitig beantragen, damit es vor der Abreise bewilligt wird.","You have to apply for the visa in good time so that it is approved before departure."],s2:["Ich habe eine Verlängerung meiner Aufenthaltserlaubnis beantragt.","I have applied for an extension of my residence permit."],fam:"antrag",ety:"be- + Antrag (von tragen: etwas 'vortragen' = vorbringen).",cat:"Verträge & Umzug"},
+{de:"eröffnen (ein Konto eröffnen)",base:"eröffnen",ph:"er-ERF-nen",en:"to open (an account); to inaugurate",s1:["Um ein Konto zu eröffnen, benötigen Sie einen gültigen Ausweis und eine Meldebescheinigung.","To open an account, you need a valid ID and a registration certificate."],s2:["Nächste Woche wird in unserem Viertel ein neues Café eröffnet.","Next week a new café will be opened in our neighbourhood."],fam:"offen",ety:"er- + öffnen (von 'offen'); wörtlich 'offen machen'.",cat:"Verträge & Umzug"},
+{de:"der Handyvertrag, ¨-e",base:"der Handyvertrag",ph:"HEN-di-fer-trahk",en:"mobile phone contract",s1:["Mein Handyvertrag läuft noch zwei Jahre, obwohl ich ihn längst kündigen möchte.","My mobile phone contract still runs for two more years, although I have long wanted to cancel it."],s2:["Vergleich die Tarife genau, bevor du einen neuen Handyvertrag abschließt.","Compare the tariffs carefully before you sign a new mobile phone contract."],fam:"vertrag",ety:"engl. 'handy' (in D. = Mobiltelefon) + Vertrag.",cat:"Verträge & Umzug"},
+{de:"knüpfen (Kontakte knüpfen)",base:"knüpfen",ph:"KNUEP-fen",en:"to tie/knot; to make/forge (contacts)",s1:["Auf der Konferenz konnte ich wertvolle Kontakte knüpfen, die mir später sehr nützten.","At the conference I was able to make valuable contacts that were very useful to me later."],s2:["Freundschaften zu knüpfen fällt mir in einer fremden Stadt oft schwer.","Making friendships is often difficult for me in a foreign city."],fam:"knuepfen",ety:"ahd. 'knupfen', verwandt mit 'Knopf' und 'Knoten'.",cat:"Verträge & Umzug"},
+{de:"der Kontakt, -e",base:"der Kontakt",ph:"kon-TAKT",en:"contact",s1:["Seit dem Umzug habe ich den Kontakt zu einigen alten Freunden leider verloren.","Since the move I have unfortunately lost contact with some old friends."],s2:["Bleiben wir in Kontakt, sobald du im Ausland angekommen bist!","Let's stay in contact as soon as you have arrived abroad!"],fam:"kontakt",ety:"lat. 'contactus' (contingere) = berühren.",cat:"Verträge & Umzug"},
+{de:"der Mietvertrag, ¨-e",base:"der Mietvertrag",ph:"MEET-fer-trahk",en:"rental / lease contract",s1:["Lies den Mietvertrag genau durch, bevor du ihn unterschreibst.","Read the rental contract carefully before you sign it."],s2:["Laut Mietvertrag darf ich in der Wohnung keine Haustiere halten.","According to the rental contract, I am not allowed to keep pets in the apartment."],fam:"vertrag",ety:"Miete (ahd. 'mieta' = Lohn) + Vertrag.",cat:"Verträge & Umzug"},
+{de:"der/die Nachmieter/in, -/-nen",base:"der Nachmieter",ph:"NAHKH-mee-ter",en:"successor tenant, next tenant",s1:["Wenn du früher ausziehen willst, solltest du selbst einen Nachmieter suchen.","If you want to move out earlier, you should look for a successor tenant yourself."],s2:["Die Vermieterin akzeptierte den Nachmieter, den wir ihr vorgeschlagen hatten.","The landlady accepted the successor tenant that we had suggested to her."],fam:"miete",ety:"nach + Mieter (der/die nach uns die Wohnung mietet).",cat:"Verträge & Umzug"},
+{de:"abenteuerlich",base:"abenteuerlich",ph:"ah-ben-TOY-er-likh",en:"adventurous; daring",s1:["Seine Reise durch Südamerika war so abenteuerlich, dass er später ein Buch darüber schrieb.","His journey through South America was so adventurous that he later wrote a book about it."],s2:["Das klingt nach einem abenteuerlichen Plan, aber ich bin trotzdem dabei.","That sounds like an adventurous plan, but I'm in anyway."],fam:"abenteuer",ety:"über frz. 'aventure' von lat. 'advenire' = ankommen, sich ereignen.",cat:"Auswandern & Erfahrung"},
+{de:"die Arbeitserlaubnis, -se",base:"die Arbeitserlaubnis",ph:"AR-baits-er-lowp-nis",en:"work permit",s1:["Ohne gültige Arbeitserlaubnis darfst du in diesem Land keiner bezahlten Tätigkeit nachgehen.","Without a valid work permit you may not pursue any paid activity in this country."],s2:["Es dauerte Monate, bis ihm die Arbeitserlaubnis endlich erteilt wurde.","It took months until the work permit was finally granted to him."],fam:"arbeit",ety:"Arbeit + Erlaubnis (von 'erlauben' = gestatten).",cat:"Auswandern & Erfahrung"},
+{de:"aufgeregt",base:"aufgeregt",ph:"OWF-ge-rehkt",en:"excited; nervous, agitated",s1:["Vor dem Vorstellungsgespräch war ich so aufgeregt, dass ich kaum schlafen konnte.","Before the job interview I was so nervous that I could hardly sleep."],s2:["Die Kinder liefen aufgeregt durch das Haus, weil bald die Gäste kamen.","The children ran excitedly through the house because the guests were arriving soon."],fam:"regen",ety:"Partizip von 'aufregen' (auf- + regen = in Bewegung bringen).",cat:"Auswandern & Erfahrung"},
+{de:"die Auslandserfahrung, -en",base:"die Auslandserfahrung",ph:"OWS-lants-er-fah-rung",en:"experience abroad",s1:["Viele Arbeitgeber schätzen Auslandserfahrung, weil sie Flexibilität und Offenheit zeigt.","Many employers value experience abroad because it shows flexibility and openness."],s2:["Durch meine Auslandserfahrung habe ich gelernt, mit Unsicherheit umzugehen.","Through my experience abroad I learned to deal with uncertainty."],fam:"erfahrung",ety:"Ausland + Erfahrung (von 'fahren').",cat:"Auswandern & Erfahrung"},
+{de:"auswandern (nach + D.)",base:"auswandern",ph:"OWS-van-dern",en:"to emigrate",s1:["Meine Großeltern wanderten in den 1960er-Jahren nach Kanada aus.","My grandparents emigrated to Canada in the 1960s."],s2:["Wer auswandern möchte, sollte sich vorher gründlich über das Zielland informieren.","Whoever wants to emigrate should thoroughly inform themselves about the destination country beforehand."],fam:"wandern",ety:"aus + wandern (zu Fuß ziehen); Gegenteil: 'einwandern'.",cat:"Auswandern & Erfahrung"},
+{de:"bereuen",base:"bereuen",ph:"be-ROY-en",en:"to regret",s1:["Ich habe es nie bereut, dass ich damals ins Ausland gegangen bin.","I have never regretted that I went abroad back then."],s2:["Du wirst es bereuen, wenn du diese Chance jetzt nicht nutzt.","You will regret it if you don't take this opportunity now."],fam:"reue",ety:"be- + Reue (ahd. 'hriuwa' = Schmerz, Trauer).",cat:"Auswandern & Erfahrung"},
+{de:"der Blog, -s",base:"der Blog",ph:"blok",en:"blog",s1:["In ihrem Blog berichtet sie regelmäßig über ihren Alltag als Auswanderin.","In her blog she regularly reports on her everyday life as an emigrant."],s2:["Seit ich einen Blog schreibe, achte ich viel bewusster auf schöne Momente.","Since I have been writing a blog, I pay much more conscious attention to beautiful moments."],fam:"blog",ety:"engl. Kurzform von 'weblog' (web + log = Logbuch).",cat:"Auswandern & Erfahrung"},
+{de:"einleben (sich)",base:"sich einleben",ph:"AYN-lay-ben",en:"to settle in, get used to a new place",s1:["Es dauerte fast ein Jahr, bis ich mich in der neuen Stadt richtig eingelebt hatte.","It took almost a year until I had really settled into the new city."],s2:["Kinder leben sich meistens schneller ein als ihre Eltern.","Children usually settle in faster than their parents."],fam:"leben",ety:"ein- + leben; sich in eine Umgebung 'hineinleben'.",cat:"Auswandern & Erfahrung"},
+{de:"die Erfahrung, -en (die Erfahrung machen)",base:"die Erfahrung",ph:"er-FAH-rung",en:"experience",s1:["Aus eigener Erfahrung kann ich sagen, dass der Anfang im Ausland am schwersten ist.","From my own experience I can say that the beginning abroad is the hardest."],s2:["Sie machte die Erfahrung, dass Offenheit fast überall Türen öffnet.","She had the experience that openness opens doors almost everywhere."],fam:"erfahrung",ety:"von 'erfahren' (er- + fahren); Wissen, das man 'erfährt'.",cat:"Auswandern & Erfahrung"},
+{de:"erweitern (den Horizont erweitern)",base:"erweitern",ph:"er-VY-tern",en:"to broaden, expand, widen",s1:["Reisen erweitert den Horizont, weil man ständig mit Neuem konfrontiert wird.","Travelling broadens the horizon because you are constantly confronted with new things."],s2:["Das Unternehmen möchte sein Angebot um digitale Kurse erweitern.","The company wants to expand its range with digital courses."],fam:"weit",ety:"er- + weit machen; verwandt mit 'weit', 'Weite'.",cat:"Auswandern & Erfahrung"},
+{de:"gestresst (von + D.)",base:"gestresst",ph:"ge-SHTREST",en:"stressed (out)",s1:["Nach dem Umzug war ich wochenlang völlig gestresst von der ganzen Bürokratie.","After the move I was completely stressed out by all the bureaucracy for weeks."],s2:["Wenn du gestresst bist, solltest du dir bewusst kleine Pausen gönnen.","When you are stressed, you should consciously allow yourself small breaks."],fam:"stress",ety:"Partizip von 'stressen'; aus engl. 'stress' = Druck, Anspannung.",cat:"Auswandern & Erfahrung"},
+{de:"der/die Grafiker/in, -/-nen",base:"der Grafiker",ph:"GRAH-fee-ker",en:"graphic designer",s1:["Als freiberuflicher Grafiker kann er von überall auf der Welt arbeiten.","As a freelance graphic designer he can work from anywhere in the world."],s2:["Die Grafikerin entwarf ein Logo, das die Kundin sofort begeisterte.","The graphic designer designed a logo that immediately delighted the client."],fam:"grafik",ety:"zu 'Grafik', griech. 'graphein' = schreiben, zeichnen.",cat:"Auswandern & Erfahrung"},
+{de:"der Horizont, -e",base:"der Horizont",ph:"ho-ree-TSONT",en:"horizon",s1:["Am Meer konnte man den Horizont sehen, wo Himmel und Wasser sich zu berühren schienen.","At the sea you could see the horizon, where sky and water seemed to touch."],s2:["Ein Auslandsjahr hat meinen geistigen Horizont enorm erweitert.","A year abroad enormously broadened my mental horizon."],fam:"horizont",ety:"griech. 'horizon' = begrenzend (der begrenzende Kreis).",cat:"Auswandern & Erfahrung"},
+{de:"leichtfallen, fiel leicht, ist leichtgefallen",base:"leichtfallen",ph:"LYKHT-fah-len",en:"to be easy (for someone), come easily",s1:["Das Deutschlernen ist mir nie leichtgefallen, aber ich habe trotzdem nicht aufgegeben.","Learning German never came easily to me, but I still didn't give up."],s2:["Es fällt ihr leicht, mit fremden Menschen ins Gespräch zu kommen.","It is easy for her to get into conversation with strangers."],fam:"leicht",ety:"leicht + fallen; etwas fällt einem 'leicht' (ohne Mühe).",cat:"Auswandern & Erfahrung"},
+{de:"machen (die Erfahrung machen)",base:"machen",ph:"MAKH-en",en:"to make/do (here: to gain/have an experience)",s1:["Im Ausland macht man oft die Erfahrung, dass Höflichkeit überall verstanden wird.","Abroad one often has the experience that politeness is understood everywhere."],s2:["Mach dir keine Sorgen, das schaffst du bestimmt!","Don't worry, you'll definitely manage it!"],fam:"machen",ety:"ahd. 'mahhon' = kneten, formen, bauen.",cat:"Auswandern & Erfahrung"},
+{de:"mittlerweile",base:"mittlerweile",ph:"MIT-ler-vy-le",en:"meanwhile, by now",s1:["Am Anfang verstand ich kaum etwas, mittlerweile kann ich problemlos telefonieren.","At first I barely understood anything; by now I can make phone calls without any problem."],s2:["Mittlerweile hat sich die Lage auf dem Wohnungsmarkt deutlich verschärft.","Meanwhile the situation on the housing market has clearly worsened."],fam:"mittel",ety:"'mittler' (Mitte) + 'Weile' (Zeitspanne) = in der Zwischenzeit.",cat:"Auswandern & Erfahrung"},
+{de:"netterweise",base:"netterweise",ph:"NET-er-vy-ze",en:"kindly, nicely (of someone)",s1:["Meine Nachbarin hat mir netterweise angeboten, die Pakete für mich anzunehmen.","My neighbour kindly offered to accept the parcels for me."],s2:["Netterweise erklärte mir der Beamte das komplizierte Formular Schritt für Schritt.","Kindly, the official explained the complicated form to me step by step."],fam:"nett",ety:"nett + -erweise (Art und Weise); vgl. 'glücklicherweise'.",cat:"Auswandern & Erfahrung"},
+{de:"riskieren",base:"riskieren",ph:"ris-KEE-ren",en:"to risk",s1:["Er riskierte seine sichere Stelle, um endlich sein eigenes Café zu eröffnen.","He risked his secure job in order to finally open his own café."],s2:["Wer nichts riskiert, gewinnt am Ende auch nichts.","Whoever risks nothing gains nothing in the end either."],fam:"risiko",ety:"ital. 'risicare' = wagen; zu 'Risiko'.",cat:"Auswandern & Erfahrung"},
+{de:"schaffen (eine Prüfung schaffen)",base:"schaffen",ph:"SHAF-en",en:"to manage, accomplish, pass",s1:["Peer hat gestern die Führerscheinprüfung geschafft, obwohl er sehr nervös war.","Peer passed the driving test yesterday, although he was very nervous."],s2:["Wir schaffen das nur, wenn wir alle zusammenhelfen.","We'll only manage it if we all help together."],fam:"schaffen",ety:"ahd. 'scaffan' = erschaffen; hier: 'bewältigen'.",cat:"Auswandern & Erfahrung"},
+{de:"sehnsüchtig (nach + D.)",base:"sehnsüchtig",ph:"ZAYN-zuekh-tikh",en:"longing, yearning, wistful",s1:["Sehnsüchtig dachte sie an ihre Familie, die weit entfernt in Brasilien lebte.","Longingly she thought of her family, who lived far away in Brazil."],s2:["Er wartete sehnsüchtig auf einen Brief aus der alten Heimat.","He waited longingly for a letter from his old homeland."],fam:"sehnen",ety:"Sehnsucht (sehnen + Sucht = starkes Verlangen).",cat:"Auswandern & Erfahrung"},
+{de:"spontan",base:"spontan",ph:"shpon-TAHN",en:"spontaneous(ly)",s1:["Ganz spontan beschlossen wir, das Wochenende in Prag zu verbringen.","Quite spontaneously we decided to spend the weekend in Prague."],s2:["Sie ist ein sehr spontaner Mensch, der selten lange im Voraus plant.","She is a very spontaneous person who rarely plans far in advance."],fam:"spontan",ety:"lat. 'spontaneus' = aus eigenem Antrieb.",cat:"Auswandern & Erfahrung"},
+{de:"wagen",base:"wagen",ph:"VAH-gen",en:"to dare, venture",s1:["Nur wer etwas wagt, kann sein Leben wirklich verändern.","Only those who dare something can really change their life."],s2:["Sie wagte den Schritt in die Selbstständigkeit, obwohl alle sie warnten.","She dared to take the step into self-employment, although everyone warned her."],fam:"wagen",ety:"ahd. 'wagon' = aufs Spiel setzen; vgl. 'Wagnis'.",cat:"Auswandern & Erfahrung"},
+{de:"die Wohnungssuche, -n",base:"die Wohnungssuche",ph:"VOH-nungs-zoo-khe",en:"apartment / flat search",s1:["Die Wohnungssuche in Großstädten kann sich über viele Monate hinziehen.","The apartment search in big cities can drag on for many months."],s2:["Bei der Wohnungssuche half mir eine Kollegin, die die Stadt sehr gut kannte.","In the apartment search a colleague who knew the city very well helped me."],fam:"wohnen",ety:"Wohnung (wohnen) + Suche (suchen).",cat:"Auswandern & Erfahrung"},
+{de:"zwischendurch",base:"zwischendurch",ph:"TSVISH-en-doorkh",en:"in between, now and then",s1:["Zwischendurch rief sie immer wieder ihre Eltern an, um sie zu beruhigen.","In between she kept calling her parents to reassure them."],s2:["Ich lerne konzentriert, gönne mir aber zwischendurch kurze Pausen.","I study in a focused way, but treat myself to short breaks in between."],fam:"zwischen",ety:"zwischen + durch = 'in den Zwischenräumen der Zeit'.",cat:"Auswandern & Erfahrung"},
+{de:"empfinden, empfand, hat empfunden",base:"empfinden",ph:"emp-FIN-den",en:"to feel, perceive, sense",s1:["Viele Auswanderer empfinden anfangs eine Mischung aus Freude und Heimweh.","Many emigrants initially feel a mixture of joy and homesickness."],s2:["Ich empfand seine Bemerkung als ausgesprochen unhöflich.","I perceived his remark as extremely impolite."],fam:"finden",ety:"emp- (= ent-) + finden; innerlich 'wahrnehmen'.",cat:"Auswandern & Erfahrung"},
+{de:"die Faustregel, -n",base:"die Faustregel",ph:"FOWST-ray-gel",en:"rule of thumb",s1:["Als Faustregel gilt: Plane für einen Umzug immer mehr Zeit ein, als du denkst.","As a rule of thumb: always plan more time for a move than you think."],s2:["Diese Faustregel hilft dir, den ungefähren Preis schnell abzuschätzen.","This rule of thumb helps you to quickly estimate the approximate price."],fam:"regel",ety:"Faust + Regel; grobe Regel 'über den Daumen / mit der Faust'.",cat:"Auswandern & Erfahrung"},
+{de:"die Merkformel, -n",base:"die Merkformel",ph:"MERK-for-mel",en:"mnemonic, memory formula",s1:["Mit einer einfachen Merkformel kannst du dir die Reihenfolge der Fälle gut einprägen.","With a simple mnemonic you can memorise the order of the cases well."],s2:["Unsere Lehrerin hat für fast jede Grammatikregel eine lustige Merkformel.","Our teacher has a funny mnemonic for almost every grammar rule."],fam:"regel",ety:"merken (sich merken) + Formel (lat. 'formula').",cat:"Auswandern & Erfahrung"},
+{de:"die Position, -en",base:"die Position",ph:"po-zi-TSYOHN",en:"position, stance",s1:["In der Diskussion vertrat er eine klare Position gegen jede Form von Diskriminierung.","In the discussion he took a clear position against every form of discrimination."],s2:["Die Position des Verbs im deutschen Nebensatz ist am Satzende.","The position of the verb in the German subordinate clause is at the end of the sentence."],fam:"position",ety:"lat. 'positio' = das Setzen, die Stellung.",cat:"Auswandern & Erfahrung"},
+{de:"ständig",base:"ständig",ph:"SHTEN-dikh",en:"constant(ly), permanent(ly)",s1:["Er beschwert sich ständig über das Wetter, statt das Beste daraus zu machen.","He constantly complains about the weather instead of making the best of it."],s2:["In einer fremden Sprache ist man am Anfang ständig unsicher.","In a foreign language you are constantly unsure at the beginning."],fam:"stehen",ety:"zu 'Stand/stehen'; 'ständig' = fortwährend bestehend.",cat:"Auswandern & Erfahrung"},
+{de:"zerschneiden, zerschnitt, hat zerschnitten",base:"zerschneiden",ph:"tser-SHNY-den",en:"to cut up, cut apart",s1:["Sie zerschnitt den alten Vertrag symbolisch, um einen Neuanfang zu markieren.","She symbolically cut up the old contract to mark a fresh start."],s2:["Das Papier wurde in viele kleine Stücke zerschnitten.","The paper was cut into many small pieces."],fam:"schneiden",ety:"zer- (auseinander) + schneiden.",cat:"Auswandern & Erfahrung"},
+{de:"die Landessprache, -n",base:"die Landessprache",ph:"LAN-des-shprah-khe",en:"national language",s1:["In der Schweiz gibt es vier Landessprachen, darunter Deutsch, Französisch und Italienisch.","In Switzerland there are four national languages, among them German, French and Italian."],s2:["Wer eingebürgert werden will, muss meist die Landessprache ausreichend beherrschen.","Whoever wants to be naturalised usually has to master the national language sufficiently."],fam:"sprache",ety:"Land + Sprache; die Sprache eines Landes.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Amtssprache, -n",base:"die Amtssprache",ph:"AMTS-shprah-khe",en:"official language",s1:["Obwohl viele Dialekte gesprochen werden, ist Hochdeutsch die offizielle Amtssprache.","Although many dialects are spoken, Standard German is the official administrative language."],s2:["Dokumente müssen in der Amtssprache eingereicht werden, sonst werden sie nicht anerkannt.","Documents have to be submitted in the official language, otherwise they are not recognised."],fam:"sprache",ety:"Amt + Sprache; die Sprache der Behörden.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"anerkennen, erkannte an, hat anerkannt",base:"anerkennen",ph:"AN-er-ken-nen",en:"to recognise, acknowledge",s1:["Mein ausländischer Abschluss wurde erst nach einer langen Prüfung anerkannt.","My foreign degree was only recognised after a long examination."],s2:["Man sollte anerkennen, dass sie sich große Mühe gegeben hat.","One should acknowledge that she made a great effort."],fam:"kennen",ety:"an- + erkennen (von 'kennen'); jemandem etwas offiziell zugestehen.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Elite, -n",base:"die Elite",ph:"e-LEE-te",en:"elite",s1:["Früher war die Beherrschung mehrerer Sprachen ein Kennzeichen der gesellschaftlichen Elite.","In the past, command of several languages was a hallmark of the social elite."],s2:["An dieser Universität wird bewusst eine akademische Elite ausgebildet.","At this university an academic elite is deliberately trained."],fam:"elite",ety:"frz. 'élite' von lat. 'eligere' = auswählen.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Identität, -en",base:"die Identität",ph:"i-den-ti-TAYT",en:"identity",s1:["Für viele Zugewanderte ist die Muttersprache ein wichtiger Teil ihrer Identität.","For many immigrants the mother tongue is an important part of their identity."],s2:["In einer globalisierten Welt kann man durchaus mehrere kulturelle Identitäten haben.","In a globalised world one can quite well have several cultural identities."],fam:"identitaet",ety:"lat. 'identitas' von 'idem' = derselbe.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"komplex",base:"komplex",ph:"kom-PLEKS",en:"complex, complicated",s1:["Die Sprachsituation in mehrsprachigen Ländern ist komplexer, als man zunächst annimmt.","The language situation in multilingual countries is more complex than one initially assumes."],s2:["Er erklärte das komplexe Thema so, dass es plötzlich ganz einfach wirkte.","He explained the complex topic in such a way that it suddenly seemed quite simple."],fam:"komplex",ety:"lat. 'complexus' = umfassend, verflochten.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"konfrontieren (mit + D.)",base:"konfrontieren",ph:"kon-fron-TEE-ren",en:"to confront (with)",s1:["Im Ausland wird man ständig mit ungewohnten Situationen konfrontiert.","Abroad one is constantly confronted with unfamiliar situations."],s2:["Die Journalistin konfrontierte den Politiker mit unbequemen Fragen.","The journalist confronted the politician with uncomfortable questions."],fam:"konfront",ety:"lat. 'con-' + 'frons/frontis' = Stirn; 'Stirn gegen Stirn' bringen.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"multikulturell",base:"multikulturell",ph:"MOOL-ti-kool-tu-rel",en:"multicultural",s1:["Berlin gilt als eine der multikulturellsten Städte Europas.","Berlin is considered one of the most multicultural cities in Europe."],s2:["In einem multikulturellen Team lernt man, verschiedene Sichtweisen zu schätzen.","In a multicultural team you learn to appreciate different points of view."],fam:"kultur",ety:"lat. 'multi' = viel + 'cultura' = Pflege, Bildung.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"das Parlament, -e",base:"das Parlament",ph:"par-la-MENT",en:"parliament",s1:["Im Parlament wird häufig in mehreren Sprachen debattiert und übersetzt.","In parliament debates and translations often take place in several languages."],s2:["Das neue Gesetz wurde vom Parlament mit großer Mehrheit verabschiedet.","The new law was passed by parliament with a large majority."],fam:"parlament",ety:"frz. 'parler' = sprechen; der Ort, an dem 'geredet' wird.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"der Sachverhalt, -e",base:"der Sachverhalt",ph:"ZAKH-fer-halt",en:"state of affairs, facts of a matter",s1:["Bevor du urteilst, solltest du den genauen Sachverhalt kennen.","Before you judge, you should know the exact state of affairs."],s2:["Der Anwalt schilderte den komplizierten Sachverhalt in wenigen klaren Sätzen.","The lawyer described the complicated facts of the matter in a few clear sentences."],fam:"sache",ety:"Sache + Verhalt (wie sich eine Sache 'verhält').",cat:"Sprache & Mehrsprachigkeit"},
+{de:"trösten",base:"trösten",ph:"TRERS-ten",en:"to console, comfort",s1:["Als sie Heimweh hatte, versuchte ich sie mit einem Videoanruf zu trösten.","When she was homesick, I tried to comfort her with a video call."],s2:["Es tröstet mich zu wissen, dass es anderen am Anfang genauso ging.","It comforts me to know that others felt exactly the same at the beginning."],fam:"trost",ety:"zu 'Trost' (ahd. 'trost' = Zuversicht, Halt).",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Vertrautheit (Sg.)",base:"die Vertrautheit",ph:"fer-TROWT-hyt",en:"familiarity, intimacy",s1:["Mit der Zeit entstand eine angenehme Vertrautheit zwischen den neuen Nachbarn.","Over time a pleasant familiarity developed between the new neighbours."],s2:["Die Vertrautheit der eigenen Sprache gibt einem in der Fremde Halt.","The familiarity of one's own language gives one support when abroad."],fam:"vertrauen",ety:"zu 'vertraut' (von 'vertrauen'); das Gefühl des Nahen, Bekannten.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Verwaltungssprache, -n",base:"die Verwaltungssprache",ph:"fer-VAL-tungs-shprah-khe",en:"administrative language",s1:["In vielen Regionen unterscheidet sich die Verwaltungssprache von der Alltagssprache.","In many regions the administrative language differs from everyday language."],s2:["Formulare in der Verwaltungssprache sind für Laien oft schwer verständlich.","Forms in administrative language are often hard for laypeople to understand."],fam:"sprache",ety:"Verwaltung (verwalten) + Sprache.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Vielfalt (Sg.)",base:"die Vielfalt",ph:"FEEL-falt",en:"diversity, variety",s1:["Die kulturelle Vielfalt einer Stadt zeigt sich besonders in ihren Restaurants.","The cultural diversity of a city shows itself especially in its restaurants."],s2:["Wir sollten die sprachliche Vielfalt als Reichtum und nicht als Problem sehen.","We should see linguistic diversity as a richness and not as a problem."],fam:"vielfalt",ety:"viel + -falt (wie in 'zweifach', 'mannigfaltig').",cat:"Sprache & Mehrsprachigkeit"},
+{de:"vielsprachig",base:"vielsprachig",ph:"FEEL-shprah-khikh",en:"multilingual",s1:["Er wuchs in einer vielsprachigen Familie auf und wechselt mühelos die Sprachen.","He grew up in a multilingual family and switches languages effortlessly."],s2:["Eine vielsprachige Beschilderung erleichtert Touristen die Orientierung.","Multilingual signage makes orientation easier for tourists."],fam:"sprache",ety:"viel + Sprache + -ig.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"das Landesgesetz, -e",base:"das Landesgesetz",ph:"LAN-des-ge-zets",en:"state / national law",s1:["Nach dem Landesgesetz müssen amtliche Aushänge in beiden Sprachen erfolgen.","According to state law, official notices must be made in both languages."],s2:["Manche Regelungen sind kein Bundesrecht, sondern in einem Landesgesetz festgelegt.","Some regulations are not federal law but laid down in a state law."],fam:"gesetz",ety:"Land + Gesetz (zu 'setzen': was 'gesetzt', festgelegt ist).",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Vielsprachigkeit (Sg.)",base:"die Vielsprachigkeit",ph:"FEEL-shprah-khikh-kyt",en:"multilingualism",s1:["Die Vielsprachigkeit dieses Landes ist in der Verfassung ausdrücklich geschützt.","The multilingualism of this country is expressly protected in the constitution."],s2:["Vielsprachigkeit wird heute eher als Chance denn als Belastung betrachtet.","Multilingualism is today seen rather as an opportunity than as a burden."],fam:"sprache",ety:"vielsprachig + -keit (bildet ein abstraktes Nomen).",cat:"Sprache & Mehrsprachigkeit"},
+{de:"das Alltagsprodukt, -e",base:"das Alltagsprodukt",ph:"AL-tahks-pro-dukt",en:"everyday product",s1:["Auf vielen Alltagsprodukten stehen die Angaben in mehreren Sprachen.","On many everyday products the information is given in several languages."],s2:["Selbst einfache Alltagsprodukte spiegeln die Sprachenvielfalt eines Landes wider.","Even simple everyday products reflect the linguistic diversity of a country."],fam:"alltag",ety:"Alltag (all + Tag) + Produkt (lat. 'producere' = hervorbringen).",cat:"Sprache & Mehrsprachigkeit"},
+{de:"amtlich",base:"amtlich",ph:"AMT-likh",en:"official",s1:["Die Zahlen wurden noch nicht amtlich bestätigt.","The figures have not yet been officially confirmed."],s2:["Für den Antrag brauchst du eine amtliche Bescheinigung deines Wohnsitzes.","For the application you need an official certificate of your residence."],fam:"amt",ety:"zu 'Amt' (ahd. 'ambaht' = Dienst).",cat:"Sprache & Mehrsprachigkeit"},
+{de:"beherrschen (eine Sprache fließend beherrschen)",base:"beherrschen",ph:"be-HER-shen",en:"to master, command; to control",s1:["Nach fünf Jahren beherrschte sie die Sprache fast so gut wie eine Muttersprachlerin.","After five years she mastered the language almost as well as a native speaker."],s2:["Er beherrschte seine Nervosität und hielt einen souveränen Vortrag.","He controlled his nervousness and gave a confident presentation."],fam:"herrschen",ety:"be- + herrschen (von 'Herr'); etwas 'in der Hand haben'.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Bekanntmachung, -en",base:"die Bekanntmachung",ph:"be-KANT-makh-ung",en:"announcement, public notice",s1:["Die offizielle Bekanntmachung hing gut sichtbar am Schwarzen Brett.","The official announcement was posted clearly visible on the notice board."],s2:["Laut Bekanntmachung der Stadt bleibt das Amt am Freitag geschlossen.","According to the city's announcement, the office remains closed on Friday."],fam:"kennen",ety:"bekannt (von 'kennen') + machen + -ung.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"beschriften",base:"beschriften",ph:"be-SHRIF-ten",en:"to label, mark with writing",s1:["Bitte beschriften Sie jeden Umzugskarton mit dem passenden Raum.","Please label every moving box with the appropriate room."],s2:["Die Schilder waren zweisprachig beschriftet, damit alle sie verstanden.","The signs were labelled bilingually so that everyone understood them."],fam:"schrift",ety:"be- + Schrift (von 'schreiben', lat. 'scribere').",cat:"Sprache & Mehrsprachigkeit"},
+{de:"betreffen, betraf, hat betroffen",base:"betreffen",ph:"be-TREF-fen",en:"to concern, affect",s1:["Die neue Regelung betrifft vor allem Menschen ohne deutschen Pass.","The new regulation concerns above all people without a German passport."],s2:["Was die Sprache betrifft, so mache ich täglich Fortschritte.","As far as the language is concerned, I make progress every day."],fam:"treffen",ety:"be- + treffen; etwas 'trifft' jemanden, geht ihn an.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"einheitlich",base:"einheitlich",ph:"AYN-hyt-likh",en:"uniform, consistent",s1:["Es gibt keine einheitliche Regel dafür, wie man Ausländer korrekt anspricht.","There is no uniform rule for how to address foreigners correctly."],s2:["Alle Formulare wurden in einem einheitlichen Design gestaltet.","All forms were designed in a uniform layout."],fam:"einheit",ety:"Einheit (eins) + -lich; 'nach einer Norm, gleichförmig'.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"fälschlicherweise",base:"fälschlicherweise",ph:"FELSH-li-kher-vy-ze",en:"mistakenly, wrongly",s1:["Der Brief wurde fälschlicherweise an meine alte Adresse geschickt.","The letter was mistakenly sent to my old address."],s2:["Viele glauben fälschlicherweise, dass Dialekt und Hochsprache dasselbe seien.","Many mistakenly believe that dialect and standard language are the same thing."],fam:"falsch",ety:"falsch + -lich + -erweise (Art und Weise).",cat:"Sprache & Mehrsprachigkeit"},
+{de:"der Flyer, -",base:"der Flyer",ph:"FLY-er",en:"flyer, leaflet",s1:["Am Bahnhof verteilte man Flyer in fünf verschiedenen Sprachen.","At the station flyers were handed out in five different languages."],s2:["Der Flyer informierte kurz und übersichtlich über die kostenlosen Sprachkurse.","The flyer informed briefly and clearly about the free language courses."],fam:"flyer",ety:"engl. 'flyer' (zu 'to fly'); ein 'fliegendes' Blatt.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Geschäftsbeziehung, -en",base:"die Geschäftsbeziehung",ph:"ge-SHEFTS-be-tsee-ung",en:"business relationship",s1:["Eine gemeinsame Sprache erleichtert langfristige Geschäftsbeziehungen erheblich.","A common language considerably facilitates long-term business relationships."],s2:["Aus einem einzigen Auftrag entwickelte sich eine dauerhafte Geschäftsbeziehung.","From a single order a lasting business relationship developed."],fam:"geschaeft",ety:"Geschäft (zu 'schaffen') + Beziehung (beziehen).",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Geschäftsverhandlung, -en",base:"die Geschäftsverhandlung",ph:"ge-SHEFTS-fer-hand-lung",en:"business negotiation",s1:["Bei internationalen Geschäftsverhandlungen ist Englisch oft die gemeinsame Sprache.","In international business negotiations English is often the common language."],s2:["Die Geschäftsverhandlung zog sich hin, weil beide Seiten hart blieben.","The business negotiation dragged on because both sides remained tough."],fam:"geschaeft",ety:"Geschäft + Verhandlung (verhandeln, zu 'handeln').",cat:"Sprache & Mehrsprachigkeit"},
+{de:"jedoch",base:"jedoch",ph:"ye-DOKH",en:"however, but",s1:["Er sprach fließend Spanisch, mit dem Dialekt der Region hatte er jedoch Probleme.","He spoke Spanish fluently; with the dialect of the region, however, he had problems."],s2:["Die Idee ist gut, jedoch fehlt uns leider das nötige Geld.","The idea is good; however, we unfortunately lack the necessary money."],fam:"jedoch",ety:"'je' + 'doch'; verstärkende Form von 'doch'.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Konferenz, -en",base:"die Konferenz",ph:"kon-fe-RENTS",en:"conference",s1:["Auf der Konferenz wurde simultan in drei Sprachen gedolmetscht.","At the conference simultaneous interpreting took place in three languages."],s2:["Die Konferenz, die eigentlich in Wien stattfinden sollte, wurde online abgehalten.","The conference, which was actually supposed to take place in Vienna, was held online."],fam:"konferenz",ety:"lat. 'conferre' = zusammentragen, beraten.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"das Platzproblem, -e",base:"das Platzproblem",ph:"PLATS-pro-blaym",en:"space problem, lack of space",s1:["Auf mehrsprachigen Verpackungen entsteht schnell ein echtes Platzproblem.","On multilingual packaging a real space problem quickly arises."],s2:["Wegen des Platzproblems mussten wir die Hälfte der Bücher aussortieren.","Because of the lack of space we had to sort out half of the books."],fam:"platz",ety:"Platz (frz. 'place', lat. 'platea') + Problem (griech. 'problema').",cat:"Sprache & Mehrsprachigkeit"},
+{de:"sämtlich",base:"sämtlich",ph:"ZEMT-likh",en:"all, entire, complete",s1:["Sämtliche Hinweisschilder im Flughafen sind mehrsprachig gestaltet.","All the information signs in the airport are designed multilingually."],s2:["Sie hat sämtliche Unterlagen sorgfältig geordnet und abgeheftet.","She carefully ordered and filed all the documents."],fam:"saemtlich",ety:"zu 'samt' (zusammen mit); 'sämtlich' = allesamt.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Sitzung, -en",base:"die Sitzung",ph:"ZIT-tsung",en:"meeting, session",s1:["Die Sitzung des Gemeinderats wurde in beiden Landessprachen protokolliert.","The session of the town council was minuted in both national languages."],s2:["Während der langen Sitzung wurde über den neuen Sprachunterricht abgestimmt.","During the long meeting they voted on the new language teaching."],fam:"sitzen",ety:"zu 'sitzen'; das 'Beisammensitzen' zur Beratung.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Sprachenvielfalt (Sg.)",base:"die Sprachenvielfalt",ph:"SHPRAH-khen-feel-falt",en:"linguistic diversity",s1:["Die Sprachenvielfalt Europas ist einzigartig und schützenswert.","The linguistic diversity of Europe is unique and worth protecting."],s2:["Trotz aller Sprachenvielfalt verständigt man sich im Alltag meist problemlos.","Despite all the linguistic diversity, people usually communicate without problems in everyday life."],fam:"sprache",ety:"Sprache + Vielfalt.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"das Sprachgebiet, -e",base:"das Sprachgebiet",ph:"SHPRAHKH-ge-beet",en:"language area, linguistic region",s1:["Diese Mundart wird nur in einem kleinen Sprachgebiet im Süden gesprochen.","This dialect is only spoken in a small language area in the south."],s2:["Das deutsche Sprachgebiet reicht über die Grenzen Deutschlands hinaus.","The German-language area extends beyond the borders of Germany."],fam:"sprache",ety:"Sprache + Gebiet (zu 'gebieten', ein 'beherrschter' Raum).",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Sprachregion, -en",base:"die Sprachregion",ph:"SHPRAHKH-re-gyohn",en:"language region",s1:["Belgien ist in mehrere Sprachregionen mit eigenen Rechten unterteilt.","Belgium is divided into several language regions with their own rights."],s2:["Je nach Sprachregion ändern sich sogar die Namen mancher Alltagsdinge.","Depending on the language region, even the names of some everyday things change."],fam:"sprache",ety:"Sprache + Region (lat. 'regio' = Gebiet).",cat:"Sprache & Mehrsprachigkeit"},
+{de:"das Verkehrsschild, -er",base:"das Verkehrsschild",ph:"fer-KAYRS-shilt",en:"traffic / road sign",s1:["In zweisprachigen Gebieten sind die Verkehrsschilder oft in zwei Sprachen beschriftet.","In bilingual areas the traffic signs are often labelled in two languages."],s2:["Er übersah das Verkehrsschild und bog verbotenerweise nach links ab.","He overlooked the traffic sign and illegally turned left."],fam:"verkehr",ety:"Verkehr (verkehren = sich bewegen) + Schild.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"veröffentlichen",base:"veröffentlichen",ph:"fer-ERF-ent-li-khen",en:"to publish",s1:["Die Behörde veröffentlicht ihre Mitteilungen inzwischen auch auf der Webseite.","The authority now also publishes its notices on the website."],s2:["Sein erster Roman wurde in mehreren Sprachen veröffentlicht.","His first novel was published in several languages."],fam:"oeffentlich",ety:"ver- + öffentlich (von 'offen'); 'öffentlich machen'.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Verpackung, -en",base:"die Verpackung",ph:"fer-PAK-kung",en:"packaging, wrapping",s1:["Auf der Verpackung müssen die Inhaltsstoffe in der Landessprache angegeben sein.","On the packaging the ingredients have to be given in the national language."],s2:["Wir achten beim Einkaufen zunehmend auf umweltfreundliche Verpackungen.","When shopping we increasingly pay attention to environmentally friendly packaging."],fam:"packen",ety:"ver- + packen (+ -ung); das Material, in das man 'einpackt'.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"voraussetzen",base:"voraussetzen",ph:"fo-ROWS-zet-tsen",en:"to presuppose, require, take for granted",s1:["Für diese Stelle wird vorausgesetzt, dass man mindestens zwei Sprachen beherrscht.","For this position it is required that one masters at least two languages."],s2:["Du solltest nicht einfach voraussetzen, dass alle dich verstehen.","You should not simply take for granted that everyone understands you."],fam:"setzen",ety:"voraus + setzen; etwas 'im Voraus als gegeben' setzen.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"der Wandel, -",base:"der Wandel",ph:"VAN-del",en:"change, transformation",s1:["Der gesellschaftliche Wandel zeigt sich auch daran, wie wir miteinander sprechen.","Social change also shows itself in how we speak with one another."],s2:["Sprache befindet sich in ständigem Wandel und nimmt laufend neue Wörter auf.","Language is in constant change and continually takes in new words."],fam:"wandeln",ety:"zu 'wandeln' (verwandt mit 'wenden'); allmähliche Veränderung.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Webseite, -n",base:"die Webseite",ph:"VEP-zy-te",en:"web page, website",s1:["Die Informationen findest du auf der Webseite der Stadtverwaltung.","You can find the information on the website of the city administration."],s2:["Ihre Webseite ist so gestaltet, dass man die Sprache mit einem Klick wechseln kann.","Her website is designed so that you can switch the language with one click."],fam:"seite",ety:"engl. 'web' + dt. 'Seite'; eine 'Seite' im Netz.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Auffassung, -en",base:"die Auffassung",ph:"OWF-fah-sung",en:"view, opinion, understanding",s1:["Nach meiner Auffassung sollte Mehrsprachigkeit schon im Kindergarten gefördert werden.","In my view, multilingualism should already be promoted in kindergarten."],s2:["Über diese Frage gehen die Auffassungen weit auseinander.","On this question opinions differ widely."],fam:"meinung",ety:"zu 'auffassen' (auf- + fassen); wie man etwas 'auffasst'.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"entscheidend",base:"entscheidend",ph:"ent-SHY-dent",en:"decisive, crucial",s1:["Die ersten Monate im Ausland sind oft entscheidend für den weiteren Verlauf.","The first months abroad are often decisive for the further course."],s2:["Ihr Rat war entscheidend dafür, dass ich mich richtig entschieden habe.","Her advice was crucial to my making the right decision."],fam:"scheiden",ety:"Partizip von 'entscheiden' (ent- + scheiden = trennen).",cat:"Sprache & Mehrsprachigkeit"},
+{de:"erstaunlich",base:"erstaunlich",ph:"er-SHTOWN-likh",en:"astonishing, remarkable",s1:["Es ist erstaunlich, wie schnell Kinder eine zweite Sprache aufnehmen.","It is astonishing how quickly children pick up a second language."],s2:["Trotz der kurzen Zeit machte er erstaunliche Fortschritte.","Despite the short time he made astonishing progress."],fam:"staunen",ety:"zu 'erstaunen' (er- + staunen).",cat:"Sprache & Mehrsprachigkeit"},
+{de:"geteilt (in + D.) (geteilter Meinung sein)",base:"geteilt",ph:"ge-TYLT",en:"divided; of different opinions",s1:["In dieser Frage sind die Experten geteilter Meinung.","On this question the experts are of divided opinion."],s2:["Das Land ist in zwei große Sprachgruppen geteilt.","The country is divided into two large language groups."],fam:"teilen",ety:"Partizip von 'teilen' (ahd. 'teilen' = trennen, zuteilen).",cat:"Sprache & Mehrsprachigkeit"},
+{de:"hilfreich (bei + D.)",base:"hilfreich",ph:"HILF-rykh",en:"helpful",s1:["Eine Sprach-App kann bei den ersten Schritten sehr hilfreich sein.","A language app can be very helpful for the first steps."],s2:["Danke für den hilfreichen Tipp, das hat mir viel Zeit gespart.","Thanks for the helpful tip; it saved me a lot of time."],fam:"helfen",ety:"Hilfe (helfen) + -reich (voll von Hilfe).",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Mehrsprachigkeit (Sg.)",base:"die Mehrsprachigkeit",ph:"MAYR-shprah-khikh-kyt",en:"multilingualism",s1:["Mehrsprachigkeit gilt heute als klarer Vorteil auf dem Arbeitsmarkt.","Multilingualism is today considered a clear advantage on the job market."],s2:["Studien zeigen, dass Mehrsprachigkeit das Gehirn positiv fördert.","Studies show that multilingualism positively stimulates the brain."],fam:"sprache",ety:"mehr + sprachig + -keit.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"nützlich (für + A.)",base:"nützlich",ph:"NUETS-likh",en:"useful",s1:["Ein paar Höflichkeitsfloskeln sind im Alltag äußerst nützlich.","A few polite phrases are extremely useful in everyday life."],s2:["Diese App ist besonders nützlich für Menschen, die viel reisen.","This app is especially useful for people who travel a lot."],fam:"nutzen",ety:"Nutzen (ahd. 'nuz') + -lich.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Seite, -n (auf der einen Seite …)",base:"die Seite",ph:"ZY-te",en:"side (on the one hand … on the other …)",s1:["Auf der einen Seite vermisse ich meine Heimat, auf der anderen liebe ich mein neues Leben.","On the one hand I miss my homeland, on the other I love my new life."],s2:["Jede Medaille hat zwei Seiten, auch die Auswanderung.","Every coin has two sides, emigration too."],fam:"meinung",ety:"ahd. 'sita' = Flanke; übertragen: Standpunkt, Aspekt.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"die Sicht, -en (aus meiner Sicht …)",base:"die Sicht",ph:"zikht",en:"view, perspective (from my point of view)",s1:["Aus meiner Sicht überwiegen die Vorteile eines Lebens im Ausland deutlich.","From my point of view, the advantages of a life abroad clearly outweigh the disadvantages."],s2:["Aus fachlicher Sicht ist frühe Mehrsprachigkeit ein großer Gewinn.","From a professional point of view, early multilingualism is a great gain."],fam:"meinung",ety:"zu 'sehen'; 'Sicht' = das, was man sieht / der Blickwinkel.",cat:"Sprache & Mehrsprachigkeit"},
+{de:"missverständlich",base:"missverständlich",ph:"MIS-fer-shtent-likh",en:"ambiguous, misleading, easily misunderstood",s1:["Seine Formulierung war so missverständlich, dass jeder etwas anderes verstand.","His wording was so ambiguous that everyone understood something different."],s2:["Um Ärger zu vermeiden, solltest du missverständliche Aussagen unbedingt klären.","To avoid trouble, you should definitely clarify ambiguous statements."],fam:"verstehen",ety:"miss- (falsch) + verständlich (von 'verstehen').",cat:"Kommunikation & Höflichkeit"},
+{de:"das Abteil, -e",base:"das Abteil",ph:"ap-TYL",en:"compartment (in a train)",s1:["Im Zug suchten wir uns ein ruhiges Abteil, um ungestört zu reden.","On the train we looked for a quiet compartment in order to talk undisturbed."],s2:["In einem vollen Abteil kommt man in Deutschland selten spontan ins Gespräch.","In a full compartment in Germany one rarely gets into conversation spontaneously."],fam:"teilen",ety:"ab- + Teil (zu 'teilen'); ein 'abgeteilter' Raum.",cat:"Kommunikation & Höflichkeit"},
+{de:"missverstehen, missverstand, hat missverstanden",base:"missverstehen",ph:"MIS-fer-shtay-en",en:"to misunderstand",s1:["Bitte missverstehen Sie mich nicht: Ich wollte Sie keineswegs kritisieren.","Please do not misunderstand me: I did not want to criticise you at all."],s2:["Wir haben uns völlig missverstanden, weil wir von verschiedenen Dingen sprachen.","We completely misunderstood each other because we were talking about different things."],fam:"verstehen",ety:"miss- (falsch) + verstehen.",cat:"Kommunikation & Höflichkeit"},
+{de:"peinlich",base:"peinlich",ph:"PYN-likh",en:"embarrassing, awkward",s1:["Es war mir richtig peinlich, dass ich den Namen meines Chefs vergessen hatte.","It was really embarrassing for me that I had forgotten my boss's name."],s2:["Um peinliche Situationen zu vermeiden, informiert man sich besser über die Gepflogenheiten.","To avoid embarrassing situations, it is better to inform oneself about the customs."],fam:"peinlich",ety:"zu 'Pein' (lat. 'poena' = Strafe, Schmerz).",cat:"Kommunikation & Höflichkeit"},
+{de:"der Abstand, ¨-e",base:"der Abstand",ph:"AP-shtant",en:"distance, gap",s1:["In manchen Kulturen hält man beim Gespräch einen größeren Abstand als in anderen.","In some cultures one keeps a greater distance when talking than in others."],s2:["Mit etwas zeitlichem Abstand sieht man viele Probleme deutlich gelassener.","With a little temporal distance one sees many problems much more calmly."],fam:"abstand",ety:"ab- + Stand (von 'stehen'); der Raum, der 'absteht'.",cat:"Kommunikation & Höflichkeit"},
+{de:"die Art, -en (Fragen jeglicher Art)",base:"die Art",ph:"art",en:"kind, type; manner",s1:["Fragen jeglicher Art sind willkommen, auch wenn sie unbequem erscheinen.","Questions of any kind are welcome, even if they seem uncomfortable."],s2:["Die Art, wie sie Kritik äußert, ist immer freundlich und respektvoll.","The manner in which she expresses criticism is always friendly and respectful."],fam:"art",ety:"ahd. 'art' = angeborene Beschaffenheit; verwandt mit lat. 'ars'.",cat:"Kommunikation & Höflichkeit"},
+{de:"äußerst",base:"äußerst",ph:"OY-serst",en:"extremely, utterly",s1:["Die Einheimischen waren äußerst hilfsbereit, als ich mich verlaufen hatte.","The locals were extremely helpful when I had got lost."],s2:["Es ist äußerst wichtig, dass man in solchen Momenten ruhig bleibt.","It is extremely important that one stays calm in such moments."],fam:"aussen",ety:"Superlativ von 'außen'; 'am weitesten außen' -> höchstes Maß.",cat:"Kommunikation & Höflichkeit"},
+{de:"bedenken, bedachte, hat bedacht",base:"bedenken",ph:"be-DENG-ken",en:"to consider, bear in mind",s1:["Man sollte bedenken, dass Gesten in anderen Ländern etwas ganz anderes bedeuten können.","One should bear in mind that gestures can mean something completely different in other countries."],s2:["Bedenkt man alle Umstände, war seine Reaktion durchaus verständlich.","If one considers all the circumstances, his reaction was quite understandable."],fam:"denken",ety:"be- + denken; etwas 'durchdenken', erwägen.",cat:"Kommunikation & Höflichkeit"},
+{de:"der/die Begleiter/in, -/-nen",base:"der Begleiter",ph:"be-GLY-ter",en:"companion, escort",s1:["Auf offiziellen Anlässen erscheint sie oft mit einem Begleiter.","At official occasions she often appears with a companion."],s2:["Ein guter Reiseführer ist zugleich Begleiter und Vermittler zwischen den Kulturen.","A good tour guide is at the same time a companion and mediator between cultures."],fam:"begleiten",ety:"be- + 'geleiten' (zu 'Geleit' = Schutz auf dem Weg).",cat:"Kommunikation & Höflichkeit"},
+{de:"breit (ein breites Lächeln)",base:"breit",ph:"bryt",en:"broad, wide",s1:["Mit einem breiten Lächeln begrüßte er jeden einzelnen Gast.","With a broad smile he greeted each individual guest."],s2:["Die Straße ist so breit, dass drei Autos nebeneinander passen.","The street is so wide that three cars fit next to each other."],fam:"breit",ety:"ahd. 'breit'; germanischen Ursprungs.",cat:"Kommunikation & Höflichkeit"},
+{de:"die Freundlichkeit, -en",base:"die Freundlichkeit",ph:"FROYNT-likh-kyt",en:"friendliness, kindness",s1:["Ihre Freundlichkeit gegenüber Fremden hat mich sehr beeindruckt.","Her friendliness towards strangers impressed me a lot."],s2:["Mit ein wenig Freundlichkeit lassen sich die meisten Konflikte entschärfen.","With a little friendliness most conflicts can be defused."],fam:"freund",ety:"freundlich (Freund) + -keit.",cat:"Kommunikation & Höflichkeit"},
+{de:"das Gegenüber, - (Sprechen Sie mit Ihrem Gegenüber.)",base:"das Gegenüber",ph:"GAY-gen-ue-ber",en:"the person opposite, counterpart",s1:["Schauen Sie Ihrem Gegenüber beim Sprechen freundlich in die Augen.","Look your counterpart friendly in the eyes while speaking."],s2:["Mein Gegenüber im Zug entpuppte sich als alter Bekannter.","The person opposite me on the train turned out to be an old acquaintance."],fam:"gegenueber",ety:"gegen + über; substantiviert = die 'gegenüber' sitzende Person.",cat:"Kommunikation & Höflichkeit"},
+{de:"jeglich",base:"jeglich",ph:"YAYK-likh",en:"any, each and every",s1:["Jeglicher Versuch, ihn umzustimmen, blieb erfolglos.","Every attempt to change his mind remained unsuccessful."],s2:["Ohne jegliche Vorkenntnisse begann sie, Arabisch zu lernen.","Without any prior knowledge she began to learn Arabic."],fam:"jeglich",ety:"ahd. 'iogilih' = ein jeder; verstärktes 'jeder'.",cat:"Kommunikation & Höflichkeit"},
+{de:"das Lächeln, -",base:"das Lächeln",ph:"LEKH-eln",en:"smile",s1:["Ein ehrliches Lächeln überwindet oft sprachliche Barrieren.","An honest smile often overcomes linguistic barriers."],s2:["Ihr freundliches Lächeln nahm mir sofort die Nervosität.","Her friendly smile immediately took away my nervousness."],fam:"lachen",ety:"zu 'lächeln', Verkleinerungsform von 'lachen'.",cat:"Kommunikation & Höflichkeit"},
+{de:"die Öffentlichkeit (Sg.)",base:"die Öffentlichkeit",ph:"ERF-ent-likh-kyt",en:"the public, public sphere",s1:["In der Öffentlichkeit verhält man sich in Deutschland eher zurückhaltend.","In public in Germany one behaves rather reservedly."],s2:["Der Skandal wurde erst durch einen Journalisten an die Öffentlichkeit gebracht.","The scandal was only brought to the public by a journalist."],fam:"oeffentlich",ety:"öffentlich (offen) + -keit.",cat:"Kommunikation & Höflichkeit"},
+{de:"die Privatsphäre (Sg.)",base:"die Privatsphäre",ph:"pri-VAHT-sfay-re",en:"privacy, private sphere",s1:["Fragen nach dem Gehalt gelten in Deutschland als Eingriff in die Privatsphäre.","Questions about salary are considered an intrusion into privacy in Germany."],s2:["Jeder Mensch hat ein Recht auf Schutz seiner Privatsphäre.","Every person has a right to the protection of their privacy."],fam:"privat",ety:"lat. 'privatus' = privat + griech. 'sphaira' = Kugel, Bereich.",cat:"Kommunikation & Höflichkeit"},
+{de:"stellen (eine Frage stellen)",base:"stellen",ph:"SHTEL-len",en:"to put, place; to pose (a question)",s1:["Trau dich, im Unterricht Fragen zu stellen, auch wenn sie einfach erscheinen.","Dare to ask questions in class, even if they seem simple."],s2:["Er stellte den Koffer ab und begrüßte uns herzlich.","He put down the suitcase and greeted us warmly."],fam:"stellen",ety:"zu 'Stelle/Stand'; etwas an einen Platz 'stellen'.",cat:"Kommunikation & Höflichkeit"},
+{de:"üblich",base:"üblich",ph:"UEB-likh",en:"usual, customary",s1:["Es ist hier üblich, sich zur Begrüßung die Hand zu geben.","It is customary here to shake hands as a greeting."],s2:["Wie üblich kam er zehn Minuten zu spät zur Sitzung.","As usual he came ten minutes late to the meeting."],fam:"ueblich",ety:"zu 'üben/Übung'; was 'in Übung', also gebräuchlich ist.",cat:"Kommunikation & Höflichkeit"},
+{de:"die Spielregel, -n",base:"die Spielregel",ph:"SHPEEL-ray-gel",en:"rule of the game",s1:["Wer in einer neuen Kultur ankommt, muss zuerst die ungeschriebenen Spielregeln lernen.","Whoever arrives in a new culture first has to learn the unwritten rules of the game."],s2:["Wenn sich alle an die Spielregeln halten, läuft die Zusammenarbeit reibungslos.","If everyone sticks to the rules of the game, the cooperation runs smoothly."],fam:"spiel",ety:"Spiel + Regel (lat. 'regula' = Maßstab).",cat:"Kommunikation & Höflichkeit"},
+{de:"die Geste, -n",base:"die Geste",ph:"GES-te",en:"gesture",s1:["Eine kleine Geste der Höflichkeit kann eine ganze Begegnung verändern.","A small gesture of politeness can change an entire encounter."],s2:["Dieselbe Geste kann in einem anderen Land als Beleidigung gelten.","The same gesture can be considered an insult in another country."],fam:"geste",ety:"lat. 'gestus' = Körperbewegung, Haltung (zu 'gerere' = tun).",cat:"Kommunikation & Höflichkeit"},
+{de:"alkoholfrei",base:"alkoholfrei",ph:"AL-ko-hol-fry",en:"non-alcoholic, alcohol-free",s1:["Auf der Feier wurden auch alkoholfreie Getränke angeboten.","At the party non-alcoholic drinks were also offered."],s2:["Immer mehr Menschen greifen bewusst zu alkoholfreiem Bier.","More and more people deliberately reach for non-alcoholic beer."],fam:"negation",ety:"Alkohol + -frei (= ohne); Negation durch Nachsilbe '-frei'.",cat:"Kommunikation & Höflichkeit"},
+{de:"atypisch (für + A.)",base:"atypisch",ph:"AH-tue-pish",en:"atypical, uncharacteristic",s1:["Sein zurückhaltendes Verhalten war für ihn völlig atypisch.","His reserved behaviour was completely atypical for him."],s2:["Ein so milder Winter ist für diese Region eher atypisch.","Such a mild winter is rather atypical for this region."],fam:"negation",ety:"griech. 'a-' (nicht) + typisch; Verneinung durch Vorsilbe 'a-'.",cat:"Kommunikation & Höflichkeit"},
+{de:"das Desinteresse (Sg.)",base:"das Desinteresse",ph:"DES-in-te-res-se",en:"lack of interest, indifference",s1:["Sein Schweigen wurde fälschlicherweise als Desinteresse gedeutet.","His silence was mistakenly interpreted as lack of interest."],s2:["Das Desinteresse vieler Bürger an Politik bereitet Fachleuten Sorgen.","The indifference of many citizens towards politics worries experts."],fam:"negation",ety:"frz. 'dés-' (Verneinung) + Interesse (lat. 'interesse').",cat:"Kommunikation & Höflichkeit"},
+{de:"disqualifizieren",base:"disqualifizieren",ph:"dis-kva-li-fi-TSEE-ren",en:"to disqualify",s1:["Der Läufer wurde wegen eines Fehlstarts disqualifiziert.","The runner was disqualified because of a false start."],s2:["Unhöfliches Verhalten kann einen Bewerber sofort disqualifizieren.","Impolite behaviour can immediately disqualify an applicant."],fam:"negation",ety:"lat. 'dis-' (Verneinung, Trennung) + qualifizieren.",cat:"Kommunikation & Höflichkeit"},
+{de:"inhaltsleer",base:"inhaltsleer",ph:"in-HALTS-layr",en:"empty of content, meaningless",s1:["Seine Rede klang beeindruckend, war aber völlig inhaltsleer.","His speech sounded impressive but was completely empty of content."],s2:["Solche inhaltsleeren Floskeln überzeugen heute niemanden mehr.","Such empty phrases convince no one anymore today."],fam:"negation",ety:"Inhalt + -leer (= ohne Inhalt); Negation durch '-leer'.",cat:"Kommunikation & Höflichkeit"},
+{de:"intolerant",base:"intolerant",ph:"IN-to-le-rant",en:"intolerant",s1:["Wer intolerant gegenüber anderen Kulturen ist, verpasst viele Chancen.","Whoever is intolerant towards other cultures misses many opportunities."],s2:["Sie reagierte ungewöhnlich intolerant auf abweichende Meinungen.","She reacted unusually intolerantly to differing opinions."],fam:"negation",ety:"lat. 'in-' (nicht) + tolerant (tolerare = ertragen).",cat:"Kommunikation & Höflichkeit"},
+{de:"irreal",base:"irreal",ph:"IR-re-ahl",en:"unreal, imaginary",s1:["Der Konjunktiv II drückt oft irreale Bedingungen aus.","The subjunctive II often expresses unreal conditions."],s2:["Seine Erwartungen an das Auslandsjahr waren geradezu irreal.","His expectations of the year abroad were downright unreal."],fam:"negation",ety:"lat. 'ir-' (= in-, nicht) + real (res = Sache).",cat:"Kommunikation & Höflichkeit"},
+{de:"der/die Nichtschwimmer/in, -/-nen",base:"der Nichtschwimmer",ph:"NIKHT-shvim-mer",en:"non-swimmer",s1:["Als Nichtschwimmer sollte man sich nicht zu weit ins Wasser wagen.","As a non-swimmer one should not venture too far into the water."],s2:["Der Kurs richtet sich ausdrücklich an Nichtschwimmer jeden Alters.","The course is expressly aimed at non-swimmers of every age."],fam:"negation",ety:"'Nicht-' (Verneinung) + Schwimmer (schwimmen).",cat:"Kommunikation & Höflichkeit"},
+{de:"nonverbal",base:"nonverbal",ph:"NON-ver-bahl",en:"nonverbal",s1:["Ein großer Teil unserer Kommunikation läuft nonverbal über Mimik und Gestik ab.","A large part of our communication takes place nonverbally through facial expressions and gestures."],s2:["Nonverbale Signale werden je nach Kultur ganz unterschiedlich gedeutet.","Nonverbal signals are interpreted quite differently depending on the culture."],fam:"negation",ety:"lat. 'non' (nicht) + verbal (verbum = Wort).",cat:"Kommunikation & Höflichkeit"},
+{de:"das Unverständnis (Sg.)",base:"das Unverständnis",ph:"UN-fer-shtent-nis",en:"incomprehension, lack of understanding",s1:["Seine schroffe Antwort stieß bei allen auf Unverständnis.","His curt answer met with incomprehension from everyone."],s2:["Mit Unverständnis reagierten viele auf die neuen strengen Regeln.","Many reacted with incomprehension to the new strict rules."],fam:"negation",ety:"'Un-' (Verneinung) + Verständnis (verstehen).",cat:"Kommunikation & Höflichkeit"},
+{de:"trennbar",base:"trennbar",ph:"TREN-bar",en:"separable",s1:["Viele deutsche Verben sind trennbar, zum Beispiel 'aufstehen' oder 'anrufen'.","Many German verbs are separable, for example 'aufstehen' or 'anrufen'."],s2:["Bei trennbaren Verben steht die Vorsilbe im Hauptsatz am Satzende.","With separable verbs the prefix stands at the end of the sentence in the main clause."],fam:"trennen",ety:"zu 'trennen' + -bar (Möglichkeit); 'was getrennt werden kann'.",cat:"Kommunikation & Höflichkeit"},
+{de:"die Chancengleichheit (Sg.)",base:"die Chancengleichheit",ph:"SHAHN-sen-glykh-hyt",en:"equal opportunity, equality of opportunity",s1:["Bildung ist der Schlüssel zu echter Chancengleichheit in einer Gesellschaft.","Education is the key to real equal opportunity in a society."],s2:["Um Chancengleichheit zu fördern, bietet die Schule kostenlose Nachhilfe an.","To promote equal opportunity, the school offers free tutoring."],fam:"chance",ety:"Chance (frz., zu lat. 'cadere' = fallen) + Gleichheit (gleich).",cat:"Integration & Chancen"},
+{de:"der Migrationshintergrund (Sg.)",base:"der Migrationshintergrund",ph:"mi-gra-TSYOHNS-hin-ter-grunt",en:"migration background",s1:["Ein Drittel der Schüler an dieser Schule hat einen Migrationshintergrund.","A third of the pupils at this school have a migration background."],s2:["Menschen mit Migrationshintergrund bereichern das kulturelle Leben der Stadt.","People with a migration background enrich the cultural life of the city."],fam:"migration",ety:"Migration (lat. 'migrare' = wandern) + Hintergrund.",cat:"Integration & Chancen"},
+{de:"das Schlüsselwort, ¨-er",base:"das Schlüsselwort",ph:"SHLUES-sel-vort",en:"keyword, key term",s1:["Integration ist das Schlüsselwort, wenn es um Zuwanderung geht.","Integration is the keyword when it comes to immigration."],s2:["Markiere beim Lesen die wichtigsten Schlüsselwörter im Text.","When reading, mark the most important keywords in the text."],fam:"schluessel",ety:"Schlüssel (schließen) + Wort; ein Wort, das etwas 'erschließt'.",cat:"Integration & Chancen"},
+{de:"völlig",base:"völlig",ph:"FER-likh",en:"completely, totally",s1:["Nach dem langen Tag war ich völlig erschöpft, aber glücklich.","After the long day I was completely exhausted but happy."],s2:["Da bin ich völlig deiner Meinung.","On that I completely agree with you."],fam:"voll",ety:"zu 'voll'; 'in vollem Maße'.",cat:"Integration & Chancen"},
+{de:"die Kindergartenpflicht (Sg.)",base:"die Kindergartenpflicht",ph:"KIN-der-gar-ten-pflikht",en:"compulsory kindergarten attendance",s1:["In manchen Regionen gibt es eine Kindergartenpflicht, um die Sprachförderung zu sichern.","In some regions there is compulsory kindergarten attendance to ensure language support."],s2:["Über die Einführung einer Kindergartenpflicht wird seit Jahren diskutiert.","The introduction of compulsory kindergarten attendance has been discussed for years."],fam:"bildung",ety:"Kindergarten + Pflicht (zu 'pflegen'); gesetzliche Verpflichtung.",cat:"Integration & Chancen"},
+{de:"die Schuluniform, -en",base:"die Schuluniform",ph:"SHOOL-u-ni-form",en:"school uniform",s1:["In Deutschland gibt es an den meisten Schulen keine Schuluniform.","In Germany there is no school uniform at most schools."],s2:["Befürworter meinen, eine Schuluniform verringere soziale Unterschiede.","Supporters think a school uniform reduces social differences."],fam:"bildung",ety:"Schule (lat. 'schola') + Uniform (lat. 'uniformis' = einförmig).",cat:"Integration & Chancen"},
+{de:"eingehen (auf + A.), ging ein, ist eingegangen",base:"eingehen",ph:"AYN-gay-en",en:"to respond to, address, engage with",s1:["Ein guter Lehrer geht auf die individuellen Bedürfnisse jedes Kindes ein.","A good teacher responds to the individual needs of every child."],s2:["Sie ging in ihrer Antwort ausführlich auf meine Fragen ein.","In her answer she addressed my questions in detail."],fam:"gehen",ety:"ein- + gehen; sich auf etwas 'einlassen'.",cat:"Integration & Chancen"},
+{de:"die Einrichtung, -en",base:"die Einrichtung",ph:"AYN-rikh-tung",en:"institution, facility; furnishings",s1:["Diese soziale Einrichtung unterstützt Familien mit Migrationshintergrund.","This social institution supports families with a migration background."],s2:["Die Einrichtung der neuen Wohnung kostete mehr, als wir geplant hatten.","Furnishing the new apartment cost more than we had planned."],fam:"richten",ety:"zu 'einrichten' (ein- + richten); etwas 'Eingerichtetes'.",cat:"Integration & Chancen"},
+{de:"ermöglichen",base:"ermöglichen",ph:"er-MERG-li-khen",en:"to enable, make possible",s1:["Ein Stipendium ermöglichte ihr das Studium im Ausland.","A scholarship enabled her to study abroad."],s2:["Neue Technologien ermöglichen es, von überall aus zu arbeiten.","New technologies make it possible to work from anywhere."],fam:"moeglich",ety:"er- + möglich (zu 'mögen'); 'möglich machen'.",cat:"Integration & Chancen"},
+{de:"die Lehrkraft, ¨-e",base:"die Lehrkraft",ph:"LAYR-kraft",en:"teacher, teaching staff member",s1:["An unserer Schule fehlt es leider an qualifizierten Lehrkräften.","At our school there is unfortunately a lack of qualified teachers."],s2:["Jede Lehrkraft betreut zusätzlich eine kleine Gruppe von Patenkindern.","Every teacher additionally looks after a small group of mentee children."],fam:"bildung",ety:"Lehre (lehren) + Kraft; geschlechtsneutral für Lehrer/Lehrerin.",cat:"Integration & Chancen"},
+{de:"die Migrantenfamilie, -n",base:"die Migrantenfamilie",ph:"mi-GRAN-ten-fa-mee-lye",en:"migrant family",s1:["Viele Migrantenfamilien legen großen Wert auf die Bildung ihrer Kinder.","Many migrant families place great value on the education of their children."],s2:["In der Migrantenfamilie wurden zu Hause gleich zwei Sprachen gesprochen.","In the migrant family two languages were spoken at home at once."],fam:"migration",ety:"Migrant (lat. 'migrare') + Familie.",cat:"Integration & Chancen"},
+{de:"das Migrantenkind, -er",base:"das Migrantenkind",ph:"mi-GRAN-ten-kint",en:"child of migrants, migrant child",s1:["Migrantenkinder wachsen oft ganz selbstverständlich mit zwei Kulturen auf.","Children of migrants often grow up quite naturally with two cultures."],s2:["Gezielte Förderung hilft Migrantenkindern beim Start in der Schule.","Targeted support helps migrant children with the start at school."],fam:"migration",ety:"Migrant + Kind.",cat:"Integration & Chancen"},
+{de:"der/die Pate/Patin, -n/-nen",base:"der Pate",ph:"PAH-te",en:"mentor, sponsor; godfather/godmother",s1:["Als Pate hilft er einem jüngeren Schüler beim Deutschlernen.","As a mentor he helps a younger pupil with learning German."],s2:["Jedes neue Kind bekommt eine Patin, die ihm alles zeigt.","Every new child gets a mentor who shows them everything."],fam:"pate",ety:"lat. 'pater' = Vater; ursprünglich der Taufzeuge.",cat:"Integration & Chancen"},
+{de:"sinnvoll",base:"sinnvoll",ph:"ZIN-fol",en:"sensible, meaningful",s1:["Es wäre sinnvoll, den Sprachkurs schon vor der Ankunft zu beginnen.","It would be sensible to start the language course already before arrival."],s2:["Sie sucht eine sinnvolle Aufgabe, bei der sie anderen helfen kann.","She is looking for a meaningful task in which she can help others."],fam:"sinn",ety:"Sinn (ahd. 'sin' = Weg, Verstand) + -voll.",cat:"Integration & Chancen"},
+{de:"der/die Zugewanderte, -n",base:"der Zugewanderte",ph:"TSOO-ge-van-der-te",en:"immigrant, newcomer",s1:["Die Stadt bietet Zugewanderten kostenlose Orientierungskurse an.","The city offers immigrants free orientation courses."],s2:["Viele Zugewanderte gründen nach einigen Jahren ein eigenes Unternehmen.","Many immigrants start their own business after a few years."],fam:"wandern",ety:"Partizip von 'zuwandern' (zu- + wandern).",cat:"Integration & Chancen"},
+{de:"anfügen",base:"anfügen",ph:"AN-fue-gen",en:"to add, attach, append",s1:["Dem Antrag müssen Sie eine Kopie Ihres Ausweises anfügen.","To the application you have to attach a copy of your ID."],s2:["Er fügte seiner Mail noch eine höfliche Grußformel an.","He added a polite closing formula to his email."],fam:"fuegen",ety:"an- + fügen (zusammenpassen); etwas 'hinzufügen'.",cat:"Integration & Chancen"},
+{de:"ausbremsen",base:"ausbremsen",ph:"OWS-brem-zen",en:"to slow down, hold back, thwart",s1:["Bürokratische Hürden bremsen viele Gründer unnötig aus.","Bureaucratic hurdles unnecessarily hold back many founders."],s2:["Lass dich von solchen Rückschlägen nicht ausbremsen!","Don't let yourself be held back by such setbacks!"],fam:"bremse",ety:"aus- + bremsen (zu 'Bremse'); jemanden 'stoppen'.",cat:"Integration & Chancen"},
+{de:"die Ausländerquote, -n",base:"die Ausländerquote",ph:"OWS-len-der-kvoh-te",en:"proportion of foreigners, foreigner quota",s1:["In diesem Stadtteil ist die Ausländerquote überdurchschnittlich hoch.","In this district the proportion of foreigners is above average."],s2:["Über eine feste Ausländerquote in Firmen wird kontrovers gestritten.","A fixed foreigner quota in companies is controversially disputed."],fam:"ausland",ety:"Ausländer (Ausland) + Quote (lat. 'quota pars' = wievielter Teil).",cat:"Integration & Chancen"},
+{de:"der Automobilhersteller, -",base:"der Automobilhersteller",ph:"OW-to-mo-beel-hair-shtel-ler",en:"car manufacturer, automaker",s1:["Der Automobilhersteller sucht dringend Fachkräfte aus dem Ausland.","The car manufacturer is urgently looking for skilled workers from abroad."],s2:["Große Automobilhersteller bilden in ihren Werken viele Migranten aus.","Large car manufacturers train many migrants in their plants."],fam:"herstellen",ety:"Automobil (griech. 'autos' + lat. 'mobilis') + Hersteller (herstellen).",cat:"Integration & Chancen"},
+{de:"die Betriebswirtschaft, -en",base:"die Betriebswirtschaft",ph:"be-TREEPS-veert-shaft",en:"business administration / economics",s1:["Nach der Schule studierte sie Betriebswirtschaft an einer Fachhochschule.","After school she studied business administration at a university of applied sciences."],s2:["Grundkenntnisse in Betriebswirtschaft sind für jeden Gründer hilfreich.","Basic knowledge of business administration is helpful for every founder."],fam:"bildung",ety:"Betrieb (betreiben) + Wirtschaft (zu 'Wirt').",cat:"Integration & Chancen"},
+{de:"die Diskriminierung, -en",base:"die Diskriminierung",ph:"dis-kri-mi-NEE-rung",en:"discrimination",s1:["Diskriminierung aufgrund der Herkunft ist gesetzlich verboten.","Discrimination on the basis of origin is prohibited by law."],s2:["Sie setzt sich aktiv gegen jede Form von Diskriminierung ein.","She actively campaigns against every form of discrimination."],fam:"diskriminierung",ety:"lat. 'discriminare' = trennen, unterscheiden.",cat:"Integration & Chancen"},
+{de:"farbenfroh",base:"farbenfroh",ph:"FAR-ben-froh",en:"colourful, vibrant",s1:["Auf dem Straßenfest sah man Menschen in farbenfrohen Trachten aus aller Welt.","At the street festival you saw people in colourful costumes from all over the world."],s2:["Ihre farbenfrohe Kleidung fiel in der grauen Menge sofort auf.","Her colourful clothing immediately stood out in the grey crowd."],fam:"farbe",ety:"Farbe + froh; 'reich an fröhlichen Farben'.",cat:"Integration & Chancen"},
+{de:"fernliegen, lag fern, hat ferngelegen",base:"fernliegen",ph:"FERN-lee-gen",en:"to be far from (one's mind), be the last thing intended",s1:["Es liegt mir völlig fern, dich zu kritisieren.","It is far from my mind to criticise you."],s2:["Nichts lag ihr ferner, als ihre Heimat für immer zu verlassen.","Nothing was further from her mind than leaving her homeland forever."],fam:"fern",ety:"fern + liegen; etwas liegt 'in weiter Ferne', ist unerwünscht.",cat:"Integration & Chancen"},
+{de:"das Feuerholz (Sg.)",base:"das Feuerholz",ph:"FOY-er-holts",en:"firewood",s1:["Als Kind sammelte er im Wald Feuerholz für den Winter.","As a child he collected firewood in the forest for the winter."],s2:["Das trockene Feuerholz brannte sofort lichterloh.","The dry firewood immediately burned brightly."],fam:"feuer",ety:"Feuer (ahd. 'fiur') + Holz.",cat:"Integration & Chancen"},
+{de:"flechten, flocht, hat geflochten (ein geflochtener Zopf)",base:"flechten",ph:"FLEKH-ten",en:"to braid, plait, weave",s1:["Die Großmutter flocht dem Mädchen jeden Morgen einen langen Zopf.","The grandmother braided a long plait for the girl every morning."],s2:["Aus dünnen Weiden kann man kunstvolle Körbe flechten.","From thin willow branches one can weave artful baskets."],fam:"flechten",ety:"ahd. 'flehtan'; verwandt mit lat. 'plectere' = flechten.",cat:"Integration & Chancen"},
+{de:"führen (ein Geschäft führen)",base:"führen",ph:"FUE-ren",en:"to lead, run, manage",s1:["Seit zehn Jahren führt sie erfolgreich ein kleines Gemüsegeschäft.","For ten years she has successfully run a small vegetable shop."],s2:["Diese Straße führt direkt zum Bahnhof.","This street leads directly to the station."],fam:"fuehren",ety:"ahd. 'fuoren' (Kausativ zu 'fahren'); jemanden 'fahren machen'.",cat:"Integration & Chancen"},
+{de:"gelegentlich",base:"gelegentlich",ph:"ge-LAY-gent-likh",en:"occasional(ly), from time to time",s1:["Gelegentlich besucht er noch die Freunde aus seiner alten Heimat.","Occasionally he still visits the friends from his old homeland."],s2:["Bei gelegentlichen Missverständnissen hilft ein offenes Gespräch.","With occasional misunderstandings an open conversation helps."],fam:"gelegenheit",ety:"zu 'Gelegenheit' (liegen); 'wenn sich die Gelegenheit ergibt'.",cat:"Integration & Chancen"},
+{de:"das Gemüsegeschäft, -e",base:"das Gemüsegeschäft",ph:"ge-MUE-ze-ge-sheft",en:"vegetable / greengrocer's shop",s1:["An der Ecke gibt es ein kleines Gemüsegeschäft mit besonders frischer Ware.","On the corner there is a small vegetable shop with particularly fresh goods."],s2:["Er übernahm das Gemüsegeschäft seiner Eltern und modernisierte es.","He took over his parents' vegetable shop and modernised it."],fam:"geschaeft",ety:"Gemüse (mhd. 'gemüese') + Geschäft.",cat:"Integration & Chancen"},
+{de:"der/die Gründer/in, -/-nen",base:"der Gründer",ph:"GRUEN-der",en:"founder",s1:["Als Gründerin eines Start-ups arbeitet sie oft rund um die Uhr.","As the founder of a start-up she often works around the clock."],s2:["Die Gründer des Vereins wollten Zugewanderten den Start erleichtern.","The founders of the association wanted to make the start easier for immigrants."],fam:"gruenden",ety:"zu 'gründen' (einen 'Grund' legen).",cat:"Integration & Chancen"},
+{de:"die Hausverwaltung, -en",base:"die Hausverwaltung",ph:"HOWS-fer-val-tung",en:"property management",s1:["Bei Problemen mit der Heizung wende dich an die Hausverwaltung.","In case of problems with the heating, contact the property management."],s2:["Die Hausverwaltung kümmert sich um Reparaturen und Nebenkosten.","The property management takes care of repairs and utility costs."],fam:"verwalten",ety:"Haus + Verwaltung (verwalten, zu 'walten' = herrschen).",cat:"Integration & Chancen"},
+{de:"die Hochschulreife (Sg.)",base:"die Hochschulreife",ph:"HOHKH-shool-ry-fe",en:"university entrance qualification",s1:["Mit der allgemeinen Hochschulreife kann man jedes Fach studieren.","With the general university entrance qualification one can study any subject."],s2:["Er holte die Hochschulreife auf dem zweiten Bildungsweg nach.","He obtained the university entrance qualification through adult education."],fam:"bildung",ety:"Hochschule + Reife (reif sein); die 'Reife' fürs Studium.",cat:"Integration & Chancen"},
+{de:"infrage kommen, kam infrage, ist infrage gekommen",base:"infrage kommen",ph:"in-FRAH-ge kom-men",en:"to be an option, be a possibility",s1:["Ein Umzug ins Ausland kommt für mich derzeit nicht infrage.","A move abroad is not an option for me at the moment."],s2:["Für diese verantwortungsvolle Stelle kommen nur wenige Bewerber infrage.","For this responsible position only few applicants are a possibility."],fam:"frage",ety:"'in Frage' + kommen; wörtlich 'als Frage/Möglichkeit auftreten'.",cat:"Integration & Chancen"},
+{de:"die Informatik (Sg.)",base:"die Informatik",ph:"in-for-MAH-tik",en:"computer science, informatics",s1:["Nach der Schule entschied er sich für ein Studium der Informatik.","After school he decided to study computer science."],s2:["In der Informatik sind Fachkräfte aus dem Ausland sehr gefragt.","In computer science, skilled workers from abroad are much in demand."],fam:"informatik",ety:"Kunstwort aus 'Information' + '-atik' (wie Mathematik).",cat:"Integration & Chancen"},
+{de:"inmitten",base:"inmitten",ph:"in-MIT-ten",en:"in the middle of, amidst",s1:["Inmitten der fremden Stadt fühlte sie sich zunächst sehr allein.","In the middle of the foreign city she initially felt very alone."],s2:["Inmitten all der Hektik bewahrte er die Ruhe.","Amidst all the hectic he kept his calm."],fam:"mitte",ety:"in + Mitten (zu 'Mitte'); 'in der Mitte von'.",cat:"Integration & Chancen"},
+{de:"der Keks, -e",base:"der Keks",ph:"kayks",en:"cookie, biscuit",s1:["Zur Begrüßung reichte die Nachbarin selbst gebackene Kekse.","As a welcome the neighbour offered home-baked cookies."],s2:["Er brachte zum Sprachkurs eine Dose bunter Kekse mit.","He brought a tin of colourful cookies to the language course."],fam:"keks",ety:"aus engl. 'cakes' eingedeutscht.",cat:"Integration & Chancen"},
+{de:"der/die Kommilitone/Kommilitonin, -n/-nen",base:"der Kommilitone",ph:"ko-mi-li-TOH-ne",en:"fellow student",s1:["Meine Kommilitonen kamen aus über zwanzig verschiedenen Ländern.","My fellow students came from more than twenty different countries."],s2:["Eine hilfsbereite Kommilitonin erklärte mir den komplizierten Stoff.","A helpful fellow student explained the complicated material to me."],fam:"bildung",ety:"lat. 'commilito' = Mitsoldat, Kamerad (com- + miles = Soldat).",cat:"Integration & Chancen"},
+{de:"leuchten",base:"leuchten",ph:"LOYKH-ten",en:"to shine, glow",s1:["Ihre Augen leuchteten, als sie von ihrer neuen Heimat erzählte.","Her eyes shone when she talked about her new home."],s2:["Am Abend leuchteten überall die bunten Lichter des Festes.","In the evening the colourful lights of the festival shone everywhere."],fam:"licht",ety:"zu 'Licht' (ahd. 'lioht'); 'Licht ausstrahlen'.",cat:"Integration & Chancen"},
+{de:"nachdenklich",base:"nachdenklich",ph:"NAHKH-denk-likh",en:"thoughtful, pensive",s1:["Nach dem Gespräch war sie lange still und nachdenklich.","After the conversation she was silent and pensive for a long time."],s2:["Seine Worte stimmten mich sehr nachdenklich.","His words made me very thoughtful."],fam:"denken",ety:"nachdenken (nach + denken) + -lich.",cat:"Integration & Chancen"},
+{de:"die Odyssee, -n",base:"die Odyssee",ph:"o-due-SAY",en:"odyssey, long ordeal / journey",s1:["Die Flucht wurde für die Familie zu einer wahren Odyssee.","The flight became a true odyssey for the family."],s2:["Nach einer langen bürokratischen Odyssee hielt er endlich den Pass in der Hand.","After a long bureaucratic odyssey he finally held the passport in his hand."],fam:"odyssee",ety:"nach 'Odysseus', dem Helden von Homers Irrfahrten.",cat:"Integration & Chancen"},
+{de:"die Option, -en",base:"die Option",ph:"op-TSYOHN",en:"option, choice",s1:["Auszuwandern war für sie immer eine reale Option.","Emigrating was always a real option for her."],s2:["Wir sollten alle Optionen prüfen, bevor wir uns entscheiden.","We should examine all options before we decide."],fam:"option",ety:"lat. 'optio' = freie Wahl (zu 'optare' = wünschen).",cat:"Integration & Chancen"},
+{de:"der Preis, -e (um jeden Preis)",base:"der Preis",ph:"prys",en:"price; prize (at any price)",s1:["Sie wollte um jeden Preis ihren Kindern eine bessere Zukunft ermöglichen.","She wanted to enable a better future for her children at any price."],s2:["Für seinen Film erhielt er einen wichtigen internationalen Preis.","For his film he received an important international prize."],fam:"preis",ety:"lat. 'pretium' = Wert, Lohn.",cat:"Integration & Chancen"},
+{de:"scheitern",base:"scheitern",ph:"SHY-tern",en:"to fail, fall through",s1:["Sein erster Versuch, ein Geschäft zu eröffnen, scheiterte an Geldmangel.","His first attempt to open a business failed due to a lack of money."],s2:["Auch wenn ein Plan scheitert, lernt man daraus für den nächsten.","Even if a plan fails, one learns from it for the next one."],fam:"scheitern",ety:"zu 'Scheit' (Holzstück); ursprünglich 'in Stücke gehen'.",cat:"Integration & Chancen"},
+{de:"der Schulabschluss, ¨-e",base:"der Schulabschluss",ph:"SHOOL-ap-shluss",en:"school-leaving qualification",s1:["Ohne Schulabschluss ist es schwer, eine Ausbildung zu finden.","Without a school-leaving qualification it is hard to find an apprenticeship."],s2:["Sie holte ihren Schulabschluss in einem Abendkurs nach.","She obtained her school-leaving qualification in an evening course."],fam:"bildung",ety:"Schule + Abschluss (abschließen).",cat:"Integration & Chancen"},
+{de:"verbergen, verbarg, hat verborgen",base:"verbergen",ph:"fer-BER-gen",en:"to hide, conceal",s1:["Sie konnte ihre Enttäuschung nur schwer verbergen.","She could hardly hide her disappointment."],s2:["Hinter der ruhigen Fassade verbarg sich eine große Sehnsucht.","Behind the calm facade a great longing was concealed."],fam:"bergen",ety:"ver- + bergen (in Sicherheit bringen, verstecken).",cat:"Integration & Chancen"},
+{de:"vollkommen",base:"vollkommen",ph:"FOL-kom-men",en:"completely; perfect",s1:["Ich stimme dir vollkommen zu.","I completely agree with you."],s2:["Niemand ist vollkommen, jeder macht Fehler.","No one is perfect, everyone makes mistakes."],fam:"voll",ety:"voll + kommen; ursprünglich 'voll zum Ziel gekommen'.",cat:"Integration & Chancen"},
+{de:"der/die Wanderarbeiter/in, -/-nen",base:"der Wanderarbeiter",ph:"VAN-der-ar-by-ter",en:"migrant worker",s1:["Als Wanderarbeiter zog sein Vater von Baustelle zu Baustelle.","As a migrant worker his father moved from construction site to construction site."],s2:["Wanderarbeiter tragen oft entscheidend zur Wirtschaft eines Landes bei.","Migrant workers often contribute decisively to a country's economy."],fam:"wandern",ety:"Wander (wandern) + Arbeiter (arbeiten).",cat:"Integration & Chancen"},
+{de:"weitergehen, ging weiter, ist weitergegangen",base:"weitergehen",ph:"VY-ter-gay-en",en:"to go on, continue",s1:["Nach dem Rückschlag musste das Leben irgendwie weitergehen.","After the setback life had to somehow go on."],s2:["Bitte gehen Sie weiter, hier gibt es nichts zu sehen.","Please move along, there is nothing to see here."],fam:"gehen",ety:"weiter (Komparativ von 'weit') + gehen.",cat:"Integration & Chancen"},
+{de:"die Windeseile (Sg.) (in Windeseile)",base:"die Windeseile",ph:"VIN-des-y-le",en:"great haste, lightning speed",s1:["Die Nachricht verbreitete sich in Windeseile durch das ganze Viertel.","The news spread through the whole neighbourhood in great haste."],s2:["In Windeseile packte sie ihre Koffer und fuhr zum Flughafen.","At lightning speed she packed her suitcases and drove to the airport."],fam:"wind",ety:"Wind + Eile; 'so schnell wie der Wind'.",cat:"Integration & Chancen"},
+{de:"die Wüste, -n",base:"die Wüste",ph:"VUE-ste",en:"desert",s1:["Auf ihrer Flucht mussten sie tagelang durch die Wüste ziehen.","On their flight they had to travel through the desert for days."],s2:["In der Wüste kann es tagsüber heiß und nachts eiskalt werden.","In the desert it can be hot during the day and freezing cold at night."],fam:"wueste",ety:"zu 'wüst' (leer, öde); ahd. 'wuosti'.",cat:"Integration & Chancen"},
+{de:"zerrissen",base:"zerrissen",ph:"tser-RIS-sen",en:"torn (apart), conflicted",s1:["Zwischen zwei Kulturen fühlte er sich innerlich oft zerrissen.","Between two cultures he often felt inwardly torn."],s2:["Das alte Foto war zerrissen, aber noch gut zu erkennen.","The old photo was torn but still clearly recognisable."],fam:"reissen",ety:"Partizip von 'zerreißen' (zer- + reißen).",cat:"Integration & Chancen"},
+{de:"das Zöpfchen, -",base:"das Zöpfchen",ph:"TSERPF-khen",en:"little braid, small plait",s1:["Das kleine Mädchen trug zwei niedliche Zöpfchen.","The little girl wore two cute little braids."],s2:["Sie flocht ihrer Tochter jeden Morgen ein Zöpfchen.","She braided a little plait for her daughter every morning."],fam:"flechten",ety:"Verkleinerung von 'Zopf' (ahd. 'zopf').",cat:"Integration & Chancen"},
+{de:"zusammenbinden, band zusammen, hat zusammengebunden",base:"zusammenbinden",ph:"tsu-ZAM-men-bin-den",en:"to tie together, bundle",s1:["Sie band ihre langen Haare zu einem Zopf zusammen.","She tied her long hair together into a plait."],s2:["Die Zeitungen wurden mit einer Schnur zusammengebunden.","The newspapers were tied together with a string."],fam:"binden",ety:"zusammen + binden (ahd. 'bintan').",cat:"Integration & Chancen"},
+{de:"der Anschluss, ¨-e (im Anschluss)",base:"der Anschluss",ph:"AN-shluss",en:"connection; afterwards (im Anschluss)",s1:["Im Anschluss an den Vortrag gab es noch ein gemütliches Beisammensein.","Following the lecture there was a cosy get-together."],s2:["Am Bahnhof verpasste ich leider meinen Anschluss nach Köln.","At the station I unfortunately missed my connection to Cologne."],fam:"schliessen",ety:"zu 'anschließen' (an- + schließen).",cat:"Integration & Chancen"},
+{de:"entsprechend",base:"entsprechend",ph:"ent-SHPREKH-ent",en:"corresponding(ly), appropriate",s1:["Je nach Qualifikation erhält man eine entsprechende Bezahlung.","Depending on qualification one receives corresponding pay."],s2:["Sie kleidete sich dem festlichen Anlass entsprechend.","She dressed appropriately to the festive occasion."],fam:"sprechen",ety:"Partizip von 'entsprechen' (ent- + sprechen = übereinstimmen).",cat:"Integration & Chancen"},
+{de:"anhören (sich gut/schlecht anhören)",base:"sich anhören",ph:"AN-her-ren",en:"to sound (a certain way); to listen to",s1:["Dein Plan hört sich wirklich vielversprechend an.","Your plan really sounds promising."],s2:["Hör dir bitte in Ruhe an, was ich zu sagen habe.","Please listen calmly to what I have to say."],fam:"hoeren",ety:"an- + hören; etwas 'klingt' auf eine bestimmte Weise.",cat:"Integration & Chancen"},
+{de:"annehmen, nahm an, hat angenommen (einen Vorschlag annehmen)",base:"annehmen",ph:"AN-nay-men",en:"to accept; to assume",s1:["Nach kurzem Zögern nahm sie das Jobangebot an.","After a brief hesitation she accepted the job offer."],s2:["Ich nehme an, dass er den Zug verpasst hat.","I assume that he missed the train."],fam:"nehmen",ety:"an- + nehmen; etwas 'zu sich nehmen', akzeptieren.",cat:"Integration & Chancen"},
+{de:"einig (in + D.) (sich einig sein)",base:"einig",ph:"AY-nikh",en:"in agreement, united",s1:["In diesem Punkt sind wir uns vollkommen einig.","On this point we are completely in agreement."],s2:["Die Familie war sich einig, dass ein Neuanfang das Beste sei.","The family was in agreement that a fresh start was best."],fam:"eins",ety:"zu 'ein/eins'; 'eins sein' = übereinstimmen.",cat:"Integration & Chancen"},
+{de:"entwickeln",base:"entwickeln",ph:"ent-VIK-keln",en:"to develop",s1:["Mit der Zeit entwickelte er ein feines Gespür für die neue Sprache.","Over time he developed a fine sense for the new language."],s2:["Aus der kleinen Idee entwickelte sich ein erfolgreiches Unternehmen.","From the small idea a successful company developed."],fam:"wickeln",ety:"ent- + wickeln; das Gegenteil von 'einwickeln', 'entfalten'.",cat:"Integration & Chancen"},
+{de:"meinetwegen",base:"meinetwegen",ph:"MY-net-vay-gen",en:"for my sake; as far as I'm concerned, fine by me",s1:["Meinetwegen musst du nicht extra kommen, ich schaffe das allein.","For my sake you don't have to come specially, I'll manage on my own."],s2:["Meinetwegen können wir auch morgen losfahren.","As far as I'm concerned, we can also leave tomorrow."],fam:"meinen",ety:"'meiner wegen' = um meinetwillen; zu 'mein'.",cat:"Integration & Chancen"},
+{de:"veranstalten",base:"veranstalten",ph:"fer-AN-shtal-ten",en:"to organise, hold (an event)",s1:["Der Verein veranstaltet jedes Jahr ein großes interkulturelles Fest.","The association organises a big intercultural festival every year."],s2:["Wer eine Demonstration veranstalten will, muss sie vorher anmelden.","Whoever wants to hold a demonstration has to register it beforehand."],fam:"anstalt",ety:"zu 'Anstalt' (anstellen); etwas 'in die Wege leiten'.",cat:"Integration & Chancen"},
+{de:"die Abstammung, -en",base:"die Abstammung",ph:"AP-shtam-mung",en:"descent, origin, ancestry",s1:["Fatih Akın ist deutscher Regisseur türkischer Abstammung.","Fatih Akın is a German director of Turkish descent."],s2:["Seine Abstammung spielt in vielen seiner Filme eine wichtige Rolle.","His ancestry plays an important role in many of his films."],fam:"stamm",ety:"zu 'abstammen' (ab- + Stamm); die Herkunft vom 'Stamm'.",cat:"Porträt: Fatih Akın"},
+{de:"der/die Amateur-Boxer/in, -/-nen",base:"der Amateur-Boxer",ph:"a-ma-TER-bok-ser",en:"amateur boxer",s1:["In seiner Jugend war er ein passionierter Amateur-Boxer.","In his youth he was a passionate amateur boxer."],s2:["Als Amateur-Boxer trainierte er hart, verdiente damit aber kein Geld.","As an amateur boxer he trained hard but earned no money from it."],fam:"boxen",ety:"frz. 'amateur' = Liebhaber + engl. 'boxer'.",cat:"Porträt: Fatih Akın"},
+{de:"auszeichnen (mit einem Preis auszeichnen)",base:"auszeichnen",ph:"OWS-tsykh-nen",en:"to award, honour, distinguish",s1:["Fatih Akın wurde mit vielen internationalen Preisen ausgezeichnet.","Fatih Akın was honoured with many international awards."],s2:["Der Film zeichnet sich durch seine ehrliche, ungeschönte Darstellung aus.","The film is distinguished by its honest, unvarnished portrayal."],fam:"preis",ety:"aus- + zeichnen; jemanden durch ein 'Zeichen' hervorheben.",cat:"Porträt: Fatih Akın"},
+{de:"begehrt (bei + D.)",base:"begehrt",ph:"be-GAYRT",en:"sought-after, in demand, coveted",s1:["Seine Filme sind bei internationalen Festivals sehr begehrt.","His films are much sought-after at international festivals."],s2:["Der Regiepreis gilt als eine der begehrtesten Trophäen der Branche.","The directing prize is considered one of the most coveted trophies in the industry."],fam:"begehren",ety:"Partizip von 'begehren' (be- + gehren = verlangen).",cat:"Porträt: Fatih Akın"},
+{de:"bürgerlich",base:"bürgerlich",ph:"BUER-ger-likh",en:"middle-class, bourgeois; civil",s1:["Er stammt nicht aus einer bürgerlichen, sondern aus einer Arbeiterfamilie.","He does not come from a middle-class but from a working-class family."],s2:["Sein bürgerlicher Name ist kaum jemandem bekannt.","His civil name is hardly known to anyone."],fam:"buerger",ety:"zu 'Bürger' (Bewohner einer 'Burg'/Stadt).",cat:"Porträt: Fatih Akın"},
+{de:"das Diplom, -e",base:"das Diplom",ph:"di-PLOHM",en:"diploma, degree",s1:["Nach dem Studium erhielt sie ihr Diplom in Sozialpädagogik.","After her studies she received her diploma in social pedagogy."],s2:["Ohne anerkanntes Diplom durfte er zunächst nicht in seinem Beruf arbeiten.","Without a recognised diploma he was initially not allowed to work in his profession."],fam:"bildung",ety:"griech. 'diploma' = gefaltetes Schriftstück (zu 'diploos' = doppelt).",cat:"Porträt: Fatih Akın"},
+{de:"der/die Drehbuchautor/in, -en/-nen",base:"der Drehbuchautor",ph:"DRAY-bookh-ow-tor",en:"screenwriter, scriptwriter",s1:["Als Drehbuchautor und Regisseur hat er die volle künstlerische Kontrolle.","As a screenwriter and director he has full artistic control."],s2:["Die Drehbuchautorin arbeitete zwei Jahre an dieser Geschichte.","The screenwriter worked on this story for two years."],fam:"film",ety:"Drehbuch (drehen + Buch) + Autor (lat. 'auctor').",cat:"Porträt: Fatih Akın"},
+{de:"der Drehbuchpreis, -e",base:"der Drehbuchpreis",ph:"DRAY-bookh-prys",en:"screenplay / screenwriting award",s1:["Für sein Skript erhielt er in Cannes den Drehbuchpreis.","For his script he received the screenplay award in Cannes."],s2:["Der Drehbuchpreis ehrt vor allem die Qualität der Geschichte.","The screenplay award honours above all the quality of the story."],fam:"preis",ety:"Drehbuch + Preis.",cat:"Porträt: Fatih Akın"},
+{de:"der Durchbruch, ¨-e",base:"der Durchbruch",ph:"DOORKH-brukh",en:"breakthrough",s1:["Mit diesem Film gelang ihm der internationale Durchbruch.","With this film he achieved his international breakthrough."],s2:["Nach Jahren harter Arbeit kam endlich der ersehnte Durchbruch.","After years of hard work the longed-for breakthrough finally came."],fam:"brechen",ety:"durch + Bruch (zu 'brechen'); das 'Durchbrechen' einer Barriere.",cat:"Porträt: Fatih Akın"},
+{de:"der/die Einwanderer/Einwanderin, -/-nen",base:"der Einwanderer",ph:"AYN-van-de-rer",en:"immigrant",s1:["Seine Eltern kamen in den 1960er-Jahren als Einwanderer nach Hamburg.","His parents came to Hamburg as immigrants in the 1960s."],s2:["Viele Einwanderer prägen bis heute das Bild der Stadt.","Many immigrants shape the image of the city to this day."],fam:"wandern",ety:"ein- + Wanderer (wandern); Gegenteil: 'Auswanderer'.",cat:"Porträt: Fatih Akın"},
+{de:"entstammen",base:"entstammen",ph:"ent-SHTAM-men",en:"to originate from, come from",s1:["Er entstammt einer einfachen Familie aus dem Hamburger Arbeiterviertel.","He comes from a simple family in the Hamburg working-class district."],s2:["Viele seiner Figuren entstammen der Welt der Kleinkriminellen.","Many of his characters originate from the world of petty criminals."],fam:"stamm",ety:"ent- + stammen (zu 'Stamm'); 'von einem Stamm herkommen'.",cat:"Porträt: Fatih Akın"},
+{de:"der/die Filmregisseur/in, -e/-nen",base:"der Filmregisseur",ph:"FILM-re-zhi-ser",en:"film director",s1:["Als Filmregisseur ist er für die künstlerische Gesamtleitung verantwortlich.","As a film director he is responsible for the overall artistic direction."],s2:["Die Filmregisseurin wurde für ihr Werk mit einem Ehrenpreis geehrt.","The film director was honoured with a lifetime achievement award for her work."],fam:"film",ety:"Film (engl.) + Regisseur (frz. 'régisseur' = Leiter).",cat:"Porträt: Fatih Akın"},
+{de:"das Gangsterkino (Sg.)",base:"das Gangsterkino",ph:"GENG-ster-kee-no",en:"gangster cinema / genre",s1:["Sein früher Stil war deutlich vom amerikanischen Gangsterkino beeinflusst.","His early style was clearly influenced by American gangster cinema."],s2:["Das Gangsterkino zeigt oft die harte Realität der Großstadt.","Gangster cinema often shows the harsh reality of the big city."],fam:"film",ety:"engl. 'gangster' + Kino (griech. 'kinema' = Bewegung).",cat:"Porträt: Fatih Akın"},
+{de:"geprägt (von + D.)",base:"geprägt",ph:"ge-PRAYKT",en:"shaped by, marked by",s1:["Seine Kindheit war von zwei Kulturen und zwei Sprachen geprägt.","His childhood was shaped by two cultures and two languages."],s2:["Der Film ist stark von persönlichen Erinnerungen geprägt.","The film is strongly marked by personal memories."],fam:"praegen",ety:"Partizip von 'prägen' (ein Bild 'einprägen', wie in Münzen).",cat:"Porträt: Fatih Akın"},
+{de:"gläubig",base:"gläubig",ph:"GLOY-bikh",en:"religious, devout, believing",s1:["Seine Familie war gläubig, ließ ihm aber viele Freiheiten.","His family was devout but gave him many freedoms."],s2:["Ob gläubig oder nicht, alle feierten das Fest gemeinsam.","Whether devout or not, everyone celebrated the festival together."],fam:"glaube",ety:"zu 'Glaube/glauben' (ahd. 'gilouben').",cat:"Porträt: Fatih Akın"},
+{de:"die Härte (Sg.)",base:"die Härte",ph:"HAIR-te",en:"hardness, toughness, harshness",s1:["Seine Filme schildern das Leben mit ungewöhnlicher Härte und Ehrlichkeit.","His films depict life with unusual harshness and honesty."],s2:["Trotz aller Härte des Alltags bewahrten sie ihren Humor.","Despite all the harshness of everyday life they kept their humour."],fam:"hart",ety:"zu 'hart' (ahd. 'hart').",cat:"Porträt: Fatih Akın"},
+{de:"die Hauptrolle, -n",base:"die Hauptrolle",ph:"HOWPT-rol-le",en:"leading role, main part",s1:["Für die Hauptrolle besetzte er bewusst einen unbekannten Schauspieler.","For the leading role he deliberately cast an unknown actor."],s2:["In diesem Drama spielt die Musik fast eine Hauptrolle.","In this drama the music plays almost a leading role."],fam:"film",ety:"Haupt (= Kopf, wichtigster) + Rolle (frz. 'rôle').",cat:"Porträt: Fatih Akın"},
+{de:"heimisch",base:"heimisch",ph:"HY-mish",en:"native, local; at home",s1:["Nach vielen Jahren fühlte er sich in Hamburg endlich wieder heimisch.","After many years he finally felt at home in Hamburg again."],s2:["Der Film verbindet heimische Traditionen mit modernen Einflüssen.","The film combines local traditions with modern influences."],fam:"heimat",ety:"zu 'Heim/Heimat'; 'zum Heim gehörig'.",cat:"Porträt: Fatih Akın"},
+{de:"die Hommage (an + A.)",base:"die Hommage",ph:"o-MAHZH",en:"homage, tribute",s1:["Der Film ist eine Hommage an die Stadt seiner Kindheit.","The film is a homage to the city of his childhood."],s2:["Mit dieser Szene verneigt er sich als Hommage vor den großen Meistern.","With this scene he bows as a homage to the great masters."],fam:"hommage",ety:"frz. 'hommage' = Ehrerbietung (zu lat. 'homo' = Mensch).",cat:"Porträt: Fatih Akın"},
+{de:"der Juryvorsitz (Sg.)",base:"der Juryvorsitz",ph:"ZHUE-ri-for-zits",en:"jury chairmanship / presidency",s1:["Bei den Filmfestspielen übernahm er den Juryvorsitz.","At the film festival he took over the jury chairmanship."],s2:["Der Juryvorsitz bringt viel Verantwortung, aber auch großes Ansehen.","The jury chairmanship brings much responsibility but also great prestige."],fam:"jury",ety:"Jury (frz., zu lat. 'iurare' = schwören) + Vorsitz (vorsitzen).",cat:"Porträt: Fatih Akın"},
+{de:"katholisch",base:"katholisch",ph:"ka-TOH-lish",en:"Catholic",s1:["Seine Frau wuchs katholisch auf, er selbst eher muslimisch geprägt.","His wife grew up Catholic, he himself rather shaped by Islam."],s2:["Im Süden Deutschlands ist die Bevölkerung überwiegend katholisch.","In the south of Germany the population is predominantly Catholic."],fam:"glaube",ety:"griech. 'katholikos' = allgemein, umfassend.",cat:"Porträt: Fatih Akın"},
+{de:"der Kiez, -e",base:"der Kiez",ph:"keets",en:"neighbourhood, local quarter (esp. in northern Germany)",s1:["Im Kiez kennt fast jeder jeden, und man hilft sich gegenseitig.","In the neighbourhood almost everyone knows everyone, and people help each other."],s2:["Seine Geschichten spielen oft im bunten Kiez von Hamburg.","His stories often take place in the colourful neighbourhood of Hamburg."],fam:"kiez",ety:"norddeutsch/berlinerisch, wohl slawischen Ursprungs.",cat:"Porträt: Fatih Akın"},
+{de:"der Kinofilm, -e",base:"der Kinofilm",ph:"KEE-no-film",en:"cinema film, feature film for cinema",s1:["Sein neuer Kinofilm lief in über dreißig Ländern.","His new cinema film ran in over thirty countries."],s2:["Ein Kinofilm entsteht meist über mehrere Jahre hinweg.","A cinema film usually comes into being over several years."],fam:"film",ety:"Kino + Film.",cat:"Porträt: Fatih Akın"},
+{de:"die Kinokasse, -n",base:"die Kinokasse",ph:"KEE-no-kas-se",en:"box office, cinema ticket counter",s1:["An der Kinokasse bildete sich schon eine Stunde vorher eine lange Schlange.","At the box office a long queue formed already an hour beforehand."],s2:["Der Film war ein großer Erfolg an den Kinokassen.","The film was a great success at the box office."],fam:"film",ety:"Kino + Kasse (ital. 'cassa' = Geldkasten).",cat:"Porträt: Fatih Akın"},
+{de:"die Kleinkriminellenstudie, -n",base:"die Kleinkriminellenstudie",ph:"KLYN-kri-mi-nel-len-shtoo-dye",en:"study of petty criminals",s1:["Für seinen Film las er sogar eine Kleinkriminellenstudie aus den 1980ern.","For his film he even read a study of petty criminals from the 1980s."],s2:["Die Kleinkriminellenstudie zeigte, wie oft Armut zu Kleinkriminalität führt.","The study of petty criminals showed how often poverty leads to petty crime."],fam:"studie",ety:"klein + Kriminelle (lat. 'crimen' = Verbrechen) + Studie.",cat:"Porträt: Fatih Akın"},
+{de:"der/die Kneipenbesitzer/in, -/-nen",base:"der Kneipenbesitzer",ph:"KNY-pen-be-zit-ser",en:"pub owner, bar owner",s1:["Sein Vater war Kneipenbesitzer und kannte das ganze Viertel.","His father was a pub owner and knew the whole neighbourhood."],s2:["Als Kneipenbesitzerin hört sie täglich die Geschichten ihrer Gäste.","As a pub owner she hears the stories of her guests every day."],fam:"kneipe",ety:"Kneipe (studentensprachlich, zu 'kneifen') + Besitzer (besitzen).",cat:"Porträt: Fatih Akın"},
+{de:"kommerziell",base:"kommerziell",ph:"ko-mer-TSYEL",en:"commercial",s1:["Er wollte künstlerisch frei bleiben und nicht nur kommerziell erfolgreich sein.","He wanted to stay artistically free and not just be commercially successful."],s2:["Trotz seines kommerziellen Erfolgs blieb der Film künstlerisch anspruchsvoll.","Despite its commercial success the film remained artistically demanding."],fam:"kommerz",ety:"lat. 'commercium' = Handel.",cat:"Porträt: Fatih Akın"},
+{de:"der Langspielfilm, -e",base:"der Langspielfilm",ph:"LANG-shpeel-film",en:"full-length feature film",s1:["Sein erster Langspielfilm dauerte fast zwei Stunden.","His first full-length feature film lasted almost two hours."],s2:["Ein Langspielfilm verlangt eine ganz andere Erzählweise als ein Kurzfilm.","A feature film demands a completely different way of storytelling than a short film."],fam:"film",ety:"lang + Spiel + Film (Gegensatz zum Kurzfilm).",cat:"Porträt: Fatih Akın"},
+{de:"der Lebensweg, -e",base:"der Lebensweg",ph:"LAY-bens-vayk",en:"life path, course of life",s1:["Sein ungewöhnlicher Lebensweg führte vom Boxring auf die großen Bühnen.","His unusual life path led from the boxing ring to the big stages."],s2:["Jeder Lebensweg verläuft anders, mit eigenen Höhen und Tiefen.","Every life path runs differently, with its own ups and downs."],fam:"leben",ety:"Leben + Weg.",cat:"Porträt: Fatih Akın"},
+{de:"das Melodram, -en",base:"das Melodram",ph:"me-lo-DRAHM",en:"melodrama",s1:["Sein Liebesfilm ist ein Melodram voller starker Gefühle.","His love film is a melodrama full of strong emotions."],s2:["Im Melodram stehen Emotionen und Schicksal im Mittelpunkt.","In melodrama emotions and fate are at the centre."],fam:"film",ety:"griech. 'melos' = Lied + 'drama' = Handlung.",cat:"Porträt: Fatih Akın"},
+{de:"das Migrationsdrama, -dramen",base:"das Migrationsdrama",ph:"mi-gra-TSYOHNS-drah-ma",en:"migration drama",s1:["Sein bekanntestes Migrationsdrama erzählt von Liebe zwischen zwei Welten.","His most famous migration drama tells of love between two worlds."],s2:["Das Migrationsdrama behandelt Fragen von Heimat und Identität.","The migration drama deals with questions of homeland and identity."],fam:"film",ety:"Migration + Drama (griech. 'drama').",cat:"Porträt: Fatih Akın"},
+{de:"das Milieu, -s",base:"das Milieu",ph:"mi-LYER",en:"milieu, social environment",s1:["Er kennt das Milieu, das er in seinen Filmen zeigt, aus eigener Erfahrung.","He knows the milieu that he shows in his films from his own experience."],s2:["Im kriminellen Milieu gelten ganz eigene Gesetze.","In the criminal milieu quite particular laws apply."],fam:"milieu",ety:"frz. 'milieu' = Mitte, Umgebung (mi + lieu = Ort).",cat:"Porträt: Fatih Akın"},
+{de:"der/die Muslim/in, -e/-nen",base:"der Muslim",ph:"MUS-lim",en:"Muslim",s1:["Als gläubiger Muslim fastet er im Monat Ramadan.","As a devout Muslim he fasts in the month of Ramadan."],s2:["In der Nachbarschaft leben Christen, Muslime und Nichtgläubige friedlich zusammen.","In the neighbourhood Christians, Muslims and non-believers live peacefully together."],fam:"glaube",ety:"arab. 'muslim' = der sich (Gott) Hingebende.",cat:"Porträt: Fatih Akın"},
+{de:"passioniert",base:"passioniert",ph:"pa-syo-NEERT",en:"passionate, ardent",s1:["Er ist ein passionierter Erzähler, der sein Publikum sofort fesselt.","He is a passionate storyteller who captivates his audience immediately."],s2:["Als passionierte Köchin probiert sie Rezepte aus aller Welt aus.","As a passionate cook she tries out recipes from all over the world."],fam:"passion",ety:"frz. 'passionné' von lat. 'passio' = Leidenschaft.",cat:"Porträt: Fatih Akın"},
+{de:"der/die Produzent/in, -en/-nen",base:"der Produzent",ph:"pro-du-TSENT",en:"producer",s1:["Der Produzent sorgt dafür, dass genug Geld für den Film vorhanden ist.","The producer ensures that there is enough money for the film."],s2:["Als eigene Produzentin behielt sie die volle Kontrolle über das Projekt.","As her own producer she kept full control over the project."],fam:"film",ety:"lat. 'producere' = hervorbringen.",cat:"Porträt: Fatih Akın"},
+{de:"der/die Regisseur/in, -e/-nen",base:"der Regisseur",ph:"re-zhi-SER",en:"director (film/theatre)",s1:["Der Regisseur erklärte den Schauspielern jede Szene ganz genau.","The director explained every scene to the actors very precisely."],s2:["Eine gute Regisseurin erkennt sofort, was einer Szene noch fehlt.","A good director immediately recognises what a scene still lacks."],fam:"film",ety:"frz. 'régisseur' = Leiter (zu lat. 'regere' = lenken).",cat:"Porträt: Fatih Akın"},
+{de:"die Scheinehe, -n",base:"die Scheinehe",ph:"SHYN-ay-e",en:"sham marriage, marriage of convenience",s1:["In dem Film geht eine Frau eine Scheinehe ein, um in Deutschland zu bleiben.","In the film a woman enters a sham marriage in order to stay in Germany."],s2:["Eine Scheinehe kann rechtlich schwere Folgen haben.","A sham marriage can have serious legal consequences."],fam:"schein",ety:"Schein (scheinen = den Anschein haben) + Ehe.",cat:"Porträt: Fatih Akın"},
+{de:"schmerzlos",base:"schmerzlos",ph:"SHMERTS-lohs",en:"painless",s1:["Der Abschied von der alten Heimat war alles andere als schmerzlos.","The farewell from the old homeland was anything but painless."],s2:["Manche Entscheidungen sind nötig, aber selten ganz schmerzlos.","Some decisions are necessary but rarely entirely painless."],fam:"negation",ety:"Schmerz + -los (= ohne); Negation durch Nachsilbe '-los'.",cat:"Porträt: Fatih Akın"},
+{de:"der Spielfilm, -e",base:"der Spielfilm",ph:"SHPEEL-film",en:"feature film",s1:["Neben Dokumentationen dreht er vor allem Spielfilme.","Besides documentaries he mainly makes feature films."],s2:["Der Spielfilm beruht lose auf einer wahren Begebenheit.","The feature film is loosely based on a true event."],fam:"film",ety:"Spiel + Film (im Gegensatz zum Dokumentarfilm).",cat:"Porträt: Fatih Akın"},
+{de:"stets",base:"stets",ph:"shtayts",en:"always, at all times",s1:["Er blieb stets bescheiden, auch nach seinem großen Erfolg.","He always remained modest, even after his great success."],s2:["Bei internationalen Projekten ist Pünktlichkeit stets wichtig.","In international projects punctuality is always important."],fam:"stets",ety:"zu 'stet/stetig' (von 'stehen'); 'beständig, immer'.",cat:"Porträt: Fatih Akın"},
+{de:"treu (etw./jmd. treu bleiben)",base:"treu",ph:"troy",en:"loyal, faithful",s1:["Trotz vieler Angebote aus Hollywood blieb er seiner Heimatstadt treu.","Despite many offers from Hollywood he remained loyal to his home town."],s2:["Sie ist ihren Prinzipien immer treu geblieben.","She has always remained true to her principles."],fam:"treu",ety:"ahd. 'triuwi'; verwandt mit 'trauen' und 'Treue'.",cat:"Porträt: Fatih Akın"},
+{de:"die Trophäe, -n",base:"die Trophäe",ph:"tro-FAY-e",en:"trophy",s1:["Stolz präsentierte er die Trophäe für den besten Film.","Proudly he presented the trophy for the best film."],s2:["Die goldene Trophäe steht heute in seinem Arbeitszimmer.","The golden trophy stands in his study today."],fam:"preis",ety:"griech. 'tropaion' = Siegeszeichen.",cat:"Porträt: Fatih Akın"},
+{de:"visuell",base:"visuell",ph:"vi-zu-EL",en:"visual",s1:["Seine Filme sind visuell beeindruckend und voller starker Bilder.","His films are visually impressive and full of powerful images."],s2:["Visuelle Reize bleiben oft länger im Gedächtnis als Worte.","Visual stimuli often stay in the memory longer than words."],fam:"film",ety:"lat. 'visus' = das Sehen (zu 'videre' = sehen).",cat:"Porträt: Fatih Akın"},
+{de:"voller",base:"voller",ph:"FOL-ler",en:"full of",s1:["Sein Leben war voller Wendungen, Rückschläge und Erfolge.","His life was full of twists, setbacks and successes."],s2:["Der Saal war voller begeisterter Zuschauer.","The hall was full of enthusiastic spectators."],fam:"voll",ety:"unflektierte Form von 'voll' vor Substantiven ('voller Ideen').",cat:"Porträt: Fatih Akın"},
+{de:"das Vorbild, -er",base:"das Vorbild",ph:"FOR-bilt",en:"role model, example",s1:["Für viele junge Filmemacher ist er ein großes Vorbild.","For many young filmmakers he is a great role model."],s2:["Ihre Eltern waren ihr stets ein Vorbild an Fleiß und Ehrlichkeit.","Her parents were always a role model of diligence and honesty for her."],fam:"bild",ety:"vor + Bild; ein 'Bild', dem man 'nacheifert'.",cat:"Porträt: Fatih Akın"},
+
+];
+const FAMILIES = {
+vertrag:{title:"Vertrag (Verträge)",root:"ver- + tragen = etwas festlegen, das man 'trägt'",ety:"zu lat. trahere = ziehen; ein Vertrag 'trägt' Verpflichtungen."},
+loesen:{title:"lösen / auflösen",root:"lösen = frei oder locker machen",ety:"verwandt mit 'los'."},
+antrag:{title:"Antrag / beantragen",root:"etwas 'vortragen', vorbringen",ety:"zu 'tragen'."},
+offen:{title:"offen / öffnen / eröffnen",root:"die Wurzel 'offen'",ety:"germ. 'upana'."},
+knuepfen:{title:"knüpfen",root:"einen Knoten/Knopf machen",ety:"verwandt mit 'Knopf' und 'Knoten'."},
+kontakt:{title:"Kontakt",root:"Berührung, Verbindung",ety:"lat. contactus = Berührung."},
+miete:{title:"Miete / Mieter / Nachmieter",root:"mieten = gegen Geld nutzen",ety:"ahd. mieta = Lohn."},
+abenteuer:{title:"abenteuerlich / Abenteuer",root:"das Wagnis, das Ungewisse",ety:"frz. aventure, lat. advenire = sich ereignen."},
+arbeit:{title:"Arbeit (Arbeitserlaubnis)",root:"arbeiten, Mühe",ety:"ahd. arabeit = Mühsal."},
+regen:{title:"regen / aufgeregt",root:"regen = in Bewegung bringen",ety:"zu 'regen'."},
+erfahrung:{title:"Erfahrung / erfahren",root:"fahren: Wissen, das man 'erfährt'",ety:"zu 'fahren'."},
+wandern:{title:"wandern: aus- / ein- / zu-wandern",root:"sich (zu Fuß) fortbewegen; Migration",ety:"ahd. wantalon."},
+reue:{title:"Reue / bereuen",root:"Schmerz über eine Tat",ety:"ahd. hriuwa = Trauer."},
+blog:{title:"Blog",root:"Online-Tagebuch",ety:"engl. weblog (web + log)."},
+leben:{title:"leben / einleben / Lebensweg",root:"die Wurzel 'leben'",ety:"ahd. leben."},
+weit:{title:"weit / erweitern",root:"räumliche und geistige Weite",ety:"ahd. wit."},
+stress:{title:"Stress / gestresst",root:"Anspannung, Druck",ety:"engl. stress."},
+grafik:{title:"Grafik / Grafiker",root:"zeichnen, schreiben",ety:"griech. graphein = schreiben."},
+horizont:{title:"Horizont",root:"Grenzlinie des Blicks",ety:"griech. horizon = begrenzend."},
+leicht:{title:"leicht / leichtfallen",root:"ohne Mühe oder Gewicht",ety:"ahd. lihti."},
+machen:{title:"machen",root:"tun, herstellen, bewirken",ety:"ahd. mahhon = formen."},
+mittel:{title:"Mitte / mittlerweile",root:"die Mitte, die Zwischenzeit",ety:"ahd. mitti."},
+nett:{title:"nett / netterweise",root:"freundlich, angenehm",ety:"frz. net = sauber, fein."},
+risiko:{title:"Risiko / riskieren",root:"das Wagnis",ety:"ital. risicare = wagen."},
+schaffen:{title:"schaffen",root:"bewältigen und erschaffen",ety:"ahd. scaffan."},
+sehnen:{title:"Sehnsucht / sehnsüchtig",root:"starkes Verlangen",ety:"zu 'sehnen' + 'Sucht'."},
+spontan:{title:"spontan",root:"aus eigenem Antrieb",ety:"lat. spontaneus."},
+wagen:{title:"wagen / Wagnis",root:"etwas aufs Spiel setzen",ety:"ahd. wagon."},
+wohnen:{title:"wohnen / Wohnung(ssuche)",root:"einen Ort bewohnen",ety:"ahd. wonen = sich aufhalten."},
+zwischen:{title:"zwischen / zwischendurch",root:"das Dazwischen",ety:"ahd. zwiski = zweifach."},
+finden:{title:"finden / empfinden",root:"antreffen, wahrnehmen",ety:"ahd. findan."},
+regel:{title:"Regel / Faustregel / Merkformel",root:"Maßstab, Vorschrift",ety:"lat. regula = Richtholz."},
+position:{title:"Position",root:"Stellung, Standpunkt",ety:"lat. positio = das Setzen."},
+stehen:{title:"stehen: ständig / Abstand",root:"die Wurzel 'stehen'",ety:"ahd. stan/sten."},
+schneiden:{title:"schneiden / zerschneiden",root:"mit einer Klinge trennen",ety:"ahd. snidan."},
+sprache:{title:"Sprache & Mehrsprachigkeit",root:"das ganze Sprach-Wortfeld (Landes-, Amts-, Verwaltungssprache …)",ety:"zu 'sprechen'."},
+kennen:{title:"kennen / anerkennen / bekannt machen",root:"wissen, vertraut sein",ety:"ahd. kennan."},
+elite:{title:"Elite",root:"die Ausgewählten",ety:"lat. eligere = auswählen."},
+identitaet:{title:"Identität",root:"das Selbstsein",ety:"lat. idem = derselbe."},
+komplex:{title:"komplex",root:"verflochten, vielschichtig",ety:"lat. complexus = umfassend."},
+konfront:{title:"konfrontieren",root:"gegenüberstellen",ety:"lat. frons = Stirn."},
+kultur:{title:"Kultur / multikulturell",root:"Pflege, Bildung",ety:"lat. cultura."},
+parlament:{title:"Parlament",root:"der Ort des Redens",ety:"frz. parler = sprechen."},
+sache:{title:"Sache / Sachverhalt",root:"Angelegenheit, Gegenstand",ety:"ahd. sahha = Rechtsstreit."},
+trost:{title:"Trost / trösten",root:"Zuspruch, Halt geben",ety:"ahd. trost = Zuversicht."},
+vertrauen:{title:"Vertrauen / Vertrautheit",root:"Zutrauen, Nähe",ety:"zu 'trauen'."},
+gesetz:{title:"Gesetz / Landesgesetz",root:"das Festgesetzte",ety:"zu 'setzen'."},
+vielfalt:{title:"Vielfalt",root:"viele Formen, Verschiedenheit",ety:"viel + -falt (wie 'mannigfaltig')."},
+alltag:{title:"Alltag / Alltagsprodukt",root:"jeder (all-)tägliche Tag",ety:"all + Tag."},
+amt:{title:"Amt / amtlich",root:"Behörde, Dienst",ety:"ahd. ambaht = Dienst."},
+herrschen:{title:"herrschen / beherrschen",root:"Macht oder Kontrolle haben",ety:"zu 'Herr'."},
+schrift:{title:"Schrift / beschriften",root:"das Geschriebene",ety:"lat. scribere = schreiben."},
+treffen:{title:"treffen / betreffen",root:"berühren, angehen",ety:"ahd. treffan."},
+einheit:{title:"Einheit / einheitlich",root:"das Eine, die Norm",ety:"zu 'eins'."},
+falsch:{title:"falsch / fälschlicherweise",root:"unrichtig, unecht",ety:"lat. falsus."},
+flyer:{title:"Flyer",root:"fliegendes Werbeblatt",ety:"engl. to fly."},
+geschaeft:{title:"Geschäft (Handel & Läden)",root:"schaffen, handeln (Geschäftsbeziehung, Gemüsegeschäft …)",ety:"zu 'schaffen'."},
+jedoch:{title:"jedoch",root:"einschränkendes, verstärktes 'doch'",ety:"je + doch."},
+konferenz:{title:"Konferenz",root:"Beratung, Zusammentragen",ety:"lat. conferre = zusammentragen."},
+platz:{title:"Platz / Platzproblem",root:"freier Raum, Ort",ety:"lat. platea = Straße/Fläche."},
+saemtlich:{title:"sämtlich",root:"allesamt, vollständig",ety:"zu 'samt' = zusammen mit."},
+sitzen:{title:"Sitzung / sitzen",root:"das Beisammensitzen zur Beratung",ety:"ahd. sizzan."},
+verkehr:{title:"Verkehr / Verkehrsschild",root:"Bewegung, Umgang",ety:"zu 'verkehren' = sich bewegen."},
+oeffentlich:{title:"öffentlich / Öffentlichkeit / veröffentlichen",root:"offen, für alle zugänglich",ety:"zu 'offen'."},
+packen:{title:"packen / Verpackung",root:"zusammenlegen, einwickeln",ety:"mhd. packen."},
+setzen:{title:"setzen / voraussetzen",root:"an einen Ort bringen, festlegen",ety:"ahd. sezzen."},
+wandeln:{title:"Wandel / wandeln",root:"allmähliche Veränderung",ety:"verwandt mit 'wenden'."},
+seite:{title:"Seite / Webseite",root:"Flanke, Fläche, Aspekt",ety:"ahd. sita."},
+meinung:{title:"Meinung & Perspektive",root:"wie man etwas sieht oder auffasst (Auffassung, Sicht, Seite)",ety:"zu 'meinen' und 'sehen'."},
+scheiden:{title:"scheiden / entscheidend",root:"trennen, unterscheiden",ety:"ahd. sceidan."},
+staunen:{title:"staunen / erstaunlich",root:"verwundert sein",ety:"zu 'staunen'."},
+teilen:{title:"teilen / geteilt / Abteil",root:"trennen, zuteilen",ety:"ahd. teilen."},
+helfen:{title:"helfen / hilfreich",root:"Beistand leisten",ety:"ahd. helfan."},
+nutzen:{title:"Nutzen / nützlich",root:"Vorteil, Gebrauch",ety:"ahd. nuz."},
+verstehen:{title:"verstehen: miss- / Un-",root:"begreifen, erfassen",ety:"ahd. firstantan."},
+peinlich:{title:"peinlich / Pein",root:"beschämend, schmerzlich",ety:"lat. poena = Strafe."},
+abstand:{title:"Abstand",root:"das Abstehen, Distanz",ety:"ab + Stand (zu 'stehen')."},
+art:{title:"Art",root:"Beschaffenheit, Sorte, Weise",ety:"ahd. art; vgl. lat. ars."},
+aussen:{title:"außen / äußerst",root:"die äußere Seite; höchstes Maß",ety:"ahd. uzana."},
+denken:{title:"denken / bedenken / nachdenklich",root:"im Kopf verarbeiten",ety:"ahd. denkan."},
+begleiten:{title:"begleiten / Begleiter",root:"mitgehen, geleiten",ety:"zu 'Geleit' = Schutz auf dem Weg."},
+breit:{title:"breit",root:"von großer Breite",ety:"ahd. breit."},
+freund:{title:"Freund / Freundlichkeit",root:"wohlgesinnt sein",ety:"ahd. friunt (zu 'lieben')."},
+gegenueber:{title:"Gegenüber",root:"die gegenüber stehende Person",ety:"gegen + über."},
+jeglich:{title:"jeglich",root:"ein jeder, jede Art von",ety:"ahd. iogilih."},
+lachen:{title:"lachen / Lächeln",root:"Freude zeigen",ety:"ahd. lahhen."},
+privat:{title:"privat / Privatsphäre",root:"nicht öffentlich, persönlich",ety:"lat. privatus."},
+stellen:{title:"stellen (eine Frage stellen)",root:"an einen Platz bringen",ety:"zu 'Stelle'."},
+ueblich:{title:"üblich",root:"in Übung, gebräuchlich",ety:"zu 'üben'."},
+spiel:{title:"Spiel / Spielregel / Spielfilm",root:"das Spielen",ety:"ahd. spil."},
+geste:{title:"Geste",root:"Körperbewegung, Haltung",ety:"lat. gestus (zu 'gerere' = tun)."},
+negation:{title:"Verneinung durch Vor- und Nachsilben",root:"un-, in-, ir-, des-, non-, a-, Nicht- / -frei, -los, -leer",ety:"zeigt, wie das Deutsche und Fremdwörter Gegenteile bilden (atypisch, irreal, inhaltsleer, alkoholfrei, schmerzlos …)."},
+trennen:{title:"trennen / trennbar",root:"auseinandernehmen",ety:"ahd. trennen."},
+chance:{title:"Chance / Chancengleichheit",root:"Gelegenheit, Möglichkeit",ety:"frz. chance, lat. cadere = fallen."},
+migration:{title:"Migration & Migranten",root:"das Wandern über Grenzen (Migrationshintergrund, Migrantenkind …)",ety:"lat. migrare = wandern."},
+schluessel:{title:"Schlüssel / Schlüsselwort",root:"das Erschließende",ety:"zu 'schließen'."},
+voll:{title:"voll / völlig / vollkommen / voller",root:"die Wurzel 'voll'",ety:"ahd. fol."},
+bildung:{title:"Bildung, Schule & Studium",root:"Lernen, Schulen und Abschlüsse (Diplom, Hochschulreife, Lehrkraft, Kommilitone …)",ety:"zu 'bilden' und lat. schola = Schule."},
+gehen:{title:"gehen: ein- / weiter-",root:"sich fortbewegen",ety:"ahd. gan."},
+richten:{title:"richten / Einrichtung",root:"in Ordnung bringen, ausrichten",ety:"ahd. rihten."},
+moeglich:{title:"möglich / ermöglichen",root:"was sein kann",ety:"zu 'mögen'."},
+pate:{title:"Pate / Patin",root:"Mentor, ursprünglich Taufzeuge",ety:"lat. pater = Vater."},
+sinn:{title:"Sinn / sinnvoll",root:"Bedeutung, Verstand",ety:"ahd. sin = Weg, Sinn."},
+fuegen:{title:"fügen / anfügen",root:"zusammenpassen, hinzutun",ety:"ahd. fuogen."},
+bremse:{title:"bremsen / ausbremsen",root:"verlangsamen, stoppen",ety:"zu 'Bremse'."},
+ausland:{title:"Ausland / Ausländer(quote)",root:"das andere, äußere Land",ety:"aus + Land."},
+herstellen:{title:"herstellen / Hersteller",root:"produzieren, anfertigen",ety:"her + stellen."},
+diskriminierung:{title:"Diskriminierung",root:"Benachteiligung, Unterscheidung",ety:"lat. discriminare = trennen."},
+farbe:{title:"Farbe / farbenfroh",root:"die Wurzel 'Farbe'",ety:"ahd. farawa."},
+fern:{title:"fern / fernliegen",root:"in weiter Ferne",ety:"ahd. ferro."},
+feuer:{title:"Feuer / Feuerholz",root:"die Wurzel 'Feuer'",ety:"ahd. fiur."},
+flechten:{title:"flechten / Zopf / Zöpfchen",root:"kunstvoll verschlingen",ety:"ahd. flehtan, lat. plectere."},
+fuehren:{title:"führen",root:"leiten, lenken",ety:"ahd. fuoren (Kausativ zu 'fahren')."},
+gelegenheit:{title:"Gelegenheit / gelegentlich",root:"günstiger Moment",ety:"zu 'liegen'."},
+gruenden:{title:"gründen / Gründer",root:"einen Grund legen",ety:"zu 'Grund'."},
+verwalten:{title:"verwalten / (Haus-)Verwaltung",root:"Aufgaben ordnen, walten",ety:"zu 'walten' = herrschen."},
+frage:{title:"Frage / infrage kommen",root:"das Fragen, die Möglichkeit",ety:"ahd. fraga."},
+informatik:{title:"Informatik",root:"Wissenschaft der Information",ety:"Information + -atik (wie Mathematik)."},
+mitte:{title:"Mitte / inmitten",root:"der mittlere Punkt",ety:"ahd. mitti."},
+keks:{title:"Keks",root:"kleines Gebäck",ety:"engl. cakes, eingedeutscht."},
+licht:{title:"Licht / leuchten",root:"Helligkeit ausstrahlen",ety:"ahd. lioht."},
+odyssee:{title:"Odyssee",root:"lange Irrfahrt, Leidensweg",ety:"nach Homers Held Odysseus."},
+option:{title:"Option",root:"Wahlmöglichkeit",ety:"lat. optio = freie Wahl."},
+preis:{title:"Preis & Auszeichnung",root:"Wert oder Ehrung (auszeichnen, Trophäe, Drehbuchpreis …)",ety:"lat. pretium = Wert, Lohn."},
+scheitern:{title:"scheitern",root:"misslingen, zerbrechen",ety:"zu 'Scheit' (Holzstück)."},
+bergen:{title:"bergen / verbergen",root:"in Sicherheit bringen, verstecken",ety:"ahd. bergan."},
+wind:{title:"Wind / Windeseile",root:"die Wurzel 'Wind'",ety:"ahd. wint."},
+wueste:{title:"Wüste",root:"öde, leere Landschaft",ety:"zu 'wüst' = leer, ahd. wuosti."},
+reissen:{title:"reißen / zerrissen",root:"gewaltsam trennen",ety:"ahd. rizan."},
+binden:{title:"binden / zusammenbinden",root:"mit einem Band verbinden",ety:"ahd. bintan."},
+schliessen:{title:"schließen / Anschluss",root:"verbinden oder verschließen",ety:"ahd. sliozan."},
+sprechen:{title:"sprechen / entsprechend",root:"reden, übereinstimmen",ety:"ahd. sprehhan."},
+hoeren:{title:"hören / (sich) anhören",root:"akustisch wahrnehmen, klingen",ety:"ahd. horen."},
+nehmen:{title:"nehmen / annehmen",root:"ergreifen, zu sich nehmen",ety:"ahd. neman."},
+eins:{title:"eins / einig",root:"die Zahl Eins; Übereinstimmung",ety:"ahd. ein."},
+wickeln:{title:"wickeln / entwickeln",root:"auf- oder entfalten",ety:"zu 'Wickel'."},
+meinen:{title:"meinen / meinetwegen",root:"der Meinung sein; Absicht",ety:"ahd. meinen."},
+anstalt:{title:"Anstalt / veranstalten",root:"etwas in die Wege leiten",ety:"zu 'anstellen'."},
+stamm:{title:"Stamm / Abstammung / entstammen",root:"Herkunft, Wurzel",ety:"ahd. stam."},
+boxen:{title:"boxen / (Amateur-)Boxer",root:"Kampfsport mit den Fäusten",ety:"engl. to box."},
+begehren:{title:"begehren / begehrt",root:"stark verlangen",ety:"be- + gehren = verlangen."},
+buerger:{title:"Bürger / bürgerlich",root:"Stadt- oder Staatsbewohner",ety:"zu 'Burg'."},
+film:{title:"Film & Kino",root:"das Filmemachen (Regisseur, Produzent, Spielfilm, Kinokasse …)",ety:"engl. film."},
+brechen:{title:"brechen / Durchbruch",root:"zerteilen, durchdringen",ety:"ahd. brehhan."},
+praegen:{title:"prägen / geprägt",root:"ein Bild einprägen, formen",ety:"ahd. brahhen."},
+glaube:{title:"Glaube & Religion",root:"religiöse Überzeugung (gläubig, katholisch, Muslim)",ety:"zu 'glauben'."},
+hart:{title:"hart / Härte",root:"fest, streng, schwer",ety:"ahd. hart."},
+heimat:{title:"Heimat / heimisch",root:"der vertraute Ort",ety:"ahd. heim."},
+hommage:{title:"Hommage",root:"Ehrerbietung, Würdigung",ety:"frz. hommage (zu lat. homo)."},
+jury:{title:"Jury / Juryvorsitz",root:"Bewertungsgremium",ety:"frz., zu lat. iurare = schwören."},
+kiez:{title:"Kiez",root:"Stadtviertel (norddeutsch)",ety:"wohl slawischen Ursprungs."},
+studie:{title:"Studie",root:"wissenschaftliche Untersuchung",ety:"lat. studium = Eifer."},
+kneipe:{title:"Kneipe / Kneipenbesitzer",root:"einfaches Lokal",ety:"studentensprachlich, zu 'kneifen'."},
+kommerz:{title:"kommerziell",root:"Handel, Gewinnabsicht",ety:"lat. commercium = Handel."},
+milieu:{title:"Milieu",root:"soziale Umgebung",ety:"frz. milieu = Mitte, Umfeld."},
+passion:{title:"passioniert / Passion",root:"Leidenschaft",ety:"lat. passio."},
+schein:{title:"Schein / Scheinehe",root:"Anschein, Vortäuschung",ety:"zu 'scheinen'."},
+stets:{title:"stets",root:"beständig, immer",ety:"zu 'stet' (von 'stehen')."},
+treu:{title:"treu / Treue",root:"beständig loyal",ety:"ahd. triuwi (zu 'trauen')."},
+bild:{title:"Bild / Vorbild",root:"Abbild, Muster zum Nacheifern",ety:"ahd. bilidi."},
+
+};
+const CONFUSABLES = [
+{type:"homo",items:[{w:"die Wüste",g:"the desert (Landschaft aus Sand)"},{w:"ich wüsste",g:"I would know (Konjunktiv II von 'wissen')"}],note:"Klingt fast identisch! 'Wüste' = Sandlandschaft; 'wüsste' = Konjunktiv von 'wissen' (Wenn ich das wüsste …). Achte auf den Kontext und das Verb."},
+{type:"homo",items:[{w:"die Seite",g:"side / page (auf der einen Seite …)"},{w:"die Saite",g:"string (einer Gitarre/Geige)"},{w:"die Webseite",g:"web page (im Internet)"}],note:"'Seite' und 'Saite' werden gleich ausgesprochen (Homophone). 'Seite' = Buchseite, Körperseite, Standpunkt; 'Saite' = die Saite eines Instruments. 'Webseite' enthält dasselbe Wort 'Seite'."},
+{type:"homo",items:[{w:"wagen",g:"to dare, to risk (Verb)"},{w:"der Wagen",g:"the car (Substantiv)"}],note:"Gleiche Schreibung, andere Wortart und Bedeutung. Verb 'wagen' = etwas riskieren; Substantiv 'der Wagen' = Auto. Der Artikel und die Großschreibung verraten es."},
+{type:"homo",items:[{w:"der Preis",g:"the price (Kosten)"},{w:"der Preis",g:"the prize (Auszeichnung, z. B. Drehbuchpreis)"}],note:"Ein Wort, zwei Bedeutungen: 'Preis' = Geldbetrag ('um jeden Preis') UND Auszeichnung ('einen Preis gewinnen'). Der Kontext entscheidet."},
+{type:"homo",items:[{w:"empfinden",g:"to feel, perceive"},{w:"erfinden",g:"to invent"}],note:"Nur ein Buchstabe unterscheidet sie im Klang. 'empfinden' = fühlen (Ich empfinde Freude); 'erfinden' = etwas Neues schaffen (Er hat eine Maschine erfunden)."},
+{type:"homo",items:[{w:"führen",g:"to lead, run (ein Geschäft führen)"},{w:"fühlen",g:"to feel (sich wohlfühlen)"}],note:"Ähnlicher Klang, ganz andere Bedeutung. 'führen' = leiten; 'fühlen' = eine Empfindung haben. Nicht verwechseln mit 'fühlen'!"},
+{type:"homo",items:[{w:"die Miete",g:"the rent"},{w:"die Mitte",g:"the middle"}],note:"Langer Vokal vs. kurzer Vokal: 'Mie-te' (ie = langes i) = Wohnungsmiete; 'Mit-te' (kurzes i) = das Zentrum. Ausspracheübung lohnt sich!"},
+{type:"homo",items:[{w:"stets",g:"always, at all times"},{w:"steht's / stehts",g:"'steht es' bzw. falsche Schreibung"}],note:"'stets' (immer) schreibt man OHNE h. Verwechsle es nicht mit 'steht' (von 'stehen'). Merksatz: stets = stetig = immer."},
+{type:"homo",items:[{w:"die Sicht",g:"view, perspective (aus meiner Sicht)"},{w:"die Schicht",g:"layer / work shift"}],note:"'Sicht' (Blickwinkel) und 'Schicht' (Lage oder Arbeitszeit) klingen ähnlich, sind aber verschieden. sp/sch am Anfang genau hören."},
+{type:"homo",items:[{w:"beantragen",g:"to apply for (einen Antrag stellen)"},{w:"beauftragen",g:"to commission, order somebody to do sth."}],note:"Sehr ähnlich! 'beantragen' = einen Antrag stellen (ein Visum beantragen); 'beauftragen' = jemandem einen Auftrag geben (eine Firma beauftragen)."},
+{type:"syn",items:[{w:"die Auffassung",g:"view/understanding"},{w:"die Sicht",g:"perspective"},{w:"die Meinung",g:"opinion"},{w:"die Position",g:"stance"}],note:"Alle bedeuten ungefähr 'Meinung', werden aber unterschiedlich benutzt: 'Meinung' ist neutral; 'Auffassung' klingt etwas formeller/grundsätzlicher; 'aus meiner Sicht' betont den Blickwinkel; 'Position' meint einen (oft politischen) Standpunkt."},
+{type:"syn",items:[{w:"auswandern",g:"to emigrate (weg aus dem Land)"},{w:"einwandern",g:"to immigrate (hinein ins Land)"},{w:"zuwandern",g:"to migrate into (Zugewanderte)"}],note:"Die Vorsilbe zeigt die Richtung! aus- = das Land verlassen; ein-/zu- = in ein Land kommen. Ein Auswanderer im Herkunftsland ist ein Einwanderer/Zugewanderter im Zielland."},
+{type:"syn",items:[{w:"beherrschen",g:"to master fully (eine Sprache beherrschen)"},{w:"können",g:"to be able to / know"},{w:"sprechen",g:"to speak"}],note:"Für Sprachen fein abgestuft: 'sprechen' = benutzen können; 'können' = grundsätzlich beherrschen; 'beherrschen' = auf hohem Niveau, fast perfekt. 'Sie beherrscht Deutsch fließend' ist stärker als 'Sie spricht Deutsch'."},
+{type:"syn",items:[{w:"anerkennen",g:"to recognise officially"},{w:"annehmen",g:"to accept (a proposal)"}],note:"'anerkennen' = offiziell gelten lassen (ein Diplom anerkennen); 'annehmen' = akzeptieren/entgegennehmen (einen Vorschlag annehmen) — und außerdem 'vermuten' (Ich nehme an, dass …)."},
+{type:"syn",items:[{w:"scheitern",g:"to fail (Plan/Projekt)"},{w:"schaffen",g:"to manage / succeed"}],note:"Gegenspieler: 'scheitern' = misslingen (Der Plan scheiterte); 'schaffen' = erfolgreich bewältigen (Ich habe die Prüfung geschafft). Verwechsle 'schaffen' nicht mit 'schafen'."},
+{type:"syn",items:[{w:"völlig",g:"completely (Grad)"},{w:"vollkommen",g:"completely / perfect"},{w:"voller",g:"full of (+ Nomen)"}],note:"'völlig' und 'vollkommen' verstärken (völlig/vollkommen richtig). 'vollkommen' kann auch 'perfekt' heißen. 'voller' steht unflektiert vor einem Nomen: 'ein Leben voller Überraschungen'."},
+{type:"syn",items:[{w:"ständig",g:"constantly (dauernd, oft nervig)"},{w:"stets",g:"always (gehoben)"},{w:"üblich",g:"usual, customary"}],note:"'ständig' betont die (oft störende) Dauer (Er redet ständig); 'stets' ist gehobener und neutral (Sie ist stets höflich); 'üblich' = normal/gebräuchlich, kein Zeitwort."},
+{type:"syn",items:[{w:"der Regisseur",g:"director (künstlerische Leitung)"},{w:"der Produzent",g:"producer (Finanzierung/Organisation)"},{w:"der Drehbuchautor",g:"screenwriter (schreibt die Geschichte)"}],note:"Drei Filmberufe, die man leicht verwechselt: Der Drehbuchautor schreibt, der Regisseur inszeniert am Set, der Produzent kümmert sich um Geld und Organisation."},
+{type:"syn",items:[{w:"die Mehrsprachigkeit",g:"multilingualism (Person/Gesellschaft)"},{w:"die Vielsprachigkeit",g:"multilingualism (viele Sprachen nebeneinander)"},{w:"die Vielfalt",g:"diversity (allgemein)"}],note:"'Mehrsprachigkeit' meint meist, dass jemand mehrere Sprachen spricht; 'Vielsprachigkeit' betont das Nebeneinander vieler Sprachen in einem Gebiet; 'Vielfalt' ist der allgemeine Oberbegriff für Verschiedenheit."},
+{type:"syn",items:[{w:"peinlich",g:"embarrassing (man schämt sich)"},{w:"unangenehm",g:"unpleasant (allgemein)"}],note:"'peinlich' ist stärker und persönlich: Man schämt sich (Es war mir peinlich). 'unangenehm' ist allgemeiner und muss keine Scham enthalten (ein unangenehmes Gespräch)."},
+
+];
+/* ENGINE */
+let deVoice=null, voices=[];
+function loadVoices(){
+  voices=speechSynthesis.getVoices();
+  const sel=document.getElementById('voiceSel');
+  const de=voices.filter(v=>/de(-|_)?/i.test(v.lang));
+  sel.innerHTML='';
+  (de.length?de:voices).forEach((v)=>{
+    const o=document.createElement('option');o.value=voices.indexOf(v);o.textContent=v.name+' ('+v.lang+')';sel.appendChild(o);
+  });
+  deVoice = de.find(v=>/google|deutsch|german/i.test(v.name)) || de[0] || voices[0] || null;
+  if(deVoice) sel.value=voices.indexOf(deVoice);
+}
+speechSynthesis.onvoiceschanged=loadVoices; loadVoices();
+document.getElementById('voiceSel').addEventListener('change',e=>{deVoice=voices[e.target.value];});
+document.getElementById('testVoice').addEventListener('click',()=>speak('Guten Tag! Willkommen zum Wortschatztrainer.'));
+function speak(t){
+  if(!('speechSynthesis' in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang='de-DE'; u.rate=.9; if(deVoice)u.voice=deVoice;
+  speechSynthesis.speak(u);
+}
+const $=s=>document.querySelector(s), $$=(s,r)=>[...(r||document).querySelectorAll(s)];
+const cats=()=>[...new Set(VOCAB.map(v=>v.cat))];
+function fillCatSelect(sel,all){sel.innerHTML='<option value="__all">'+(all||'Alle Kategorien')+'</option>'+cats().map(c=>'<option>'+c+'</option>').join('');}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+$$('#nav button').forEach(b=>b.addEventListener('click',()=>{
+  $$('#nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+  $$('main section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(b.dataset.tab).classList.add('active');
+}));
+function buildCards(){
+  const mode=$('#hideMode').value, cat=$('#catFilter').value;
+  const data=VOCAB.filter(v=>cat==='__all'||v.cat===cat);
+  const grid=$('#cardGrid');grid.innerHTML='';
+  $('#cardCount').textContent='('+data.length+' Wörter)';
+  data.forEach(v=>{
+    const c=document.createElement('div');c.className='card';
+    const deHide=mode==='de', enHide=mode==='en';
+    c.innerHTML='<div class="cat">'+esc(v.cat)+'</div>'+
+      '<div class="de'+(deHide?' hidden-val':'')+'">'+esc(v.de)+'</div>'+
+      '<div class="ph'+(deHide?' hidden-val':'')+'">['+esc(v.ph)+']</div>'+
+      '<div class="en'+(enHide?' hidden-val':'')+'">'+esc(v.en)+'</div>'+
+      '<div class="spkrow"><button class="spk" title="Anhören">🔊 Aussprache</button></div>'+
+      '<div class="tap">Klicken zum Aufdecken</div>';
+    c.addEventListener('click',()=>$$('.hidden-val',c).forEach(x=>x.classList.remove('hidden-val')));
+    c.querySelector('.spk').addEventListener('click',e=>{e.stopPropagation();speak(v.base);});
+    grid.appendChild(c);
+  });
+}
+['hideMode','catFilter'].forEach(id=>document.getElementById(id).addEventListener('change',buildCards));
+$('#shuffleBtn').addEventListener('click',()=>{VOCAB.sort(()=>Math.random()-.5);buildCards();});
+function buildSentences(){
+  const cat=$('#sentCat').value;
+  const list=VOCAB.filter(v=>cat==='__all'||v.cat===cat);
+  const box=$('#sentList');box.innerHTML='';
+  list.forEach(v=>{
+    const b=document.createElement('div');b.className='word-block';
+    b.innerHTML='<div class="wh">'+esc(v.de)+' <button class="spk hw">🔊</button> <span class="wen">– '+esc(v.en)+'</span></div>'+sentHTML(v.s1)+sentHTML(v.s2);
+    b.querySelector('.hw').addEventListener('click',()=>speak(v.base));
+    $$('.sent',b).forEach((d,i)=>{const s=i===0?v.s1:v.s2;
+      d.querySelector('.sp-de').addEventListener('click',()=>speak(s[0]));
+      d.querySelector('.en-t').addEventListener('click',()=>d.classList.toggle('show-en'));});
+    box.appendChild(b);
+  });
+}
+function sentHTML(s){return '<div class="sent"><div class="s-de">„'+esc(s[0])+'" <button class="spk sp-de">🔊</button> <button class="spk en-t">EN</button></div><div class="s-en">'+esc(s[1])+'</div></div>';}
+$('#toggleAllEn').addEventListener('click',()=>{const any=$$('#sentList .sent.show-en').length;$$('#sentList .sent').forEach(s=>s.classList.toggle('show-en',!any));});
+function pick(arr,n){const a=[...arr];const o=[];while(o.length<n&&a.length)o.push(a.splice(Math.floor(Math.random()*a.length),1)[0]);return o;}
+function distractors(v,pool,n){
+  let same=pool.filter(x=>x!==v&&(x.fam===v.fam||x.cat===v.cat));
+  same=pick(same,n);
+  if(same.length<n)same=same.concat(pick(pool.filter(x=>x!==v&&!same.includes(x)),n-same.length));
+  return same;
+}
+let score={c:0,t:0};
+function updateScore(){$('#exScore').textContent=score.t?('Punkte: '+score.c+' / '+score.t):'';}
+function buildExercises(){
+  const cat=$('#exCat').value;
+  const pool=VOCAB.filter(v=>cat==='__all'||v.cat===cat);
+  score={c:0,t:0};updateScore();
+  buildMatch(pool);buildBlanks(pool);buildMC(pool);
+}
+function buildMatch(pool){
+  const items=pick(pool,Math.min(6,pool.length));
+  const de=$('#matchDe'),en=$('#matchEn'),fb=$('#matchFb');
+  de.innerHTML='';en.innerHTML='';fb.textContent='';fb.className='fb';
+  let sel=null,done=0;
+  items.forEach(v=>{const d=document.createElement('div');d.className='m-item';d.textContent=v.de;d.dataset.k=v.de;
+    d.addEventListener('click',()=>{if(d.classList.contains('done'))return;$$('#matchDe .m-item').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');sel=v.de;speak(v.base);});
+    de.appendChild(d);});
+  pick(items,items.length).forEach(v=>{const e=document.createElement('div');e.className='m-item';e.textContent=v.en;e.dataset.k=v.de;
+    e.addEventListener('click',()=>{if(!sel||e.classList.contains('done'))return;
+      score.t++;
+      if(e.dataset.k===sel){e.classList.add('done');$$('#matchDe .m-item').forEach(x=>{if(x.dataset.k===sel)x.classList.add('done')});score.c++;done++;fb.className='fb ok';fb.textContent='Richtig! ('+done+'/'+items.length+')';if(done===items.length)fb.textContent='Perfekt! Alles zugeordnet. ✅';}
+      else{fb.className='fb no';fb.textContent='Falsch – versuch es nochmal.';}
+      sel=null;$$('#matchDe .m-item').forEach(x=>x.classList.remove('sel'));updateScore();
+    });en.appendChild(e);});
+}
+function buildBlanks(pool){
+  const box=$('#blankBox');box.innerHTML='';
+  const items=pick(pool.filter(v=>v.s1&&v.s1[0]),Math.min(5,pool.length));
+  items.forEach(v=>{
+    const key=headKey(v);const sentence=v.s1[0];const blanked=blankOut(sentence,key);
+    const opts=pick([v,...distractors(v,pool,3)],4);
+    const q=document.createElement('div');q.className='q';
+    q.innerHTML='<div class="prompt">'+esc(blanked)+' <button class="spk">🔊</button></div><div class="opts"></div><div class="fb"></div>';
+    q.querySelector('.spk').addEventListener('click',()=>speak(sentence));
+    const od=q.querySelector('.opts'),fb=q.querySelector('.fb');
+    opts.forEach(o=>{const b=document.createElement('button');b.className='opt';b.textContent=o.de;
+      b.addEventListener('click',()=>{score.t++;$$('.opt',q).forEach(x=>x.disabled=true);
+        if(o===v){b.classList.add('correct');fb.className='fb ok';fb.textContent='Richtig!';score.c++;}
+        else{b.classList.add('wrong');fb.className='fb no';fb.textContent='Richtig wäre: '+v.de;$$('.opt',q).forEach(x=>{if(x.textContent===v.de)x.classList.add('correct')});}
+        updateScore();});
+      od.appendChild(b);});
+    box.appendChild(q);
+  });
+}
+function buildMC(pool){
+  const box=$('#mcBox');box.innerHTML='';
+  const items=pick(pool,Math.min(6,pool.length));
+  items.forEach(v=>{
+    const opts=pick([v,...distractors(v,pool,3)],4);
+    const q=document.createElement('div');q.className='q';
+    q.innerHTML='<div class="prompt">'+esc(v.en)+'</div><div class="opts"></div><div class="fb"></div>';
+    const od=q.querySelector('.opts'),fb=q.querySelector('.fb');
+    opts.forEach(o=>{const b=document.createElement('button');b.className='opt';b.textContent=o.de;
+      b.addEventListener('click',()=>{score.t++;$$('.opt',q).forEach(x=>x.disabled=true);
+        if(o===v){b.classList.add('correct');fb.className='fb ok';fb.textContent='Richtig! 🔊';speak(v.base);score.c++;}
+        else{b.classList.add('wrong');fb.className='fb no';fb.textContent='Richtig: '+v.de;$$('.opt',q).forEach(x=>{if(x.textContent===v.de)x.classList.add('correct')});}
+        updateScore();});
+      od.appendChild(b);});
+    box.appendChild(q);
+  });
+}
+function headKey(v){return v.base.replace(/^(der|die|das)\s+/,'');}
+function blankOut(sentence,key){
+  const stem=key.split(/[\s(]/)[0].slice(0,Math.max(4,key.length-3));
+  const re=new RegExp('\\b'+stem.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\w*','i');
+  if(re.test(sentence))return sentence.replace(re,'_____');
+  return sentence+' (→ _____)';
+}
+$('#newExercises').addEventListener('click',buildExercises);
+$('#exCat').addEventListener('change',buildExercises);
+$('#catFilter').addEventListener('change',buildCards);
+$('#sentCat').addEventListener('change',buildSentences);
+function buildFamilies(){
+  const box=$('#famList');box.innerHTML='';
+  const groups={};VOCAB.forEach(v=>{(groups[v.fam]=groups[v.fam]||[]).push(v);});
+  Object.keys(groups).sort().forEach(k=>{
+    const meta=FAMILIES[k]||{};
+    const d=document.createElement('div');d.className='fam';
+    d.innerHTML='<h3>'+esc(meta.title||k)+'</h3>'+
+      (meta.root?'<div class="root">Stamm / Kernbedeutung: '+esc(meta.root)+'</div>':'')+
+      (meta.ety?'<div class="ety">Herkunft: '+esc(meta.ety)+'</div>':'')+
+      '<ul>'+groups[k].map(v=>'<li><b>'+esc(v.de)+'</b> <button class="spk sp2" data-w="'+esc(v.base)+'">🔊</button> — <span class="mng">'+esc(v.en)+'</span>'+(v.ety?'<span class="we"> · '+esc(v.ety)+'</span>':'')+'</li>').join('')+'</ul>';
+    $$('.sp2',d).forEach(b=>b.addEventListener('click',()=>speak(b.dataset.w)));
+    box.appendChild(d);
+  });
+}
+function buildConf(){
+  const box=$('#confList');box.innerHTML='';
+  CONFUSABLES.forEach(c=>{
+    const d=document.createElement('div');d.className='conf';
+    d.innerHTML='<span class="tag '+(c.type==='homo'?'homo':'syn')+'">'+(c.type==='homo'?'Ähnlicher Klang · andere Bedeutung':'Ähnliche Bedeutung · andere Verwendung')+'</span>'+
+      '<div class="pair">'+c.items.map(i=>'<div class="side"><b>'+esc(i.w)+'</b> <button class="spk" data-w="'+esc(i.w)+'">🔊</button><div class="g">'+esc(i.g)+'</div></div>').join('')+'</div>'+
+      '<div class="note">'+esc(c.note)+'</div>';
+    $$('.spk',d).forEach(b=>b.addEventListener('click',()=>speak(b.dataset.w)));
+    box.appendChild(d);
+  });
+}
+function init(){
+  fillCatSelect($('#catFilter'));fillCatSelect($('#sentCat'));fillCatSelect($('#exCat'));
+  buildCards();buildSentences();buildExercises();buildFamilies();buildConf();
+}
+init();
+</script>
+</body>
+</html>
