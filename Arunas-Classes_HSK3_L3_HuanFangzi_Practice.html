@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<!--
+  Aruna's Classes · ChineseFrench — New HSK 3.0 Level 3 · Lesson 3 · 换房子
+  All-in-one scored study app: Listening · Reading · Vocabulary · Fill-in · Measure words · Grammar · Writing
+  English "how to" per section · pinyin under every Mandarin line · running total score.
+  Self-contained/offline (listening uses the browser Web Speech API).
+  © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Aruna's Classes · ChineseFrench — HSK3 L3 换房子 (Study & Test)</title>
+<style>
+:root{--red:#a2231d;--red-dark:#7a1a15;--gold:#c99a2e;--gold-light:#f3e3b3;--cream:#fbf6ea;--ink:#2b1a12;--green:#2e7d32;--green-bg:#e3f5e1;--gray:#8a7f6e;--radius:14px;--shadow:0 4px 14px rgba(122,26,21,.15);}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{font-family:"Segoe UI",Helvetica,Arial,sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
+.app-header{background:linear-gradient(135deg,var(--red),var(--red-dark));padding:14px 14px 12px;text-align:center;border-bottom:4px solid var(--gold);}
+.logo-wrap{max-width:460px;margin:0 auto 8px;} .logo-wrap svg{width:100%;height:auto;display:block;}
+.app-header .lesson-title{color:#fff;font-size:.95rem;margin-top:4px;font-weight:600;}
+.student-bar{max-width:720px;margin:8px auto 0;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;}
+.student-bar input{padding:8px 12px;border-radius:20px;border:none;font-size:.9rem;width:180px;}
+.badge{background:var(--gold);color:var(--red-dark);font-weight:800;padding:6px 14px;border-radius:20px;font-size:.85rem;}
+nav.tabs{display:flex;gap:6px;padding:10px 8px 0;max-width:920px;margin:0 auto;justify-content:center;flex-wrap:wrap;}
+nav.tabs button{background:#fff;border:2px solid var(--gold);color:var(--red-dark);padding:8px 13px;border-radius:16px 16px 0 0;font-weight:700;font-size:.8rem;cursor:pointer;}
+nav.tabs button.active{background:var(--red);color:#fff;border-color:var(--red);}
+nav.tabs button.done{border-color:var(--green);}
+main{max-width:760px;margin:0 auto;padding:16px 14px 80px;}
+.panel{display:none;} .panel.active{display:block;animation:fade .2s;}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+.card{background:#fff;border:1px solid var(--gold-light);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:16px;}
+.sec-title{font-size:1.15rem;font-weight:800;color:var(--red-dark);margin:0 0 8px;}
+.howto{background:#eef4ff;border:1px solid #c7d6f0;border-left:5px solid #4a6fa5;border-radius:8px;padding:10px 12px;font-size:.86rem;color:#28405f;margin-bottom:14px;}
+.howto b{color:#1c3054;}
+.sec-score{float:right;background:var(--gold-light);color:var(--red-dark);font-weight:800;border-radius:16px;padding:4px 12px;font-size:.8rem;}
+.dialogue{background:var(--cream);border:1px solid var(--gold-light);border-radius:10px;padding:12px;margin-bottom:14px;}
+.dline{padding:7px 0;border-bottom:1px dashed #e5d9bf;}
+.dline:last-child{border-bottom:none;}
+.who{font-size:.72rem;font-weight:800;color:var(--red);}
+.zh{font-size:1.12rem;font-weight:700;color:var(--red-dark);line-height:1.5;}
+.py{font-size:.82rem;color:var(--gray);font-style:italic;margin-top:1px;}
+.q{margin:16px 0 4px;}
+.q .zh{font-size:1.08rem;}
+.qnum{color:var(--red);font-weight:800;}
+.opts{margin-top:8px;}
+.opt{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--gold-light);border-radius:9px;padding:10px 12px;margin:6px 0;cursor:pointer;font-family:inherit;color:var(--ink);}
+.opt:hover:not(:disabled){border-color:var(--gold);}
+.opt:focus-visible{outline:3px solid var(--gold);}
+.opt .oz{font-size:1.02rem;font-weight:600;color:var(--red-dark);}
+.opt .op{font-size:.78rem;color:var(--gray);font-style:italic;}
+.opt.correct{background:var(--green-bg);border-color:var(--green);}
+.opt.wrong{background:#fbe3e1;border-color:var(--red);}
+.opt:disabled{cursor:default;}
+.tf-row{display:flex;gap:10px;margin-top:8px;}
+.tf{flex:1;background:#fff;border:2px solid var(--gold);border-radius:9px;padding:10px;font-weight:800;font-size:1.05rem;color:var(--red-dark);cursor:pointer;}
+.tf.correct{background:var(--green-bg);border-color:var(--green);color:var(--green);}
+.tf.wrong{background:#fbe3e1;border-color:var(--red);color:var(--red);}
+.why{margin-top:8px;font-size:.85rem;padding:8px 10px;border-radius:8px;display:none;}
+.why.ok{background:var(--green-bg);border:1px solid var(--green);display:block;}
+.why.no{background:#fbe3e1;border:1px solid var(--red);display:block;}
+.bank{background:var(--gold-light);border-radius:8px;padding:8px 12px;font-size:.95rem;margin-bottom:10px;}
+.bank b{color:var(--red-dark);}
+.btn{background:var(--red);color:#fff;border:none;padding:10px 16px;border-radius:16px;font-size:.85rem;cursor:pointer;font-weight:600;margin:3px;}
+.btn:hover{background:var(--red-dark);}
+.btn.gold{background:var(--gold);color:var(--red-dark);} .btn.outline{background:#fff;color:var(--red);border:2px solid var(--red);}
+.btn.big{font-size:1rem;padding:12px 24px;}
+.play-btn{font-size:1.05rem;background:var(--gold);color:var(--red-dark);border:none;border-radius:40px;padding:12px 26px;font-weight:800;cursor:pointer;margin:2px;}
+.warn{background:#fff3cd;border:1px solid var(--gold);color:#7a5b00;padding:8px 10px;border-radius:8px;font-size:.8rem;margin-bottom:10px;display:none;}
+.warn.show{display:block;}
+.sec-done{background:var(--green-bg);border:1px solid var(--green);color:var(--green);font-weight:700;text-align:center;padding:10px;border-radius:8px;margin-top:12px;display:none;}
+.sec-done.show{display:block;}
+textarea{width:100%;min-height:90px;border:1.5px solid var(--gold-light);border-radius:8px;padding:10px;font-family:inherit;font-size:1rem;}
+.model{background:var(--cream);border:1px dashed var(--gold);border-radius:8px;padding:10px;margin-top:8px;display:none;}
+.model.show{display:block;}
+.total-card{background:#fff;border:2px solid var(--gold);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;text-align:center;}
+.total-num{font-size:2.6rem;font-weight:800;color:var(--red-dark);}
+.bar{height:10px;background:var(--gold-light);border-radius:6px;overflow:hidden;margin:10px 0;}
+.bar>div{height:100%;background:var(--red);width:0;transition:width .3s;}
+.footer-copy{text-align:center;color:var(--gray);font-size:.72rem;padding:16px 10px 40px;}
+.watermark{position:fixed;bottom:6px;right:10px;font-size:.62rem;color:rgba(122,26,21,.3);pointer-events:none;z-index:5;}
+@media (max-width:520px){.zh{font-size:1rem;}}
+.play-line{display:inline-block;background:#fff;border:1.5px solid var(--gold);border-radius:16px;padding:5px 10px;margin:3px;font-size:.8rem;cursor:pointer;color:var(--red-dark);font-weight:600;}
+.play-line:hover{background:var(--gold-light);}
+.play-line .who{font-weight:800;}
+.play-line .who.m{color:#4a86c8;}
+.pyin{width:100%;box-sizing:border-box;padding:11px 12px;border:2px solid var(--gold);border-radius:10px;font-size:1.05rem;font-family:inherit;letter-spacing:.02em;}
+.pyin:focus{outline:3px solid var(--gold-light);border-color:var(--red);}
+.pyin:disabled{background:#f6f1e4;color:var(--gray);}
+</style>
+</head>
+<body>
+<div class="watermark">© 2026 ChineseFrench · Aruna's Classes</div>
+<header class="app-header">
+  <div class="logo-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="1000" height="300" viewBox="0 0 1000 300">
+  <defs><linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a2231d"/><stop offset="1" stop-color="#7a1a15"/></linearGradient></defs>
+  <rect x="6" y="6" width="988" height="288" rx="34" fill="url(#red)" stroke="#c99a2e" stroke-width="7"/>
+  <circle cx="150" cy="150" r="98" fill="none" stroke="#c99a2e" stroke-width="6"/>
+  <circle cx="150" cy="150" r="86" fill="#fbf6ea"/>
+  <text x="150" y="150" font-family="Noto Serif CJK SC, serif" font-size="118" font-weight="700" fill="#a2231d" text-anchor="middle" dominant-baseline="central">语</text>
+  <text x="290" y="118" font-family="Georgia, serif" font-size="72" font-weight="700" fill="#fbf6ea">ChineseFrench</text>
+  <line x1="292" y1="150" x2="900" y2="150" stroke="#c99a2e" stroke-width="2"/>
+  <text x="290" y="196" font-family="Noto Serif CJK SC, serif" font-size="40" font-weight="700" fill="#f3e3b3">爱睿娜的课堂 · Aruna's Classes</text>
+  <text x="292" y="238" font-family="Georgia, serif" font-size="27" fill="#e8c98f">中文 Mandarin · Français · Deutsch · HSK Preparation</text>
+</svg>
+</div>
+  <div class="lesson-title">新 HSK 3.0 · 三级 · 第3课 换房子 · Study &amp; Test — 7 sections</div>
+  <div class="student-bar">
+    <input id="studentName" type="text" placeholder="Enter your name..." aria-label="Student name">
+    <span class="badge" id="totalBadge">总分 Total: 0 / 35</span>
+    <button class="btn outline" style="padding:6px 12px;font-size:.78rem;" onclick="resetAll()" title="Clear all answers and start a fresh attempt">↺ Start fresh</button>
+  </div>
+</header>
+<nav class="tabs" id="tabNav"></nav>
+<main id="mainArea"></main>
+<div class="footer-copy">
+  © 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.<br>
+  Pinyin appears under every Mandarin sentence. Listening uses your device's Chinese voice.
+</div>
+
+<script>
+const COPYRIGHT="© 2026 RRAruna Enterprises · ChineseFrench · Aruna's Classes. All Rights Reserved.";
+
+/* ================= TTS ================= */
+let zhVoices=[], femaleVoice=null, maleVoice=null;
+function pickVoice(){
+  const vs=window.speechSynthesis?speechSynthesis.getVoices():[];
+  zhVoices=vs.filter(v=>/zh(-|_)?(CN|Hans)/i.test(v.lang)||/chinese|mandarin|普通话|中文/i.test(v.name));
+  if(!zhVoices.length) zhVoices=vs.filter(v=>/zh/i.test(v.lang));
+  const fem=/female|woman|xiaoxiao|xiaoyi|xiaomeng|meijia|tingting|sinji|huihui|yaoyao|婷婷|美佳|女/i;
+  const male=/male|man|yunyang|yunxi|yunjian|kangkang|zhiwei|liang|男/i;
+  femaleVoice = zhVoices.find(v=>fem.test(v.name)) || null;
+  maleVoice   = zhVoices.find(v=>male.test(v.name)) || null;
+  // if we couldn't name-detect, split whatever zh voices exist across the two roles
+  if(!femaleVoice && zhVoices[0]) femaleVoice=zhVoices[0];
+  if(!maleVoice) maleVoice = zhVoices.find(v=>v!==femaleVoice) || zhVoices[0] || null;
+}
+if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+// generic single-voice speak (female default)
+function speak(txt){utter(txt,'A');}
+function utter(txt,role){
+  if(!window.speechSynthesis)return null;
+  const u=new SpeechSynthesisUtterance(txt); u.lang="zh-CN";
+  const female = role==='A';
+  const v = female?femaleVoice:maleVoice;
+  if(v) u.voice=v;
+  const twoDistinctVoices = femaleVoice && maleVoice && femaleVoice!==maleVoice;
+  if(twoDistinctVoices){
+    // real separate voices: keep a gentle nudge so the contrast is obvious
+    u.pitch = female?1.15:0.85;
+    u.rate  = female?0.86:0.8;
+  } else {
+    // only one (or no) Chinese voice: force a BIG, unmistakable pitch + rate gap
+    u.pitch = female?1.6:0.55;
+    u.rate  = female?0.9:0.78;
+  }
+  return u;
+}
+// let the teacher/student hear each voice on demand
+function testVoice(role){ if(!window.speechSynthesis)return; speechSynthesis.cancel(); const u=utter(role==='A'?"你好，我是王一雪。":"你好，我是刘明。",role); if(u) speechSynthesis.speak(u); }
+// play the whole dialogue, each line in its speaker's voice (A=王一雪 female, B=刘明 male)
+function speakDialogue(){
+  if(!window.speechSynthesis)return; speechSynthesis.cancel();
+  DIALOGUE.forEach((d,i)=>{
+    const role = (i%2===0)?'A':'B';   // A-lines even (王一雪), B-lines odd (刘明)
+    const u=utter(d[1],role); if(u) speechSynthesis.speak(u);
+  });
+}
+// speak one line by index (used by the per-line ▶ buttons)
+function speakLine(i){ if(!window.speechSynthesis)return; speechSynthesis.cancel(); const role=(i%2===0)?'A':'B'; const u=utter(DIALOGUE[i][1],role); if(u) speechSynthesis.speak(u); }
+function speakSeq(lines){ speakDialogue(); }
+function ttsOK(){return !!window.speechSynthesis;}
+
+/* ================= DIALOGUE (课文1) ================= */
+const DIALOGUE=[
+ ["王一雪","小雪的初中离家有点儿远，咱们换一个近点儿的房子吧。","Xiǎo Xuě de chūzhōng lí jiā yǒudiǎnr yuǎn, zánmen huàn yí ge jìn diǎnr de fángzi ba."],
+ ["刘明","好啊，我上网看看。你觉得这个小区怎么样？","Hǎo a, wǒ shàngwǎng kànkan. Nǐ juéde zhège xiǎoqū zěnmeyàng?"],
+ ["王一雪","环境挺好的，离地铁站还不远。","Huánjìng tǐng hǎo de, lí dìtiězhàn hái bù yuǎn."],
+ ["刘明","房子里面也不错，空调和洗衣机都是新的。","Fángzi lǐmiàn yě búcuò, kōngtiáo hé xǐyījī dōu shì xīn de."],
+ ["王一雪","是不错，但是我不喜欢住一层。","Shì búcuò, dànshì wǒ bù xǐhuan zhù yī céng."],
+ ["刘明","这个一层带一个小花园，我觉得咱们可以去看看。","Zhège yī céng dài yí ge xiǎo huāyuán, wǒ juéde zánmen kěyǐ qù kànkan."],
+];
+
+/* ================= SECTIONS ================= */
+// q types: 'mcq' {q,qpy,opts:[{zh,py}],ans,why}  |  'tf' {q,qpy,ans(bool),why}
+const SECTIONS=[
+ {id:'listen', tab:'🎧 听力 Listening',
+  howto:"<b>How to do this:</b> Press ▶ to hear the whole dialogue (you may replay it). Then answer each question — choose one option or 对/错. You score 1 point per correct answer; the answer locks and shows a short explanation. <b>4 points.</b>",
+  audio:true,
+  qs:[
+   {type:'mcq', q:"王一雪和刘明想做什么？", qpy:"Wáng Yīxuě hé Liú Míng xiǎng zuò shénme?",
+    opts:[{zh:"换房子",py:"huàn fángzi"},{zh:"买空调",py:"mǎi kōngtiáo"},{zh:"去女儿的初中",py:"qù nǚ'ér de chūzhōng"}], ans:0,
+    why:"They discuss 换一个近点儿的房子 — changing to a closer house."},
+   {type:'mcq', q:"王一雪为什么不喜欢这个房子？", qpy:"Wáng Yīxuě wèishénme bù xǐhuan zhège fángzi?",
+    opts:[{zh:"房子太远",py:"fángzi tài yuǎn"},{zh:"她不喜欢住一层",py:"tā bù xǐhuan zhù yī céng"},{zh:"她不喜欢这个小区",py:"tā bù xǐhuan zhège xiǎoqū"}], ans:1,
+    why:"She says 但是我不喜欢住一层 — she doesn't like living on the ground floor."},
+   {type:'tf', q:"这个小区离地铁站很远。", qpy:"Zhège xiǎoqū lí dìtiězhàn hěn yuǎn.", ans:false,
+    why:"王一雪 says 离地铁站还不远 — it's NOT far from the subway."},
+   {type:'tf', q:"房子里的空调和洗衣机都是新的。", qpy:"Fángzi lǐ de kōngtiáo hé xǐyījī dōu shì xīn de.", ans:true,
+    why:"刘明 says 空调和洗衣机都是新的 — both are new."},
+  ]},
+
+ {id:'read', tab:'📖 阅读 Reading', showDialogue:true,
+  howto:"<b>How to do this:</b> Read the dialogue above (pinyin is under each line). Answer each question from the text. 1 point each. <b>4 points.</b>",
+  qs:[
+   {type:'tf', q:"王一雪想换一个近一点儿的房子。", qpy:"Wáng Yīxuě xiǎng huàn yí ge jìn yìdiǎnr de fángzi.", ans:true,
+    why:"咱们换一个近点儿的房子吧 — yes, a closer house."},
+   {type:'tf', q:"这个房子在二层。", qpy:"Zhège fángzi zài èr céng.", ans:false,
+    why:"It is 一层 (the ground floor), not the second floor."},
+   {type:'mcq', q:"这个一层有什么？", qpy:"Zhège yī céng yǒu shénme?",
+    opts:[{zh:"一个小花园",py:"yí ge xiǎo huāyuán"},{zh:"一个大阳台",py:"yí ge dà yángtái"},{zh:"一个车库",py:"yí ge chēkù"}], ans:0,
+    why:"这个一层带一个小花园 — it comes with a small garden."},
+   {type:'mcq', q:"王一雪觉得小区的环境怎么样？", qpy:"Wáng Yīxuě juéde xiǎoqū de huánjìng zěnmeyàng?",
+    opts:[{zh:"挺好的",py:"tǐng hǎo de"},{zh:"不太好",py:"bú tài hǎo"},{zh:"太远了",py:"tài yuǎn le"}], ans:0,
+    why:"环境挺好的 — she thinks the environment is quite good."},
+  ]},
+
+ {id:'vocab', tab:'🔤 词语 Vocabulary',
+  howto:"<b>How to do this:</b> For each new word (character + pinyin shown), choose the correct English meaning. 1 point each. <b>11 points.</b>",
+  qs:[
+   mcqV("初中","chūzhōng","middle school",["we; us","to change","house"]),
+   mcqV("咱们","zánmen","we; us",["middle school","garden","floor"]),
+   mcqV("换","huàn","to change",["quite; very","house","environment"]),
+   mcqV("房子","fángzi","house",["air conditioner","we; us","to change"]),
+   mcqV("小区","xiǎoqū","residential complex",["middle school","washing machine","garden"]),
+   mcqV("环境","huánjìng","surroundings; environment",["house","floor","quite; very"]),
+   mcqV("挺","tǐng","quite; very",["to change","we; us","house"]),
+   mcqV("空调","kōngtiáo","air conditioner",["washing machine","garden","residential complex"]),
+   mcqV("洗衣机","xǐyījī","washing machine",["air conditioner","environment","floor"]),
+   mcqV("层","céng","floor (measure word)",["house","middle school","we; us"]),
+   mcqV("花园","huāyuán","garden",["residential complex","air conditioner","middle school"]),
+  ]},
+
+ {id:'fill', tab:'✏️ 选词填空 Fill-in', bank:"换 huàn · 小区 xiǎoqū · 空调 kōngtiáo · 花园 huāyuán · 挺 tǐng",
+  howto:"<b>How to do this:</b> Read each sentence (a word is missing, shown as ___). Pick the word from the word bank that fits. 1 point each. <b>5 points.</b>",
+  qs:[
+   {type:'mcq', q:"咱们 ___ 一个近点儿的房子吧。", qpy:"Zánmen ___ yí ge jìn diǎnr de fángzi ba.",
+    opts:[{zh:"换",py:"huàn"},{zh:"买",py:"mǎi"},{zh:"看",py:"kàn"}], ans:0, why:"换 = to change/swap (houses)."},
+   {type:'mcq', q:"这个 ___ 的环境挺好的。", qpy:"Zhège ___ de huánjìng tǐng hǎo de.",
+    opts:[{zh:"小区",py:"xiǎoqū"},{zh:"初中",py:"chūzhōng"},{zh:"花园",py:"huāyuán"}], ans:0, why:"小区 = residential complex; its 环境 is good."},
+   {type:'mcq', q:"房子里的 ___ 和洗衣机都是新的。", qpy:"Fángzi lǐ de ___ hé xǐyījī dōu shì xīn de.",
+    opts:[{zh:"空调",py:"kōngtiáo"},{zh:"环境",py:"huánjìng"},{zh:"小区",py:"xiǎoqū"}], ans:0, why:"空调 = air conditioner (paired with 洗衣机)."},
+   {type:'mcq', q:"这个一层带一个小 ___ 。", qpy:"Zhège yī céng dài yí ge xiǎo ___.",
+    opts:[{zh:"花园",py:"huāyuán"},{zh:"房子",py:"fángzi"},{zh:"小区",py:"xiǎoqū"}], ans:0, why:"花园 = garden."},
+   {type:'mcq', q:"小区的环境 ___ 好的。", qpy:"Xiǎoqū de huánjìng ___ hǎo de.",
+    opts:[{zh:"挺",py:"tǐng"},{zh:"太",py:"tài"},{zh:"不",py:"bù"}], ans:0, why:"挺…的 = quite… (挺好的 = quite good)."},
+  ]},
+
+ {id:'measure', tab:'📏 量词 Measure words',
+  howto:"<b>How to do this:</b> Choose the correct measure word (量词) for each phrase. This lesson introduces <b>层 (céng)</b> for floors. 1 point each. <b>3 points.</b>",
+  qs:[
+   {type:'mcq', q:"咱们换一 ___ 房子吧。", qpy:"Zánmen huàn yí ___ fángzi ba.",
+    opts:[{zh:"个",py:"gè"},{zh:"层",py:"céng"},{zh:"张",py:"zhāng"}], ans:0, why:"房子 takes 个: 一个房子."},
+   {type:'mcq', q:"我不喜欢住一 ___ 。", qpy:"Wǒ bù xǐhuan zhù yī ___.",
+    opts:[{zh:"层",py:"céng"},{zh:"个",py:"gè"},{zh:"口",py:"kǒu"}], ans:0, why:"层 = floor: 一层 = the ground/first floor."},
+   {type:'mcq', q:"这个一层带一 ___ 小花园。", qpy:"Zhège yī céng dài yí ___ xiǎo huāyuán.",
+    opts:[{zh:"个",py:"gè"},{zh:"层",py:"céng"},{zh:"条",py:"tiáo"}], ans:0, why:"花园 takes 个: 一个小花园."},
+  ]},
+
+ {id:'grammar', tab:'🔧 语法 Grammar',
+  howto:"<b>How to do this:</b> Each question tests a grammar point from this lesson (挺…的, 有点儿 vs 一点儿, 咱们). Choose the correct answer. 1 point each. <b>4 points.</b>",
+  qs:[
+   {type:'mcq', q:"哪个句子对？ (挺…的)", qpy:"Nǎge jùzi duì? (tǐng…de)",
+    opts:[{zh:"环境挺好的。",py:"Huánjìng tǐng hǎo de."},{zh:"环境挺好。",py:"Huánjìng tǐng hǎo."},{zh:"挺环境好的。",py:"Tǐng huánjìng hǎo de."}], ans:0,
+    why:"Pattern: 挺 + adjective + 的 → 挺好的."},
+   {type:'mcq', q:"小雪的初中离家 ___ 远。 (an existing problem)", qpy:"Xiǎo Xuě de chūzhōng lí jiā ___ yuǎn.",
+    opts:[{zh:"有点儿",py:"yǒudiǎnr"},{zh:"一点儿",py:"yìdiǎnr"}], ans:0,
+    why:"有点儿 + adjective describes an undesirable situation: 有点儿远 = a bit (too) far."},
+   {type:'mcq', q:"咱们换一个近 ___ 的房子吧。 (a bit closer)", qpy:"Zánmen huàn yí ge jìn ___ de fángzi ba.",
+    opts:[{zh:"一点儿",py:"yìdiǎnr"},{zh:"有点儿",py:"yǒudiǎnr"}], ans:0,
+    why:"adjective + 一点儿 = a bit more ~ : 近一点儿 = a bit closer."},
+   {type:'mcq', q:"妈妈对孩子说：“___ 去看看新房子吧。” (includes the listener)", qpy:"Māma duì háizi shuō: “___ qù kànkan xīn fángzi ba.”",
+    opts:[{zh:"咱们",py:"zánmen"},{zh:"他们",py:"tāmen"}], ans:0,
+    why:"咱们 = we (including YOU, the listener). 我们 may or may not include the listener; 他们 = they."},
+  ]},
+
+ {id:'write', tab:'✍️ 写作 Writing', writing:true,
+  howto:"<b>How to do this:</b> Part A is scored — <b>type each sentence in pinyin WITHOUT tone marks</b> (e.g. <i>zanmen huan yi ge fangzi ba</i>). Spaces and capitals don't matter. Press Check; if your spelling is wrong, the correct spelling and characters are shown. Part B has two open writing tasks (not scored) with model answers.",
+  // Part A — scored pinyin typing. key = toneless pinyin of the sentence.
+  pinyinTasks:[
+   {zh:"咱们换一个房子吧。", py:"Zánmen huàn yí ge fángzi ba.", key:"zanmen huan yi ge fangzi ba", en:"Let's change to another house."},
+   {zh:"环境挺好的。", py:"Huánjìng tǐng hǎo de.", key:"huanjing ting hao de", en:"The environment is quite good."},
+   {zh:"空调和洗衣机都是新的。", py:"Kōngtiáo hé xǐyījī dōu shì xīn de.", key:"kongtiao he xiyiji dou shi xin de", en:"The air conditioner and washing machine are both new."},
+   {zh:"我不喜欢住一层。", py:"Wǒ bù xǐhuan zhù yì céng.", key:"wo bu xihuan zhu yi ceng", en:"I don't like living on the ground floor."},
+  ],
+  tasks:[
+   {prompt:"用四个生词描述你的家或小区。", ppy:"Yòng sì ge shēngcí miáoshù nǐ de jiā huò xiǎoqū.", pen:"Describe your home or neighbourhood using at least FOUR new words.",
+    model:"我家的小区环境挺好的，离地铁站不远。房子里有空调和洗衣机，都是新的。我们住在三层，还有一个小花园。",
+    modelpy:"Wǒ jiā de xiǎoqū huánjìng tǐng hǎo de, lí dìtiězhàn bù yuǎn. Fángzi lǐ yǒu kōngtiáo hé xǐyījī, dōu shì xīn de. Wǒmen zhù zài sān céng, hái yǒu yí ge xiǎo huāyuán.",
+    moden:"Our neighbourhood's environment is quite good and it's not far from the subway. The house has an air conditioner and a washing machine, both new. We live on the third floor and there's a small garden."},
+   {prompt:"续写对话：刘明说“咱们可以去看看。”王一雪会怎么回答？", ppy:"Xùxiě duìhuà: Liú Míng shuō “zánmen kěyǐ qù kànkan.” Wáng Yīxuě huì zěnme huídá?",
+    pen:"Continue the dialogue: Liu Ming says “Let's go and take a look.” How might Wang Yixue reply?",
+    model:"好啊，那咱们周末去看看吧。如果房子里面也不错，我们就换这个。",
+    modelpy:"Hǎo a, nà zánmen zhōumò qù kànkan ba. Rúguǒ fángzi lǐmiàn yě búcuò, wǒmen jiù huàn zhège.",
+    moden:"OK, then let's go this weekend. If the inside is nice too, we'll take this one."},
+  ]},
+];
+
+function mcqV(zh,py,correctEn,distractors){
+  return {type:'mcq', q:zh, qpy:py, isVocab:true, correctEn,
+    opts:[{en:correctEn},...distractors.map(d=>({en:d}))], ans:0,
+    why:`${zh} (${py}) = ${correctEn}.`};
+}
+
+/* ================= scoring / state ================= */
+const SCORABLE=SECTIONS.filter(s=>s.qs);
+const PA_COUNT=(SECTIONS.find(s=>s.id==='write')&&SECTIONS.find(s=>s.id==='write').pinyinTasks||[]).length;
+const MAXTOTAL=SCORABLE.reduce((n,s)=>n+s.qs.length,0)+PA_COUNT;
+let answered={};   // key sec#q -> {correct:bool}
+function skey(){const el=document.getElementById('studentName');const n=el?el.value.trim():'';return "aruna_l3_"+(n?n.toLowerCase().replace(/\s+/g,'_'):'guest');}
+function loadA(){try{return JSON.parse(localStorage.getItem(skey()))||{};}catch(e){return {};}}
+// One-time cleanup: remove any answers saved by earlier builds (e.g. automated testing) so students start clean.
+(function purgeLegacy(){try{const KEY='aruna_l3_purged_v2';if(!localStorage.getItem(KEY)){Object.keys(localStorage).forEach(k=>{if(/^aruna_l3_/.test(k)&&k!=='aruna_l3_name')localStorage.removeItem(k);});localStorage.setItem(KEY,'1');}}catch(e){}})();
+function saveA(){try{localStorage.setItem(skey(),JSON.stringify(answered));}catch(e){}}
+function secScore(id){const s=SECTIONS.find(x=>x.id===id);if(!s.qs)return null;let c=0;s.qs.forEach((_,i)=>{if(answered[id+'#'+i]&&answered[id+'#'+i].correct)c++;});return {c,t:s.qs.length};}
+function total(){let c=0;SCORABLE.forEach(s=>{s.qs.forEach((_,i)=>{if(answered[s.id+'#'+i]&&answered[s.id+'#'+i].correct)c++;});});c+=paScore().c;return c;}
+function secAnsweredCount(id){const s=SECTIONS.find(x=>x.id===id);if(!s.qs)return 0;let n=0;s.qs.forEach((_,i)=>{if(answered[id+'#'+i])n++;});return n;}
+function updateHeader(){document.getElementById('totalBadge').textContent=`总分 Total: ${total()} / ${MAXTOTAL}`;
+  document.querySelectorAll('nav.tabs button').forEach(b=>{const id=b.dataset.id;const s=SECTIONS.find(x=>x.id===id);if(s&&s.qs){b.classList.toggle('done',secAnsweredCount(id)>=s.qs.length);}});}
+
+/* ================= tabs ================= */
+let cur=SECTIONS[0].id;
+function initTabs(){document.getElementById('tabNav').innerHTML=SECTIONS.map(s=>`<button data-id="${s.id}" class="${s.id===cur?'active':''}" onclick="goTab('${s.id}')">${s.tab}</button>`).join('')+
+  `<button data-id="__total" class="${cur==='__total'?'active':''}" onclick="goTab('__total')">🏆 总分 Score</button>`;}
+function goTab(id){if(window.speechSynthesis)speechSynthesis.cancel();cur=id;initTabs();render();}
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function dialogueHtml(){return `<div class="dialogue">${DIALOGUE.map(d=>`<div class="dline"><div class="who">${d[0]}</div><div class="zh">${d[1]}</div><div class="py">${d[2]}</div></div>`).join('')}</div>`;}
+
+function qHtml(secId,q,i){
+  const key=secId+'#'+i; const a=answered[key];
+  let head=`<div class="q"><div class="zh"><span class="qnum">${i+1}.</span> ${q.isVocab?`${q.q}`:esc(q.q)}</div><div class="py">${esc(q.qpy)}</div></div>`;
+  let body='';
+  if(q.type==='tf'){
+    body=`<div class="tf-row">
+      <button class="tf ${a&&a.pick===true?(q.ans===true?'correct':'wrong'):''}" ${a?'disabled':''} onclick="answer('${secId}',${i},'tf',true)">✓ 对 True</button>
+      <button class="tf ${a&&a.pick===false?(q.ans===false?'correct':'wrong'):''}" ${a?'disabled':''} onclick="answer('${secId}',${i},'tf',false)">✗ 错 False</button></div>`;
+  } else {
+    body=`<div class="opts">${q.opts.map((o,j)=>{
+      let cls=''; if(a){ if(j===q.ans)cls='correct'; else if(a.pick===j)cls='wrong'; }
+      const inner=q.isVocab?`<div class="oz">${esc(o.en)}</div>`:`<div class="oz">${esc(o.zh)}</div><div class="op">${esc(o.py)}</div>`;
+      return `<button class="opt ${cls}" ${a?'disabled':''} onclick="answer('${secId}',${i},'mcq',${j})">${inner}</button>`;}).join('')}</div>`;
+  }
+  const whyCls=a?(a.correct?'ok':'no'):''; const whyTxt=a?((a.correct?'✓ 对了！ ':'✗ ')+q.why):'';
+  body+=`<div class="why ${whyCls}" id="why-${secId}-${i}">${whyTxt}</div>`;
+  return head+body;
+}
+
+function answer(secId,i,type,pick){
+  const key=secId+'#'+i; if(answered[key])return;
+  const q=SECTIONS.find(s=>s.id===secId).qs[i];
+  const correct = type==='tf' ? (pick===q.ans) : (pick===q.ans);
+  answered[key]={pick,correct};saveA();
+  render(); updateHeader();
+  const sc=secScore(secId);
+  if(sc && secAnsweredCount(secId)>=q && false){} // noop
+}
+
+function render(){
+  const area=document.getElementById('mainArea');
+  if(cur==='__total'){ renderTotal(area); return; }
+  const s=SECTIONS.find(x=>x.id===cur);
+  if(s.writing){ renderWriting(area,s); return; }
+  const sc=secScore(cur);
+  let html=`<div class="card"><div class="sec-score">Section: ${sc.c} / ${sc.t}</div><div class="sec-title">${s.tab}</div>`;
+  html+=`<div class="howto">${s.howto}</div>`;
+  if(s.audio){ html+=`<div class="warn ${ttsOK()?'':'show'}">No Chinese voice on this browser — try Chrome/Edge, or read the dialogue in the Reading tab.</div>`;
+    html+=`<div style="text-align:center;margin-bottom:8px;"><button class="play-btn" onclick="speakDialogue()">▶ 播放对话 Play whole dialogue</button>
+      <div style="font-size:.72rem;color:var(--gray);margin-top:6px;">👩 王一雪 = female voice · 👨 刘明 = male voice. Tap a line to replay it.</div>
+      <div style="margin-top:6px;"><button class="play-line" onclick="testVoice('A')">🔊 Hear 👩 王一雪</button> <button class="play-line" onclick="testVoice('B')">🔊 Hear 👨 刘明</button></div></div>
+      <div style="margin-bottom:12px;">${DIALOGUE.map((d,i)=>{const female=(i%2===0);return `<button class="play-line" onclick="speakLine(${i})" title="replay this line"><span class="who ${female?'':'m'}">${female?'👩':'👨'} ${d[0]}</span> ▶</button>`;}).join('')}</div>`; }
+  if(s.showDialogue) html+=dialogueHtml();
+  html+=s.qs.map((q,i)=>qHtml(cur,q,i)).join('');
+  const doneAll=secAnsweredCount(cur)>=s.qs.length;
+  html+=`<div class="sec-done ${doneAll?'show':''}">✅ Section complete — ${sc.c} / ${sc.t}. ${nextTabBtn()}</div>`;
+  html+=`</div>`;
+  area.innerHTML=html;
+}
+function nextTabBtn(){const idx=SECTIONS.findIndex(s=>s.id===cur);if(idx<SECTIONS.length-1)return `<button class="btn gold" onclick="goTab('${SECTIONS[idx+1].id}')">Next section →</button>`;return `<button class="btn gold" onclick="goTab('__total')">See total →</button>`;}
+
+// strip tone marks + spaces + punctuation -> bare ascii letters, for pinyin comparison
+function tonelessPinyin(str){
+  if(!str) return "";
+  let s=str.normalize('NFD').replace(/[\u0300-\u036f]/g,''); // remove combining tone accents
+  s=s.replace(/ü/gi,'u').replace(/v/gi,'u');                  // v/ü -> u
+  s=s.toLowerCase().replace(/[^a-z]/g,'');                    // keep letters only (drop spaces/punct/digits)
+  return s;
+}
+function renderWriting(area,s){
+  const pt=s.pinyinTasks||[];
+  const paHtml = pt.length? `
+    <div class="pa-title" style="font-weight:800;color:var(--red-dark);margin:6px 0;">Part A · 拼音输入 Type in pinyin (no tones) — scored</div>
+    ${pt.map((tk,i)=>{
+      const key='write#pa'+i; const a=answered[key];
+      const cls=a?(a.correct?'ok':'no'):'';
+      return `<div class="q"><div class="zh"><span class="qnum">A${i+1}.</span> ${esc(tk.en)}</div></div>
+        <input class="pyin" id="pyin-${i}" ${a?'disabled':''} value="${a?esc(a.raw):''}" placeholder="type pinyin without tones, e.g. huanjing ting hao de" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <div style="margin-top:6px;">${a?'':`<button class="btn" onclick="checkPinyin(${i})">Check</button>`}</div>
+        <div class="why ${cls}" id="pawhy-${i}">${a?(a.correct?'✓ 对了！ Correct spelling. ':'✗ Not quite. ')+`Correct: <b>${esc(tk.zh)}</b> — <span style="font-style:italic;">${esc(tk.py)}</span> (<span style="letter-spacing:.02em;">${esc(tk.key)}</span>)`:''}</div>
+        <hr style="border:none;border-top:1px dashed #e5d9bf;margin:14px 0;">`;
+    }).join('')}
+    <div class="pa-title" style="font-weight:800;color:var(--red-dark);margin:14px 0 6px;">Part B · 写一写 Open writing (not scored)</div>` : '';
+  area.innerHTML=`<div class="card"><div class="sec-score">Part A: ${paScore().c} / ${paScore().t}</div><div class="sec-title">${s.tab}</div><div class="howto">${s.howto}</div>
+    ${paHtml}
+    ${s.tasks.map((tk,i)=>`
+      <div class="q"><div class="zh"><span class="qnum">${i+1}.</span> ${esc(tk.prompt)}</div><div class="py">${esc(tk.ppy)}</div>
+        <div style="font-size:.85rem;color:var(--ink);margin:4px 0 8px;">${esc(tk.pen)}</div></div>
+      <textarea placeholder="Write in Chinese here..."></textarea>
+      <div style="margin-top:8px;"><button class="btn outline" onclick="document.getElementById('model-${i}').classList.toggle('show')">Show a model answer</button></div>
+      <div class="model" id="model-${i}"><div class="zh">${esc(tk.model)}</div><div class="py">${esc(tk.modelpy)}</div><div style="font-size:.85rem;margin-top:4px;">${esc(tk.moden)}</div></div>
+    `).join('<hr style="border:none;border-top:1px dashed #e5d9bf;margin:16px 0;">')}
+    <div style="text-align:center;margin-top:14px;">${nextTabBtn()}</div></div>`;
+}
+
+function paTasks(){const s=SECTIONS.find(x=>x.id==='write');return (s&&s.pinyinTasks)||[];}
+function paScore(){let c=0;const t=paTasks().length;paTasks().forEach((_,i)=>{const a=answered['write#pa'+i];if(a&&a.correct)c++;});return {c,t};}
+function checkPinyin(i){
+  const key='write#pa'+i; if(answered[key])return;
+  const tk=paTasks()[i];
+  const raw=(document.getElementById('pyin-'+i)||{}).value||'';
+  const correct = tonelessPinyin(raw)===tonelessPinyin(tk.key);
+  answered[key]={raw,correct};saveA();
+  render(); updateHeader();
+}
+function renderTotal(area){
+  const t=total(); const pct=Math.round(t/MAXTOTAL*100);
+  let rows=SCORABLE.map(s=>{const sc=secScore(s.id);return `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #e5d9bf;"><span>${s.tab}</span><b style="color:${sc.c===sc.t?'var(--green)':'var(--red-dark)'}">${sc.c} / ${sc.t}</b></div>`;}).join('');
+  {const pa=paScore();rows+=`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #e5d9bf;"><span>✍️ 写作 Writing (Part A)</span><b style="color:${pa.c===pa.t?'var(--green)':'var(--red-dark)'}">${pa.c} / ${pa.t}</b></div>`;}
+  area.innerHTML=`<div class="total-card">
+    <div class="sec-title" style="text-align:center;">🏆 总分 Total Score</div>
+    <div class="total-num">${t} / ${MAXTOTAL}</div>
+    <div class="bar"><div style="width:${pct}%"></div></div>
+    <div style="font-weight:800;color:${pct>=80?'var(--green)':pct>=50?'var(--gold)':'var(--red)'};margin-bottom:14px;">${pct}%</div>
+    <div style="text-align:left;max-width:420px;margin:0 auto;">${rows}</div>
+    <div style="margin-top:16px;">
+      <button class="btn outline" onclick="resetAll()">↺ Reset all answers</button>
+      <button class="btn" onclick="goTab('${SECTIONS[0].id}')">Back to start</button>
+    </div></div>`;
+}
+function resetAll(){if(!confirm("Clear all your answers and scores?"))return;answered={};saveA();updateHeader();initTabs();goTab(SECTIONS[0].id);}
+
+/* ================= init ================= */
+document.addEventListener('DOMContentLoaded',()=>{
+  let saved=null;try{saved=localStorage.getItem('aruna_l3_name');}catch(e){}
+  if(saved)document.getElementById('studentName').value=saved;
+  document.getElementById('studentName').addEventListener('change',()=>{try{localStorage.setItem('aruna_l3_name',document.getElementById('studentName').value.trim());}catch(e){}answered=loadA();updateHeader();initTabs();render();});
+  answered=loadA();
+  initTabs(); render(); updateHeader();
+  console.log(COPYRIGHT);
+});
+</script>
+</body>
+</html>
