@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>German · Kapitel 1 — Word order, Listen, Word families</title>
+<style>
+  :root{--ink:#2b3440;--soft:#5b6472;--bg:#f3f6fb;--card:#fff;--line:#e2e8f2;
+    --wer:#3b82f6;--verb:#ef4444;--wann:#10b981;--warum:#f59e0b;--wie:#8b5cf6;--wo:#ec4899;--was:#0ea5e9;--end:#6b7280;--neg:#dc2626;--conj:#2563eb;--satz:#64748b;
+    --calm:#0e9f6e;--calmbg:#e7f6ef;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;padding-bottom:50px;}
+  header{background:linear-gradient(135deg,#2f6f6b,#3b82a6);color:#fff;padding:24px 20px 18px;text-align:center;}
+  header .kicker{letter-spacing:.14em;font-size:.68rem;text-transform:uppercase;opacity:.85;}
+  header h1{font-size:1.45rem;margin:6px 0 3px;font-weight:800;}
+  header .sub{opacity:.92;font-size:.86rem;}
+  .wrap{max-width:820px;margin:0 auto;padding:0 16px;}
+  nav{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin:16px 0 8px;}
+  nav button{border:1px solid var(--line);background:#fff;color:#2f6f6b;padding:9px 13px;border-radius:999px;font-size:.83rem;font-weight:700;cursor:pointer;}
+  nav button.active{background:#2f6f6b;color:#fff;border-color:#2f6f6b;}
+  section{display:none;} section.on{display:block;animation:fade .3s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;}}
+  .lead{color:var(--soft);font-size:.9rem;margin:8px 0 12px;text-align:center;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 3px 12px rgba(30,50,80,.05);margin-bottom:14px;}
+  .why0{background:#eef6ff;border:1px solid #cfe4fb;border-radius:12px;padding:12px 14px;font-size:.86rem;color:#1c4d80;margin-bottom:12px;}
+  .why0 b{color:#12365e;}
+  .ring{display:flex;align-items:center;gap:8px;justify-content:center;color:var(--soft);font-size:.8rem;margin-bottom:8px;}
+  .dot{width:8px;height:8px;border-radius:50%;background:#dbe3ee;} .dot.on{background:var(--calm);}
+  .slots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0 14px;}
+  .slot{min-width:96px;min-height:70px;border:2px dashed #cfd8e6;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px;background:#fbfdff;}
+  .slot .cap{font-size:.6rem;text-transform:uppercase;letter-spacing:.03em;color:var(--soft);font-weight:700;margin-bottom:3px;text-align:center;}
+  .slot.verb{border-color:var(--verb);box-shadow:0 0 0 3px rgba(239,68,68,.12);}
+  .slot.filled{border-style:solid;} .slot.hintglow{border-color:var(--calm);box-shadow:0 0 0 4px rgba(14,159,110,.18);}
+  .bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:12px;background:#f7faff;border-radius:12px;min-height:60px;}
+  .blk{display:flex;flex-direction:column;align-items:center;padding:7px 12px;border-radius:10px;color:#fff;cursor:grab;user-select:none;border:none;box-shadow:0 2px 5px rgba(0,0,0,.08);}
+  .blk .bt{font-weight:800;font-size:1rem;} .blk .bg{font-size:.62rem;opacity:.9;font-style:italic;}
+  .blk.placed{cursor:default;}
+  .k-wer{background:var(--wer);} .k-verb{background:var(--verb);} .k-wann{background:var(--wann);} .k-warum{background:var(--warum);}
+  .k-wie{background:var(--wie);} .k-wo{background:var(--wo);} .k-was{background:var(--was);} .k-end{background:var(--end);} .k-neg{background:var(--neg);} .k-conj{background:var(--conj);} .k-satz{background:var(--satz);}
+  .shake{animation:sh .3s;} @keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+  .msg{text-align:center;font-weight:700;color:var(--calm);min-height:22px;margin-top:8px;}
+  .whybox{background:var(--calmbg);border:1px solid #b7e4cf;border-radius:12px;padding:12px 14px;margin-top:12px;display:none;font-size:.9rem;}
+  .whybox.show{display:block;} .whybox .de{font-weight:800;font-size:1.05rem;margin-bottom:6px;color:#1c6b4a;}
+  .btnrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px;}
+  .btn{border:none;color:#fff;padding:10px 15px;border-radius:10px;font-weight:700;font-size:.85rem;cursor:pointer;}
+  .btn.calm{background:var(--calm);} .btn.soft{background:#94a3b8;} .btn.hear{background:#3b82a6;} .btn.why{background:#2563eb;}
+  .legend{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:12px;font-size:.66rem;}
+  .legend span{padding:3px 8px;border-radius:999px;color:#fff;font-weight:700;}
+  /* listen */
+  .bigplay{background:#3b82a6;color:#fff;border:none;border-radius:16px;padding:16px 22px;font-size:1.05rem;font-weight:800;cursor:pointer;margin:6px 0 4px;}
+  .opts{display:flex;flex-direction:column;gap:9px;margin-top:12px;}
+  .opt{border:1px solid var(--line);background:#fff;border-radius:11px;padding:12px 14px;cursor:pointer;font-size:.98rem;text-align:left;}
+  .opt:hover{border-color:#3b82a6;background:#f6fbff;} .opt.ok{background:var(--calmbg);border-color:#57c79a;} .opt.no{background:#fdecec;border-color:#f2a9a9;}
+  /* families */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:12px;}
+  .filters select,.filters input{border:1px solid var(--line);border-radius:8px;padding:8px 11px;font-size:.85rem;font-weight:600;color:#2f6f6b;background:#fff;}
+  .filters input{font-weight:400;min-width:170px;flex:1;}
+  .wf{background:#fff;border:1px solid var(--line);border-left:4px solid #3b82a6;border-radius:11px;padding:12px 14px;margin-bottom:9px;}
+  .wf .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;}
+  .wf .w{font-weight:800;color:#22506b;font-size:1.05rem;}
+  .wf .m{color:var(--soft);font-size:.9rem;}
+  .wf .lv{font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:6px;background:#e5f1ff;color:#1c5aa8;}
+  .wf .fam{font-size:.85rem;margin-top:6px;} .wf .fam b{color:#0e7a53;}
+  .wf .con{font-size:.85rem;margin-top:4px;} .wf .con b{color:#b5451b;}
+  .wf .spk{border:none;background:#eef3f9;color:#2f6f6b;border-radius:8px;padding:4px 9px;font-weight:700;cursor:pointer;font-size:.8rem;}
+  footer{max-width:820px;margin:22px auto 0;padding:0 16px;color:var(--soft);font-size:.78rem;text-align:center;}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">Deutsch B2 · Kapitel 1 · Heimat</div>
+  <h1>Word order · Listen · Word families</h1>
+  <div class="sub">Feel the German sentence — see the meaning, understand the order</div>
+</header>
+
+<div class="wrap">
+  <nav>
+    <button data-t="build" class="active">🧩 Word order</button>
+    <button data-t="listen">👂 Listen &amp; tap</button>
+    <button data-t="fam">🌳 Word families &amp; confusables</button>
+  </nav>
+
+  <!-- BUILD -->
+  <section id="build" class="on">
+    <div class="why0">
+      <b>Why German word order feels different.</b> English keeps the verb next to its helper ("have <b>emigrated</b>"). German splits them: the <b style="color:var(--verb)">finite verb</b> sits in <b>position 2</b>, and the second verb part (participle / infinitive / separable prefix) jumps to the <b>very end</b>. Those two form a bracket — the <b>Satzklammer</b> — that wraps the whole sentence. The middle follows <b>te‑ka‑mo‑lo</b>: time → reason → manner → place. Drop each colored block into its slot and you'll feel it.
+    </div>
+    <div class="ring" id="bring"></div>
+    <div class="card">
+      <div class="slots" id="slots"></div>
+      <div class="bank" id="bbank"></div>
+      <div class="msg" id="bmsg"></div>
+      <div class="whybox" id="bwhy"><div class="de" id="bde"></div><div id="bwhytext"></div><div style="margin-top:6px;color:var(--soft)" id="ben"></div></div>
+      <div class="btnrow">
+        <button class="btn calm" onclick="hintBuild()">💡 Next spot</button>
+        <button class="btn why" onclick="showWhy()">❓ Why this order?</button>
+        <button class="btn soft" onclick="resetBuild()">↺ Reset</button>
+        <button class="btn calm" onclick="nextBuild()">Next →</button>
+      </div>
+      <div class="legend">
+        <span style="background:var(--wer)">Wer?</span><span style="background:var(--verb)">Verb</span>
+        <span style="background:var(--wann)">Wann?</span><span style="background:var(--warum)">Warum?</span>
+        <span style="background:var(--wie)">Wie?</span><span style="background:var(--wo)">Wo/Wohin?</span>
+        <span style="background:var(--was)">Was?</span><span style="background:var(--conj)">Konj.</span><span style="background:var(--end)">am Ende</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- LISTEN -->
+  <section id="listen">
+    <p class="lead">Press play, listen once or twice, then tap what it means. Ear first.</p>
+    <div class="ring" id="lring"></div>
+    <div class="card" style="text-align:center">
+      <button class="bigplay" onclick="playScene()">▶ Hören</button>
+      <div style="font-size:.8rem;color:var(--soft)" id="lhint">Tap ▶ to hear a short sentence</div>
+      <div class="opts" id="lopts"></div>
+      <div class="msg" id="lmsg"></div>
+      <div class="btnrow"><button class="btn hear" onclick="playScene()">🔁 Again</button><button class="btn calm" onclick="nextScene()">Next →</button></div>
+    </div>
+  </section>
+
+  <!-- FAMILIES -->
+  <section id="fam">
+    <p class="lead">Every Kapitel 1 word with its <b style="color:#0e7a53">word family</b> and the <b style="color:#b5451b">word it's easily confused with</b>. Search or filter, tap 🔊 to hear it.</p>
+    <div class="filters">
+      <select id="fmod"></select><select id="flv"></select>
+      <input id="fsearch" placeholder="🔍 search a word or meaning…">
+    </div>
+    <div id="famlist"></div>
+  </section>
+</div>
+
+<footer>🌿 Original examples &amp; notes for Kapitel 1. Audio uses your device's German voice.</footer>
+
+<script>
+const VOCAB = [
+// ===== Auftakt =====
+["die Heimat","home / homeland","b1","HY-maht","Heim (home) + old suffix -at → the place you belong to.","Auftakt"],
+["das Heimweh","homesickness","b1","HYM-vay","Heim (home) + Weh (ache) → a 'home-ache'.","Auftakt"],
+["die Vorstellung","idea / notion (also: performance)","b1","FOR-shtel-lung","vor (before) + stellen (to place) → to place before the mind.","Auftakt"],
+["das Zitat","quotation","b1","tsi-TAHT","Latin citare (to cite/summon) → a cited saying.","Auftakt"],
+["das Fernweh","wanderlust","b2","FERN-vay","fern (far) + Weh (ache) → an 'ache for far away', the opposite of Heimweh.","Auftakt"],
+// ===== Modul 1 =====
+["der Arbeitsvertrag","employment contract","b1","AR-bytes-fair-trahk","Arbeit (work) + Vertrag (contract).","Modul 1"],
+["auflösen (eine Wohnung)","to give up / clear out (a flat)","b2","OWF-lur-zen","auf + lösen (to loosen/dissolve) → you 'dissolve' the household.","Modul 1"],
+["beantragen","to apply for","b2","buh-AHN-trah-gen","be- + Antrag (application) → to file an application.","Modul 1"],
+["eröffnen (ein Konto)","to open (an account)","b1","air-URF-nen","er- + öffnen (to open).","Modul 1"],
+["der Handyvertrag","mobile-phone contract","b1","HEN-dee-fair-trahk","Handy (German for cell phone) + Vertrag.","Modul 1"],
+["knüpfen (Kontakte)","to make / tie (contacts)","b2","KNUEP-fen","knüpfen literally = to tie a knot → you 'tie' new connections.","Modul 1"],
+["der Kontakt","contact","b1","kon-TAHKT","Latin contactus (a touching).","Modul 1"],
+["der Mietvertrag","tenancy agreement","b1","MEET-fair-trahk","Miete (rent) + Vertrag.","Modul 1"],
+["der/die Nachmieter/in","successor tenant","b2","NAHKH-mee-ter","nach (after) + Mieter (tenant) → the 'after-tenant'.","Modul 1"],
+["abenteuerlich","adventurous","b2","AH-ben-toy-er-likh","Abenteuer (adventure) + -lich.","Modul 1"],
+["die Arbeitserlaubnis","work permit","b2","AR-bytes-er-lowp-nis","Arbeit + Erlaubnis (permission, from erlauben 'to allow').","Modul 1"],
+["aufgeregt","excited / nervous","b2","OWF-guh-rekt","auf + regen (to stir) → 'stirred up' inside.","Modul 1"],
+["die Auslandserfahrung","experience abroad","b2","OWS-lahnts-er-fah-rung","Ausland (abroad) + Erfahrung (experience).","Modul 1"],
+["auswandern (nach)","to emigrate","b1","OWS-van-dern","aus (out) + wandern (to wander) → to 'wander out' of the country.","Modul 1"],
+["bereuen","to regret","b2","buh-ROY-en","linked to Reue (remorse) → 'to feel rue'.","Modul 1"],
+["der Blog","blog","b1","blog","English loan (web + log).","Modul 1"],
+["einleben (sich)","to settle in","b2","YN-lay-ben","ein (in) + leben (to live) → to 'live your way into' a place.","Modul 1"],
+["die Erfahrung (machen)","experience (to have one)","b1","air-FAH-rung","erfahren (to find out), root fahren (to travel) → gathered by 'travelling through' life.","Modul 1"],
+["erweitern (den Horizont)","to broaden (one's horizons)","b2","air-VY-tern","weit (wide) + er- → to make wider.","Modul 1"],
+["gestresst (von)","stressed","b1","guh-SHTREST","from Stress (English loan) → put under stress.","Modul 1"],
+["der/die Grafiker/in","graphic designer","b1","GRAH-fi-ker","Grafik (graphics) + -er.","Modul 1"],
+["der Horizont (erweitern)","horizon","b1","ho-ri-TSONT","Greek horizon (the bounding circle) → the limit of your view.","Modul 1"],
+["leichtfallen","to be easy (for sb)","b2","LYKHT-fah-len","leicht (easy/light) + fallen (to fall) → something 'falls easily' to you.","Modul 1"],
+["machen (die Erfahrung)","to make / have (an experience)","b1","MAH-khen","general 'to do/make'; here you 'make' an experience.","Modul 1"],
+["mittlerweile","meanwhile / by now","b2","MIT-ler-vy-le","mittler (middle) + Weile (while) → in the middle-while.","Modul 1"],
+["netterweise","kindly (nice of them)","b2","NET-ter-vy-ze","nett (nice) + -erweise (in a ... manner).","Modul 1"],
+["riskieren","to risk","b1","ris-KEE-ren","from Risiko (risk), Italian loan.","Modul 1"],
+["schaffen","to manage / pull off","b1","SHAH-fen","to create/manage → to succeed in doing something.","Modul 1"],
+["sehnsüchtig (nach)","longing / yearning","b2","ZAYN-zuekh-tikh","Sehnsucht (longing: sehnen 'to yearn' + Sucht 'craving') + -ig.","Modul 1"],
+["spontan","spontaneous","b1","shpon-TAHN","Latin spontaneus (of free will).","Modul 1"],
+["wagen","to dare","b2","VAH-gen","related to Wagnis (a venture) → to venture / take a chance.","Modul 1"],
+["die Wohnungssuche","flat-hunting","b2","VOH-nungs-zoo-khe","Wohnung (flat) + Suche (search).","Modul 1"],
+["zwischendurch","in between (times)","b2","TSVISH-en-doorkh","zwischen (between) + durch (through) → now and then.","Modul 1"],
+["empfinden","to feel / perceive","b2","emp-FIN-den","emp- + finden (to find) → to 'find' a feeling within.","Modul 1"],
+["die Faustregel","rule of thumb","b2","FOWST-ray-gel","Faust (fist) + Regel (rule) → a rough 'fist rule'.","Modul 1"],
+["die Merkformel","memory formula (mnemonic)","b2","MAIRK-for-mel","merken (to note/remember) + Formel (formula).","Modul 1"],
+["die Position","position","b1","po-zi-TSYOHN","Latin positio (a placing).","Modul 1"],
+["ständig","constant(ly)","b1","SHTEN-dikh","from Stand (a standing state) + -ig → continuously.","Modul 1"],
+["zerschneiden","to cut up","b2","tsair-SHNY-den","zer- (apart) + schneiden (to cut) → cut to pieces.","Modul 1"],
+// ===== Modul 2 =====
+["die Landessprache","national language","b2","LAHN-des-shprah-khe","Land (country) + Sprache (language).","Modul 2"],
+["die Amtssprache","official language","b2","AHMTS-shprah-khe","Amt (office/authority) + Sprache → the language of officialdom.","Modul 2"],
+["anerkennen","to recognize officially","b2","AHN-air-ken-nen","an + erkennen (to recognize) → to formally acknowledge.","Modul 2"],
+["die Elite","elite","b1","e-LEE-te","French élite (the chosen ones).","Modul 2"],
+["die Identität","identity","b1","i-den-ti-TAYT","Latin idem (the same) → your 'sameness', your self.","Modul 2"],
+["komplex","complex","b1","kom-PLEKS","Latin complexus (interwoven).","Modul 2"],
+["konfrontieren (mit)","to confront","b2","kon-fron-TEE-ren","Latin con + frons (front/forehead) → to face head-on.","Modul 2"],
+["multikulturell","multicultural","b1","mul-ti-kul-tu-REL","multi (many) + kulturell (cultural).","Modul 2"],
+["das Parlament","parliament","b1","par-la-MENT","French parler (to speak) → the 'speaking' assembly.","Modul 2"],
+["der Sachverhalt","state of affairs / the facts","b2","ZAHKH-fair-halt","Sache (matter) + Verhalt (how it is held) → how a matter stands.","Modul 2"],
+["trösten","to comfort / console","b2","TRUR-sten","related to Trost (consolation).","Modul 2"],
+["die Vertrautheit","familiarity","b2","fair-TROWT-hyte","vertraut (familiar, from trauen 'to trust') + -heit.","Modul 2"],
+["die Verwaltungssprache","administrative language","b2","fair-VAHL-tungs-shprah-khe","Verwaltung (administration) + Sprache.","Modul 2"],
+["die Vielfalt","diversity","b2","FEEL-falt","viel (many) + -falt (fold, from falten) → 'many folds', variety.","Modul 2"],
+["vielsprachig","multilingual","b2","FEEL-shprah-khikh","viel (many) + Sprache + -ig → 'many-languaged'.","Modul 2"],
+["das Landesgesetz","national law","b2","LAHN-des-guh-zets","Land (country) + Gesetz (law).","Modul 2"],
+["die Vielsprachigkeit","multilingualism","b2","FEEL-shprah-khikh-kyte","vielsprachig + -keit (noun ending).","Modul 2"],
+["das Alltagsprodukt","everyday product","b2","AHL-tahks-pro-dukt","Alltag (everyday) + Produkt.","Modul 2"],
+["amtlich","official","b2","AHMT-likh","Amt (office) + -lich → pertaining to office.","Modul 2"],
+["beherrschen (eine Sprache)","to master (a language)","b2","buh-HAIR-shen","be- + herrschen (to rule), Herr (master) → to have mastery over.","Modul 2"],
+["die Bekanntmachung","announcement / notice","b2","buh-KAHNT-mah-khung","bekannt (known) + machen → the act of making known.","Modul 2"],
+["beschriften","to label / write on","b2","buh-SHRIF-ten","be- + Schrift (writing) → to put writing on something.","Modul 2"],
+["betreffen","to concern / affect","b2","buh-TREF-fen","be- + treffen (to hit/meet) → to touch upon.","Modul 2"],
+["einheitlich","uniform / standardized","b2","YN-hyte-likh","Einheit (unit/unity) + -lich → of one unit.","Modul 2"],
+["fälschlicherweise","mistakenly","b2","FELSH-likh-er-vy-ze","falsch (wrong) + -licherweise → in a wrong manner.","Modul 2"],
+["der Flyer","flyer","b1","FLY-er","English loan.","Modul 2"],
+["die Geschäftsbeziehung","business relationship","b2","guh-SHEFTS-buh-tsee-ung","Geschäft (business) + Beziehung (relationship).","Modul 2"],
+["die Geschäftsverhandlung","business negotiation","b2","guh-SHEFTS-fair-hahnd-lung","Geschäft (business) + Verhandlung (negotiation).","Modul 2"],
+["jedoch","however","b1","yay-DOKH","je + doch → yet, nevertheless.","Modul 2"],
+["die Konferenz","conference","b1","kon-fe-RENTS","Latin conferre (to bring together).","Modul 2"],
+["das Platzproblem","space problem","b2","PLAHTS-pro-blaym","Platz (space/room) + Problem.","Modul 2"],
+["sämtlich","all / entire","b2","ZEMT-likh","related to samt (together with) → all together.","Modul 2"],
+["die Sitzung","meeting / session","b1","ZIT-tsung","from sitzen (to sit) → a 'sitting'.","Modul 2"],
+["die Sprachenvielfalt","linguistic diversity","b2","SHPRAH-khen-feel-falt","Sprachen (languages) + Vielfalt (diversity).","Modul 2"],
+["das Sprachgebiet","language area","b2","SHPRAHKH-guh-beet","Sprache + Gebiet (area/territory).","Modul 2"],
+["die Sprachregion","language region","b2","SHPRAHKH-re-gyohn","Sprache + Region.","Modul 2"],
+["das Verkehrsschild","traffic sign","b1","fair-KAIRS-shilt","Verkehr (traffic) + Schild (sign).","Modul 2"],
+["veröffentlichen","to publish","b2","fair-URF-ent-likh-en","ver- + öffentlich (public) → to make public.","Modul 2"],
+["die Verpackung","packaging","b1","fair-PAH-kung","ver- + packen (to pack) → the wrapping.","Modul 2"],
+["voraussetzen","to presuppose / require","b2","for-OWS-zets-en","voraus (ahead) + setzen (to set) → to set as a precondition.","Modul 2"],
+["der Wandel","change","b2","VAHN-del","from wandeln (to transform), related to wandern → a shift.","Modul 2"],
+["die Webseite","web page","b1","VEP-zy-te","Web (English) + Seite (page).","Modul 2"],
+["die Auffassung","view / opinion","b2","OWF-fah-sung","auffassen (to grasp): auf + fassen (to seize) → how you 'grasp' something.","Modul 2"],
+["entscheidend","decisive","b2","ent-SHY-dent","from entscheiden (to decide) → 'deciding'.","Modul 2"],
+["erstaunlich","astonishing","b2","air-SHTOWN-likh","erstaunen (to astonish), Staunen (amazement) + -lich.","Modul 2"],
+["geteilt (geteilter Meinung)","divided (of two minds)","b2","guh-TYLT","from teilen (to divide/split) → split.","Modul 2"],
+["hilfreich (bei)","helpful","b1","HILF-rykh","Hilfe (help) + reich (rich) → 'rich in help'.","Modul 2"],
+["die Mehrsprachigkeit","multilingualism","b2","MAIR-shprah-khikh-kyte","mehr (more) + sprachig + -keit.","Modul 2"],
+["nützlich (für)","useful","b1","NUETS-likh","Nutzen (use/benefit) + -lich.","Modul 2"],
+["die Seite (auf der einen)","side (on the one hand)","b1","ZY-te","a side/page; 'auf der einen Seite' = on the one hand.","Modul 2"],
+["die Sicht (aus meiner)","view / perspective","b2","zikht","from sehen (to see) → what is seen, one's viewpoint.","Modul 2"],
+// ===== Modul 3 =====
+["missverständlich","ambiguous / misleading","b2","MISS-fair-shtent-likh","miss- (wrong) + verständlich (understandable) → easily misunderstood.","Modul 3"],
+["das Abteil","(train) compartment","b2","ahp-TYLE","from abteilen (to partition): ab + Teil → a partitioned space.","Modul 3"],
+["missverstehen","to misunderstand","b2","miss-fair-SHTAY-en","miss- (wrong) + verstehen (to understand).","Modul 3"],
+["peinlich","embarrassing","b2","PYNE-likh","from Pein (pain/torment) + -lich → painfully awkward.","Modul 3"],
+["der Abstand","distance / gap","b2","AHP-shtahnt","ab + Stand (standing) → how far things stand apart.","Modul 3"],
+["die Art (Fragen jeglicher Art)","kind / manner","b1","art","a type or way of doing things.","Modul 3"],
+["äußerst","extremely","b2","OY-serst","superlative of außen (outside) → to the outermost degree.","Modul 3"],
+["bedenken","to consider","b2","buh-DEN-ken","be- + denken (to think) → to think something over.","Modul 3"],
+["der/die Begleiter/in","companion","b2","buh-GLY-ter","begleiten (to accompany): be + leiten (to lead) → one who goes along.","Modul 3"],
+["breit (ein breites Lächeln)","broad / wide","b1","bryte","wide; a 'broad' smile.","Modul 3"],
+["die Freundlichkeit","friendliness","b1","FROYNT-likh-kyte","freundlich (friendly, from Freund 'friend') + -keit.","Modul 3"],
+["das Gegenüber","the person opposite / counterpart","b2","gay-gen-UE-ber","gegenüber (opposite): gegen (against) + über (over) → the one facing you.","Modul 3"],
+["jeglich","any / each","b2","YAYK-likh","old form of jed- (each) → any at all.","Modul 3"],
+["das Lächeln","smile","b1","LEKH-eln","from lächeln (to smile), a gentle form of lachen (to laugh).","Modul 3"],
+["die Öffentlichkeit","the public","b2","URF-ent-likh-kyte","öffentlich (public, from offen 'open') + -keit → openness to all.","Modul 3"],
+["die Privatsphäre","privacy","b2","pri-VAHT-sfay-re","privat (private) + Sphäre (sphere) → one's private sphere.","Modul 3"],
+["stellen (eine Frage)","to pose (a question)","b1","SHTEL-len","to place/put → to 'put' a question to someone.","Modul 3"],
+["üblich","usual / customary","b2","UEP-likh","from üben/Übung (habit/practice) → what is habitually done.","Modul 3"],
+["die Spielregel","rule (of the game)","b1","SHPEEL-ray-gel","Spiel (game) + Regel (rule).","Modul 3"],
+["die Geste","gesture","b1","GES-te","Latin gestus (bearing/movement of the body).","Modul 3"],
+["alkoholfrei","alcohol-free","b1","AHL-ko-hol-fry","Alkohol + frei (free of).","Modul 3"],
+["atypisch (für)","atypical","b2","AH-tue-pish","a- (not) + typisch (typical).","Modul 3"],
+["das Desinteresse","lack of interest","b2","DES-in-te-res-se","des- (un-) + Interesse (interest).","Modul 3"],
+["disqualifizieren","to disqualify","b2","dis-kva-li-fi-TSEE-ren","dis- (un-) + qualifizieren (to qualify).","Modul 3"],
+["inhaltsleer","devoid of content","b2","IN-hahlts-lair","Inhalt (content) + leer (empty).","Modul 3"],
+["intolerant","intolerant","b1","IN-to-le-rant","in- (not) + tolerant.","Modul 3"],
+["irreal","unreal","b2","IR-re-ahl","ir- (not) + real.","Modul 3"],
+["der/die Nichtschwimmer/in","non-swimmer","b2","NIKHT-shvim-mer","nicht (not) + Schwimmer (swimmer).","Modul 3"],
+["nonverbal","non-verbal","b2","NON-vair-bahl","non- (not) + verbal.","Modul 3"],
+["das Unverständnis","incomprehension","b2","UN-fair-shtent-nis","un- (not) + Verständnis (understanding).","Modul 3"],
+["trennbar","separable","b2","TREN-bar","trennen (to separate) + -bar (-able) → able to be separated.","Modul 3"],
+// ===== Modul 4 =====
+["die Chancengleichheit","equal opportunity","b2","SHAHNG-sen-glykh-hyte","Chance (chance) + Gleichheit (equality).","Modul 4"],
+["der Migrationshintergrund","migration background","b2","mi-gra-TSYOHNS-hin-ter-grunt","Migration + Hintergrund (background: hinter 'behind' + Grund 'ground').","Modul 4"],
+["das Schlüsselwort","keyword","b2","SHLUE-sel-vort","Schlüssel (key) + Wort (word).","Modul 4"],
+["völlig","completely","b1","FUR-likh","from voll (full) → 'fully'.","Modul 4"],
+["die Kindergartenpflicht","compulsory kindergarten","b2","KIN-der-gar-ten-pflikht","Kindergarten + Pflicht (duty/obligation).","Modul 4"],
+["die Schuluniform","school uniform","b1","SHOOL-u-ni-form","Schule (school) + Uniform.","Modul 4"],
+["eingehen (auf)","to respond to / go into","b2","YN-gay-en","ein (in) + gehen (to go) → to 'go into' a point.","Modul 4"],
+["die Einrichtung","institution / facility","b2","YN-rikh-tung","einrichten (to set up): ein + richten → an established facility.","Modul 4"],
+["ermöglichen","to make possible","b2","air-MURG-likh-en","er- + möglich (possible) → to enable.","Modul 4"],
+["die Lehrkraft","teacher (teaching staff)","b2","LAIR-kraft","Lehre (teaching) + Kraft (force/worker) → a teaching staff member.","Modul 4"],
+["die Migrantenfamilie","migrant family","b2","mi-GRAHN-ten-fa-mee-lye","Migrant + Familie.","Modul 4"],
+["das Migrantenkind","migrant child","b2","mi-GRAHN-ten-kint","Migrant + Kind (child).","Modul 4"],
+["der/die Pate/Patin","godparent / mentor","b2","PAH-te","Latin patrinus → a sponsor or mentor.","Modul 4"],
+["der/die Senior/in","senior (elderly person)","b1","ZAY-ni-or","Latin senior (older).","Modul 4"],
+["sinnvoll","sensible / meaningful","b1","ZIN-fol","Sinn (sense/meaning) + voll (full) → 'full of sense'.","Modul 4"],
+["der/die Zugewanderte","newcomer / immigrant","b2","TSOO-guh-van-der-te","zugewandert (migrated here): zu + gewandert → one who has moved here.","Modul 4"],
+["anfügen","to add / attach","b2","AHN-fue-gen","an + fügen (to join) → to attach.","Modul 4"],
+["ausbremsen","to slow down / block","b2","OWS-brem-zen","aus + bremsen (to brake) → to brake someone's progress.","Modul 4"],
+["die Ausländerquote","foreigner quota","b2","OWS-len-der-kvoh-te","Ausländer (foreigner) + Quote (quota).","Modul 4"],
+["der Automobilhersteller","car manufacturer","b2","ow-to-mo-BEEL-hair-shtel-ler","Automobil + Hersteller (maker, from herstellen 'to produce').","Modul 4"],
+["die Betriebswirtschaft","business administration","b2","buh-TREEPS-virt-shaft","Betrieb (business/operation) + Wirtschaft (economy).","Modul 4"],
+["die Diskriminierung","discrimination","b2","dis-kri-mi-NEE-rung","Latin discriminare (to separate/distinguish).","Modul 4"],
+["farbenfroh","colourful","b2","FAR-ben-fro","Farben (colours) + froh (happy) → cheerfully colourful.","Modul 4"],
+["fernliegen","to be far from (one's mind)","b2","FERN-lee-gen","fern (far) + liegen (to lie) → to lie far away.","Modul 4"],
+["das Feuerholz","firewood","b2","FOY-er-holts","Feuer (fire) + Holz (wood).","Modul 4"],
+["flechten","to braid / weave","b2","FLEKH-ten","to plait → to weave strands together.","Modul 4"],
+["führen (ein Geschäft)","to run (a business)","b1","FUE-ren","to lead → to run or manage.","Modul 4"],
+["gelegentlich","occasional(ly)","b2","guh-LAY-gent-likh","from Gelegenheit (occasion) → now and then.","Modul 4"],
+["das Gemüsegeschäft","greengrocer's shop","b2","guh-MUE-ze-guh-sheft","Gemüse (vegetables) + Geschäft (shop).","Modul 4"],
+["der/die Gründer/in","founder","b2","GRUEN-der","gründen (to found), Grund (ground) → one who lays the ground.","Modul 4"],
+["die Hausverwaltung","property management","b2","HOWS-fair-vahl-tung","Haus (house) + Verwaltung (management).","Modul 4"],
+["die Hochschulreife","university entrance qualification","b2","HOKH-shool-ry-fe","Hochschule (university) + Reife (maturity) → readiness for university.","Modul 4"],
+// ===== Porträt (Fatih Akin) =====
+["die Abstammung","descent / ancestry","b2","AHP-shtah-mung","abstammen (to descend): ab + Stamm (tribe/trunk) → your lineage.","Porträt"],
+["der/die Amateur-Boxer/in","amateur boxer","b2","AH-ma-tur-bok-ser","Amateur (French, from amare 'to love') + Boxer.","Porträt"],
+["auszeichnen","to honour / award","b2","OWS-tsykh-nen","aus + zeichnen (to mark/draw) → to single out with a mark of honour.","Porträt"],
+["begehrt (bei)","sought-after","b2","buh-GAIRT","from begehren (to desire) → much desired.","Porträt"],
+["bürgerlich","middle-class / civil","b2","BUER-ger-likh","Bürger (citizen) + -lich → pertaining to citizens.","Porträt"],
+["das Diplom","diploma","b1","di-PLOHM","Greek diploma (a folded document).","Porträt"],
+["der/die Drehbuchautor/in","screenwriter","b2","DRAY-bookh-ow-tor","Drehbuch (screenplay: drehen 'to shoot/film' + Buch 'book') + Autor.","Porträt"],
+["der Drehbuchpreis","screenplay award","b2","DRAY-bookh-prys","Drehbuch + Preis (prize).","Porträt"],
+["der Durchbruch","breakthrough","b2","DOORKH-brukh","durch (through) + Bruch (break) → breaking through.","Porträt"],
+["der/die Einwanderer/in","immigrant","b2","YN-van-der-er","ein (in) + wandern (to wander) → one who wanders in.","Porträt"],
+["entstammen","to originate / descend from","b2","ent-SHTAH-men","ent- + Stamm (stem) → to stem from.","Porträt"],
+["der/die Filmregisseur/in","film director","b2","FILM-re-zhi-sur","Film + Regisseur (French, director).","Porträt"],
+["das Gangsterkino","gangster cinema","b2","GANG-ster-kee-no","Gangster (English) + Kino (cinema).","Porträt"],
+["geprägt (von)","shaped / marked by","b2","guh-PRAYKT","from prägen (to stamp/coin) → 'stamped' by an influence.","Porträt"],
+["gläubig","devout / religious","b2","GLOY-bikh","from glauben (to believe) + -ig → believing.","Porträt"],
+["die Härte","hardness / toughness","b2","HAIR-te","from hart (hard) → harshness.","Porträt"],
+["die Hauptrolle","leading role","b1","HOWPT-rol-le","Haupt (main/head) + Rolle (role).","Porträt"],
+["heimisch","native / local","b2","HY-mish","from Heim (home) → belonging to home.","Porträt"],
+["die Hommage (an)","homage / tribute","b2","o-MAH-zhe","French hommage → a tribute.","Porträt"],
+["der Juryvorsitz","jury chairmanship","b2","ZHUE-ree-for-zits","Jury + Vorsitz (chairmanship: vor + sitzen 'to sit in front').","Porträt"],
+["katholisch","Catholic","b1","ka-TOH-lish","Greek katholikos (universal).","Porträt"],
+["der Kiez","(city) neighbourhood","b2","keets","a North-German/Berlin word for a local quarter.","Porträt"],
+["der Kinofilm","cinema film","b1","KEE-no-film","Kino (cinema) + Film.","Porträt"],
+["die Kinokasse","box office","b2","KEE-no-kah-se","Kino + Kasse (till/cash desk).","Porträt"],
+["die Kleinkriminellenstudie","study on petty criminals","b2","KLYNE-kri-mi-nel-len-shtoo-dye","klein (small) + Kriminelle (criminals) + Studie (study).","Porträt"],
+["der/die Kneipenbesitzer/in","pub owner","b2","KNY-pen-buh-zit-ser","Kneipe (pub) + Besitzer (owner).","Porträt"],
+["kommerziell","commercial","b2","ko-mer-TSYEL","from Kommerz (commerce).","Porträt"],
+["der Langspielfilm","feature-length film","b2","LAHNG-shpeel-film","lang (long) + Spielfilm (feature film).","Porträt"],
+["der Lebensweg","life path / journey","b2","LAY-bens-vayk","Leben (life) + Weg (path).","Porträt"],
+["das Melodram","melodrama","b2","me-lo-DRAHM","Greek melos (song) + drama.","Porträt"],
+["das Migrationsdrama","migration drama","b2","mi-gra-TSYOHNS-drah-ma","Migration + Drama.","Porträt"],
+["das Milieu","milieu / social setting","b2","mi-LYUR","French milieu (middle/environment).","Porträt"],
+["der/die Muslim/in","Muslim","b1","MOOS-lim","Arabic loanword.","Porträt"],
+["passioniert","passionate / keen","b2","pah-syo-NEERT","from Passion (passion), Latin passio.","Porträt"],
+["der/die Produzent/in","producer","b1","pro-du-TSENT","Latin producere (to bring forth).","Porträt"],
+["der/die Regisseur/in","director","b2","re-zhi-SUR","French régisseur → stage/film director.","Porträt"],
+["die Scheinehe","sham marriage","b2","SHYNE-ay-e","Schein (appearance/pretence) + Ehe (marriage).","Porträt"],
+["schmerzlos","painless","b2","SHMAIRTS-los","Schmerz (pain) + -los (without).","Porträt"],
+["der Spielfilm","feature film","b1","SHPEEL-film","Spiel (play) + Film → a fictional film.","Porträt"],
+["stets","always / constantly","b2","shtayts","related to stetig (steady) → steadily, ever.","Porträt"],
+["treu (treu bleiben)","loyal / faithful","b1","troy","related to Treue (loyalty) and English 'true'.","Porträt"],
+["die Trophäe","trophy","b2","tro-FAY-e","Greek tropaion (a monument to victory).","Porträt"],
+["visuell","visual","b2","vi-zu-EL","Latin visus (sight).","Porträt"],
+["voller","full of","b1","FOL-ler","from voll (full) → brimming with.","Porträt"],
+["das Vorbild","role model","b1","FOR-bilt","vor (before) + Bild (image) → an image to hold before you.","Porträt"],
+// ===== Grammatik =====
+["der Nonsens","nonsense","b2","NON-zens","non- (not) + Sens (sense) → not making sense.","Grammatik"],
+["unerwartet","unexpected","b2","UN-air-var-tet","un- (not) + erwartet (expected).","Grammatik"],
+];
+// Wortfamilie + Verwechslungsgefahr (confusing pair) for each word, in VOCAB order (205)
+const EXTRA = [
+["heimisch (native), das Heimweh (homesickness), die Heimatstadt (hometown)","die Heimat (homeland) ↔ das Heim (a home / care home) — Heimat = the country you belong to; Heim = a building."],
+["das Weh (ache), wehtun (to hurt), das Fernweh (wanderlust)","das Heimweh (missing home) ↔ das Fernweh (longing for far away) — Heim vs. fern, opposites."],
+["sich vorstellen (to imagine/introduce), vorstellbar (imaginable), die Vorstellungskraft (imagination)","die Vorstellung (idea; also a show) ↔ die Herstellung (production) — vor- vs. her-."],
+["zitieren (to quote), das Zitieren (quoting)","das Zitat (a quotation) ↔ das Diktat (dictation) — look/sound alike, very different."],
+["fern (far), die Ferne (distance), fernsehen (to watch TV)","das Fernweh (wanderlust) ↔ das Heimweh (homesickness) — opposites."],
+["die Arbeit (work), der Vertrag (contract), der Mietvertrag (lease)","der Arbeitsvertrag (job contract) ↔ die Arbeitserlaubnis (work permit) — a contract vs. a permission."],
+["lösen (to solve/loosen), die Lösung (solution), sich auflösen (to dissolve)","auflösen (dissolve/give up) ↔ lösen (to solve) — auf- turns it into 'break up / clear out'."],
+["der Antrag (application), der Antragsteller (applicant), stellen (to file)","beantragen (to apply for) ↔ beauftragen (to commission/assign) — Antrag vs. Auftrag."],
+["öffnen (to open), die Eröffnung (opening), offen (open)","eröffnen (open sth new: account/shop) ↔ öffnen (open a door/window) — eröffnen is figurative/formal."],
+["das Handy (mobile), der Vertrag (contract)","das Handy (cell phone) is a FALSE FRIEND — English 'handy' means praktisch, not a phone."],
+["der Knoten (knot), die Verknüpfung (link), knoten (to knot)","knüpfen (Kontakte ~ = make contacts) ↔ knipsen (to snap a photo) — similar sound, different action."],
+["kontaktieren (to contact), kontaktfreudig (sociable)","der Kontakt (contact) ↔ der Kontrakt (contract, rare) — Kontakt = touch/connection."],
+["die Miete (rent), mieten (to rent), der Mieter (tenant)","mieten (to rent, as tenant) ↔ vermieten (to rent out, as landlord)."],
+["der Mieter (tenant), der Vormieter (previous tenant), mieten (to rent)","der Nachmieter (next tenant) ↔ der Vormieter (previous tenant) — nach vs. vor."],
+["das Abenteuer (adventure), der Abenteurer (adventurer)","abenteuerlich (adventurous) ↔ abenteuerlustig (adventure-loving) — -lich vs. -lustig."],
+["erlauben (to allow), die Erlaubnis (permission), die Aufenthaltserlaubnis (residence permit)","die Arbeitserlaubnis (work permit) ↔ die Aufenthaltserlaubnis (residence permit) — Arbeit vs. Aufenthalt."],
+["die Aufregung (excitement), sich aufregen (to get worked up), anregen (to stimulate)","aufgeregt (excited/nervous) ↔ aufgeweckt (bright/alert) — auf-geregt vs. auf-geweckt."],
+["das Ausland (abroad), der Ausländer (foreigner), die Erfahrung (experience)","das Ausland (foreign countries) ↔ das Inland (home country) — aus vs. in."],
+["die Auswanderung (emigration), der Auswanderer (emigrant), wandern (to hike)","auswandern (emigrate, leave) ↔ einwandern (immigrate, enter) — aus vs. ein."],
+["die Reue (remorse), reumütig (remorseful), bereut (regretted)","bereuen (to regret) ↔ betreuen (to look after) — reu vs. treu, very different meaning."],
+["der Blogger (blogger), bloggen (to blog), der Beitrag (post)","der Blog (blog) ↔ der Block (block/notepad) — one 'o' vs. 'ock'."],
+["das Leben (life), leben (to live), erleben (to experience)","sich einleben (to settle in) ↔ erleben (to experience) — ein- vs. er-."],
+["erfahren (to find out; experienced), erfahrungsgemäß (from experience)","die Erfahrung (experience) ↔ die Erziehung (upbringing) — both about learning, different roots."],
+["weit (wide), die Erweiterung (expansion), die Weite (breadth)","erweitern (to broaden) ↔ erwidern (to reply) — erweit- vs. erwid-."],
+["der Stress, stressen (to stress), stressig (stressful)","gestresst (stressed — a person) ↔ stressig (stressful — a thing/day)."],
+["die Grafik (graphic), grafisch (graphic-adj), der Designer (designer)","der Grafiker (graphic designer) ↔ der Fotograf (photographer) — related creative jobs."],
+["horizontal (horizontal), die Horizonterweiterung (broadening the mind)","der Horizont (horizon) ↔ die Aussicht (view/prospect) — Horizont = the limit of your view; Aussicht = the scenery."],
+["leicht (easy/light), die Leichtigkeit (ease)","leichtfallen (to be easy for sb) ↔ schwerfallen (to be hard for sb) — leicht vs. schwer."],
+["der Macher (doer), die Erfahrung machen (to gain experience)","machen (Erfahrung ~ = to gain) ↔ tun (to do) — machen for making/gaining, tun for doing."],
+["die Mitte (middle), inzwischen (meanwhile, synonym)","mittlerweile (by now/meanwhile) ↔ mittelmäßig (mediocre) — mittler- vs. mittel-."],
+["nett (nice), die Nettigkeit (niceness)","netterweise (kindly) ↔ normalerweise (normally) — both -erweise adverbs, different meaning."],
+["das Risiko (risk), riskant (risky)","riskieren (to risk — verb) ↔ riskant (risky — adjective)."],
+["geschafft (done/exhausted), erschaffen (to create)","schaffen (to manage/accomplish) ↔ erschaffen (to create) — plain schaffen usually = manage."],
+["die Sehnsucht (longing), sich sehnen (to yearn)","sehnsüchtig (yearning) ↔ süchtig (addicted) — both from Sucht; very different feeling."],
+["die Spontaneität (spontaneity)","spontan (on impulse) ↔ sporadisch (occasional) — spontaneous vs. now-and-then."],
+["das Wagnis (venture), gewagt (daring), mutig (brave)","wagen (to dare — verb) ↔ der Wagen (car — noun) — same spelling, different word."],
+["die Wohnung (flat), wohnen (to live), die Suche (search)","die Wohnungssuche (flat-hunting) ↔ die Jobsuche (job-hunting) — same -suche pattern."],
+["zwischen (between), der Zwischenraum (gap)","zwischendurch (in between times) ↔ durchgehend (continuously) — opposite idea."],
+["die Empfindung (sensation), empfindlich (sensitive), empfindsam (sentimental)","empfinden (to feel emotionally) ↔ finden (to find) — emp- adds 'sense/feel'."],
+["die Faust (fist), die Regel (rule), die Regelung (regulation)","die Faustregel (rough rule of thumb) ↔ die Grundregel (basic rule) — Faust = rough, Grund = fundamental."],
+["merken (to note/remember), sich merken (to memorise), das Merkmal (feature)","sich (etwas) merken (to memorise) ↔ bemerken (to notice) — merken vs. bemerken."],
+["positionieren (to position), die Stelle (spot)","die Position (position/place) ↔ die Portion (portion of food) — one letter apart."],
+["der Stand (state), beständig (constant), stehen (to stand)","ständig (constantly) ↔ selbstständig (independent) — both end -ständig, different meaning."],
+["schneiden (to cut), der Schnitt (cut), die Schere (scissors)","zerschneiden (cut into pieces) ↔ abschneiden (to cut off) — zer- = apart, ab- = off."],
+["das Land (country), die Sprache (language), die Amtssprache (official language)","die Landessprache (national language) ↔ die Muttersprache (mother tongue) — the country's vs. your own."],
+["das Amt (office/authority), amtlich (official), der Beamte (civil servant)","die Amtssprache (official language) ↔ die Umgangssprache (everyday/colloquial language)."],
+["erkennen (to recognise), die Anerkennung (recognition), bekannt (known)","anerkennen (to officially recognise) ↔ erkennen (to recognise/perceive) — an- adds 'acknowledge'."],
+["elitär (elitist), die Oberschicht (upper class)","die Elite (elite, by achievement) ↔ der Adel (nobility, by birth)."],
+["identisch (identical), sich identifizieren (to identify)","die Identität (identity — who you are) ↔ die Nationalität (nationality — your citizenship)."],
+["die Komplexität (complexity), der Komplex (complex)","komplex (many interlinked parts) ↔ kompliziert (complicated/hard to handle) — near-synonyms."],
+["die Konfrontation (confrontation), gegenüberstellen (to compare)","konfrontieren (to confront/face) ↔ kontrollieren (to check) — similar look, very different."],
+["die Kultur (culture), kulturell (cultural), interkulturell (intercultural)","multikulturell (many cultures present) ↔ interkulturell (between cultures)."],
+["parlamentarisch (parliamentary), der Abgeordnete (MP)","das Parlament (elected assembly) ↔ die Regierung (the government/executive)."],
+["die Sache (matter), sich verhalten (to behave), der Sachbearbeiter (clerk)","der Sachverhalt (the facts of a case) ↔ das Verhalten (behaviour)."],
+["der Trost (comfort), tröstlich (comforting), trostlos (bleak)","trösten (to comfort) ↔ rösten (to roast) — one letter apart."],
+["vertraut (familiar), vertrauen (to trust), das Vertrauen (trust)","die Vertrautheit (familiarity/closeness) ↔ das Vertrauen (trust/confidence)."],
+["die Verwaltung (administration), verwalten (to manage), der Verwalter (manager)","die Verwaltungssprache (the admin language) ↔ die Verwaltung (the administrative body itself)."],
+["vielfältig (diverse), die Mannigfaltigkeit (multiplicity)","die Vielfalt (diversity/variety) ↔ die Einfalt (simple-mindedness) — viel- vs. ein-, opposite tone."],
+["viele Sprachen, die Vielsprachigkeit, mehrsprachig (multilingual)","vielsprachig ↔ mehrsprachig — near-synonyms; both mean multilingual."],
+["das Gesetz (law), gesetzlich (legal), das Bundesgesetz (federal law)","das Landesgesetz (state/regional law) ↔ das Bundesgesetz (federal law) — Land vs. Bund."],
+["vielsprachig (multilingual), die Sprache (language)","die Vielsprachigkeit (multilingualism) ↔ die Sprachlosigkeit (speechlessness) — opposite."],
+["der Alltag (everyday), alltäglich (everyday-adj), das Produkt","das Alltagsprodukt (everyday product) ↔ das Luxusprodukt (luxury product) — Alltag vs. Luxus."],
+["das Amt (office), die Behörde (authority), amtlich (official)","amtlich (official) ↔ heimlich (secret) — both -lich adjectives, opposite meaning."],
+["herrschen (to rule), der Herrscher (ruler), die Beherrschung (mastery/control)","beherrschen (to master) ↔ herrschen (to rule/prevail) — be- makes it 'have command of'."],
+["bekannt (known), bekannt geben (to announce), die Bekanntgabe (announcement)","die Bekanntmachung (public notice) ↔ die Bekanntschaft (an acquaintance)."],
+["die Schrift (writing), schreiben (to write), die Beschriftung (labelling)","beschriften (to label — write ON sth) ↔ beschreiben (to describe)."],
+["betroffen (affected), der Betreff (subject line), treffen (to meet/hit)","betreffen (to concern/affect) ↔ treffen (to meet/hit) — be- shifts it to 'concern'."],
+["die Einheit (unit/unity), einig (united), vereinheitlichen (to standardise)","einheitlich (uniform/standardised) ↔ eigentlich (actually) — look-alike -lich words."],
+["falsch (wrong), fälschen (to forge), die Fälschung (forgery)","fälschlicherweise (mistakenly) ↔ tatsächlich (actually/indeed) — wrongly vs. truly."],
+["das Flugblatt (leaflet), die Broschüre (brochure), die Werbung (advertising)","der Flyer (flyer/leaflet) ↔ der Flieger (plane/pilot) — both from 'fly'."],
+["das Geschäft (business), die Beziehung (relationship), der Geschäftsmann (businessman)","die Geschäftsbeziehung (business relationship) ↔ die Geschäftsverhandlung (business negotiation)."],
+["verhandeln (to negotiate), die Verhandlung (negotiation), das Geschäft (business)","die Verhandlung (negotiation) ↔ die Behandlung (treatment) — verhand- vs. behand-."],
+["doch (yet), dennoch (nevertheless), allerdings (however)","jedoch (however) ↔ jedenfalls (in any case) — both start 'jed-', different meaning."],
+["konferieren (to confer), die Videokonferenz (video conference)","die Konferenz (conference) ↔ die Referenz (reference) — -ferenz words."],
+["der Platz (space/place), das Problem, platzieren (to place)","das Platzproblem (lack of space) ↔ das Zeitproblem (lack of time) — Platz vs. Zeit."],
+["gesamt (entire), insgesamt (in total), alle (all)","sämtlich (all/entire) ↔ sämig (creamy/thick) — look-alike, totally different."],
+["sitzen (to sit), der Sitz (seat), die Besprechung (meeting)","die Sitzung (a formal session) ↔ die Besprechung (an informal meeting/discussion)."],
+["die Sprache, die Vielfalt, sprachlich (linguistic)","die Sprachenvielfalt (language diversity) ↔ die Sprachbarriere (language barrier) — variety vs. obstacle."],
+["die Sprache, das Gebiet (area), die Sprachregion","das Sprachgebiet (language area) ↔ die Sprachregion (language region) — near-synonyms."],
+["die Region, die Sprache, regional (regional)","die Sprachregion ↔ das Sprachgebiet — synonyms; region vs. territory."],
+["der Verkehr (traffic), das Schild (sign), das Straßenschild (street sign)","das Schild (sign, neuter) ↔ der Schild (shield, masculine) — same spelling, gender changes meaning!"],
+["öffentlich (public), die Öffentlichkeit (the public), die Veröffentlichung (publication)","veröffentlichen (to publish) ↔ eröffnen (to open) — both ö-verbs, different meaning."],
+["packen (to pack), einpacken (to wrap up), das Paket (parcel)","die Verpackung (packaging) ↔ die Verpflegung (catering/food) — verpack- vs. verpfleg-."],
+["die Voraussetzung (prerequisite), vorausgesetzt (provided that), setzen (to set)","voraussetzen (to presuppose/require) ↔ voraussagen (to predict) — -setzen vs. -sagen."],
+["wandeln (to change), sich wandeln, der Klimawandel (climate change)","der Wandel (change/shift) ↔ die Wand (wall) — Wandel vs. Wand, unrelated meaning."],
+["das Web, die Seite (page), die Homepage","die Webseite (a single web page) ↔ die Website (the whole site)."],
+["auffassen (to grasp), die Auffassungsgabe (comprehension)","die Auffassung (view/opinion) ↔ die Fassung (version; also composure) — auf- makes it 'understanding'."],
+["entscheiden (to decide), die Entscheidung (decision), entschieden (decided)","entscheidend (decisive/crucial) ↔ bescheiden (modest) — -scheiden roots, different meaning."],
+["das Staunen (amazement), erstaunen (to amaze), erstaunt (astonished)","erstaunlich (astonishing — the cause) ↔ erstaunt (astonished — the reaction)."],
+["teilen (to share/divide), der Teil (part), die Teilung (division)","geteilt (divided; 'geteilter Meinung sein' = to be of two minds) ↔ verteilt (distributed)."],
+["die Hilfe (help), helfen (to help), hilfsbereit (willing to help)","hilfreich (helpful — a tip/info) ↔ hilfsbereit (helpful — a person willing to help)."],
+["mehrsprachig (multilingual), die Sprache, die Vielsprachigkeit","die Mehrsprachigkeit (multilingualism) ↔ die Einsprachigkeit (monolingualism) — mehr vs. ein."],
+["der Nutzen (benefit), nutzen (to use), nützen (to be of use)","nützlich (useful) ↔ nutzlos (useless) — -lich vs. -los, opposites."],
+["die Buchseite (book page), beiseite (aside), einerseits (on one hand)","die Seite (side/page) ↔ die Saite (a string, e.g. on a guitar) — homophones!"],
+["sehen (to see), die Aussicht (view), die Ansicht (opinion), sichtbar (visible)","die Sicht (view/perspective) ↔ die Schicht (layer; also work shift) — Sicht vs. Schicht."],
+["das Missverständnis (misunderstanding), missverstehen, verständlich (understandable)","missverständlich (easily misunderstood/ambiguous) ↔ unverständlich (impossible to understand)."],
+["teilen (to divide), die Abteilung (department), der Teil (part)","das Abteil (a train compartment) ↔ die Abteilung (a company department)."],
+["verstehen (to understand), das Missverständnis, das Verständnis","missverstehen (to misunderstand) ↔ verstehen (to understand) — miss- = wrongly."],
+["die Pein (torment), peinigen (to torment)","peinlich (embarrassing) ↔ pünktlich (punctual) — look-alike -lich words, unrelated."],
+["der Stand (state), abstehen (to stick out), der Sicherheitsabstand (safe distance)","der Abstand (distance/gap) ↔ der Anstand (decency/good manners) — ab- vs. an-."],
+["die Art und Weise (manner), artig (well-behaved), die Tierart (species)","die Art (kind/way) ↔ die Sorte (sort/brand) — Art = type/manner; Sorte = variety."],
+["außen (outside), äußern (to express), die Äußerung (utterance), äußere (outer)","äußerst (extremely — adverb) ↔ äußern (to express — verb) — same root, different use."],
+["denken (to think), das Bedenken (a concern), bedenklich (worrying)","bedenken (to consider) ↔ gedenken (to commemorate) — be- vs. ge-."],
+["begleiten (to accompany), die Begleitung (company/escort)","der Begleiter (companion — goes along) ↔ der Berater (advisor — gives advice)."],
+["die Breite (width), verbreiten (to spread)","breit (wide/broad) ↔ bereit (ready) — breit vs. bereit, one letter apart."],
+["freundlich (friendly), der Freund (friend), die Freundschaft (friendship)","die Freundlichkeit (friendliness — a manner) ↔ die Freundschaft (friendship — a relationship)."],
+["gegenüber (opposite — prep), gegen (against)","das Gegenüber (the person facing you) ↔ der Gegner (an opponent/adversary)."],
+["jeder (each), jederzeit (any time)","jeglich (any/every) ↔ jährlich (yearly) — look-alike -lich, different meaning."],
+["lächeln (to smile), lachen (to laugh), das Lachen (laughter)","das Lächeln (a smile) ↔ das Lachen (laughing out loud)."],
+["öffentlich (public), offen (open), veröffentlichen (to publish)","die Öffentlichkeit (the public) ↔ die Öffnung (an opening) — öffentlich vs. öffnen."],
+["privat (private), die Sphäre (sphere), die Privatperson (private individual)","die Privatsphäre (privacy — your personal space) ↔ das Privateigentum (private property)."],
+["die Frage stellen, die Stelle (spot), aufstellen (to set up)","stellen (to stand sth upright / pose) ↔ legen (to lay sth flat) — stellen = stand it; legen = lay it."],
+["die Übung (practice), gewöhnlich (usual), das Übliche (the usual)","üblich (usual/customary) ↔ übel (nasty/nauseous) — üb-lich vs. übel."],
+["das Spiel (game), spielen (to play), die Regel (rule)","die Spielregel (rule of the game) ↔ die Grundregel (basic/fundamental rule)."],
+["gestikulieren (to gesticulate), die Gestik (gestures as a whole)","die Geste (a single gesture) ↔ die Gestik (gesturing in general)."],
+["der Alkohol, alkoholisch (alcoholic), frei (free)","alkoholfrei (alcohol-free) ↔ alkoholisch (alcoholic) — without vs. containing alcohol."],
+["typisch (typical), der Typ (type)","atypisch (atypical) ↔ typisch (typical) — a- negates."],
+["das Interesse (interest), interessiert (interested), uninteressant (uninteresting)","das Desinteresse (indifference) ↔ das Interesse (interest) — des- negates."],
+["die Qualifikation (qualification), qualifizieren (to qualify)","disqualifizieren (to disqualify) ↔ qualifizieren (to qualify) — dis- reverses it."],
+["der Inhalt (content), leer (empty), inhaltsreich (rich in content)","inhaltsleer (empty of content) ↔ inhaltsreich (full of content) — leer vs. reich."],
+["tolerant (tolerant), die Toleranz (tolerance), die Intoleranz (intolerance)","intolerant (intolerant) ↔ tolerant (tolerant) — in- negates."],
+["real (real), die Realität (reality), unrealistisch (unrealistic)","irreal (unreal) ↔ real (real) — ir- negates."],
+["schwimmen (to swim), der Schwimmer (swimmer), das Schwimmbad (pool)","der Nichtschwimmer (non-swimmer) ↔ der Schwimmer (swimmer) — Nicht- negates."],
+["verbal (verbal), das Wort (word), die Körpersprache (body language)","nonverbal (non-verbal — body language) ↔ verbal (verbal — words) — non- negates."],
+["das Verständnis (understanding), verstehen (to understand), verständnisvoll (understanding)","das Unverständnis (no understanding) ↔ das Missverständnis (a wrong understanding)."],
+["trennen (to separate), die Trennung (separation), untrennbar (inseparable)","trennbar (separable verb) ↔ untrennbar (inseparable) — un- negates; key for prefix verbs."],
+["die Chance (chance), gleich (equal), die Gleichheit (equality)","die Chancengleichheit (equal opportunity) ↔ die Gleichberechtigung (equal rights)."],
+["die Migration, der Migrant, der Hintergrund (background)","der Migrationshintergrund (a person's background) ↔ die Migration (the movement itself)."],
+["der Schlüssel (key), das Wort (word), die Schlüsselrolle (key role)","das Schlüsselwort (a key term) ↔ das Passwort (a secret password)."],
+["voll (full), die Fülle (abundance), vollständig (complete)","völlig (completely) ↔ vorläufig (provisionally) — look-alike, opposite idea."],
+["der Kindergarten, die Pflicht (duty), die Schulpflicht (compulsory schooling)","die Kindergartenpflicht ↔ die Schulpflicht — compulsory kindergarten vs. compulsory school."],
+["die Schule (school), die Uniform, der Schüler (pupil)","die Schuluniform (school uniform) ↔ die Schulform (type of school)."],
+["gehen (to go), eingehend (thorough), der Eingang (entrance)","eingehen (auf etwas ~ = to address a point) ↔ ausgehen (to go out) — ein- vs. aus-."],
+["einrichten (to set up), die Richtung (direction), die Möbel (furniture)","die Einrichtung (an institution; also furnishings) ↔ die Richtung (direction)."],
+["möglich (possible), die Möglichkeit (possibility), unmöglich (impossible)","ermöglichen (to make possible) ↔ ermäßigen (to reduce a price) — ermög- vs. ermäß-."],
+["lehren (to teach), der Lehrer (teacher), die Lehre (teaching/apprenticeship)","die Lehrkraft (teaching staff — gender-neutral/formal) ↔ der Lehrer (a (male) teacher)."],
+["der Migrant, die Familie, die Migration","die Migrantenfamilie (migrant family) ↔ das Migrantenkind (migrant child)."],
+["der Migrant, das Kind, die Migrantenfamilie","das Migrantenkind (migrant child) ↔ das Einzelkind (only child) — different -kind compounds."],
+["die Patin (godmother), das Patenkind (godchild), die Patenschaft (sponsorship)","der Pate (godparent/mentor) ↔ der Vormund (legal guardian) — a mentor vs. a legal guardian."],
+["die Seniorin (female senior), das Seniorenheim (retirement home)","der Senior (senior/elder) ↔ der Junior (junior) — opposite."],
+["der Sinn (sense), sinnlos (senseless), der Unsinn (nonsense)","sinnvoll (meaningful/sensible) ↔ sinnlos (pointless) — voll vs. los, opposites."],
+["zuwandern (to migrate in), der Zuwanderer (immigrant), auswandern (to emigrate)","der Zugewanderte (newcomer to a place) ↔ der Ausgewanderte (someone who left) — zu- vs. aus-."],
+["fügen (to join), hinzufügen (to add), die Fuge (joint)","anfügen (to attach/add) ↔ anführen (to lead/cite) — anfüg- vs. anführ-."],
+["die Bremse (brake), bremsen (to brake), abbremsen (to slow down)","ausbremsen (to block/thwart someone) ↔ abbremsen (to slow down) — aus- vs. ab-."],
+["der Ausländer (foreigner), das Ausland (abroad), die Quote (quota)","die Ausländerquote (foreigner quota) ↔ die Frauenquote (women's quota) — different -quote compounds."],
+["das Automobil (car), herstellen (to produce), der Hersteller (manufacturer)","der Hersteller (manufacturer — makes it) ↔ der Händler (dealer — sells it)."],
+["der Betrieb (business), die Wirtschaft (economy), betrieblich (operational)","die Betriebswirtschaft (business admin, BWL) ↔ die Volkswirtschaft (economics, VWL)."],
+["diskriminieren (to discriminate), diskriminierend (discriminatory)","die Diskriminierung (discrimination) ↔ die Distanzierung (distancing) — look-alike, unrelated."],
+["die Farbe (colour), farbig (coloured), froh (happy)","farbenfroh (colourful) ↔ farblos (colourless) — froh vs. los, opposites."],
+["fern (far), fernbleiben (to stay away), naheliegen (to be obvious)","fernliegen (to be far from one's mind) ↔ naheliegen (to be obvious/likely) — fern vs. nahe."],
+["das Feuer (fire), das Holz (wood), das Brennholz (firewood)","das Feuerholz (firewood) ↔ das Feuerzeug (a lighter) — Holz vs. Zeug."],
+["der Zopf (braid), geflochten (braided), das Geflecht (mesh)","flechten (to braid/plait) ↔ fechten (to fence — the sport) — flecht vs. fecht, one letter."],
+["die Führung (leadership), der Führer (leader), verführen (to seduce)","führen (to lead/run) ↔ fahren (to drive) — führen vs. fahren, look-alike."],
+["die Gelegenheit (occasion), gelegen (situated/convenient)","gelegentlich (occasionally) ↔ gemütlich (cosy) — look-alike -lich, different meaning."],
+["das Gemüse (vegetables), das Geschäft (shop), der Laden (store)","das Gemüsegeschäft (greengrocer) ↔ das Gemüse (the vegetables themselves)."],
+["gründen (to found), die Gründung (founding), der Grund (reason/ground)","der Gründer (the founder) ↔ der Grund (the reason/the ground) — founder vs. reason."],
+["das Haus (house), verwalten (to manage), die Verwaltung (administration)","die Hausverwaltung (the property-management office) ↔ der Hausmeister (the on-site caretaker)."],
+["die Hochschule (university), reif (mature), die Reife (maturity), das Abitur","die Hochschulreife (the qualification) ↔ die Hochschule (the university itself)."],
+["abstammen (to descend), der Stamm (tribe/stem), die Herkunft (origin)","die Abstammung (bloodline/descent) ↔ die Herkunft (where you come from) — near-synonyms."],
+["der Amateur (amateur), boxen (to box), der Profi (pro)","der Amateur (amateur — hobby) ↔ der Profi (professional — paid)."],
+["die Auszeichnung (award), zeichnen (to draw/mark), ausgezeichnet (excellent)","auszeichnen (to honour/award) ↔ zeichnen (to draw) — aus- adds 'single out'."],
+["begehren (to desire), das Begehren (desire), gefragt (in demand)","begehrt (sought-after/wanted) ↔ begabt (talented/gifted) — begehrt vs. begabt."],
+["der Bürger (citizen), das Bürgertum (middle class), die Bürgerschaft","bürgerlich (middle-class) ↔ adelig (noble/aristocratic) — middle class vs. nobility."],
+["das Zeugnis (certificate), der Abschluss (degree), studieren (to study)","das Diplom (a diploma/degree) ↔ der Diplomat (a diplomat — a person)."],
+["das Drehbuch (screenplay), drehen (to film), der Autor (author)","der Drehbuchautor (writes the script) ↔ der Regisseur (directs the film)."],
+["das Drehbuch (screenplay), der Preis (prize/price)","der Preis (prize/award) ↔ der Preis (price/cost) — same word, two meanings."],
+["durchbrechen (to break through), der Bruch (break), der Einbruch (break-in)","der Durchbruch (a breakthrough) ↔ der Einbruch (a burglary; also a collapse) — durch- vs. ein-."],
+["einwandern (to immigrate), die Einwanderung, der Auswanderer (emigrant)","der Einwanderer (immigrant — comes in) ↔ der Auswanderer (emigrant — goes out)."],
+["der Stamm (stem), stammen (to come from), abstammen (to descend)","entstammen (to originate from) ↔ entstehen (to arise/come into being) — entstamm- vs. entsteh-."],
+["der Film, der Regisseur (director), die Regie (direction)","der Filmregisseur (director — directs) ↔ der Filmproduzent (producer — finances)."],
+["der Gangster, das Kino (cinema), der Krimi (crime film)","das Gangsterkino (the gangster genre) ↔ das Heimkino (home cinema — the setup)."],
+["prägen (to shape/coin), die Prägung (imprint), ausgeprägt (pronounced)","geprägt (shaped/marked by) ↔ gepflegt (well-kept/groomed) — geprägt vs. gepflegt."],
+["glauben (to believe), der Glaube (faith), religiös (religious)","gläubig (devout/religious) ↔ der Gläubiger (a creditor!) — a believer vs. someone you owe money."],
+["hart (hard), härten (to harden), die Widerstandskraft (resilience)","die Härte (hardness/toughness) ↔ die Herde (a herd) — Härte vs. Herde, sound-alike."],
+["das Haupt (head/main), die Rolle (role), die Nebenrolle (supporting role)","die Hauptrolle (lead role) ↔ die Nebenrolle (supporting role) — Haupt vs. Neben."],
+["das Heim (home), die Heimat (homeland), einheimisch (indigenous)","heimisch (native/at home) ↔ heimlich (secret) — 'at home' vs. 'in secret'."],
+["die Widmung (dedication), die Ehrung (honouring)","die Hommage (homage/tribute) ↔ die Blamage (an embarrassment) — French -age loanwords, opposite feeling."],
+["die Jury, der Vorsitz (chairmanship), der Vorsitzende (chairperson)","der Vorsitz (chairmanship) ↔ der Vorsatz (a resolution/intention) — Vorsitz vs. Vorsatz."],
+["der Katholik (a Catholic), die Kirche (church), evangelisch (Protestant)","katholisch (Catholic) ↔ evangelisch (Protestant) — two Christian denominations."],
+["das Viertel (quarter), der Stadtteil (district), die Nachbarschaft (neighbourhood)","der Kiez (local neighbourhood — North-German slang) ↔ das Viertel (district — standard word)."],
+["das Kino, der Film, der Spielfilm (feature film)","der Kinofilm (a cinema film) ↔ der Fernsehfilm (a TV film)."],
+["das Kino, die Kasse (till/box office), die Kinokarte (ticket)","die Kinokasse (the box office — where you pay) ↔ die Kinokarte (the ticket itself)."],
+["klein (small), der Kriminelle (criminal), die Studie (study)","die Studie (a research study) ↔ das Studio (a studio/room)."],
+["die Kneipe (pub), der Besitzer (owner), besitzen (to own)","der Besitzer (owner — owns it) ↔ der Besucher (visitor — visits it)."],
+["der Kommerz (commerce), die Kommerzialisierung (commercialisation)","kommerziell (commercial) ↔ kommunal (municipal/local-government) — look-alike, different."],
+["lang (long), der Spielfilm (feature film), der Kurzfilm (short film)","der Langspielfilm (feature-length) ↔ der Kurzfilm (short film) — lang vs. kurz."],
+["das Leben (life), der Weg (path), der Lebenslauf (CV)","der Lebensweg (your life journey) ↔ der Lebenslauf (your written CV/résumé)."],
+["das Drama, dramatisch (dramatic), die Melodie (melody)","das Melodram (an emotional, overwrought drama) ↔ das Drama (drama in general)."],
+["die Migration, das Drama, das Familiendrama","das Migrationsdrama (migration-themed drama) ↔ das Familiendrama (family drama)."],
+["das Umfeld (surroundings), die Umgebung (environment)","das Milieu (a social setting/class) ↔ das Klima (climate; also mood/atmosphere)."],
+["muslimisch (Muslim-adj), der Islam, die Religion","der Muslim (current, preferred spelling) ↔ der Moslem (older spelling) — same meaning."],
+["die Passion (passion), leidenschaftlich (passionate)","passioniert (passionate/keen) ↔ pensioniert (retired) — passion- vs. pension-, one syllable changes everything!"],
+["produzieren (to produce), die Produktion, das Produkt","der Produzent (producer — finances/organises) ↔ der Regisseur (director — directs)."],
+["die Regie (direction), Regie führen (to direct)","der Regisseur (film/stage director) ↔ der Direktor (a director/principal of an organisation)."],
+["der Schein (appearance/certificate), scheinen (to seem), die Ehe (marriage)","die Scheinehe (a sham marriage) ↔ die Scheidung (a divorce)."],
+["der Schmerz (pain), schmerzhaft (painful), schmerzfrei (pain-free)","schmerzlos (painless) ↔ schmerzhaft (painful) — los vs. haft, opposites."],
+["das Spiel (play), der Film, der Dokumentarfilm (documentary)","der Spielfilm (a fiction film) ↔ der Dokumentarfilm (a documentary) — fiction vs. real."],
+["stetig (steady), immer (always), beständig (constant)","stets (always/ever) ↔ statt (instead of) — stets vs. statt, sound-alike."],
+["die Treue (loyalty), treulos (disloyal), vertrauen (to trust)","treu (loyal/faithful) ↔ treulos (disloyal) — with vs. without loyalty."],
+["der Pokal (cup/trophy), die Auszeichnung (award), der Preis (prize)","die Trophäe (a trophy) ↔ die Katastrophe (a catastrophe) — -phäe vs. -phe, totally different."],
+["die Vision, visualisieren (to visualise), das Sehen (seeing)","visuell (visual — seen) ↔ virtuell (virtual — simulated) — visu- vs. virtu-."],
+["voll (full), die Fülle (abundance), erfüllen (to fulfil)","voller (full of sth) ↔ völlig (completely) — 'full of' vs. 'completely'."],
+["vor (before), das Bild (image), vorbildlich (exemplary)","das Vorbild (a role model to follow) ↔ das Abbild (a copy/likeness) — vor- vs. ab-."],
+["der Unsinn (nonsense), sinnlos (senseless), der Quatsch (rubbish)","der Nonsens (nonsense) ↔ der Konsens (consensus) — Non- vs. Kon-, nonsense vs. agreement."],
+["erwarten (to expect), die Erwartung (expectation), unerwünscht (unwanted)","unerwartet (unexpected) ↔ unerwidert (unrequited) — unerwart- vs. unerwid-."],
+];
+
+
+/* ---- TTS ---- */
+let deVoice=null;
+function loadV(){const vs=speechSynthesis.getVoices();deVoice=vs.find(v=>/de(-|_)|deutsch|german/i.test(v.lang+" "+v.name))||null;}
+speechSynthesis.onvoiceschanged=loadV; loadV();
+function say(t,r){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="de-DE";if(deVoice)u.voice=deVoice;u.rate=r||0.85;speechSynthesis.speak(u);}
+const cleanTTS=s=>s.replace(/\s*\(.*?\)\s*/g," ").split(" ").map(t=>t.indexOf("/")>=0?t.split("/")[0]:t).join(" ").replace(/\s+/g," ").trim();
+
+/* ---- nav ---- */
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("on"));document.getElementById(b.dataset.t).classList.add("on");
+  speechSynthesis.cancel();
+}));
+
+/* ================= WORD-ORDER BUILDER ================= */
+const BUILD=[
+ {en:"English: \u201cI emigrated to Australia last year for love.\u201d",
+  why:"The finite verb <b>bin</b> is glued to position 2; the participle <b>ausgewandert</b> jumps to the very end \u2014 together they bracket the sentence (Satzklammer). The middle is te\u2011ka\u2011mo\u2011lo: time \u2192 reason \u2192 place. English keeps \u2018emigrated\u2019 up front and never splits the verb.",
+  s:[{t:"Ich",g:"I",k:"wer",c:"Wer?"},{t:"bin",g:"am (aux)",k:"verb",c:"Verb \u2461"},{t:"letztes Jahr",g:"last year",k:"wann",c:"Wann?"},{t:"aus Liebe",g:"for love",k:"warum",c:"Warum?"},{t:"nach Australien",g:"to Australia",k:"wo",c:"Wohin?"},{t:"ausgewandert.",g:"emigrated",k:"end",c:"am Ende"}]},
+ {en:"English: \u201cWe signed the tenancy agreement yesterday.\u201d",
+  why:"Perfekt bracket: <b>haben</b> in position 2, participle <b>unterschrieben</b> at the end. English keeps \u2018signed the lease\u2019 together, so it never feels split.",
+  s:[{t:"Wir",g:"we",k:"wer",c:"Wer?"},{t:"haben",g:"have",k:"verb",c:"Verb \u2461"},{t:"gestern",g:"yesterday",k:"wann",c:"Wann?"},{t:"den Mietvertrag",g:"the lease",k:"was",c:"Was?"},{t:"unterschrieben.",g:"signed",k:"end",c:"am Ende"}]},
+ {en:"English: \u201cI must apply for a visa in time.\u201d",
+  why:"With a modal (<b>muss</b>), the modal takes position 2 and the main verb becomes an infinitive at the end (<b>beantragen</b>). English puts the infinitive right after the modal \u2014 no end-bracket.",
+  s:[{t:"Ich",g:"I",k:"wer",c:"Wer?"},{t:"muss",g:"must",k:"verb",c:"Verb \u2461"},{t:"rechtzeitig",g:"in time",k:"wann",c:"Wann?"},{t:"ein Visum",g:"a visa",k:"was",c:"Was?"},{t:"beantragen.",g:"apply for",k:"end",c:"am Ende"}]},
+ {en:"English: \u201cMy phone contract runs out next month.\u201d",
+  why:"<b>l\u00e4uft \u2026 aus</b> is ONE verb (auslaufen). German splits it: the conjugated part stays in position 2, the prefix <b>aus</b> flies to the end. English keeps \u2018runs out\u2019 side by side.",
+  s:[{t:"Mein Handyvertrag",g:"my phone contract",k:"wer",c:"Wer?"},{t:"l\u00e4uft",g:"runs",k:"verb",c:"Verb \u2461"},{t:"n\u00e4chsten Monat",g:"next month",k:"wann",c:"Wann?"},{t:"aus.",g:"out (prefix)",k:"end",c:"am Ende"}]},
+ {en:"English: \u201cI have never regretted my decision.\u201d",
+  why:"<b>nie</b> sits just before the end and the participle <b>bereut</b> still closes the bracket. English puts \u2018never\u2019 before the whole verb: \u2018I have never regretted \u2026\u2019.",
+  s:[{t:"Ich",g:"I",k:"wer",c:"Wer?"},{t:"habe",g:"have",k:"verb",c:"Verb \u2461"},{t:"meine Entscheidung",g:"my decision",k:"was",c:"Was?"},{t:"nie",g:"never",k:"neg",c:"Negation"},{t:"bereut.",g:"regretted",k:"end",c:"am Ende"}]},
+ {en:"English: \u201cI think that languages are very important.\u201d",
+  why:"After <b>dass</b> (or weil, wenn, obwohl \u2026) you are in a subordinate clause (Nebensatz) \u2014 and the conjugated verb <b>sind</b> drops to the VERY END. English keeps normal order: \u2018that languages are important\u2019. This \u2018verb kicked to the end\u2019 is the biggest difference to feel.",
+  s:[{t:"Ich glaube,",g:"I think,",k:"satz",c:"Hauptsatz"},{t:"dass",g:"that",k:"conj",c:"Konjunktion"},{t:"Sprachen",g:"languages",k:"was",c:"Was?"},{t:"wichtig",g:"important",k:"wie",c:"Wie?"},{t:"sind.",g:"are",k:"verb",c:"Verb \u2192 Ende"}]},
+ {en:"English: \u201cI live here because I like the culture.\u201d",
+  why:"Same rule as <b>dass</b>: after <b>weil</b> the verb <b>gef\u00e4llt</b> goes to the end. Notice the dative <b>mir</b> comes early. English keeps \u2018because I like the culture\u2019 in normal order.",
+  s:[{t:"Ich lebe hier,",g:"I live here,",k:"satz",c:"Hauptsatz"},{t:"weil",g:"because",k:"conj",c:"Konjunktion"},{t:"mir",g:"to me",k:"wer",c:"Wem?"},{t:"die Kultur",g:"the culture",k:"was",c:"Was?"},{t:"gef\u00e4llt.",g:"pleases",k:"verb",c:"Verb \u2192 Ende"}]},
+ {en:"English: \u201cI moved to Australia for love.\u201d (with the reason fronted)",
+  why:"Position 1 doesn't have to be the subject \u2014 here it's the reason (<b>Aus Liebe</b>). But the verb still sits in position 2, so the subject <b>ich</b> moves AFTER the verb. English almost always keeps Subject\u2011Verb; German only cares that the verb is second.",
+  s:[{t:"Aus Liebe",g:"for love",k:"warum",c:"Warum? (Pos.1)"},{t:"bin",g:"am",k:"verb",c:"Verb \u2461"},{t:"ich",g:"I",k:"wer",c:"Wer?"},{t:"nach Australien",g:"to Australia",k:"wo",c:"Wohin?"},{t:"gezogen.",g:"moved",k:"end",c:"am Ende"}]},
+ {en:"English: \u201cI will learn German next year.\u201d",
+  why:"Futur uses <b>werde</b> in position 2 + the infinitive <b>lernen</b> at the end \u2014 another bracket. English keeps \u2018will learn\u2019 together.",
+  s:[{t:"Ich",g:"I",k:"wer",c:"Wer?"},{t:"werde",g:"will",k:"verb",c:"Verb \u2461"},{t:"n\u00e4chstes Jahr",g:"next year",k:"wann",c:"Wann?"},{t:"Deutsch",g:"German",k:"was",c:"Was?"},{t:"lernen.",g:"learn",k:"end",c:"am Ende"}]},
+ {en:"English: \u201cHe occasionally rides his bike to work.\u201d",
+  why:"No bracket here (one simple verb, <b>f\u00e4hrt</b>, in position 2), so you just feel te\u2011ka\u2011mo\u2011lo in the middle: time \u2192 manner \u2192 place. English order is looser (often manner\u2011place\u2011time).",
+  s:[{t:"Er",g:"he",k:"wer",c:"Wer?"},{t:"f\u00e4hrt",g:"rides",k:"verb",c:"Verb \u2461"},{t:"gelegentlich",g:"occasionally",k:"wann",c:"Wann?"},{t:"mit dem Fahrrad",g:"by bike",k:"wie",c:"Wie?"},{t:"zur Arbeit.",g:"to work",k:"wo",c:"Wohin?"}]},
+ {en:"English: \u201cI quickly found new friends abroad.\u201d",
+  why:"Perfekt bracket (<b>habe \u2026 gefunden</b>). In the middle: place \u2192 manner before the object. English keeps the verb early: \u2018I quickly found new friends abroad.\u2019",
+  s:[{t:"Ich",g:"I",k:"wer",c:"Wer?"},{t:"habe",g:"have",k:"verb",c:"Verb \u2461"},{t:"im Ausland",g:"abroad",k:"wo",c:"Wo?"},{t:"schnell",g:"quickly",k:"wie",c:"Wie?"},{t:"neue Freunde",g:"new friends",k:"was",c:"Was?"},{t:"gefunden.",g:"found",k:"end",c:"am Ende"}]},
+ {en:"English: \u201cHave you already opened an account?\u201d",
+  why:"For a yes/no question the verb jumps to position 1: <b>Hast</b> du \u2026? English needs a helper \u2018Have you \u2026?\u2019 \u2014 German just fronts the verb. The participle <b>er\u00f6ffnet</b> still closes the bracket at the end.",
+  s:[{t:"Hast",g:"have",k:"verb",c:"Verb \u2460 (Frage)"},{t:"du",g:"you",k:"wer",c:"Wer?"},{t:"schon",g:"already",k:"wann",c:"Wann?"},{t:"ein Konto",g:"an account",k:"was",c:"Was?"},{t:"er\u00f6ffnet?",g:"opened",k:"end",c:"am Ende"}]},
+];
+let bIdx=0,bSel=null,dragBlk=null;
+function bring(){let h="";for(let i=0;i<BUILD.length;i++)h+=`<span class="dot ${i<=bIdx?'on':''}"></span>`;document.getElementById("bring").innerHTML=h+`<span style="margin-left:6px">Satz ${bIdx+1} / ${BUILD.length}</span>`;}
+function mkBlk(sl,i){const b=document.createElement("button");b.className="blk k-"+sl.k;b.dataset.i=i;b.innerHTML=`<span class="bt">${sl.t}</span><span class="bg">${sl.g}</span>`;b.setAttribute("draggable","true");
+  b.addEventListener("dragstart",()=>dragBlk=b);b.addEventListener("dragend",()=>dragBlk=null);
+  b.addEventListener("click",()=>{if(bSel===b){bSel=null;b.style.outline="";return;}if(bSel)bSel.style.outline="";bSel=b;b.style.outline="3px solid #ffd35c";});
+  return b;}
+function loadBuild(){
+  const p=BUILD[bIdx];document.getElementById("bwhy").classList.remove("show");document.getElementById("bmsg").textContent="";
+  const slots=document.getElementById("slots"),bank=document.getElementById("bbank");slots.innerHTML="";bank.innerHTML="";bSel=null;
+  p.s.forEach((sl,i)=>{const d=document.createElement("div");d.className="slot"+(sl.k==="verb"?" verb":"");d.dataset.i=i;d.innerHTML=`<div class="cap">${sl.c}</div>`;
+    d.addEventListener("dragover",e=>e.preventDefault());d.addEventListener("drop",e=>{e.preventDefault();if(dragBlk)place(dragBlk,d);});
+    d.addEventListener("click",()=>{if(bSel)place(bSel,d);});slots.appendChild(d);});
+  p.s.map((s,i)=>i).sort(()=>Math.random()-.5).forEach(i=>bank.appendChild(mkBlk(p.s[i],i)));
+  bring();
+}
+function place(blk,slot){
+  if(slot.classList.contains("filled"))return;
+  if(blk.dataset.i===slot.dataset.i){blk.classList.add("placed");blk.style.outline="";blk.setAttribute("draggable","false");slot.appendChild(blk);slot.classList.add("filled");slot.classList.remove("hintglow");bSel=null;
+    if(document.querySelectorAll("#slots .slot.filled").length===BUILD[bIdx].s.length){document.getElementById("bmsg").textContent="Sch\u00f6n gemacht! \ud83c\udf3f";say(cleanTTS(BUILD[bIdx].s.map(x=>x.t).join(" ")),0.82);showWhy();}
+  } else {slot.classList.add("shake");setTimeout(()=>slot.classList.remove("shake"),300);document.getElementById("bmsg").textContent="Fast! Dieser Block geh\u00f6rt woanders hin. \ud83d\ude42";setTimeout(()=>document.getElementById("bmsg").textContent="",1400);if(bSel){bSel.style.outline="";bSel=null;}}
+}
+function showWhy(){const p=BUILD[bIdx];document.getElementById("bde").textContent=p.s.map(x=>x.t).join(" ");document.getElementById("bwhytext").innerHTML=p.why;document.getElementById("ben").textContent=p.en;document.getElementById("bwhy").classList.add("show");}
+function hintBuild(){const slots=[...document.querySelectorAll("#slots .slot")];const n=slots.findIndex(s=>!s.classList.contains("filled"));if(n<0)return;slots[n].classList.add("hintglow");setTimeout(()=>slots[n].classList.remove("hintglow"),1500);document.getElementById("bmsg").textContent="Suche den Block f\u00fcr: "+BUILD[bIdx].s[n].c;setTimeout(()=>document.getElementById("bmsg").textContent="",1800);}
+function resetBuild(){loadBuild();}
+function nextBuild(){bIdx=(bIdx+1)%BUILD.length;loadBuild();}
+loadBuild();
+
+/* ================= LISTEN & TAP ================= */
+const SCENES=[
+ {de:"Ich bin aus Liebe nach Australien ausgewandert.",o:["I emigrated to Australia for love.","I travelled to Australia for work.","I studied for a year in Australia."],a:0},
+ {de:"Mein Handyvertrag l\u00e4uft n\u00e4chsten Monat aus.",o:["My phone contract ends next month.","I bought a new phone yesterday.","My phone is broken."],a:0},
+ {de:"Sie wartet sehns\u00fcchtig auf den Besuch ihrer Freundin.",o:["She is longingly awaiting her friend's visit.","She is visiting her friend abroad.","She said goodbye to her friend."],a:0},
+ {de:"Die Schweiz hat vier offizielle Landessprachen.",o:["Switzerland has four official languages.","Switzerland has four big cities.","Switzerland has four neighbours."],a:0},
+ {de:"Am Anfang ist es schwer, sich in einem neuen Land einzuleben.",o:["At first it's hard to settle into a new country.","It's easy to make friends abroad.","New countries are always cheaper."],a:0},
+ {de:"Ich habe meine Entscheidung nie bereut.",o:["I have never regretted my decision.","I often change my mind.","I regret my decision a little."],a:0},
+ {de:"In manchen Kulturen h\u00e4lt man beim Sprechen mehr Abstand.",o:["In some cultures people keep more distance when talking.","In some cultures people talk very fast.","In some cultures people never shake hands."],a:0},
+ {de:"Ein freundliches L\u00e4cheln versteht man in jedem Land.",o:["A friendly smile is understood in every country.","Every country has its own language.","Smiling is rude in some countries."],a:0},
+ {de:"Ich m\u00f6chte in Deutschland ein Konto er\u00f6ffnen.",o:["I'd like to open an account in Germany.","I want to close my account.","I lost my bank card."],a:0},
+ {de:"Die Vielfalt der Sprachen geh\u00f6rt zum Alltag.",o:["The diversity of languages is part of everyday life.","Everyone speaks the same language.","Languages are only used at work."],a:0},
+ {de:"Er f\u00fchlt sich immer noch als Ausl\u00e4nder.",o:["He still feels like a foreigner.","He has become a citizen.","He wants to move abroad."],a:0},
+ {de:"Sie hat sich schnell in Berlin eingelebt.",o:["She settled into Berlin quickly.","She is moving away from Berlin.","She dislikes Berlin."],a:0},
+ {de:"Nonverbale Signale sind oft wichtiger als Worte.",o:["Non-verbal signals are often more important than words.","Words are always clearer than gestures.","Only words matter in conversation."],a:0},
+ {de:"Ein Auslandsjahr erweitert den Horizont.",o:["A year abroad broadens your horizons.","A year abroad is a waste of time.","A year abroad is only about language."],a:0},
+];
+let sIdx=0;
+function lring(){let h="";for(let i=0;i<SCENES.length;i++)h+=`<span class="dot ${i<=sIdx?'on':''}"></span>`;document.getElementById("lring").innerHTML=h+`<span style="margin-left:6px">${sIdx+1} / ${SCENES.length}</span>`;}
+function loadScene(){const sc=SCENES[sIdx];document.getElementById("lmsg").textContent="";document.getElementById("lhint").textContent="Tap \u25b6, then choose the meaning";const o=document.getElementById("lopts");o.innerHTML="";
+  sc.o.map((t,i)=>i).sort(()=>Math.random()-.5).forEach(i=>{const d=document.createElement("button");d.className="opt";d.textContent=sc.o[i];
+    d.addEventListener("click",()=>{if(i===sc.a){d.classList.add("ok");document.getElementById("lmsg").textContent="Genau richtig! \ud83c\udf3f";}else{d.classList.add("no");document.getElementById("lmsg").textContent="Fast \u2014 h\u00f6r nochmal. \ud83d\ude42";}});o.appendChild(d);});lring();}
+function playScene(){say(SCENES[sIdx].de,0.82);document.getElementById("lhint").textContent="Now tap what it means";}
+function nextScene(){sIdx=(sIdx+1)%SCENES.length;loadScene();}
+loadScene();
+
+/* ================= FAMILIES & CONFUSABLES ================= */
+const MODS=["All",...new Set(VOCAB.map(v=>v[5]))];
+const fmod=document.getElementById("fmod"),flv=document.getElementById("flv"),fsearch=document.getElementById("fsearch");
+fmod.innerHTML=MODS.map(m=>`<option>${m}</option>`).join("");
+flv.innerHTML=["All levels","B1","B2"].map(x=>`<option>${x}</option>`).join("");
+fmod.onchange=flv.onchange=renderFam; fsearch.oninput=renderFam;
+function renderFam(){
+  const list=document.getElementById("famlist");list.innerHTML="";
+  const q=fsearch.value.toLowerCase(),mod=fmod.value,lv=flv.value;
+  let n=0;
+  VOCAB.forEach((v,i)=>{
+    if(mod!=="All"&&v[5]!==mod)return;
+    if(lv!=="All levels"&&v[2].toUpperCase()!==lv)return;
+    if(q&&!(v[0].toLowerCase().includes(q)||v[1].toLowerCase().includes(q)))return;
+    const ex=EXTRA[i]||["",""];
+    const d=document.createElement("div");d.className="wf";
+    d.innerHTML=`<div class="top"><span class="w">${v[0]} <span class="lv">${v[2].toUpperCase()}</span></span>
+      <button class="spk" onclick="say(cleanTTS('${v[0].replace(/'/g,"\\'")}'),0.8)">\ud83d\udd0a</button></div>
+      <div class="m">${v[1]} &nbsp;·&nbsp; <i>/ ${v[3]} /</i></div>
+      <div class="fam"><b>Wortfamilie:</b> ${ex[0]}</div>
+      <div class="con"><b>\u26a0 Verwechslungsgefahr:</b> ${ex[1]}</div>`;
+    list.appendChild(d);n++;
+  });
+  if(!n)list.innerHTML='<p style="text-align:center;color:var(--soft)">No words match.</p>';
+}
+renderFam();
+</script>
+</body>
+</html>
