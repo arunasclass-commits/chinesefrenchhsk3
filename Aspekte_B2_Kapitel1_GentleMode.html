@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>German · Gentle Mode — Kapitel 1</title>
+<style>
+  :root{--ink:#2b3440;--soft:#5b6472;--bg:#f3f6fb;--card:#fff;--line:#e2e8f2;
+    --wer:#3b82f6;--verb:#ef4444;--wann:#10b981;--warum:#f59e0b;--wie:#8b5cf6;--wo:#ec4899;--was:#0ea5e9;--end:#6b7280;--neg:#dc2626;
+    --calm:#0e9f6e;--calmbg:#e7f6ef;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;padding-bottom:50px;}
+  header{background:linear-gradient(135deg,#2f6f6b,#3b82a6);color:#fff;padding:26px 20px 20px;text-align:center;}
+  header .kicker{letter-spacing:.15em;font-size:.68rem;text-transform:uppercase;opacity:.85;}
+  header h1{font-size:1.5rem;margin:6px 0 3px;font-weight:800;}
+  header .sub{opacity:.92;font-size:.9rem;}
+  .calm{font-size:.82rem;opacity:.9;margin-top:6px;font-style:italic;}
+  .wrap{max-width:780px;margin:0 auto;padding:0 16px;}
+  nav{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin:16px 0 8px;}
+  nav button{border:1px solid var(--line);background:#fff;color:#2f6f6b;padding:9px 13px;border-radius:999px;font-size:.83rem;font-weight:700;cursor:pointer;}
+  nav button.active{background:#2f6f6b;color:#fff;border-color:#2f6f6b;}
+  section{display:none;} section.on{display:block;animation:fade .3s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 3px 12px rgba(30,50,80,.05);margin-bottom:14px;}
+  .lead{color:var(--soft);font-size:.9rem;margin:8px 0 14px;text-align:center;}
+  .ring{display:flex;align-items:center;gap:10px;justify-content:center;color:var(--soft);font-size:.82rem;margin-bottom:8px;}
+  .dot{width:9px;height:9px;border-radius:50%;background:#dbe3ee;} .dot.on{background:var(--calm);}
+  /* builder */
+  .slots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0 14px;}
+  .slot{min-width:92px;min-height:64px;border:2px dashed #cfd8e6;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px;background:#fbfdff;transition:.2s;}
+  .slot .cap{font-size:.62rem;text-transform:uppercase;letter-spacing:.04em;color:var(--soft);font-weight:700;margin-bottom:3px;}
+  .slot.verb{border-color:var(--verb);box-shadow:0 0 0 3px rgba(239,68,68,.12);}
+  .slot.filled{border-style:solid;}
+  .slot.hintglow{border-color:var(--calm);box-shadow:0 0 0 4px rgba(14,159,110,.18);}
+  .bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:12px;background:#f7faff;border-radius:12px;min-height:56px;}
+  .blk{padding:9px 13px;border-radius:10px;font-weight:700;font-size:1rem;color:#fff;cursor:grab;user-select:none;border:none;box-shadow:0 2px 5px rgba(0,0,0,.08);}
+  .blk.placed{cursor:default;}
+  .k-wer{background:var(--wer);} .k-verb{background:var(--verb);} .k-wann{background:var(--wann);} .k-warum{background:var(--warum);}
+  .k-wie{background:var(--wie);} .k-wo{background:var(--wo);} .k-was{background:var(--was);} .k-end{background:var(--end);} .k-neg{background:var(--neg);}
+  .shake{animation:sh .3s;} @keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+  .done{background:var(--calmbg);border:1px solid #b7e4cf;border-radius:12px;padding:12px 14px;margin-top:12px;display:none;}
+  .done.show{display:block;} .done .de{font-size:1.15rem;font-weight:700;}
+  .done .en{color:var(--soft);font-size:.9rem;margin-top:3px;}
+  .btnrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px;}
+  .btn{border:none;color:#fff;padding:10px 16px;border-radius:10px;font-weight:700;font-size:.86rem;cursor:pointer;}
+  .btn.calm{background:var(--calm);} .btn.soft{background:#94a3b8;} .btn.hear{background:#3b82a6;}
+  .legend{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px;font-size:.68rem;}
+  .legend span{padding:3px 8px;border-radius:999px;color:#fff;font-weight:700;}
+  /* listen */
+  .scene{text-align:center;}
+  .bigplay{background:#3b82a6;color:#fff;border:none;border-radius:16px;padding:16px 22px;font-size:1.05rem;font-weight:800;cursor:pointer;margin:6px 0 4px;}
+  .opts{display:flex;flex-direction:column;gap:9px;margin-top:12px;}
+  .opt{border:1px solid var(--line);background:#fff;border-radius:11px;padding:12px 14px;cursor:pointer;font-size:.98rem;text-align:left;transition:.15s;}
+  .opt:hover{border-color:#3b82a6;background:#f6fbff;}
+  .opt.ok{background:var(--calmbg);border-color:#57c79a;}
+  .opt.no{background:#fdecec;border-color:#f2a9a9;}
+  /* memory */
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
+  .mc{aspect-ratio:1/1.15;border-radius:12px;border:1px solid var(--line);background:#2f6f6b;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;font-weight:700;font-size:.9rem;cursor:pointer;transition:.2s;}
+  .mc.face{background:#fff;color:var(--ink);border-color:#cfe0dc;}
+  .mc.matched{background:var(--calmbg);color:#1c6b4a;border-color:#8fd6b6;cursor:default;}
+  .mc .q{opacity:.4;font-size:1.3rem;}
+  @media(max-width:520px){.grid{grid-template-columns:repeat(3,1fr);} .slot{min-width:80px;}}
+  /* personal */
+  .frame{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;margin:8px 0 4px;}
+  .pick{border:1px dashed #b9c6d8;border-radius:9px;padding:5px 10px;color:#2f6f6b;background:#f2f8f6;cursor:pointer;}
+  .pick.set{border-style:solid;color:#fff;}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:8px 0;}
+  .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:.86rem;font-weight:600;cursor:pointer;color:#2f6f6b;}
+  .chip.active{background:#2f6f6b;color:#fff;border-color:#2f6f6b;}
+  input.city{border:1px solid #cfd8e6;border-radius:8px;padding:6px 10px;font-size:1rem;width:130px;}
+  footer{max-width:780px;margin:22px auto 0;padding:0 16px;color:var(--soft);font-size:.78rem;text-align:center;}
+  .msg{text-align:center;font-weight:700;color:var(--calm);min-height:22px;margin-top:8px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">Deutsch B2 · Kapitel 1 · Heimat</div>
+  <h1>🌿 Gentle Mode</h1>
+  <div class="sub">Learn word order &amp; meaning by feel</div>
+  <div class="calm">No timers · no scores · about 5 minutes is plenty</div>
+</header>
+
+<div class="wrap">
+  <nav>
+    <button data-t="build" class="active">🧩 Word order</button>
+    <button data-t="listen">👂 Listen &amp; tap</button>
+    <button data-t="memory">🃏 Memory pairs</button>
+    <button data-t="me">💬 About me</button>
+  </nav>
+
+  <!-- BUILD -->
+  <section id="build" class="on">
+    <p class="lead">Drop each colored block into the matching slot. The <b style="color:var(--verb)">red verb</b> always sits in slot 2 — you'll feel it. Wrong spot? It just floats back. No stress.</p>
+    <div class="ring" id="bring"></div>
+    <div class="card">
+      <div class="slots" id="slots"></div>
+      <div class="bank" id="bbank"></div>
+      <div class="done" id="bdone"><div class="de" id="bde"></div><div class="en" id="ben"></div></div>
+      <div class="msg" id="bmsg"></div>
+      <div class="btnrow">
+        <button class="btn calm" onclick="hintBuild()">💡 Show me the next spot</button>
+        <button class="btn soft" onclick="resetBuild()">↺ Reset</button>
+        <button class="btn calm" onclick="nextBuild()">Next scene →</button>
+      </div>
+      <div class="legend">
+        <span style="background:var(--wer)">Wer?</span><span style="background:var(--verb)">Verb ②</span>
+        <span style="background:var(--wann)">Wann?</span><span style="background:var(--warum)">Warum?</span>
+        <span style="background:var(--wie)">Wie?</span><span style="background:var(--wo)">Wo/Wohin?</span>
+        <span style="background:var(--was)">Was?</span><span style="background:var(--end)">am Ende</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- LISTEN -->
+  <section id="listen">
+    <p class="lead">Press play, listen once (or twice), then tap what it means. Ear first — reading is optional.</p>
+    <div class="ring" id="lring"></div>
+    <div class="card scene">
+      <button class="bigplay" onclick="playScene()">▶ Hören</button>
+      <div style="font-size:.8rem;color:var(--soft)" id="lhint">Tap ▶ to hear a short scene</div>
+      <div class="opts" id="lopts"></div>
+      <div class="msg" id="lmsg"></div>
+      <div class="btnrow"><button class="btn calm" onclick="nextScene()">Next →</button></div>
+    </div>
+  </section>
+
+  <!-- MEMORY -->
+  <section id="memory">
+    <p class="lead">Turn over two cards to find a German word and its meaning. No clock — take your time.</p>
+    <div class="card">
+      <div class="grid" id="mgrid"></div>
+      <div class="msg" id="mmsg"></div>
+      <div class="btnrow"><button class="btn calm" onclick="newMemory()">🌱 New set</button></div>
+    </div>
+  </section>
+
+  <!-- ABOUT ME -->
+  <section id="me">
+    <p class="lead">Build a true sentence about you. Same word order as German — just with your life in it. Then hear it.</p>
+    <div class="card">
+      <div class="frame">
+        <span class="pick k-wer set">Ich</span>
+        <span class="pick k-verb set">bin</span>
+        <span class="pick" id="pZeit">…wann?</span>
+        <span class="pick" id="pGrund">…warum?</span>
+        <span>nach</span><input class="city" id="pOrt" value="Berlin">
+        <span class="pick k-end set">gezogen.</span>
+      </div>
+      <div style="text-align:center;font-size:.8rem;color:var(--soft)">Pick a time and a reason:</div>
+      <div style="font-size:.72rem;color:var(--soft);text-align:center;margin-top:8px">⏱ Wann? (time)</div>
+      <div class="chips" id="cZeit"></div>
+      <div style="font-size:.72rem;color:var(--soft);text-align:center">💛 Warum? (reason)</div>
+      <div class="chips" id="cGrund"></div>
+      <div class="done show" id="medone" style="text-align:center">
+        <div class="de" id="mede"></div><div class="en" id="meen"></div>
+      </div>
+      <div class="btnrow"><button class="btn hear" onclick="hearMe()">🔊 Hör dir deinen Satz an</button></div>
+      <p style="font-size:.78rem;color:var(--soft);text-align:center;margin-top:8px">Order: <b style="color:var(--wann)">time</b> → <b style="color:var(--warum)">reason</b> → <b style="color:var(--wo)">place</b>. That's the German rhythm (te-ka-mo-lo).</p>
+    </div>
+  </section>
+</div>
+
+<footer>🌿 Gentle Mode · original examples using Kapitel 1 vocabulary. Audio uses your device's German voice.</footer>
+
+<script>
+/* ---------- TTS ---------- */
+let deVoice=null;
+function loadV(){ const vs=speechSynthesis.getVoices(); deVoice=vs.find(v=>/de(-|_)|deutsch|german/i.test(v.lang+" "+v.name))||null; }
+speechSynthesis.onvoiceschanged=loadV; loadV();
+function say(text,rate){ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang="de-DE"; if(deVoice)u.voice=deVoice; u.rate=rate||0.85; speechSynthesis.speak(u); }
+
+/* ---------- nav ---------- */
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("on"));document.getElementById(b.dataset.t).classList.add("on");
+  speechSynthesis.cancel();
+}));
+
+/* ================= 1) WORD-ORDER BUILDER ================= */
+// each slot: {cap, t, k}  in correct order; k=color/role key
+const BUILD=[
+ {en:"I emigrated to Australia last year for love.", s:[
+   {cap:"Wer?",t:"Ich",k:"wer"},{cap:"Verb ②",t:"bin",k:"verb"},{cap:"Wann?",t:"letztes Jahr",k:"wann"},
+   {cap:"Warum?",t:"aus Liebe",k:"warum"},{cap:"Wohin?",t:"nach Australien",k:"wo"},{cap:"am Ende",t:"ausgewandert.",k:"end"}]},
+ {en:"We signed the tenancy agreement yesterday.", s:[
+   {cap:"Wer?",t:"Wir",k:"wer"},{cap:"Verb ②",t:"haben",k:"verb"},{cap:"Wann?",t:"gestern",k:"wann"},
+   {cap:"Was?",t:"den Mietvertrag",k:"was"},{cap:"am Ende",t:"unterschrieben.",k:"end"}]},
+ {en:"She has been waiting longingly for her friend's visit for months.", s:[
+   {cap:"Wer?",t:"Sie",k:"wer"},{cap:"Verb ②",t:"wartet",k:"verb"},{cap:"Wann?",t:"seit Monaten",k:"wann"},
+   {cap:"Wie?",t:"sehnsüchtig",k:"wie"},{cap:"Worauf?",t:"auf ihren Besuch.",k:"wo"}]},
+ {en:"I quickly found new friends abroad.", s:[
+   {cap:"Wer?",t:"Ich",k:"wer"},{cap:"Verb ②",t:"habe",k:"verb"},{cap:"Wo?",t:"im Ausland",k:"wo"},
+   {cap:"Wie?",t:"schnell",k:"wie"},{cap:"Was?",t:"neue Freunde",k:"was"},{cap:"am Ende",t:"gefunden.",k:"end"}]},
+ {en:"I have never regretted my decision.", s:[
+   {cap:"Wer?",t:"Ich",k:"wer"},{cap:"Verb ②",t:"habe",k:"verb"},{cap:"Was?",t:"meine Entscheidung",k:"was"},
+   {cap:"nie",t:"nie",k:"neg"},{cap:"am Ende",t:"bereut.",k:"end"}]},
+ {en:"He occasionally rides his bike to work.", s:[
+   {cap:"Wer?",t:"Er",k:"wer"},{cap:"Verb ②",t:"fährt",k:"verb"},{cap:"Wann?",t:"gelegentlich",k:"wann"},
+   {cap:"Wie?",t:"mit dem Fahrrad",k:"wie"},{cap:"Wohin?",t:"zur Arbeit.",k:"wo"}]},
+];
+let bIdx=0;
+function renderBring(){ let h=""; for(let i=0;i<BUILD.length;i++) h+=`<span class="dot ${i<=bIdx?'on':''}"></span>`; document.getElementById("bring").innerHTML=h+`<span style="margin-left:6px">Scene ${bIdx+1} / ${BUILD.length}</span>`; }
+let bSel=null;
+function loadBuild(){
+  const p=BUILD[bIdx];
+  document.getElementById("bdone").classList.remove("show");
+  document.getElementById("bmsg").textContent="";
+  const slots=document.getElementById("slots"), bank=document.getElementById("bbank");
+  slots.innerHTML=""; bank.innerHTML=""; bSel=null;
+  p.s.forEach((sl,i)=>{
+    const d=document.createElement("div"); d.className="slot"+(sl.k==="verb"?" verb":""); d.dataset.i=i;
+    d.innerHTML=`<div class="cap">${sl.cap}</div>`;
+    d.addEventListener("dragover",e=>e.preventDefault());
+    d.addEventListener("drop",e=>{e.preventDefault(); if(dragBlk) tryPlace(dragBlk,d);});
+    d.addEventListener("click",()=>{ if(bSel) tryPlace(bSel,d); });
+    slots.appendChild(d);
+  });
+  const order=p.s.map((s,i)=>i).sort(()=>Math.random()-.5);
+  order.forEach(i=>{
+    const sl=p.s[i];
+    const b=document.createElement("button"); b.className="blk k-"+sl.k; b.textContent=sl.t; b.dataset.i=i;
+    b.setAttribute("draggable","true");
+    b.addEventListener("dragstart",()=>dragBlk=b);
+    b.addEventListener("dragend",()=>dragBlk=null);
+    b.addEventListener("click",()=>{ if(bSel===b){b.classList.remove("shake");bSel=null;return;} bSel=b; });
+    bank.appendChild(b);
+  });
+  renderBring();
+}
+let dragBlk=null;
+function tryPlace(blk,slot){
+  if(slot.classList.contains("filled")) return;
+  if(blk.dataset.i===slot.dataset.i){
+    blk.classList.add("placed"); blk.setAttribute("draggable","false");
+    slot.appendChild(blk); slot.classList.add("filled"); slot.classList.remove("hintglow");
+    bSel=null; checkBuild();
+  } else {
+    // gentle reject
+    slot.classList.add("shake"); setTimeout(()=>slot.classList.remove("shake"),300);
+    document.getElementById("bmsg").textContent="Fast! Dieser Block gehört woanders hin. 🙂";
+    setTimeout(()=>{document.getElementById("bmsg").textContent="";},1400);
+    bSel=null;
+  }
+}
+function checkBuild(){
+  const p=BUILD[bIdx];
+  if(document.querySelectorAll("#slots .slot.filled").length===p.s.length){
+    const de=p.s.map(x=>x.t).join(" ");
+    document.getElementById("bde").textContent=de;
+    document.getElementById("ben").textContent=p.en;
+    document.getElementById("bdone").classList.add("show");
+    document.getElementById("bmsg").textContent="Schön gemacht! 🌿";
+    say(de.replace(/[.]/g,""),0.82);
+  }
+}
+function hintBuild(){
+  const p=BUILD[bIdx];
+  const nextIdx=[...document.querySelectorAll("#slots .slot")].findIndex(s=>!s.classList.contains("filled"));
+  if(nextIdx<0)return;
+  const slot=document.querySelectorAll("#slots .slot")[nextIdx];
+  slot.classList.add("hintglow"); setTimeout(()=>slot.classList.remove("hintglow"),1500);
+  document.getElementById("bmsg").textContent="Suche den Block für: "+p.s[nextIdx].cap;
+  setTimeout(()=>{document.getElementById("bmsg").textContent="";},1800);
+}
+function resetBuild(){ loadBuild(); }
+function nextBuild(){ bIdx=(bIdx+1)%BUILD.length; loadBuild(); }
+loadBuild();
+
+/* ================= 2) LISTEN & TAP ================= */
+const SCENES=[
+ {de:"Ich bin aus Liebe nach Australien ausgewandert.",o:["I emigrated to Australia for love.","I travelled to Australia for work.","I studied for a year in Australia."],a:0},
+ {de:"Mein Handyvertrag läuft nächsten Monat aus.",o:["My phone contract ends next month.","I bought a new phone yesterday.","My phone is broken."],a:0},
+ {de:"Sie wartet sehnsüchtig auf den Besuch ihrer Freundin.",o:["She is longingly awaiting her friend's visit.","She is visiting her friend abroad.","She said goodbye to her friend."],a:0},
+ {de:"Die Schweiz hat vier offizielle Landessprachen.",o:["Switzerland has four official languages.","Switzerland has four big cities.","Switzerland has four neighbours."],a:0},
+ {de:"Am Anfang ist es schwer, sich in einem neuen Land einzuleben.",o:["At first it's hard to settle into a new country.","It's easy to make friends abroad.","New countries are always cheaper."],a:0},
+ {de:"Ich habe meine Entscheidung nie bereut.",o:["I have never regretted my decision.","I often change my mind.","I regret my decision a little."],a:0},
+ {de:"In manchen Kulturen hält man beim Sprechen mehr Abstand.",o:["In some cultures people keep more distance when talking.","In some cultures people talk very fast.","In some cultures people never shake hands."],a:0},
+ {de:"Ein freundliches Lächeln versteht man in jedem Land.",o:["A friendly smile is understood in every country.","Every country has its own language.","Smiling is rude in some countries."],a:0},
+];
+let sIdx=0;
+function renderLring(){ let h=""; for(let i=0;i<SCENES.length;i++)h+=`<span class="dot ${i<=sIdx?'on':''}"></span>`; document.getElementById("lring").innerHTML=h+`<span style="margin-left:6px">${sIdx+1} / ${SCENES.length}</span>`; }
+function loadScene(){
+  const sc=SCENES[sIdx];
+  document.getElementById("lmsg").textContent="";
+  document.getElementById("lhint").textContent="Tap ▶, then choose the meaning";
+  const opts=document.getElementById("lopts"); opts.innerHTML="";
+  sc.o.map((t,i)=>i).sort(()=>Math.random()-.5).forEach(i=>{
+    const d=document.createElement("button"); d.className="opt"; d.textContent=sc.o[i]; d.dataset.i=i;
+    d.addEventListener("click",()=>{
+      if(i===sc.a){ d.classList.add("ok"); document.getElementById("lmsg").textContent="Genau richtig! 🌿"; }
+      else { d.classList.add("no"); document.getElementById("lmsg").textContent="Fast — hör nochmal und probier weiter. 🙂"; }
+    });
+    opts.appendChild(d);
+  });
+  renderLring();
+}
+function playScene(){ say(SCENES[sIdx].de,0.82); document.getElementById("lhint").textContent="Now tap what it means"; }
+function nextScene(){ sIdx=(sIdx+1)%SCENES.length; loadScene(); }
+loadScene();
+
+/* ================= 3) MEMORY PAIRS ================= */
+const POOL=[
+ ["die Heimat","home / homeland"],["das Heimweh","homesickness"],["auswandern","to emigrate"],["die Erfahrung","experience"],
+ ["der Vorteil","advantage"],["der Nachteil","disadvantage"],["die Vielfalt","diversity"],["die Muttersprache","mother tongue"],
+ ["sich einleben","to settle in"],["bereuen","to regret"],["der Alltag","everyday life"],["die Meinung","opinion"],
+ ["das Missverständnis","misunderstanding"],["der Vorschlag","suggestion"],["sinnvoll","meaningful"],["üblich","usual"]
+];
+function newMemory(){
+  document.getElementById("mmsg").textContent="";
+  const pairs=[...POOL].sort(()=>Math.random()-.5).slice(0,6);
+  let cards=[]; pairs.forEach((p,i)=>{ cards.push({id:i,txt:p[0]}); cards.push({id:i,txt:p[1]}); });
+  cards.sort(()=>Math.random()-.5);
+  const g=document.getElementById("mgrid"); g.innerHTML="";
+  let first=null, lock=false, matched=0;
+  cards.forEach(c=>{
+    const el=document.createElement("div"); el.className="mc"; el.innerHTML='<span class="q">?</span>';
+    el.addEventListener("click",()=>{
+      if(lock||el.classList.contains("matched")||el===first)return;
+      el.classList.add("face"); el.textContent=c.txt;
+      if(!first){ first={el,c}; return; }
+      if(first.c.id===c.id){ el.classList.add("matched"); first.el.classList.add("matched"); first=null; matched++;
+        if(matched===6) document.getElementById("mmsg").textContent="Alle Paare gefunden! 🌿 Schön.";
+      } else {
+        lock=true; const f=first; setTimeout(()=>{ el.classList.remove("face");el.innerHTML='<span class="q">?</span>'; f.el.classList.remove("face");f.el.innerHTML='<span class="q">?</span>'; first=null;lock=false; },800);
+      }
+    });
+    g.appendChild(el);
+  });
+}
+newMemory();
+
+/* ================= 4) ABOUT ME ================= */
+const ZEIT=[["letztes Jahr","last year"],["vor zwei Jahren","two years ago"],["vor Kurzem","recently"],["dieses Jahr","this year"]];
+const GRUND=[["aus Liebe","for love"],["wegen der Arbeit","for work"],["für ein besseres Leben","for a better life"],["wegen der Familie","because of family"]];
+let mZeit=ZEIT[0], mGrund=GRUND[0];
+function chipRow(id,arr,cur,set){
+  const el=document.getElementById(id); el.innerHTML="";
+  arr.forEach(a=>{ const c=document.createElement("button"); c.className="chip"+(a[0]===cur[0]?" active":""); c.textContent=a[0];
+    c.addEventListener("click",()=>{ set(a); [...el.children].forEach(x=>x.classList.remove("active")); c.classList.add("active"); renderMe(); }); el.appendChild(c); });
+}
+function renderMe(){
+  const ort=document.getElementById("pOrt").value||"Berlin";
+  document.getElementById("pZeit").textContent=mZeit[0]; document.getElementById("pZeit").className="pick k-wann set";
+  document.getElementById("pGrund").textContent=mGrund[0]; document.getElementById("pGrund").className="pick k-warum set";
+  const de=`Ich bin ${mZeit[0]} ${mGrund[0]} nach ${ort} gezogen.`;
+  const en=`I moved to ${ort} ${mZeit[1]} ${mGrund[1]}.`;
+  document.getElementById("mede").textContent=de;
+  document.getElementById("meen").textContent=en;
+}
+document.getElementById("pOrt").addEventListener("input",renderMe);
+chipRow("cZeit",ZEIT,mZeit,a=>mZeit=a); chipRow("cGrund",GRUND,mGrund,a=>mGrund=a); renderMe();
+function hearMe(){ const ort=document.getElementById("pOrt").value||"Berlin"; say(`Ich bin ${mZeit[0]} ${mGrund[0]} nach ${ort} gezogen`,0.82); }
+</script>
+</body>
+</html>
