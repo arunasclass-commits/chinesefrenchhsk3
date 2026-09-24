@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>词卡 · 写拼音 — 22 个词语</title>
+<style>
+:root{--ink:#2c2118;--soft:#6b5a49;--paper:#fdf8f0;--card:#fff;
+  --red:#c0392b;--reddeep:#8e2b18;--redsoft:#f7e2de;--gold:#e6a817;--teal:#1f8a80;--tealsoft:#dff2ef;
+  --line:#e7dccb;--green:#2e8b57;--greensoft:#e4f4ea;--plum:#6b54a8;--plumsoft:#eeeaf6;
+  --clay:#a8763e;--claysoft:#f7eedf;--blue:#2c5e92;--bluesoft:#e7eef7;
+  --shadow:0 2px 0 rgba(0,0,0,.05),0 8px 22px rgba(80,60,30,.09);
+  --serif:'Noto Serif SC',ui-serif,"Songti SC","Source Han Serif SC",serif;
+  --zh:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{color:var(--ink);background:radial-gradient(circle at 10% 5%,#fff5e3 0,transparent 40%),
+  radial-gradient(circle at 92% 3%,#e8f5f2 0,transparent 36%),var(--paper);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.zh{font-family:var(--zh)}
+#app{max-width:920px;margin:0 auto;padding:12px 14px 50px}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:12px 16px;margin:8px 0 12px}
+.brand{display:flex;align-items:center;gap:12px}
+.mascot{width:42px;height:42px;flex:0 0 auto;border-radius:10px;background:var(--reddeep);display:grid;place-items:center;
+  font-family:var(--serif);font-weight:900;font-size:22px;color:#fff}
+.brand h1{margin:0;font-size:18px;font-weight:800}
+.brand p{margin:2px 0 0;font-size:12.5px;color:var(--soft)}
+.score{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chip{background:var(--tealsoft);border:1px solid #bfe4de;color:#146b62;border-radius:999px;padding:6px 13px;font-size:13px;font-weight:700;white-space:nowrap}
+.chip.g{background:#fdf0d8;border-color:#f0d79a;color:#8a6408}
+.chip.r{background:var(--redsoft);border-color:#eec4bc;color:#93291c}
+
+.namebar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);
+  border-radius:16px;padding:10px 15px;margin-bottom:12px;box-shadow:var(--shadow)}
+.namebar label{font-size:13px;font-weight:700;color:var(--soft)}
+#who{font:inherit;font-size:16px;font-weight:700;padding:8px 12px;border:1.5px solid var(--line);border-radius:11px;
+  background:#fffdf8;color:var(--ink);min-width:180px;flex:1 1 180px}
+#who:focus{outline:none;border-color:var(--gold)}
+.sw{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line);background:var(--card);
+  border-radius:999px;padding:7px 14px;font-size:13.5px;font-weight:700;color:var(--soft)}
+.sw .dot{width:34px;height:19px;border-radius:999px;background:#e3d6c0;position:relative;transition:.16s}
+.sw .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;
+  transition:.16s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.sw.on{color:var(--teal);border-color:#bfe4de;background:var(--tealsoft)}
+.sw.on .dot{background:var(--teal)}
+.sw.on .dot::after{left:17px}
+body.nopy .pyon{display:none!important}
+
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;position:sticky;top:0;z-index:40;padding:8px 0;
+  background:linear-gradient(var(--paper) 72%,rgba(253,248,240,.9))}
+.tab{flex:1 1 150px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:9px 12px;font-weight:700;font-size:14.5px;transition:.15s}
+.tab span{display:block;font-size:11px;font-weight:600;color:var(--soft);margin-top:1px}
+.tab:hover{border-color:#d9c7a9;transform:translateY(-1px)}
+.tab.on{background:var(--red);border-color:var(--red);color:#fff}
+.tab.on span{color:#fbe4e0}
+
+section.screen{display:none}
+section.screen.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:18px 18px 20px;margin-bottom:14px}
+h2.sec{margin:0 0 4px;font-size:17px;font-weight:800}
+p.scene{margin:0 0 14px;font-size:13px;color:var(--soft);line-height:1.6}
+.center{text-align:center}
+.prog{font-size:12.5px;color:var(--soft);font-weight:700;letter-spacing:.4px;text-transform:uppercase;text-align:center}
+.hint-line{text-align:center;font-size:12.5px;color:var(--soft);margin-top:12px}
+.btnrow{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.btn{font-weight:700;font-size:14px;border-radius:999px;padding:9px 18px;border:1.5px solid var(--line);background:var(--card);transition:.13s}
+.btn:hover{transform:translateY(-1px);border-color:#d9c7a9}
+.btn.primary{background:var(--red);border-color:var(--red);color:#fff}
+.btn:disabled{opacity:.5;cursor:default;transform:none}
+.fb{min-height:30px;text-align:center;font-size:16px;font-weight:700;margin-top:12px}
+.fb.ok{color:var(--green)} .fb.no{color:var(--red)}
+.fb small{display:block;font-size:13px;font-weight:600;color:var(--soft);margin-top:3px}
+.done{text-align:center;padding:18px 10px}
+.done .n{font-size:42px;font-weight:800;color:var(--red);line-height:1}
+.done p{color:var(--soft);font-size:14px;margin:8px 0 0}
+
+/* ---------- 1 · flashcards ---------- */
+.fc-index{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:14px}
+.fc-index button{font-family:var(--zh);font-size:17px;width:34px;height:34px;border-radius:9px;border:1.5px solid var(--line);background:#fffdf8}
+.fc-index button.cur{border-color:var(--red);background:var(--redsoft);color:var(--reddeep);font-weight:700}
+.flip{perspective:1400px;max-width:560px;margin:0 auto}
+.flip-in{position:relative;transition:transform .55s;transform-style:preserve-3d;min-height:430px}
+.flip.back .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:20px;
+  border:1px solid var(--line);background:#fffdf8;box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column;align-items:center}
+.face.b{transform:rotateY(180deg);align-items:stretch;overflow-y:auto}
+.glyph{width:min(72vw,280px);aspect-ratio:1;position:relative}
+.glyph svg{width:100%;height:100%;display:block}
+.glyph .hw{position:absolute;inset:0;display:none;background:#fffdf8}
+.glyph .hw.on{display:block}
+.front-hint{font-size:12.5px;color:var(--soft);margin-top:10px;font-weight:600}
+.legend{font-size:11.5px;color:var(--soft);margin-top:6px}
+.bk-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.bk-head .c{font-family:var(--serif);font-size:58px;font-weight:700;line-height:1}
+.bk-head .p{font-size:22px;font-weight:800;color:var(--reddeep)}
+.bk-head .m{font-size:15px;font-weight:700;color:var(--ink);flex-basis:100%}
+.badge{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:999px;margin:8px 0 2px}
+.k-pic{background:var(--tealsoft);color:var(--teal)} .k-idea{background:var(--bluesoft);color:var(--blue)}
+.k-mm{background:var(--claysoft);color:var(--clay)} .k-ms{background:var(--plumsoft);color:var(--plum)}
+.k-loan{background:var(--redsoft);color:var(--reddeep)} .k-gram{background:#efeae0;color:#6e5a38}
+.ety{font-size:14.2px;line-height:1.68;color:#463c33;margin:8px 0 10px}
+.ety b{color:var(--ink)}
+.parts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.part{background:var(--claysoft);border:1px solid #eadcc2;border-radius:11px;padding:6px 10px;text-align:center;min-width:64px}
+.part .pc{font-family:var(--serif);font-size:24px;color:var(--clay);line-height:1.15}
+.part .pr{font-size:10.5px;font-weight:700;color:var(--clay)}
+.plus{color:var(--soft);font-weight:800}
+.inword{font-size:13px;color:var(--soft);font-weight:600;border-top:1px dashed var(--line);padding-top:9px}
+.inword span{font-family:var(--zh);font-size:17px;color:var(--ink);font-weight:700;margin-right:10px;white-space:nowrap}
+
+/* ---------- 2 · match ---------- */
+.mgrid{display:grid;grid-template-columns:1fr 1.6fr;gap:12px;align-items:start}
+.mcol{display:flex;flex-direction:column;gap:9px}
+.mhead{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--soft);text-align:center;margin-bottom:2px}
+.mtile{border:1.5px solid var(--line);background:#fffdf8;border-radius:13px;padding:10px;text-align:center;transition:.13s;line-height:1.3}
+.mtile.h{font-family:var(--zh);font-size:32px;font-weight:600}
+.mtile.h small{display:block;font-family:system-ui,sans-serif;font-size:13px;font-weight:800;color:var(--reddeep)}
+.mtile.d{font-size:14.5px;font-weight:700;padding:14px 10px}
+.mtile:hover:not(.gone){border-color:var(--gold)}
+.mtile.sel{border-color:var(--gold);background:#fdf6e6;box-shadow:0 0 0 3px #f6e5c2}
+.mtile.gone{border-color:var(--green);background:var(--greensoft);color:#1d6b3f;opacity:.55;pointer-events:none}
+.bad{animation:shk .34s;border-color:var(--red)!important;background:var(--redsoft)!important}
+@keyframes shk{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* ---------- 3 · combine ---------- */
+.cword{display:flex;justify-content:center;align-items:center;gap:10px;margin:10px 0 4px}
+.cchar{width:94px;height:94px;border-radius:14px;border:2px solid var(--line);background:#fffdf8;display:grid;place-items:center;
+  font-family:var(--zh);font-size:54px;font-weight:600;position:relative}
+.cchar small{position:absolute;bottom:3px;left:0;right:0;text-align:center;font-family:system-ui,sans-serif;font-size:11.5px;font-weight:800;color:var(--reddeep)}
+.cslot{border:2.5px dashed #d9c7a9;background:#fffaf0;color:var(--ink)}
+.cslot.over{border-color:var(--gold);background:#fdf0d8}
+.cslot.good{border:2.5px solid var(--green);background:var(--greensoft);color:#1d6b3f}
+.cmean{text-align:center;font-size:15px;font-weight:700;color:var(--soft);margin-bottom:6px}
+.cpool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px}
+.ptile{width:72px;height:72px;border-radius:14px;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center;
+  font-family:var(--zh);font-size:36px;font-weight:600;position:relative;touch-action:none;user-select:none;
+  box-shadow:0 3px 10px -5px rgba(60,40,20,.35);transition:.12s}
+.ptile small{position:absolute;bottom:2px;left:0;right:0;text-align:center;font-family:system-ui,sans-serif;font-size:10.5px;font-weight:800;color:var(--reddeep)}
+.ptile.sel{outline:3px solid var(--gold);outline-offset:2px}
+.ptile.drag{position:fixed;z-index:200;pointer-events:none;transform:scale(1.08);box-shadow:0 14px 26px -10px rgba(60,40,20,.5)}
+.ptile.dead{opacity:.25;pointer-events:none}
+
+/* ---------- 4 · MCQ ---------- */
+.qword{font-family:var(--zh);font-size:76px;line-height:1.15;text-align:center;font-weight:500;margin:6px 0;letter-spacing:4px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;max-width:700px;margin:12px auto 0}
+.opt{border:1.5px solid var(--line);background:#fffdf8;border-radius:14px;padding:14px;text-align:left;font-size:15.5px;font-weight:700;transition:.12s}
+.opt:hover:not(:disabled){border-color:var(--gold);background:#fffaf0}
+.opt.good{background:var(--greensoft);border-color:var(--green);color:#1d6b3f}
+.opt.badopt{background:var(--redsoft);border-color:var(--red);color:var(--red)}
+
+/* ---------- 5 · report ---------- */
+.bignum{text-align:center;padding:10px 0 6px}
+.bignum .n{font-size:56px;font-weight:800;color:var(--red);line-height:1}
+.bignum .of{font-size:16px;color:var(--soft);font-weight:700}
+.bignum .nm{font-family:var(--zh);font-size:22px;font-weight:800;margin-top:6px}
+.bars{display:grid;gap:9px;margin:14px 0 4px}
+.bar{display:grid;grid-template-columns:150px 1fr 80px;gap:10px;align-items:center;font-size:13px;font-weight:700}
+.bar .t{color:var(--soft)} .bar .v{text-align:right}
+.bar .track{height:14px;border-radius:999px;background:#f2e9d8;overflow:hidden}
+.bar .fill{height:100%;background:linear-gradient(90deg,#e6a817,#2e8b57);width:0;transition:width .5s}
+.tally{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0 4px}
+.tcell{border:1.5px solid var(--line);border-radius:14px;padding:11px 14px;background:#fffdf8}
+.tcell .lab{font-size:12px;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.05em}
+.tcell .num{font-size:30px;font-weight:800;color:var(--red);line-height:1.15;margin-top:3px}
+.tcell .sub{font-size:12px;color:var(--soft);font-weight:600}
+.tcell.clean .num{color:var(--green)}
+table.rev,table.board{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+table.rev th,table.board th{background:#f7efe1;text-align:left;padding:8px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#7a6647;border-bottom:1px solid var(--line)}
+table.rev td,table.board td{padding:8px 10px;border-bottom:1px solid #f2ebde;vertical-align:top}
+table.rev td.c{font-family:var(--zh);font-size:25px;font-weight:600;white-space:nowrap;line-height:1.2}
+table.rev td.n{font-weight:800;color:var(--red);text-align:center;width:66px}
+table.rev td.w{color:var(--red);font-weight:700} table.rev td.r{color:var(--green);font-weight:700}
+table.board .sc{font-weight:800;color:var(--green);text-align:right}
+table.board tr.me td{background:#fffaf0}
+.empty{text-align:center;color:var(--green);font-weight:700;padding:14px 8px}
+h3.sub{margin:18px 0 4px;font-size:15px;font-weight:800}
+h3.sub:first-child{margin-top:0}
+p.note{font-size:12.5px;color:var(--soft);margin:2px 0 8px;line-height:1.6}
+footer{text-align:center;font-size:11.5px;color:var(--soft);margin-top:18px;line-height:1.8}
+@media(max-width:600px){.mgrid{grid-template-columns:1fr}.qword{font-size:58px}.cchar{width:78px;height:78px;font-size:44px}
+  .bar{grid-template-columns:104px 1fr 66px}.flip-in{min-height:470px}}
+
+.wfront{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1}
+.wfront .w{font-family:var(--serif);font-size:70px;font-weight:700;letter-spacing:6px;line-height:1.25;text-align:center}
+.wfront .n{font-size:13px;color:var(--soft);font-weight:700;margin-top:14px}
+.bk-big{text-align:center;margin-top:6px}
+.bk-big .c{font-family:var(--serif);font-size:52px;font-weight:700;line-height:1.15;letter-spacing:4px}
+.bk-big .p{font-size:27px;font-weight:800;color:var(--reddeep);margin-top:6px}
+.bk-big .m{font-size:18px;font-weight:700;margin-top:8px}
+.breakdown{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px;border-top:1px dashed var(--line);padding-top:14px}
+.bd{border:1px solid var(--line);background:#fff;border-radius:11px;padding:7px 10px;text-align:center;min-width:76px}
+.bd .c{font-family:var(--zh);font-size:27px;font-weight:600;line-height:1.1}
+.bd .p{font-size:12.5px;font-weight:800;color:var(--reddeep)}
+.bd .m{font-size:11px;color:var(--soft);font-weight:600;line-height:1.3}
+.qword{font-family:var(--zh);font-size:72px;line-height:1.2;text-align:center;font-weight:500;margin:6px 0;letter-spacing:5px}
+input.ans{font:inherit;font-size:26px;font-weight:700;text-align:center;padding:12px 14px;border:1.5px solid var(--line);
+  border-radius:14px;background:#fffdf8;width:100%;max-width:440px;color:var(--ink)}
+input.ans:focus{outline:none;border-color:var(--gold)}
+.noaudio{display:inline-block;font-size:12px;font-weight:700;color:#93291c;background:var(--redsoft);border:1px solid #eec4bc;border-radius:999px;padding:4px 12px}
+.wordgrid{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:12px}
+.wordgrid button{font-family:var(--zh);font-size:16px;padding:6px 10px;border-radius:10px;border:1.5px solid var(--line);background:#fffdf8}
+.wordgrid button.cur{border-color:var(--red);background:var(--redsoft);color:var(--reddeep);font-weight:700}
+</style></head>
+<body>
+<div id="app">
+  <div class="topbar"><div class="brand"><div class="mascot">词</div><div><h1>词卡 · 写拼音 — 22 个词语</h1><p>22 words — flashcards, then type the pinyin without tones</p></div></div>
+    <div class="score"><div class="chip" id="cScore">Score 0</div><div class="chip g">Max 44</div><div class="chip r" id="cMiss">Wrong 0</div></div></div>
+  <div class="namebar"><label for="who">姓名 Name</label><input id="who" placeholder="type your name…" autocomplete="off"></div>
+  <div class="tabs">
+    <button class="tab on" data-s="s-cards">1 · 词卡<span>Flashcards (22)</span></button>
+    <button class="tab" data-s="s-pin">2 · 写拼音<span>Type the pinyin (44)</span></button>
+    <button class="tab" data-s="s-report">3 · 成绩单<span>Score · mistakes per word</span></button>
+  </div>
+
+  <section class="screen active" id="s-cards"><div class="card">
+    <h2 class="sec">1 · 词卡 — Word flashcards</h2>
+    <p class="scene">Read the word and say its pinyin and meaning, then tap the card to check. The back also breaks the word
+      into its characters. Tap any word below to jump to it. Not scored — study here, then test yourself in tab 2.</p>
+    <div class="wordgrid" id="fIndex"></div><div class="prog" id="fProg"></div>
+    <div class="flip" id="fFlip" style="margin-top:10px"><div class="flip-in" style="min-height:380px">
+      <div class="face f" id="fFront"></div><div class="face b" id="fBack"></div></div></div>
+    <div class="btnrow"><button class="btn" id="fPrev">◀ 上一个</button><button class="btn primary" id="fTurn">↻ 翻面 Turn</button>
+      <button class="btn" id="fNext">下一个 ▶</button></div>
+    <div class="btnrow" style="margin-top:8px"><button class="btn" id="fSay">🔊 Hear it</button><button class="btn" id="fShuf">🔀 Shuffle</button></div>
+  </div></section>
+
+  <section class="screen" id="s-pin"><div class="card">
+    <h2 class="sec">2 · 写拼音 — Type the pinyin</h2>
+    <p class="scene">The word alone — <b>no pinyin, no meaning, no audio</b>. Type the pinyin <b>without tones</b>; spaces don’t
+      matter (<i>dadianhua</i> or <i>da dian hua</i>). 2 points first try, 1 after a miss. Every wrong spelling is kept for your report.</p>
+    <div class="center"><span class="noaudio">🔇 no pinyin · no meaning · no audio</span></div>
+    <div class="prog" id="pProg" style="margin-top:10px"></div><div class="qword zh" id="pWord">…</div>
+    <div class="center"><input class="ans" id="pInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="pinyin…"></div>
+    <div class="fb" id="pFb"></div>
+    <div class="btnrow"><button class="btn primary" id="pCheck">检查 Check</button><button class="btn" id="pSkip">跳过 Skip →</button></div>
+    <div class="hint-line">Section score: <b id="pScore">0</b> / 44</div>
+  </div></section>
+
+  <section class="screen" id="s-report">
+    <div class="card"><h2 class="sec">3 · 成绩单 — Report</h2>
+      <div class="bignum"><div><span class="n" id="rTot">0</span><span class="of"> / 44</span></div><div class="nm zh" id="rName">—</div></div>
+      <div class="tally" id="rTally"></div>
+      <div class="btnrow"><button class="btn primary" id="rSave">记录成绩 Add to the name board</button><button class="btn" id="rNew">下一位同学 Next student</button></div>
+      <div class="fb" id="rFb"></div></div>
+    <div class="card"><h3 class="sub">错题复习 — how many times each word was wrong</h3>
+      <p class="note">Sorted worst first: the word, how many times it was marked wrong, every spelling that was typed, and the
+        correct pinyin. Words answered right first time are not listed.</p>
+      <div id="rMiss"></div></div>
+    <div class="card"><h3 class="sub">光荣榜 Name board</h3>
+      <p class="note">Everyone who has finished on this device in this sitting, best first. Closing the page clears it.</p>
+      <div id="rBoard"></div></div>
+  </section>
+  <footer>爱睿娜的课堂 · Aruna's Class<br>www.chinesefrench.in</footer>
+</div>
+<script>
+var WORDS=[["总是","zǒngshì","always",[]],["终于","zhōngyú","finally; at last",[]],["爬","pá","to climb",[]],["山","shān","mountain; hill",[]],["锻炼","duànliàn","to exercise; to work out",[]],["照","zhào","to shine; to take (a photo)",[]],["相","xiàng","photo; appearance (in 照相)",[]],["鞋","xié","shoes",[]],["大衣","dàyī","overcoat",[]],["天气","tiānqì","weather",[]],["阴天","yīntiān","cloudy day",[]],["晴天","qíngtiān","sunny day",[]],["周末","zhōumò","weekend",[]],["下雨","xià yǔ","to rain",[]],["爬山","pá shān","to climb a mountain; to go hiking",[]],["锻炼身体","duànliàn shēntǐ","to exercise (the body)",[]],["运动鞋","yùndòngxié","sports shoes; trainers",[]],["带上","dài shàng","to take along; to bring",["dài shang"]],["打电话","dǎ diànhuà","to make a phone call",[]],["注意","zhùyì","to pay attention; to be careful",[]],["现在","xiànzài","now",[]],["好看","hǎokàn","good-looking; nice",[]]]; var CH={"总":["zǒng","always; general"],"是":["shì","to be; yes"],"终":["zhōng","end; finally"],"于":["yú","at; in (终于)"],"爬":["pá","to climb; to crawl"],"山":["shān","mountain"],"锻":["duàn","to forge (锻炼)"],"炼":["liàn","to temper; to train"],"照":["zhào","to shine; to photograph"],"相":["xiàng","photo; appearance"],"鞋":["xié","shoes"],"大":["dà","big"],"衣":["yī","clothing"],"天":["tiān","sky; day"],"气":["qì","air; weather"],"阴":["yīn","cloudy; shady"],"晴":["qíng","clear; sunny"],"周":["zhōu","week; circuit"],"末":["mò","end; tip"],"下":["xià","down; to fall"],"雨":["yǔ","rain"],"身":["shēn","body (the whole person)"],"体":["tǐ","body; physical form"],"运":["yùn","to move; transport"],"动":["dòng","to move"],"带":["dài","to bring; to carry"],"上":["shàng","up; on"],"打":["dǎ","to hit; to make (a call)"],"电":["diàn","electricity"],"话":["huà","speech; words"],"注":["zhù","to pour; to concentrate"],"意":["yì","idea; intention"],"现":["xiàn","to appear; now"],"在":["zài","at; in"],"好":["hǎo","good"],"看":["kàn","to look; to see"]}; var MAX=44;
+</script>
+<script>
+(function(){
+'use strict';
+var $=function(i){ return document.getElementById(i); };
+var zhVoice=null;
+function loadVoice(){ if(!('speechSynthesis' in window)) return; var v=speechSynthesis.getVoices();
+  zhVoice=v.filter(function(x){return /zh[-_]?CN/i.test(x.lang);})[0]||v.filter(function(x){return /zh|chinese/i.test(x.lang+x.name);})[0]||null; }
+if('speechSynthesis' in window){ loadVoice(); speechSynthesis.onvoiceschanged=loadVoice; }
+function say(t){ if(!('speechSynthesis' in window)) return; speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(t);
+  u.lang='zh-CN'; u.rate=.72; if(!zhVoice) loadVoice(); if(zhVoice) u.voice=zhVoice; speechSynthesis.speak(u); }
+var actx=null;
+function ding(ok){ try{ actx=actx||new (window.AudioContext||window.webkitAudioContext)(); var o=actx.createOscillator(),g=actx.createGain();
+  o.connect(g); g.connect(actx.destination); o.type=ok?'sine':'sawtooth'; o.frequency.value=ok?680:170;
+  g.gain.setValueAtTime(.0001,actx.currentTime); g.gain.exponentialRampToValueAtTime(.09,actx.currentTime+.02);
+  g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+.26); o.start(); o.stop(actx.currentTime+.28);}catch(e){} }
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.random()*(i+1)|0,t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function strip(s){ return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/ü/g,'v').replace(/[^a-z]/g,''); }
+
+var score=0, MISS={};
+function bump(w,typed,right){ if(!MISS[w]) MISS[w]={n:0,gave:[],right:right}; MISS[w].n++; MISS[w].gave.push(typed); }
+function missTotal(){ var n=0; for(var k in MISS) n+=MISS[k].n; return n; }
+function paint(){ $('cScore').textContent='Score '+score; $('cMiss').textContent='Wrong '+missTotal(); }
+var tabs=document.querySelectorAll('.tab');
+function show(id){ Array.prototype.forEach.call(tabs,function(x){ x.classList.toggle('on',x.dataset.s===id); });
+  Array.prototype.forEach.call(document.querySelectorAll('section.screen'),function(s){ s.classList.toggle('active',s.id===id); });
+  if('speechSynthesis' in window) speechSynthesis.cancel(); if(id==='s-report') report(); if(id==='s-pin') $('pInput').focus();
+  window.scrollTo({top:0,behavior:'smooth'}); }
+Array.prototype.forEach.call(tabs,function(t){ t.addEventListener('click',function(){ show(t.dataset.s); }); });
+
+/* ---------- 1 · flashcards ---------- */
+(function(){ var order=WORDS.slice(), i=0;
+  function load(){ var w=order[i]; $('fFlip').classList.remove('back');
+    $('fProg').textContent='Card '+(i+1)+' of '+order.length;
+    $('fFront').innerHTML='<div class="wfront"><div class="w zh">'+w[0]+'</div><div class="n">点一下翻面 · tap to turn over</div></div>';
+    var bd=w[0].split('').map(function(c){ var x=CH[c]||['','']; return '<div class="bd"><div class="c">'+c+'</div><div class="p">'+x[0]+'</div><div class="m">'+esc(x[1])+'</div></div>'; }).join('');
+    $('fBack').innerHTML='<div class="bk-big"><div class="c zh">'+w[0]+'</div><div class="p">'+w[1]+'</div><div class="m">'+esc(w[2])+'</div></div><div class="breakdown">'+bd+'</div>';
+    var box=$('fIndex'); box.innerHTML='';
+    order.forEach(function(x,k){ var b=document.createElement('button'); b.textContent=x[0]; if(k===i) b.className='cur';
+      b.addEventListener('click',function(){ i=k; load(); }); box.appendChild(b); }); }
+  function turn(){ $('fFlip').classList.toggle('back'); }
+  $('fFlip').addEventListener('click',turn); $('fTurn').addEventListener('click',turn);
+  $('fPrev').addEventListener('click',function(){ i=(i-1+order.length)%order.length; load(); });
+  $('fNext').addEventListener('click',function(){ i=(i+1)%order.length; load(); });
+  $('fShuf').addEventListener('click',function(){ order=shuffle(order); i=0; load(); });
+  $('fSay').addEventListener('click',function(){ say(order[i][0]); });
+  load(); })();
+
+/* ---------- 2 · type the pinyin ---------- */
+var P=(function(){ var order,idx,tries;
+  function finish(){ $('pProg').textContent=''; $('pWord').textContent='🎉'; $('pInput').style.display='none';
+    $('pCheck').disabled=true; $('pSkip').disabled=true; $('pFb').className='fb ok';
+    $('pFb').innerHTML='<div class="done"><div class="n">'+score+' / '+MAX+'</div><p>All '+WORDS.length+' words done — 做完了！</p></div>'; }
+  function load(){ if(idx>=order.length) return finish(); var w=order[idx]; tries=0;
+    $('pProg').textContent='Word '+(idx+1)+' of '+order.length; $('pWord').textContent=w[0];
+    $('pInput').value=''; $('pInput').style.display=''; $('pFb').className='fb'; $('pFb').innerHTML=''; $('pInput').focus(); }
+  function ok(w,raw){ var g=strip(raw); if(!g) return false; if(g===strip(w[1])) return true;
+    return (w[3]||[]).some(function(a){ return strip(a)===g; }); }
+  function check(){ var w=order[idx]; if(!w) return; var typed=$('pInput').value.trim(); if(!typed) return;
+    if(ok(w,typed)){ var g=tries?1:2; score+=g; $('pScore').textContent=score; paint(); ding(true);
+      $('pFb').className='fb ok'; $('pFb').innerHTML='✓ 对了！ <b>'+w[1]+'</b><small>'+esc(w[2])+'  ·  +'+g+' points</small>';
+      idx++; setTimeout(load,1300);
+    } else { tries++; bump(w[0],typed,w[1]); paint(); ding(false);
+      $('pFb').className='fb no'; $('pFb').innerHTML='✗ 不对 — try again<small>'+(tries===1?'1 point still available':'read each character again')+'</small>';
+      $('pInput').select(); } }
+  $('pCheck').addEventListener('click',check); $('pInput').addEventListener('keydown',function(e){ if(e.key==='Enter') check(); });
+  $('pSkip').addEventListener('click',function(){ var w=order[idx]; if(!w) return; bump(w[0],'skipped',w[1]); paint();
+    $('pFb').className='fb no'; $('pFb').innerHTML='答案 Answer: <b>'+w[1]+'</b><small>'+esc(w[2])+'</small>'; idx++; setTimeout(load,1150); });
+  return { reset:function(){ order=shuffle(WORDS); idx=0; tries=0; $('pScore').textContent='0';
+    $('pCheck').disabled=false; $('pSkip').disabled=false; load(); } }; })();
+
+/* ---------- 3 · report ---------- */
+var BOARD=[];
+function report(){ $('rTot').textContent=score; $('rName').textContent=($('who').value||'').trim()||'—';
+  var k=Object.keys(MISS), tot=missTotal();
+  $('rTally').innerHTML='<div class="tcell'+(tot?'':' clean')+'"><div class="lab">Total mistakes</div><div class="num">'+tot+
+    '</div><div class="sub">time'+(tot===1?'':'s')+' marked wrong</div></div>'+
+    '<div class="tcell'+(k.length?'':' clean')+'"><div class="lab">Words with mistakes</div><div class="num">'+k.length+
+    '</div><div class="sub">of '+WORDS.length+' words</div></div>'+
+    '<div class="tcell clean"><div class="lab">Right first time</div><div class="num">'+(WORDS.length-k.length)+
+    '</div><div class="sub">words</div></div>';
+  if(!k.length){ $('rMiss').innerHTML='<div class="empty">零错误 — every word right first time. 太棒了！</div>'; }
+  else { k.sort(function(a,b){ return MISS[b].n-MISS[a].n; });
+    $('rMiss').innerHTML='<table class="rev"><tr><th>词语 Word</th><th>Times wrong</th><th>What you typed</th><th>Correct pinyin</th></tr>'+
+      k.map(function(x){ var e=MISS[x];
+        return '<tr><td class="c">'+esc(x)+'</td><td class="n">'+e.n+'</td><td class="w">'+e.gave.map(esc).join(' · ')+'</td><td class="r">'+esc(e.right)+'</td></tr>'; }).join('')+'</table>'; }
+  if(!BOARD.length){ $('rBoard').innerHTML='<div class="empty" style="color:var(--soft)">Nobody yet — finish and tap <b>记录成绩</b>.</div>'; return; }
+  $('rBoard').innerHTML='<table class="board"><tr><th>#</th><th>姓名 Name</th><th>Mistakes</th><th>Words missed</th><th>When</th><th style="text-align:right">Score</th></tr>'+
+    BOARD.slice().sort(function(a,b){ return b.score-a.score; }).map(function(e,i){
+      return '<tr'+(e.fresh?' class="me"':'')+'><td>'+(i+1)+'</td><td><b>'+esc(e.name)+'</b></td><td>'+e.miss+'</td><td>'+e.words+'</td><td>'+e.when+'</td><td class="sc">'+e.score+' / '+MAX+'</td></tr>'; }).join('')+'</table>'; }
+$('rSave').addEventListener('click',function(){ var n=($('who').value||'').trim();
+  if(!n){ $('rFb').className='fb no'; $('rFb').innerHTML='请先写名字<small>type your name at the top first</small>'; $('who').focus(); return; }
+  BOARD.forEach(function(e){ e.fresh=false; }); var d=new Date();
+  BOARD.push({name:n,score:score,miss:missTotal(),words:Object.keys(MISS).length,fresh:true,
+    when:('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)});
+  $('rFb').className='fb ok'; $('rFb').innerHTML='✓ '+esc(n)+' 记录好了 — added to the name board'; report(); });
+$('rNew').addEventListener('click',function(){ score=0; MISS={}; $('who').value=''; P.reset(); paint();
+  $('rFb').className='fb'; $('rFb').innerHTML='新的一位同学 — everything is reset. The name board is kept.'; show('s-cards'); });
+$('who').addEventListener('input',function(){ $('rName').textContent=($('who').value||'').trim()||'—'; });
+P.reset(); paint(); report();
+})();
+</script></body></html>
