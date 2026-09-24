@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>33 words: 报道 to 惭愧</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ffffff;--ink:#1f2328;--muted:#646a73;--line:#e4e1da;--soft:#f6f4f0;--card:#ffffff;--seal:#b8322a;--jade:#1d7a62;--jadeSoft:#e3f3ee;--gold:#a8741a;--goldSoft:#fbf1dc;--sealSoft:#fbe8e6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15171a;--ink:#ecebe7;--muted:#a3a7ad;--line:#33373d;--soft:#22262b;--card:#1d2024;--seal:#e0665c;--jade:#4cc3a1;--jadeSoft:#1b332c;--gold:#e0b25a;--goldSoft:#3a2f1a;--sealSoft:#3b2220}}
+:root[data-theme="dark"]{--bg:#15171a;--ink:#ecebe7;--muted:#a3a7ad;--line:#33373d;--soft:#22262b;--card:#1d2024;--seal:#e0665c;--jade:#4cc3a1;--jadeSoft:#1b332c;--gold:#e0b25a;--goldSoft:#3a2f1a;--sealSoft:#3b2220}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent}
+.han{font-family:"Noto Serif SC","Songti SC","SimSun","PingFang SC","Microsoft YaHei",serif}
+.wrap{max-width:560px;margin:0 auto;padding:10px 12px 40px}
+header{display:flex;align-items:center;gap:10px;padding:6px 0 8px}
+.seal{width:42px;height:42px;border-radius:8px;background:var(--seal);color:#fff;display:grid;place-items:center;font-size:24px;font-weight:700;flex:none}
+header h1{font-size:17px;margin:0;line-height:1.2}
+header p{margin:0;color:var(--muted);font-size:13px}
+.voice{margin-left:auto;background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:6px 9px;font:inherit;font-size:14px;cursor:pointer}
+#voiceBox{display:none;background:var(--soft);border-radius:10px;padding:10px;margin-bottom:8px;font-size:14px}
+#voiceBox.on{display:block}
+#voiceBox select{width:100%;margin-top:6px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:14px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:6px;padding:6px 0 8px;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:1 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 13px;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+nav button.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+section{display:none}section.on{display:block}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.row{display:flex;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:10px 12px;font:inherit;font-size:15px;font-weight:700;cursor:pointer;min-height:44px}
+.btn.main{background:var(--jade);border-color:var(--jade);color:#fff}
+.btn.grow{flex:1}
+.muted{color:var(--muted);font-size:14px}
+.score{font-size:14px;color:var(--muted);text-align:right}
+
+/* Flashcards */
+.search{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:15px;margin-bottom:8px}
+.fc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;user-select:none}
+.fcTop{display:flex;justify-content:space-between;align-items:center}
+.say{border:none;background:var(--soft);color:var(--ink);border-radius:999px;width:40px;height:40px;font-size:18px;cursor:pointer;flex:none}
+.fcHan{text-align:center;font-size:64px;font-weight:700;line-height:1.15;padding:10px 0 4px;letter-spacing:.04em}
+.tapHint{text-align:center;color:var(--muted);font-size:13px}
+.back{display:none;border-top:1px dashed var(--line);margin-top:10px;padding-top:10px}
+.fc.open .back{display:block}.fc.open .tapHint{display:none}
+.py{font-size:22px;color:var(--seal);font-weight:700;text-align:center}
+.mean{text-align:center;font-size:17px;margin:2px 0 10px}
+.ch{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.chBig{font-size:34px;line-height:1;width:48px;height:48px;border:2px solid var(--seal);color:var(--seal);border-radius:6px;display:grid;place-items:center;flex:none}
+.ch b{color:var(--seal)}
+.ch p{margin:3px 0 0;font-size:14.5px}
+.note{background:var(--goldSoft);border-radius:10px;padding:9px 11px;margin-top:8px;font-size:14.5px}
+.note .han{font-size:16px}
+.fcNav{margin-top:10px}
+
+/* Tap match */
+.grid2{display:grid;grid-template-columns:1fr 1.35fr;gap:8px}
+.col{display:flex;flex-direction:column;gap:7px}
+.tile{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:8px;min-height:50px;font:inherit;font-size:14.5px;cursor:pointer;text-align:center}
+.tile.han{font-size:22px}
+.tile.sel,.chip.sel{border-color:var(--gold);background:var(--goldSoft)}
+.tile.ok{border-color:var(--jade);background:var(--jadeSoft);opacity:.55;pointer-events:none}
+.shake{animation:sh .32s}
+@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.msg{margin:10px 0;font-size:14.5px;min-height:20px}
+
+/* Type + quiz */
+.qCard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+.qHan{font-size:54px;font-weight:700;line-height:1.2}
+.qGloss{font-size:19px;font-weight:700;margin:6px 0 2px}
+.inp{width:100%;font:inherit;font-size:20px;padding:12px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);text-align:center;margin:10px 0 8px}
+.fb{margin-top:10px;border-radius:10px;padding:9px;font-size:15px;display:none}
+.fb.ok{display:block;background:var(--jadeSoft)}
+.fb.no{display:block;background:var(--sealSoft)}
+.fb .py{font-size:19px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.opt{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:10px 8px;min-height:56px;font:inherit;font-size:15px;cursor:pointer}
+.opt.han{font-size:24px}
+.opt.ok{border-color:var(--jade);background:var(--jadeSoft)}
+.opt.no{border-color:var(--seal);background:var(--sealSoft)}
+
+/* Drag */
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:10px;background:var(--soft);border-radius:12px;min-height:66px}
+.chip{touch-action:none;user-select:none;-webkit-user-select:none;border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:6px 12px;font-size:24px;cursor:grab;min-width:56px;text-align:center}
+.chip.used{visibility:hidden}
+.chip.lift{opacity:.3}
+.ghost{position:fixed;left:0;top:0;pointer-events:none;z-index:50;transform:translate(-50%,-60%) scale(1.1);box-shadow:0 6px 18px rgba(0,0,0,.25);border-color:var(--gold)}
+.slots{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+.slot{display:flex;align-items:center;gap:10px;border:1.5px dashed var(--line);border-radius:10px;padding:6px 10px;min-height:52px;cursor:pointer;background:var(--card)}
+.slot .drop{width:74px;min-height:38px;border-radius:8px;background:var(--soft);display:grid;place-items:center;font-size:21px;flex:none}
+.slot .gl{font-size:14.5px}
+.slot.over{border-color:var(--gold);border-style:solid;background:var(--goldSoft)}
+.slot.done{border-style:solid;border-color:var(--jade);background:var(--jadeSoft)}
+.slot.done .drop{background:transparent;color:var(--jade);font-weight:700}
+@media (max-width:370px){.fcHan{font-size:54px}.tile.han{font-size:20px}.chip{font-size:21px}}
+@media (prefers-reduced-motion:reduce){.shake{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="seal han">词</div>
+  <div><h1>33 words: 报道 to 惭愧</h1><p>Cards, match, type, quiz, drag</p></div>
+  <button class="voice" id="voiceBtn" aria-label="Voice settings">🔊 Voice</button>
+</header>
+<div id="voiceBox">
+  Tap 🔊 once to allow sound. If it sounds English, pick a Chinese voice:
+  <select id="voiceSel"></select>
+</div>
+
+<nav>
+  <button class="active" data-t="cards">Cards</button>
+  <button data-t="match">Match</button>
+  <button data-t="type">Type pinyin</button>
+  <button data-t="quiz">Quiz</button>
+  <button data-t="drag">Drag</button>
+</nav>
+
+<section id="cards" class="on">
+  <input class="search" id="fcSearch" placeholder="Find a word (hanzi, pinyin or English)" autocomplete="off">
+  <div class="fc" id="fc">
+    <div class="fcTop"><span class="muted" id="fcCount"></span><button class="say" id="fcSay" aria-label="Play sound">🔊</button></div>
+    <div class="fcHan han" id="fcHan"></div>
+    <div class="tapHint">Tap card to see meaning and character story</div>
+    <div class="back">
+      <div class="py" id="fcPy"></div>
+      <div class="mean" id="fcMean"></div>
+      <div id="fcChars"></div>
+      <div id="fcNote"></div>
+    </div>
+  </div>
+  <div class="row fcNav">
+    <button class="btn grow" id="fcPrev">◀ Back</button>
+    <button class="btn" id="fcShuf">Shuffle</button>
+    <button class="btn main grow" id="fcNext">Next ▶</button>
+  </div>
+</section>
+
+<section id="match">
+  <div class="score" id="mScore"></div>
+  <div class="grid2"><div class="col" id="mL"></div><div class="col" id="mR"></div></div>
+  <div class="msg" id="mMsg"></div>
+  <button class="btn main" id="mNewBtn" style="width:100%">New round</button>
+</section>
+
+<section id="type">
+  <div class="score" id="tScore">0 / 0</div>
+  <div class="qCard">
+    <div class="qHan han" id="tHan"></div>
+    <div class="muted" id="tHint"></div>
+    <input class="inp" id="tIn" placeholder="type pinyin, no tones" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
+    <div class="row"><button class="say" id="tSay" aria-label="Play sound">🔊</button><button class="btn main grow" id="tBtn">Check</button></div>
+    <div class="muted" style="margin-top:6px">Spaces don't matter. For ü type u or v.</div>
+    <div class="fb" id="tFb"></div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="score" id="qScore">0 / 0</div>
+  <div class="qCard"><div id="qPrompt"></div></div>
+  <div class="opts" id="qOpts"></div>
+  <div class="fb" id="qFb"></div>
+  <button class="btn main" id="qNext" style="width:100%;margin-top:10px;display:none">Next question</button>
+</section>
+
+<section id="drag">
+  <div class="muted" style="margin-bottom:6px">Drag a word onto its meaning. Or tap a word, then tap the meaning.</div>
+  <div class="chips" id="dChips"></div>
+  <div class="slots" id="dSlots"></div>
+  <div class="msg" id="dMsg"></div>
+  <button class="btn main" id="dNewBtn" style="width:100%">New round</button>
+</section>
+</div>
+
+<script>
+/* ---------- STATE ---------- */
+let voice=null, allV=[];
+let fcOrder=[], fcI=0;
+let mSel=null, mDone=0, mTries=0, mRight=0;
+let tQ=null, tScore=0, tTotal=0, tAnswered=false;
+let qQ=null, qScore=0, qTotal=0, qAnswered=false;
+let dSel=null, dDone=0, drag=null;
+let lastPick=null;
+
+/* ---------- DATA ---------- */
+const E={
+"报":["bào","report; repay","Old form 報: handcuffs 幸 + a hand holding down a kneeling person. First meaning: judge a crime and report it. Then: report back, repay."],
+"道":["dào","road; way; to say","辶 walking + 首 head. The road your head leads you along. A road → a way → to say."],
+"抱":["bào","to hold in arms","扌 hand + 包 wrap (also gives the sound). Wrap with your arms = hug, hold."],
+"怨":["yuàn","resentment","心 heart + 夗 (sound; a person curled up). Bitterness curled up in the heart."],
+"背":["bèi","back (of the body)","月 body part + 北 (two people back to back; also sound). 北 first meant “back”; 月 was added to show it is the body."],
+"景":["jǐng","view; scene","日 sun + 京 tall building (sound). Sunlight on high buildings = a view, a scene."],
+"被":["bèi","quilt; by (passive)","衤 clothing + 皮 skin/cover (sound). A cloth that covers you = quilt. Later borrowed for “by” in passive sentences."],
+"子":["zi","child; noun ending","Picture of a baby with arms out. In 被子 and 脖子 it is a light noun ending, said in the neutral tone."],
+"本":["běn","root; basic","木 tree + a short line at the roots. It points to the root = origin, basic."],
+"领":["lǐng","neck; collar; to lead","页 head + 令 order (sound). The collar sits under the head; you lead someone by the collar."],
+"此":["cǐ","this","止 foot + 匕 person. The spot where a person is standing = this, here."],
+"地":["dì","ground; place","土 earth + 也 (sound). The earth under you = ground, place."],
+"必":["bì","must","Scholars think it first drew a weapon handle, then was borrowed for “must”. Memory tip: a stroke cutting through 心 heart — you must, with all your heart."],
+"要":["yào","want; important","First drew a person with hands on the waist (now written 腰). The waist is the centre of the body → important, need, want."],
+"毕":["bì","to finish","Old form 畢 drew a hunting net with a handle. Sweep everything into the net = complete, finish."],
+"竟":["jìng","to end; finally","音 music + 儿 person. The point where a piece of music ends → finally, in the end."],
+"避":["bì","to avoid","辶 walking + 辟 (sound; keep away). Walk away from something = avoid."],
+"免":["miǎn","to avoid; be free of","First drew a person wearing a helmet (now 冕). Protected from harm → avoid, be free of."],
+"薄":["bó","thin; weak","艹 plants + 溥 (sound). Plants growing close and thin → thin, weak. Read báo when it simply means “thin” (薄纸 thin paper)."],
+"弱":["ruò","weak","Two bent bows 弓 with soft, hair-like strokes. Bent and soft = weak."],
+"便":["biàn","convenient; then","亻 person + 更 to change. A person changes things to make life easy = convenient. Also “then”. Read pián only in 便宜 (cheap)."],
+"辩":["biàn","to argue","讠 speech between two 辛 (sharp blades). Two sharp sides with words in the middle = debate."],
+"论":["lùn","to discuss; theory","讠 speech + 仑 (sound; in good order). Words in order = discussion, argument."],
+"表":["biǎo","outside; to show","Old form: 衣 clothing + 毛 fur. People wore fur on the outside → the outside, to show."],
+"达":["dá","to reach","辶 walking + 大 big. Walk the big road and arrive = reach. 表达: get your idea across to someone."],
+"面":["miàn","face; surface","Picture of a face with an eye in the middle. Face → the front side → surface."],
+"明":["míng","bright; clear","日 sun + 月 moon. Both lights together = bright, clear. 表明: show it clearly."],
+"情":["qíng","feeling","忄 heart + 青 (sound). What comes from the heart = feelings. 表情: feelings shown outside."],
+"现":["xiàn","to appear; now","王 jade + 见 to see. The shine of jade becomes visible = appear, show."],
+"播":["bō","to sow; to spread","扌 hand + 番 (sound; linked to sowing). Scatter seeds by hand → spread → broadcast."],
+"放":["fàng","to let go; to put","攵 hand holding a stick + 方 (sound). Drive away → let go, release, put, play."],
+"脖":["bó","neck","月 body part + 孛 (sound). A part of the body = neck."],
+"不":["bù","not","Its first picture is debated (a flower base, or a bird flying up). Borrowed very early for “not”. Said bú before a 4th tone: 不要紧, 不耐烦."],
+"耐":["nài","to endure","而 beard + 寸 hand/rule. An old punishment was shaving off the beard; you had to bear it = endure, patience."],
+"烦":["fán","annoyed; troubled","火 fire + 页 head. A head on fire = hot, annoyed, fed up."],
+"紧":["jǐn","tight; urgent","Old form 緊: 臤 firm + 糸 thread. Thread pulled firm = tight, urgent. 不要紧 = not urgent, no problem."],
+"得":["dé","to get","彳 step + 旦 (was 贝 shell money) + 寸 hand. Go out and get money into your hand = obtain."],
+"了":["liǎo","to finish","Picture of a wrapped baby with no arms showing. Here it means “to finish”. 不得了 = “it can't end” → extreme, terrible."],
+"行":["xíng","to walk; OK","Picture of a crossroads. Roads for walking → to go → to work → OK. 不行 = won't work."],
+"足":["zú","foot; enough","Picture of a knee above a foot. Standing firm on your feet → enough. 不足 = not enough."],
+"布":["bù","cloth","巾 cloth + 父 (sound). Cloth, fabric. Also means “to spread out” (公布 announce)."],
+"财":["cái","wealth","贝 shell (old money) + 才 (sound). Shells were money = wealth."],
+"产":["chǎn","to produce","Old form 產: 生 to be born + 彦 (sound). Give birth, produce → what you produce = property."],
+"采":["cǎi","to pick","爫 hand above 木 tree. A hand picking leaves or fruit = pick, gather, choose."],
+"取":["qǔ","to take","耳 ear + 又 hand. Soldiers once cut off an enemy's ear as proof = take, get."],
+"用":["yòng","to use","Thought to draw a wooden bucket or fence. A tool → to use."],
+"彩":["cǎi","colour","采 (sound; pick) + 彡 brush strokes. Painted strokes = colours."],
+"虹":["hóng","rainbow","虫 creature + 工 (sound). In ancient China the rainbow was seen as a two-headed dragon drinking water."],
+"参":["cān","to join","Old form 參 drew three stars over a person (the 3 stars of Orion). Joining up → take part."],
+"与":["yù","to take part","Old form 與: four hands lifting something together = join. Read yù in 参与 (you will also hear yǔ)."],
+"惭":["cán","ashamed","忄 heart + 斩 to cut (sound). Your heart feels cut = ashamed."],
+"愧":["kuì","ashamed","忄 heart + 鬼 ghost (sound). A ghost in your heart = guilt, shame."]
+};
+
+const W=[
+{h:"报道",p:"bàodào",m:"report; news report; to report",g:"news report"},
+{h:"抱怨",p:"bàoyuàn",m:"to complain",g:"to complain"},
+{h:"背",p:"bèi",m:"back (of the body)",g:"back (body)"},
+{h:"背景",p:"bèijǐng",m:"background",g:"background"},
+{h:"被子",p:"bèizi",m:"quilt; blanket",g:"quilt"},
+{h:"本领",p:"běnlǐng",m:"ability; skill",g:"skill; ability"},
+{h:"此地",p:"cǐdì",m:"this place; here",g:"this place"},
+{h:"必要",p:"bìyào",m:"necessary; necessity",g:"necessary"},
+{h:"毕竟",p:"bìjìng",m:"after all; in the end",g:"after all",n:"他毕竟还是个孩子。After all, he is still a child."},
+{h:"避免",p:"bìmiǎn",m:"to avoid; prevent",g:"to avoid"},
+{h:"薄弱",p:"bóruò",m:"weak; fragile",g:"weak (weak point)"},
+{h:"便",p:"biàn",m:"then; conveniently; as soon as",g:"then; conveniently"},
+{h:"辩论",p:"biànlùn",m:"debate; to debate",g:"debate"},
+{h:"表达",p:"biǎodá",m:"to express",g:"to express",n:"表达意见 = express an opinion"},
+{h:"表面",p:"biǎomiàn",m:"surface; outward appearance",g:"surface"},
+{h:"表明",p:"biǎomíng",m:"to make clear; indicate",g:"to make clear",n:"表明态度 = make one's attitude clear"},
+{h:"表情",p:"biǎoqíng",m:"facial expression",g:"facial expression",n:"他的表情很严肃。His facial expression is very serious."},
+{h:"表现",p:"biǎoxiàn",m:"performance; to show / behave",g:"performance",n:"表现很好 = perform very well"},
+{h:"播放",p:"bōfàng",m:"to play; broadcast",g:"to broadcast; play"},
+{h:"脖子",p:"bózi",m:"neck",g:"neck"},
+{h:"不耐烦",p:"bù nàifán",m:"impatient",g:"impatient"},
+{h:"不要紧",p:"bù yàojǐn",m:"it doesn't matter; never mind",g:"it doesn't matter"},
+{h:"不得了",p:"bùdéliǎo",m:"terrible; extremely; serious",g:"extremely; terrible",n:"热得不得了 = extremely hot"},
+{h:"不行",p:"bùxíng",m:"not okay; won't do; impossible",g:"not okay"},
+{h:"不足",p:"bùzú",m:"insufficient; shortage; not enough",g:"not enough"},
+{h:"布",p:"bù",m:"cloth; fabric",g:"cloth"},
+{h:"财产",p:"cáichǎn",m:"property; possessions; assets",g:"property"},
+{h:"采取",p:"cǎiqǔ",m:"to take (measures / action)",g:"take (measures)",n:"采取措施 = take measures. Use with actions and measures."},
+{h:"采用",p:"cǎiyòng",m:"to adopt; use (a method, technology, idea)",g:"adopt (a method)",n:"采用新方法 = adopt a new method. Use with methods, tools, ideas."},
+{h:"彩虹",p:"cǎihóng",m:"rainbow",g:"rainbow"},
+{h:"采",p:"cǎi",m:"to pick; collect; gather",g:"to pick"},
+{h:"参与",p:"cānyù",m:"to participate; take part",g:"to take part"},
+{h:"惭愧",p:"cánkuì",m:"ashamed; feel ashamed",g:"ashamed"}
+];
+
+/* ---------- HELPERS ---------- */
+function $(id){return document.getElementById(id)}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function plain(p){return p.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/v/g,'u').replace(/[^a-z]/g,'')}
+function pick(){let w;do{w=W[Math.floor(Math.random()*W.length)]}while(w===lastPick&&W.length>1);lastPick=w;return w}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+
+/* ---------- VOICE ---------- */
+function loadV(){
+  if(!('speechSynthesis' in window))return;
+  allV=speechSynthesis.getVoices();
+  const zh=allV.filter(v=>/^(zh|cmn)/i.test(v.lang)||/chinese|mandarin|普通话|中文/i.test(v.name));
+  const sel=$('voiceSel');
+  let saved=-1;try{saved=parseInt(localStorage.getItem('bao_voice'),10)}catch(e){}
+  sel.innerHTML=zh.length?zh.map(v=>`<option value="${allV.indexOf(v)}">${esc(v.name)} (${v.lang})</option>`).join(''):'<option value="-1">No Chinese voice on this device</option>';
+  let idx=-1;
+  if(saved>=0&&allV[saved]&&zh.includes(allV[saved]))idx=saved;
+  else if(zh.length)idx=allV.indexOf(zh.find(v=>/zh[-_]CN/i.test(v.lang))||zh[0]);
+  voice=idx>=0?allV[idx]:null;if(idx>=0)sel.value=idx;
+}
+function say(t){
+  if(!('speechSynthesis' in window)||!t)return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);u.lang='zh-CN';if(voice)u.voice=voice;u.rate=.8;
+  speechSynthesis.speak(u);
+}
+
+/* ---------- FLASHCARDS ---------- */
+function fcRender(){
+  const w=W[fcOrder[fcI]];
+  $('fc').classList.remove('open');
+  $('fcCount').textContent=(fcI+1)+' of '+W.length;
+  $('fcHan').textContent=w.h;
+  $('fcPy').textContent=w.p;
+  $('fcMean').textContent=w.m;
+  $('fcChars').innerHTML=[...w.h].map(c=>{const e=E[c];return `<div class="ch"><div class="chBig han">${c}</div><div><b>${e[0]}</b> · ${e[1]}<p class="han-mix">${e[2]}</p></div></div>`}).join('');
+  $('fcNote').innerHTML=w.n?`<div class="note">${w.n}</div>`:'';
+}
+function fcGo(d){fcI=(fcI+d+W.length)%W.length;fcRender()}
+function fcShuffle(){fcOrder=shuffle(W.map((_,i)=>i));fcI=0;fcRender()}
+function fcFind(q){
+  q=q.trim();if(!q)return;
+  const pq=plain(q);
+  const i=W.findIndex(w=>w.h.includes(q)||(pq&&plain(w.p).startsWith(pq))||w.m.toLowerCase().includes(q.toLowerCase()));
+  if(i<0)return;
+  fcOrder=W.map((_,k)=>k);fcI=i;fcRender();
+}
+
+/* ---------- TAP MATCH ---------- */
+function mNew(){
+  const round=shuffle(W).slice(0,5);mDone=0;mSel=null;
+  $('mL').innerHTML=shuffle(round).map(w=>`<button class="tile han" data-k="${w.h}" data-s="L">${w.h}</button>`).join('');
+  $('mR').innerHTML=shuffle(round).map(w=>`<button class="tile" data-k="${w.h}" data-s="R">${w.g}</button>`).join('');
+  $('mMsg').textContent='Tap a word, then tap its meaning.';
+}
+function mTap(b){
+  if(!b||b.classList.contains('ok'))return;
+  if(!mSel||mSel.dataset.s===b.dataset.s){
+    if(mSel)mSel.classList.remove('sel');
+    mSel=b;b.classList.add('sel');if(b.dataset.s==='L')say(b.dataset.k);return;
+  }
+  mTries++;
+  if(mSel.dataset.k===b.dataset.k){
+    mRight++;[mSel,b].forEach(x=>{x.classList.remove('sel');x.classList.add('ok')});
+    say(b.dataset.k);mDone++;mSel=null;
+    const w=W.find(x=>x.h===b.dataset.k);
+    $('mMsg').textContent=mDone===5?'All 5 matched. Tap New round for more.':`✓ ${w.h} ${w.p}`;
+  }else{
+    const a=mSel;a.classList.add('shake');b.classList.add('shake');
+    setTimeout(()=>{a.classList.remove('shake','sel');b.classList.remove('shake')},340);
+    mSel=null;$('mMsg').textContent='Not a pair. Try again.';
+  }
+  $('mScore').textContent=mRight+' right of '+mTries+' tries';
+}
+
+/* ---------- TYPE PINYIN ---------- */
+function tNew(){
+  tQ=pick();tAnswered=false;
+  $('tHan').textContent=tQ.h;$('tHint').textContent=tQ.g;
+  $('tIn').value='';$('tFb').className='fb';$('tFb').innerHTML='';$('tBtn').textContent='Check';
+}
+function tCheck(){
+  if(tAnswered){tNew();$('tIn').focus();return}
+  const v=$('tIn').value;if(!plain(v))return;
+  tAnswered=true;tTotal++;
+  const ok=plain(v)===plain(tQ.p);if(ok)tScore++;
+  $('tFb').className='fb '+(ok?'ok':'no');
+  $('tFb').innerHTML=(ok?'✓ Correct':'Answer:')+` <span class="py">${tQ.p}</span><div>${tQ.m}</div>`;
+  $('tScore').textContent=tScore+' / '+tTotal;
+  $('tBtn').textContent='Next';say(tQ.h);
+}
+
+/* ---------- QUIZ ---------- */
+function qNew(){
+  qAnswered=false;
+  const w=pick(), rev=Math.random()<.35;
+  const opts=shuffle([w,...shuffle(W.filter(x=>x!==w)).slice(0,3)]);
+  qQ={w,rev};
+  $('qPrompt').innerHTML=rev?`<div class="qGloss">${w.m}</div><div class="muted">Which word means this?</div>`:`<div class="qHan han">${w.h}</div><div class="muted">What does it mean?</div>`;
+  $('qOpts').innerHTML=opts.map(o=>`<button class="opt${rev?' han':''}" data-k="${o.h}">${rev?o.h:o.g}</button>`).join('');
+  $('qFb').className='fb';$('qFb').innerHTML='';$('qNext').style.display='none';
+}
+function qTap(b){
+  if(!b||qAnswered)return;qAnswered=true;qTotal++;
+  const w=qQ.w, ok=b.dataset.k===w.h;if(ok)qScore++;
+  b.classList.add(ok?'ok':'no');
+  if(!ok)$('qOpts').querySelector(`[data-k="${w.h}"]`).classList.add('ok');
+  $('qFb').className='fb '+(ok?'ok':'no');
+  $('qFb').innerHTML=`<span class="han" style="font-size:22px">${w.h}</span> <span class="py">${w.p}</span><div>${w.m}</div>`;
+  $('qScore').textContent=qScore+' / '+qTotal;
+  $('qNext').style.display='block';say(w.h);
+}
+
+/* ---------- DRAG & DROP ---------- */
+function dNew(){
+  const round=shuffle(W).slice(0,5);dDone=0;dSel=null;
+  $('dChips').innerHTML=shuffle(round).map(w=>`<div class="chip han" data-k="${w.h}">${w.h}</div>`).join('');
+  $('dSlots').innerHTML=round.map(w=>`<div class="slot" data-k="${w.h}"><span class="drop han"></span><span class="gl">${w.g}</span></div>`).join('');
+  $('dMsg').textContent='';
+}
+function dPlace(chip,slot){
+  if(!chip||!slot||slot.classList.contains('done')||chip.classList.contains('used'))return;
+  chip.classList.remove('sel');dSel=null;
+  if(chip.dataset.k===slot.dataset.k){
+    slot.classList.add('done');slot.querySelector('.drop').textContent=chip.dataset.k;
+    chip.classList.add('used');say(chip.dataset.k);dDone++;
+    const w=W.find(x=>x.h===chip.dataset.k);
+    $('dMsg').textContent=dDone===5?'All 5 placed. Tap New round for more.':`✓ ${w.h} ${w.p}`;
+  }else{
+    slot.classList.add('shake');setTimeout(()=>slot.classList.remove('shake'),340);
+    $('dMsg').textContent='Not that one. Try another meaning.';
+  }
+}
+function slotAt(x,y){const el=document.elementFromPoint(x,y);return el?el.closest('.slot'):null}
+function clearOver(){document.querySelectorAll('.slot.over').forEach(s=>s.classList.remove('over'))}
+function dDown(e){
+  const c=e.target.closest('.chip');if(!c||c.classList.contains('used'))return;
+  drag={c,x:e.clientX,y:e.clientY,g:null};
+  try{c.setPointerCapture(e.pointerId)}catch(err){}
+}
+function dMove(e){
+  if(!drag)return;
+  if(!drag.g&&Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>6){
+    drag.g=drag.c.cloneNode(true);drag.g.className='chip han ghost';document.body.appendChild(drag.g);
+    drag.c.classList.add('lift');if(dSel){dSel.classList.remove('sel');dSel=null}
+  }
+  if(drag.g){
+    e.preventDefault();
+    drag.g.style.left=e.clientX+'px';drag.g.style.top=e.clientY+'px';
+    clearOver();const s=slotAt(e.clientX,e.clientY);if(s&&!s.classList.contains('done'))s.classList.add('over');
+  }
+}
+function dUp(e){
+  if(!drag)return;
+  const d=drag;drag=null;
+  if(d.g){
+    const s=slotAt(e.clientX,e.clientY);
+    d.g.remove();d.c.classList.remove('lift');clearOver();
+    if(s)dPlace(d.c,s);
+  }else{
+    if(dSel===d.c){d.c.classList.remove('sel');dSel=null;return}
+    if(dSel)dSel.classList.remove('sel');
+    dSel=d.c;d.c.classList.add('sel');say(d.c.dataset.k);
+    $('dMsg').textContent='Now tap its meaning below.';
+  }
+}
+function dCancel(){if(!drag)return;if(drag.g)drag.g.remove();drag.c.classList.remove('lift');clearOver();drag=null}
+
+/* ---------- INIT ---------- */
+if('speechSynthesis' in window){speechSynthesis.onvoiceschanged=loadV}
+loadV();
+$('voiceSel').addEventListener('change',()=>{const i=+$('voiceSel').value;voice=i>=0?allV[i]:null;try{localStorage.setItem('bao_voice',i)}catch(e){}say('你好')});
+$('voiceBtn').addEventListener('click',()=>$('voiceBox').classList.toggle('on'));
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('on'));$(b.dataset.t).classList.add('on');
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+}));
+$('fc').addEventListener('click',e=>{if(e.target.closest('.say'))return;$('fc').classList.toggle('open')});
+$('fcSay').addEventListener('click',()=>say(W[fcOrder[fcI]].h));
+$('fcPrev').addEventListener('click',()=>fcGo(-1));
+$('fcNext').addEventListener('click',()=>fcGo(1));
+$('fcShuf').addEventListener('click',fcShuffle);
+$('fcSearch').addEventListener('input',e=>fcFind(e.target.value));
+$('mL').addEventListener('click',e=>mTap(e.target.closest('.tile')));
+$('mR').addEventListener('click',e=>mTap(e.target.closest('.tile')));
+$('mNewBtn').addEventListener('click',mNew);
+$('tBtn').addEventListener('click',tCheck);
+$('tIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();tCheck()}});
+$('tSay').addEventListener('click',()=>say(tQ.h));
+$('qOpts').addEventListener('click',e=>qTap(e.target.closest('.opt')));
+$('qNext').addEventListener('click',qNew);
+$('dChips').addEventListener('pointerdown',dDown);
+window.addEventListener('pointermove',dMove,{passive:false});
+window.addEventListener('pointerup',dUp);
+window.addEventListener('pointercancel',dCancel);
+$('dSlots').addEventListener('click',e=>{const s=e.target.closest('.slot');if(s&&dSel)dPlace(dSel,s)});
+$('dNewBtn').addEventListener('click',dNew);
+fcOrder=W.map((_,i)=>i);fcRender();
+mNew();tNew();qNew();dNew();
+$('mScore').textContent='5 pairs per round';
+</script>
+</body>
+</html>
